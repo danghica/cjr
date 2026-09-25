@@ -1,0 +1,1216 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{A tutorial on cjr:\\
+syntax, semantics, and separation logic}
+\author{Mechanized development in \texttt{theories/}}
+\date{}
+
+\lstdefinestyle{coq}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  framerule=0.3pt,
+  xleftmargin=0.4em,
+  xrightmargin=0.4em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+\lstset{style=coq}
+
+\newcommand{\cjr}{\textsc{cjr}}
+\newcommand{\sem}[1]{[\![#1]\!]}
+\newcommand{\step}{\longrightarrow}
+\newcommand{\steps}{\longrightarrow^{*}}
+\newcommand{\Stuck}{\mathsf{stuck}}
+\newcommand{\WF}{\mathsf{wf}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\lookup}[2]{#1(#2)}
+\newcommand{\None}{\mathsf{None}}
+\newcommand{\Some}{\mathsf{Some}}
+\newcommand{\Unit}{\mathsf{()}}
+\newcommand{\True}{\mathsf{true}}
+\newcommand{\False}{\mathsf{false}}
+\newcommand{\NULL}{\mathsf{null}}
+\newcommand{\pts}{\mathrel{\mapsto}}
+\newcommand{\ptss}{\mathrel{\mapsto_{s}}}
+\newcommand{\ptsr}{\mathrel{\mapsto_{r}}}
+\newcommand{\ptsb}{\mathrel{\mapsto_{b}}}
+\newcommand{\ptso}{\mathrel{\mapsto_{o}}}
+\newcommand{\sep}{\mathbin{*}}
+\newcommand{\wand}{\mathbin{-\!\!*}}
+\newcommand{\later}{\mathop{\triangleright}}
+\newcommand{\Wpre}{\mathsf{wp}}
+\newcommand{\pure}[1]{\ulcorner #1 \urcorner}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\cjr{} (Cangjie Radical) is the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, with \texttt{func}, \texttt{if}, and \texttt{while}.
+This note is a reading guide to the Coq/Iris mechanization.
+Every concept is given twice: as the definition that is actually checked, and as ordinary mathematics with the same content.
+Every program-logic rule is followed by what it is for.
+The note ends by walking through the eight examples that exercise the rules in order.
+\end{abstract}
+
+\section{What this development is}
+
+\cjr{} is sequential, monomorphic, and first-order, with code pointers so that a vtable can be written by hand.
+There are no generics, no inheritance, no \texttt{enum}/\texttt{match}, and no concurrency.
+Those features of a larger source language are treated as sugar that must lower into this core at the same time and space cost.
+This development defines the core.
+It does not define the lowering, a garbage collector, or byte-level layout.
+
+Safety is not a type system.
+The grammar \texttt{ty} records the types one intends to use, but the operational semantics is untyped.
+A program is safe when a weakest-precondition proof exists: adequacy then says that, from the empty machine, execution does not get stuck.
+
+The Coq sources live under \texttt{theories/}.
+The language is an Iris evaluation-context language, so the frame rule and the bind rule are Iris's, not a separate Hoare calculus.
+
+\section{Syntax}
+
+\subsection{Locations, identifiers, and types}
+
+A location is an integer.
+Stack slots, raw words, and objects use distinct wrappers so that the four ghost maps of the program logic cannot be confused.
+
+\begin{lstlisting}
+Definition loc : Type := Z.
+Inductive stack_id := StackId (z : Z).
+Inductive raw_id := RawId (z : Z).
+Inductive obj_id := ObjId (z : Z).
+
+Inductive ty :=
+  | TyInt | TyFloat | TyBool | TyUnit
+  | TyStruct (ts : list ty)
+  | TyPtr (t : ty)
+  | TyObj (nfields : nat)
+  | TyFun (t1 t2 : ty).
+\end{lstlisting}
+
+Informally, locations are \(\mathbb{Z}\), and the three identifier sorts are the tagged copies \(\mathsf{StackId}(\ell)\), \(\mathsf{RawId}(\ell)\), and \(\mathsf{ObjId}(\ell)\).
+The type grammar is
+\[
+\begin{aligned}
+\tau ::=\;&
+  \mathsf{Int64}
+  \mid \mathsf{Float64}
+  \mid \mathsf{Bool}
+  \mid \mathsf{Unit}
+  \mid \mathsf{struct}\,\overline{\tau}
+  \mid \mathsf{CPointer}\,\tau
+  \mid \mathsf{class}_{n}
+  \mid \tau \to \tau.
+\end{aligned}
+\]
+\(\mathsf{class}_{n}\) means a final class with \(n\) fields.
+Nothing in the semantics consults \(\tau\).
+The type is documentation of the fragment; the theorems that follow do not assume it.
+
+\subsection{Values and expressions}
+
+A binder is an optional name: \(\mathsf{None}\) is an ignored parameter.
+Literals cover integers, a float payload (no float operations are defined), booleans, unit, raw pointers, null, object references, and stack addresses.
+Values are literals, recursive closures, and unboxed struct tuples.
+Expressions are the core forms, plus administrative forms (\texttt{Pop}, \texttt{StackLoad}, \texttt{StackAssign}, \texttt{StackFieldStore}) introduced when a mutable variable is allocated.
+
+\begin{lstlisting}
+Definition binder := option string.
+
+Inductive base_lit :=
+  | LitInt (n : Z) | LitFloat (n : Z) | LitBool (b : bool)
+  | LitUnit | LitPtr (l : loc) | LitNull
+  | LitObj (o : loc) | LitStack (l : loc).
+
+Inductive val :=
+  | LitV (l : base_lit)
+  | RecV (f x : binder) (e : expr)
+  | StructV (vs : list val)
+with expr :=
+  | Val (v : val) | Var (x : string)
+  | Rec (f x : binder) (e : expr)
+  | App (e1 e2 : expr)
+  | Let (x : binder) (e1 e2 : expr)
+  | VarBind (x : string) (e1 e2 : expr)
+  | Assign (x : string) (e : expr)
+  | Pop (l : stack_id) (e : expr)
+  | StackLoad (e : expr)
+  | StackAssign (e1 e2 : expr)
+  | StackFieldStore (e1 : expr) (i : nat) (e2 : expr)
+  | If (e0 e1 e2 : expr)
+  | While (e1 e2 : expr)
+  | Seq (e1 e2 : expr)
+  | BinOp (op : bin_op) (e1 e2 : expr)
+  | Alloc (e : expr) | Free (e : expr)
+  | Load (e : expr) | Store (e1 e2 : expr)
+  | Offset (e1 e2 : expr)
+  | Struct (vs : list val) (es : list expr)
+  | StructLoad (e : expr) (i : nat)
+  | StructStore (x : string) (i : nat) (e : expr)
+  | New (vs : list val) (es : list expr)
+  | FieldLoad (e : expr) (i : nat)
+  | FieldStore (e1 : expr) (i : nat) (e2 : expr).
+\end{lstlisting}
+
+In mathematics we write values
+\[
+v ::=\;
+  n \mid f \mid b \mid \Unit \mid \mathsf{ptr}(\ell) \mid \NULL
+  \mid \mathsf{obj}(\ell) \mid \mathsf{stk}(\ell)
+  \mid \mathsf{rec}\,f\,x.\,e
+  \mid \langle v_0,\ldots,v_{k-1}\rangle
+\]
+and use the expression forms by the same names as the constructors.
+\(\mathsf{BinOp}\) ranges over \(+\), \(-\), \(\le\), \(=\), and boolean conjunction.
+Integer operations act on \(\mathsf{LitInt}\).
+Conjunction acts on booleans.
+Anything else makes \(\mathsf{bin\_op\_eval}\) return \(\None\), and the machine gets stuck.
+
+Structs and objects are built by a list zipper.
+\(\mathsf{Struct}\,\overline{v}\,\overline{e}\) has already evaluated the values \(\overline{v}\) and still has the expressions \(\overline{e}\) to evaluate, left to right.
+\(\mathsf{New}\) is the same zipper for a final class.
+When the expression list is empty, the zipper is done.
+
+\texttt{Val} and \texttt{to\_val} identify which expressions are finished:
+
+\begin{lstlisting}
+Definition of_val (v : val) : expr := Val v.
+Definition to_val (e : expr) : option val :=
+  match e with Val v => Some v | _ => None end.
+\end{lstlisting}
+
+So the values of the language, as Iris sees them, are exactly the expressions \(\mathsf{Val}\,v\).
+
+\subsection{Two kinds of binding}
+
+Immutable \texttt{let} and function parameters are substitution.
+Mutable \texttt{var} is not.
+A \texttt{var} is given a fresh stack slot, and every use or assignment of that name is rewritten into an operation on the slot.
+A bare struct value is still copied: mutation in place happens only through a \texttt{var} slot or through a stored field.
+
+\begin{lstlisting}
+Definition subst_binder (b : binder) (v : val) (e : expr) : expr :=
+  match b with None => e | Some x => subst x v e end.
+\end{lstlisting}
+
+The function \(\mathsf{subst}\,x\,v\,e\) replaces free occurrences of \(x\) by the value \(v\), and it does not descend under a binder that captures \(x\).
+On a value, literals are unchanged and the body of a closure is substituted only when \(x\) is not the function name or the parameter.
+
+The mutable variant \(\mathsf{subst\_var}\,x\,\ell\,e\) does a different job.
+A read \(\mathsf{Var}\,x\) becomes \(\mathsf{StackLoad}(\mathsf{stk}(\ell))\).
+An assignment \(\mathsf{Assign}\,x\,e\) becomes \(\mathsf{StackAssign}(\mathsf{stk}(\ell), e')\).
+A field write \(\mathsf{StructStore}\,x\,i\,e\) becomes \(\mathsf{StackFieldStore}(\mathsf{stk}(\ell), i, e')\).
+Other occurrences of \(x\) are rewritten recursively, again respecting capture.
+The slot address is a value, so later stack operations do not look up a string environment.
+
+This split is the whole model of ``locals do not need a points-to fact until they are mutable.''
+An immutable binding disappears into the syntax.
+A mutable binding is a cell, and the cell has an owner.
+
+\section{Machine state}
+
+\subsection{Three regions, one counter}
+
+The machine is one record.
+Locals and unboxed structs that are stored in \texttt{var} slots live in the stack map.
+\texttt{CPointer} words live in the raw map, and each allocated block records its length in a second map on the same addresses.
+Final class fields live in a map from \((\mathsf{ObjId}(\ell), i)\) to a value.
+A single counter \(\mathsf{next}\) hands out fresh addresses for all three regions.
+
+\begin{lstlisting}
+Record state := MkState {
+  cjr_stack  : gmap stack_id val;
+  cjr_raw    : gmap raw_id val;
+  cjr_blocks : gmap raw_id nat;
+  cjr_obj    : gmap (obj_id * nat) val;
+  cjr_next   : Z
+}.
+Definition state_init : state := inhabitant. (* all maps empty, next = 0 *)
+\end{lstlisting}
+
+Write a state as
+\[
+\sigma =
+(\sigma_{s},\, \sigma_{r},\, \sigma_{b},\, \sigma_{o},\, \mathsf{next}(\sigma)).
+\]
+The initial state \(\sigma_0\) is \((\emptyset,\emptyset,\emptyset,\emptyset,0)\).
+
+Indexing a pointer is arithmetic on the address, one word per element:
+\[
+\mathsf{ptr}(\ell) + i \;=\; \mathsf{ptr}(\ell+i).
+\]
+There is no byte offset and no padding.
+A block of length \(n\) at base \(\ell\) occupies the words \(\ell,\ell+1,\ldots,\ell+n-1\).
+Blocks are freed explicitly.
+Class objects are not freed in this development: there is no \texttt{delete} for them, and there is no reachability argument.
+
+Null is a pointer value, not an address in \(\sigma_{r}\).
+Loading or storing through \(\NULL\) has no rule, so it is stuck.
+An out-of-bounds or use-after-free access is stuck for the same reason: the lookup premise of load, store, or free fails.
+
+\subsection{Well-formed states}
+
+Not every 5-tuple is a state the allocator is allowed to produce.
+Well-formedness says that every address already in use lies strictly below the counter, that every block's words are present, and that live blocks do not overlap.
+
+\begin{lstlisting}
+Definition stack_below m n :=
+  forall l, StackId l in dom m -> (l < n)%Z.
+(* raw_below, block_below, obj_below are the same idea. *)
+
+Definition block_cover blocks raw next :=
+  forall l n, blocks !! RawId l = Some n ->
+    (l + Z.of_nat n <= next)%Z /\
+    forall i, i < n -> is_Some (raw !! RawId (l + Z.of_nat i)).
+
+Definition blocks_disjoint blocks :=
+  forall l1 n1 l2 n2,
+    blocks !! RawId l1 = Some n1 ->
+    blocks !! RawId l2 = Some n2 ->
+    l1 <> l2 ->
+    (l1 + Z.of_nat n1 <= l2 \/ l2 + Z.of_nat n2 <= l1)%Z.
+
+Record state_wf (s : state) : Prop := {
+  wf_stack : stack_below (cjr_stack s) (cjr_next s);
+  wf_raw   : raw_below (cjr_raw s) (cjr_next s);
+  wf_block : block_below (cjr_blocks s) (cjr_next s);
+  wf_obj   : obj_below (cjr_obj s) (cjr_next s);
+  wf_cover : block_cover (cjr_blocks s) (cjr_raw s) (cjr_next s);
+  wf_disj  : blocks_disjoint (cjr_blocks s)
+}.
+\end{lstlisting}
+
+In mathematics, \(\WF(\sigma)\) is the conjunction of:
+\begin{align*}
+&\forall \ell.\; \mathsf{StackId}(\ell)\in\dom(\sigma_{s}) \Rightarrow \ell < \mathsf{next}(\sigma),\\
+&\text{and the same for raw addresses, block bases, and object addresses,}\\
+&\forall \ell,n.\;
+  \lookup{\sigma_{b}}{\mathsf{RawId}(\ell)}=\Some(n)
+  \Rightarrow
+  \ell+n \le \mathsf{next}(\sigma)
+  \;\wedge\;
+  \forall i<n.\;
+  \lookup{\sigma_{r}}{\mathsf{RawId}(\ell+i)}\neq\None,\\
+&\text{distinct live blocks have disjoint integer intervals.}
+\end{align*}
+
+The freshness lemmas are immediate from the first four clauses.
+If \(\WF(\sigma)\) and \(\ell=\mathsf{next}(\sigma)\), then \(\ell\) is absent from the stack, from the raw heap, from the block map, and, at every field index, from the object heap.
+Allocation is therefore the insertion of a key that is not already present.
+
+The initial state is well formed: \texttt{state\_init\_wf}.
+Each successful head step that the program logic uses is proved to preserve \(\WF\): stack allocation, deletion, and update; raw store; one-word allocation and freeing; class allocation; and field update.
+
+One-word allocation is worth spelling out, because it is the case the logic rule talks about.
+From base \(\ell=\mathsf{next}(\sigma)\),
+\[
+\begin{aligned}
+\sigma_{r}' &= \{\mathsf{RawId}(\ell) \mapsto 0\} \cup \sigma_{r},\\
+\sigma_{b}' &= \sigma_{b}[\mathsf{RawId}(\ell)\mapsto 1],\\
+\mathsf{next}' &= \ell+1.
+\end{aligned}
+\]
+The new word is in range, the new block is covered, and disjointness holds because the new interval \([\ell,\ell+1)\) starts at the old counter, past every previous address.
+Freeing that block deletes the length and the word.
+Other blocks keep their cells precisely because their intervals were disjoint from \([\ell,\ell+1)\).
+
+Class allocation at \(o=\mathsf{next}(\sigma)\) inserts the fields \((\mathsf{ObjId}(o), i) \mapsto v_i\) for a list \(v_0,\ldots,v_{k-1}\) and advances the counter by one.
+Those keys are fresh because every old object address is below \(o\).
+
+\section{Small-step semantics}
+
+\subsection{Head reduction}
+
+A head step is a relation
+\[
+(e,\sigma) \step (e',\sigma')
+\]
+with no observations and no forked threads.
+Both are hard-wired: \texttt{observation} is the empty type, and every rule produces an empty list of threads.
+The language is deterministic on the nose.
+
+\paragraph{Pure computation.}
+These rules do not read or write the heaps.
+\begin{align*}
+\mathsf{rec}\,f\,x.\,e
+  &\step
+  \mathsf{rec}\,f\,x.\,e
+  &&\text{(as a value)}\\
+(\mathsf{rec}\,f\,x.\,e)\,v
+  &\step
+  e[x\mapsto v][f\mapsto \mathsf{rec}\,f\,x.\,e]\\
+\mathsf{let}\,x = v \mathsf{ in } e
+  &\step
+  e[x\mapsto v]\\
+\mathsf{if}\;\True\;\mathsf{then}\;e_1\;\mathsf{else}\;e_2
+  &\step e_1\\
+\mathsf{if}\;\False\;\mathsf{then}\;e_1\;\mathsf{else}\;e_2
+  &\step e_2\\
+\mathsf{while}\;e_1\;\mathsf{do}\;e_2
+  &\step
+  \mathsf{if}\;e_1\;\mathsf{then}\;(e_2;\,\mathsf{while}\;e_1\;\mathsf{do}\;e_2)\;\mathsf{else}\;\Unit\\
+v;\,e &\step e\\
+v_1 \oplus v_2 &\step v
+  &&\text{when }\sem{\oplus}(v_1,v_2)=\Some(v)\\
+\mathsf{ptr}(\ell)+i &\step \mathsf{ptr}(\ell+i)\\
+\langle \overline{v},\, v::\overline{e}\rangle
+  &\step
+  \langle \overline{v}{+}{+}[v],\, \overline{e}\rangle\\
+\langle \overline{v}\rangle
+  &\step
+  \langle v_0,\ldots\rangle
+  &&\text{(the struct value)}\\
+\langle \overline{v}\rangle.i &\step v
+  &&\text{when }v\text{ is the }i\text{th component}.
+\end{align*}
+The \texttt{while} rule duplicates the loop.
+It is a head step, not an evaluation context, so the copies are syntax, not a shared mutable closure.
+The condition and the body are evaluated later, by ordinary contexts.
+
+\paragraph{Stack.}
+Let \(\ell=\mathsf{next}(\sigma)\).
+\begin{align*}
+\mathsf{var}\;x = v\;\mathsf{in}\;e
+  &\step
+  \mathsf{pop}_{\ell}\,(e\{x\mapsto \ell\})
+  &&\text{and }\sigma_{s}(\mathsf{StackId}(\ell)):=v,\;\mathsf{next}:=\ell+1\\
+\mathsf{pop}_{\ell}\,v
+  &\step
+  v
+  &&\text{and delete the slot}\\
+\mathsf{stk}(\ell)
+  &\step
+  v
+  &&\text{if the slot holds }v\\
+\mathsf{stk}(\ell) := v
+  &\step
+  \Unit
+  &&\text{if the slot exists; it then holds }v\\
+\mathsf{stk}(\ell).i := v
+  &\step
+  \Unit
+  &&\text{if the slot holds a struct and index }i\text{ is in range}.
+\end{align*}
+The last rule replaces component \(i\) with \(\mathsf{set\_nth}\) and writes the struct back into the same slot.
+No raw or object address is allocated.
+That is why a stack update can be framed against a raw points-to fact: the two maps are different components of \(\sigma\).
+
+\paragraph{Raw heap.}
+For \(n>0\), allocation of \(n\) words at \(\ell=\mathsf{next}(\sigma)\) returns \(\mathsf{ptr}(\ell)\), records length \(Z.\mathsf{to\_nat}(n)\), zeroes the words, and sets the counter to \(\ell+n\).
+The proved program-logic rule specialises this to \(n=1\).
+\begin{align*}
+\mathsf{free}(\mathsf{ptr}(\ell))
+  &\step \Unit
+  &&\text{if a block length is recorded at }\ell;
+     \text{ that block's words are deleted}\\
+{!}\,\mathsf{ptr}(\ell)
+  &\step v
+  &&\text{if the word holds }v\\
+\mathsf{ptr}(\ell) := v
+  &\step \Unit
+  &&\text{if the word exists; it then holds }v.
+\end{align*}
+Free deletes whatever length is stored.
+The one-word reasoning rule asks separately for the length fact \(1\), so the client of that rule cannot free a longer block by mistake.
+
+\paragraph{Objects.}
+The object zipper steps like the struct zipper.
+When it finishes, at \(o=\mathsf{next}(\sigma)\),
+\[
+\mathsf{new}(v_0,\ldots,v_{k-1})
+\step
+\mathsf{obj}(o)
+\]
+and the fields \((o,i)\mapsto v_i\) are added.
+Field load and field store are lookup and update at \((\mathsf{ObjId}(o), i)\).
+Store requires the field to exist already.
+A missing field, like a missing word, is stuck.
+
+\subsection{Evaluation contexts}
+
+Head steps fire only at the root.
+The context items say where a subexpression may be reduced.
+Each item has one hole, and the hole is the expression currently being evaluated.
+Arguments are evaluated left to right.
+\texttt{if} evaluates only the condition.
+\texttt{while} does not evaluate under itself: the unfolding rule is the head step above.
+
+Representative items, written as contexts:
+\[
+\begin{aligned}
+&E[\mathsf{let}\,x = [\,]\;\mathsf{in}\;e],\;
+ E[\mathsf{var}\,x = [\,]\;\mathsf{in}\;e],\;
+ E[\mathsf{pop}_{\ell}\,[\,]],\\
+&E[[\,]\,e],\; E[v\,[\,]],\;
+ E[\mathsf{if}\,[\,]\;\mathsf{then}\;e_1\;\mathsf{else}\;e_2],\;
+ E[[\,];e],\\
+&E[[\,]\oplus e],\; E[v\oplus [\,]],\;
+ E[{!}\,[\,]],\; E[\mathsf{free}\,[\,]],\;
+ E[[\,]:=e],\; E[v:=[\,]].
+\end{aligned}
+\]
+Struct and \texttt{new} items evaluate the next expression in the zipper.
+The Coq constructor list is \texttt{ectx\_item}, and \texttt{fill\_item} implements the grammar.
+
+Iris then builds the language in the standard way.
+
+\begin{lstlisting}
+Lemma cjr_ectxi_mixin : EctxiLanguageMixin of_val to_val fill_item base_step.
+Canonical Structure cjr_ectxi_lang := EctxiLanguage cjr_ectxi_mixin.
+Canonical Structure cjr_ectx_lang := EctxLanguageOfEctxi cjr_ectxi_lang.
+Canonical Structure cjr_lang := LanguageOfEctx cjr_ectx_lang.
+\end{lstlisting}
+
+A configuration steps by finding a context \(K\) and a head redex:
+\[
+K[e] \step K[e']
+\quad\text{when}\quad
+(e,\sigma)\step(e',\sigma').
+\]
+Filling a non-value never produces a value, a value never head-reduces, and a head reduction of a filled term implies that the hole was already a value.
+Those are the mixin obligations.
+They are what let Iris treat \(K\) as a program context in the bind rule.
+
+\subsection{Determinism}
+
+\begin{lstlisting}
+Lemma base_step_det e s k e' s' t k2 e2 s2 t2 :
+  base_step e s k e' s' t ->
+  base_step e s k2 e2 s2 t2 ->
+  k = k2 /\ e' = e2 /\ s' = s2 /\ t = t2.
+\end{lstlisting}
+
+\begin{theorem}[Determinism of head reduction]
+If \((e,\sigma)\step(e_1,\sigma_1)\) and \((e,\sigma)\step(e_2,\sigma_2)\), then \(e_1=e_2\) and \(\sigma_1=\sigma_2\).
+Observations and forked threads, which are always empty, agree as well.
+\end{theorem}
+
+The proof is inversion of both derivations.
+Where a rule reads a map or calls \(\sem{\oplus}\), the two lookups are the same, so the two results are the same.
+There is no scheduler and no choice of fresh address other than \(\mathsf{next}(\sigma)\).
+
+\section{Separation logic}
+
+\subsection{What is owned}
+
+The program logic does not talk about the whole machine.
+It talks about the cells a piece of code is allowed to use.
+Ownership is a ghost map, one authoritative map per region, with a points-to fact for each cell.
+Full ownership is the fraction \(1\).
+
+\begin{lstlisting}
+Definition stack_mapsto (l : stack_id) (v : val) : iProp S :=
+  ghost_map_elem stack_name l (DfracOwn 1) v.
+Definition raw_mapsto (l : raw_id) (v : val) : iProp S :=
+  ghost_map_elem raw_name l (DfracOwn 1) v.
+Definition block_mapsto (l : raw_id) (n : nat) : iProp S :=
+  ghost_map_elem block_name l (DfracOwn 1) n.
+Definition obj_mapsto (o : obj_id) (i : nat) (v : val) : iProp S :=
+  ghost_map_elem obj_name (o, i) (DfracOwn 1) v.
+\end{lstlisting}
+
+The notations in the sources are \(\ell \ptss v\), \(\ell \ptsr v\), \(\ell \ptsb n\), and \(o \ptso[i] v\).
+Four maps are used, rather than a single heap, because a stack slot, a raw word, a block length, and a class field are different kinds of cell.
+A stack proof cannot accidentally be applied to a pointer.
+
+The state interpretation ties the ghost maps to the concrete machine and remembers well-formedness:
+
+\begin{lstlisting}
+Definition cjr_state_interp (s : state) : iProp S :=
+  ghost_map_auth stack_name 1 (cjr_stack s) *
+  ghost_map_auth raw_name 1 (cjr_raw s) *
+  ghost_map_auth block_name 1 (cjr_blocks s) *
+  ghost_map_auth obj_name 1 (cjr_obj s) *
+  pure (state_wf s).
+\end{lstlisting}
+
+At every step, Iris owns \(\mathsf{StateInterp}(\sigma)\).
+A points-to fact is a fragment of one of those authoritative maps.
+Updating a cell is updating both the fragment and the matching entry of \(\sigma\), and the \(\WF\) conjunct is re-established by the lemma for that step.
+
+\subsection{Weakest precondition, in this instantiation}
+
+The Iris instance is the standard one for a deterministic language with no thread pool of interest:
+\[
+\begin{aligned}
+\mathsf{stateInterp}(\sigma) &= \mathsf{cjr\_state\_interp}(\sigma),\\
+\mathsf{forkPost}(\_) &= \top,\\
+\mathsf{numLatersPerStep}(\_) &= 0.
+\end{aligned}
+\]
+The weakest precondition \(\Wpre\,e\,\{\Phi\}\) is Iris's.
+For this tutorial the reading is:
+
+\begin{definition}[Specification]
+\(\Wpre\,e\,\{\Phi\}\) means: for every well-formed extension of the current ghost ownership, executing \(e\) neither gets stuck nor forks, and if it terminates with a value \(v\) then \(\Phi(v)\) holds.
+Partial correctness is enough: a diverging loop satisfies a weakest precondition whose postcondition is never reached.
+\end{definition}
+
+The later \(\later\) and the credit \(\pounds 1\) appearing in the rules are Iris's accounting for steps, in the mode \texttt{HasLc}.
+When a rule says
+\[
+\ell \ptsr v \wand \later(\pounds 1 \wand \ell \ptsr v \wand \Phi(v))
+\vdash
+\Wpre\,({!}\,\ell)\,\{\Phi\},
+\]
+the intended content is: if you own the cell, you may load it; you get the same cell back, together with the value that was there.
+The later and the credit are discharged by the step.
+In the example proofs they are thrown away with an introduction \(\mathtt{iIntros\ "> \_"}\).
+They do not change the memory reasoning.
+
+\subsection{Structural rules}
+
+These three rules are why the logic is a separation logic rather than a Hoare logic with an explicit frame side-condition.
+Bind and the pure-step lemma are proved in \texttt{primitive\_laws.v} by appealing to Iris.
+The frame rule is Iris's own \texttt{wp\_frame\_l}; this development does not re-prove it.
+
+\begin{lstlisting}
+Lemma wp_bind K e Phi :
+  wp e (fun v => wp (fill K (Val v)) Phi) |- wp (fill K e) Phi.
+\end{lstlisting}
+
+\begin{lemma}[Bind]
+If \(K\) is an evaluation context, then
+\[
+\Wpre\,e\,\{\,v.\; \Wpre\,K[v]\,\{\Phi\}\,\}
+\;\vdash\;
+\Wpre\,K[e]\,\{\Phi\}.
+\]
+\end{lemma}
+
+\noindent\textit{Intuition.}
+To prove a specification of a term with a hole, prove a specification of the hole, and allow the postcondition of the hole to talk about the rest of the program.
+Left-to-right evaluation is just a choice of \(K\).
+No memory fact has to be mentioned.
+Facts that the hole does not use stay outside this rule and are framed.
+
+\begin{lemma}[Frame]
+\[
+P \sep \Wpre\,e\,\{\Phi\}
+\;\vdash\;
+\Wpre\,e\,\{\,v.\; P \sep \Phi(v)\,\}.
+\]
+\end{lemma}
+
+\noindent\textit{Intuition.}
+If a proof of \(e\) never mentions \(P\), then \(e\) cannot depend on the cells inside \(P\), and those cells survive \(e\) unchanged.
+This is the rule that makes ``the other pointer is untouched'' a consequence of not putting that pointer into the callee's precondition.
+It is not proved by induction on \cjr{} expressions.
+
+\begin{lemma}[Consequence]
+\[
+\Wpre\,e\,\{\Phi\}
+\;\wedge\;
+(\forall v.\;\Phi(v)\wand \Psi(v))
+\;\vdash\;
+\Wpre\,e\,\{\Psi\}.
+\]
+\end{lemma}
+
+\noindent\textit{Intuition.}
+A stronger postcondition can be weakened.
+The examples use this when a lemma such as \texttt{bump\_wp} returns both a pure result and a framed cell, and the continuation only needs one of them.
+In Coq it is \texttt{wp\_wand} or \texttt{wp\_mono}.
+
+\subsection{Pure rules}
+
+A pure head step is one that is defined in every state, does not change the state, and has exactly one successor.
+The generic lemma is \texttt{wp\_pure\_step}.
+Each concrete rule below is an instance.
+Where the step produces a value immediately, the postcondition is under a later, because that is how the generic lemma returns the credit.
+Where the step produces another expression, the rule simply asks for a weakest precondition of that expression.
+
+\paragraph{Closures and application.}
+\begin{lstlisting}
+Lemma wp_rec f x e Phi :
+  later (pound 1 -*- Phi (RecV f x e)) |- wp (Rec f x e) Phi.
+Lemma wp_app f x e v Phi :
+  wp (subst_binder x v (subst_binder f (RecV f x e) e)) Phi
+    |- wp (App (Val (RecV f x e)) (Val v)) Phi.
+\end{lstlisting}
+\[
+\begin{aligned}
+&\later(\Phi(\mathsf{rec}\,f\,x.\,e)) \vdash \Wpre\,(\mathsf{rec}\,f\,x.\,e)\,\{\Phi\},\\
+&\Wpre\,e[x\mapsto v][f\mapsto \mathsf{rec}\,f\,x.\,e]\,\{\Phi\}
+  \vdash
+  \Wpre\,((\mathsf{rec}\,f\,x.\,e)\,v)\,\{\Phi\}.
+\end{aligned}
+\]
+\textit{Intuition.}
+Evaluating a function literal yields the closure as a value.
+Calling it substitutes the argument and, if the function is recursive, the closure itself.
+No heap fact is required: the code is data, and the data is the value in hand.
+That is what lets a vtable be an ordinary struct of closures.
+
+\paragraph{Let, if, while, sequencing, arithmetic, offset.}
+\begin{align*}
+\Wpre\,e[x\mapsto v]\,\{\Phi\}
+  &\vdash \Wpre\,(\mathsf{let}\,x=v\;\mathsf{in}\;e)\,\{\Phi\}\\
+\Wpre\,e_1\,\{\Phi\}
+  &\vdash \Wpre\,(\mathsf{if}\;\True\;\mathsf{then}\;e_1\;\mathsf{else}\;e_2)\,\{\Phi\}\\
+\Wpre\,e_2\,\{\Phi\}
+  &\vdash \Wpre\,(\mathsf{if}\;\False\;\mathsf{then}\;e_1\;\mathsf{else}\;e_2)\,\{\Phi\}\\
+\Wpre\,(\mathsf{if}\;e_1\;\mathsf{then}\;(e_2;\,\mathsf{while}\,e_1\,\mathsf{do}\,e_2)\;\mathsf{else}\;\Unit)\,\{\Phi\}
+  &\vdash \Wpre\,(\mathsf{while}\,e_1\,\mathsf{do}\,e_2)\,\{\Phi\}\\
+\Wpre\,e\,\{\Phi\}
+  &\vdash \Wpre\,(v;e)\,\{\Phi\}\\
+\sem{\oplus}(v_1,v_2)=\Some(v)
+  &\Rightarrow
+  \later(\Phi(v)) \vdash \Wpre\,(v_1\oplus v_2)\,\{\Phi\}\\
+\later(\Phi(\mathsf{ptr}(\ell+i)))
+  &\vdash \Wpre\,(\mathsf{ptr}(\ell)+i)\,\{\Phi\}.
+\end{align*}
+
+\textit{Intuition for \texttt{while}.}
+The loop rule does not mention an invariant.
+It unfolds the loop once into a conditional.
+The invariant is whatever assertion the user has in hand when they come back to the same syntactic loop.
+If the condition is false, the unfolding takes the else branch and returns unit.
+If it is true, the body runs and the same rule applies again.
+Termination is not proved; the unfolding is used only as many times as the concrete execution needs.
+
+\textit{Intuition for offset.}
+Adding an index to a pointer is arithmetic.
+It does not check that the resulting address lies in a block.
+The check happens when someone loads or stores: without a points-to fact at the computed address, the load rule does not apply, and the machine would be stuck.
+Bounds are therefore a matter of which points-to facts the proof owns, not of a side condition on \(+\).
+
+\paragraph{Struct values.}
+\[
+\begin{aligned}
+&\later(\Phi(\langle \overline{v}\rangle)) \vdash \Wpre\,\langle\overline{v}\rangle\,\{\Phi\},\\
+&\overline{v}(i)=v \Rightarrow
+  \later(\Phi(v)) \vdash \Wpre\,(\langle\overline{v}\rangle.i)\,\{\Phi\}.
+\end{aligned}
+\]
+\textit{Intuition.}
+A finished zipper is the unboxed tuple.
+Reading a component copies it out.
+The tuple is not a heap cell, so there is nothing to frame and nothing to free.
+If the index is out of range, there is no rule.
+
+Building a struct or an object from a non-empty expression list is also a pure step (\texttt{StructStepS}, \texttt{NewStepS}).
+The development uses \texttt{wp\_pure\_step} for that step in the vtable example rather than a named lemma.
+
+\subsection{Stack rules}
+
+\begin{lstlisting}
+Lemma wp_var_bind x v e Phi :
+  (forall l, StackId l |->s v -*-
+     wp (subst_var x l e)
+        (fun w => exists v', StackId l |->s v' * Phi w))
+  |- wp (VarBind x (Val v) e) Phi.
+
+Lemma wp_stack_load l v Phi :
+  l |->s v -*- later (pound 1 -*- l |->s v -*- Phi v)
+    |- wp (StackLoad (stk l)) Phi.
+
+Lemma wp_stack_assign l v w Phi :
+  l |->s v -*- later (pound 1 -*- l |->s w -*- Phi unit)
+    |- wp (StackAssign (stk l) (Val w)) Phi.
+
+Lemma wp_stack_field l vs i w v Phi :
+  vs !! i = Some w ->
+  l |->s StructV vs -*-
+    later (pound 1 -*- l |->s StructV (set_nth i v vs) -*- Phi unit)
+    |- wp (StackFieldStore (stk l) i (Val v)) Phi.
+\end{lstlisting}
+
+In mathematics, with \(\ell\) a stack address:
+\begin{align*}
+&\bigl(\forall \ell.\;
+   \ell \ptss v \wand
+   \Wpre\,e\{x\mapsto\ell\}\,\{\,w.\;\exists v'.\; \ell \ptss v' \sep \Phi(w)\,\}\bigr)
+  \vdash
+  \Wpre\,(\mathsf{var}\;x=v\;\mathsf{in}\;e)\,\{\Phi\},\\
+&\ell \ptss v \wand \later(\ell \ptss v \wand \Phi(v))
+  \vdash \Wpre\,(\mathsf{stk}(\ell))\,\{\Phi\},\\
+&\ell \ptss v \wand \later(\ell \ptss w \wand \Phi(\Unit))
+  \vdash \Wpre\,(\mathsf{stk}(\ell):=w)\,\{\Phi\},\\
+&\overline{v}(i)=w \Rightarrow
+  \ell \ptss \langle\overline{v}\rangle
+  \wand \later\bigl(\ell \ptss \langle\overline{v}[i\mapsto u]\rangle \wand \Phi(\Unit)\bigr)
+  \vdash
+  \Wpre\,(\mathsf{stk}(\ell).i := u)\,\{\Phi\}.
+\end{align*}
+
+\textit{Intuition for \texttt{var}.}
+The rule allocates a fresh slot, hands you exclusive ownership of it, and asks you to prove the body after the name has been compiled into stack operations.
+You may change the contents.
+At the end you must give the slot back, at whatever value it then has.
+The \(\mathsf{pop}\) administrative step deletes it, so the caller does not see a stack fact.
+This is lexical scope: the owner of the cell is the body, and the cell does not escape.
+
+The existential is essential.
+If the postcondition demanded the original value, an assignment inside the body could not be verified, because assignment replaces the points-to fact.
+
+\textit{Intuition for load, assign, and field update.}
+Load reads and returns the same fact.
+Assignment exchanges the fact for one about the new value.
+Field update is assignment of a struct, with one component changed, and it is only available when that component already exists.
+A missing component is stuck, and there is no points-to fact that would let the rule fire.
+None of these rules allocates on the raw heap or the object heap.
+
+\subsection{Raw-heap rules}
+
+\begin{lstlisting}
+Lemma wp_alloc_one Phi :
+  (forall l, RawId l |->r LitV (LitInt 0) -*-
+             RawId l |->b 1 -*- Phi (LitV (LitPtr l)))
+    |- wp (Alloc (Val (LitV (LitInt 1)))) Phi.
+
+Lemma wp_free_one l v Phi :
+  RawId l |->r v -*- RawId l |->b 1 -*- later (Phi unit)
+    |- wp (Free (Val (LitV (LitPtr l)))) Phi.
+
+Lemma wp_load l v Phi :
+  RawId l |->r v -*- later (RawId l |->r v -*- Phi v)
+    |- wp (Load (Val (LitV (LitPtr l)))) Phi.
+
+Lemma wp_store l v w Phi :
+  RawId l |->r v -*- later (RawId l |->r w -*- Phi unit)
+    |- wp (Store (Val (LitV (LitPtr l))) (Val w)) Phi.
+\end{lstlisting}
+
+\begin{align*}
+&\bigl(\forall \ell.\;
+   \ell \ptsr 0 \sep \ell \ptsb 1 \wand \Phi(\mathsf{ptr}(\ell))\bigr)
+  \vdash
+  \Wpre\,(\mathsf{alloc}(1))\,\{\Phi\},\\
+&\ell \ptsr v \sep \ell \ptsb 1 \wand \later(\Phi(\Unit))
+  \vdash
+  \Wpre\,(\mathsf{free}(\ell))\,\{\Phi\},\\
+&\ell \ptsr v \wand \later(\ell \ptsr v \wand \Phi(v))
+  \vdash
+  \Wpre\,({!}\,\ell)\,\{\Phi\},\\
+&\ell \ptsr v \wand \later(\ell \ptsr w \wand \Phi(\Unit))
+  \vdash
+  \Wpre\,(\ell := w)\,\{\Phi\}.
+\end{align*}
+
+\textit{Intuition.}
+Allocation creates a cell you did not own before, initialised to zero, and a separate fact that a block of length one starts there.
+The two facts have different jobs.
+The points-to fact lets you load and store the word.
+The block fact lets you free the block.
+Free consumes both, so the word cannot be used again: there is no fact left to feed to the load rule, and the concrete word has been deleted, so the machine would get stuck if you tried.
+
+Load does not disturb the cell.
+Store keeps ownership and changes the value.
+Neither rule needs the block fact.
+A client may therefore load and store while the right to free sits unused in the context, and the frame rule keeps it there.
+
+The operational rule for allocation accepts any positive length.
+The verified rule above is the one-word instance, which is what the examples use.
+A longer block would be the same pattern: a points-to fact per word, plus one block fact for the base and the length.
+
+\subsection{Object rules}
+
+\begin{lstlisting}
+Lemma wp_new vs Phi :
+  (forall o, ([* list] i |-> v in vs, ObjId o |->o[i] v) -*-
+             Phi (LitV (LitObj o)))
+    |- wp (New vs []) Phi.
+
+Lemma wp_field_load o i v Phi :
+  ObjId o |->o[i] v -*- later (ObjId o |->o[i] v -*- Phi v)
+    |- wp (FieldLoad (Val (LitV (LitObj o))) i) Phi.
+
+Lemma wp_field_store o i v w Phi :
+  ObjId o |->o[i] v -*- later (ObjId o |->o[i] w -*- Phi unit)
+    |- wp (FieldStore (Val (LitV (LitObj o))) i (Val w)) Phi.
+\end{lstlisting}
+
+\begin{align*}
+&\bigl(\forall o.\;
+   \mathop{\ast}\limits_{i<k} o \ptso[i] v_i
+   \wand \Phi(\mathsf{obj}(o))\bigr)
+  \vdash
+  \Wpre\,(\mathsf{new}(v_0,\ldots,v_{k-1}))\,\{\Phi\},\\
+&o \ptso[i] v \wand \later(o \ptso[i] v \wand \Phi(v))
+  \vdash
+  \Wpre\,(o.i)\,\{\Phi\},\\
+&o \ptso[i] v \wand \later(o \ptso[i] w \wand \Phi(\Unit))
+  \vdash
+  \Wpre\,(o.i := w)\,\{\Phi\}.
+\end{align*}
+
+\textit{Intuition.}
+\texttt{new} of a finished argument list allocates a fresh object and returns one points-to fact per field, with the initialising values.
+There is no block fact and no free rule: the object stays allocated.
+Field load and field store are the same idea as raw load and store, on a different map.
+Owning \(o \ptso[i] v\) says nothing about \(o \ptso[j] w\) for \(j\neq i\), and nothing about any raw word.
+That is why a raw cell can be framed across a field update, and why two fields of one object can be reasoned about separately.
+
+\subsection{Exclusivity}
+
+\begin{lstlisting}
+Lemma stack_mapsto_exclusive l v1 v2 :
+  l |->s v1 -*- l |->s v2 |- False.
+Lemma raw_mapsto_exclusive l v1 v2 :
+  l |->r v1 -*- l |->r v2 |- False.
+\end{lstlisting}
+
+\begin{lemma}[Exclusive ownership]
+For a stack address or a raw address \(\ell\), and any values \(v_1,v_2\),
+\[
+\ell \ptss v_1 \sep \ell \ptss v_2 \vdash \bot,
+\qquad
+\ell \ptsr v_1 \sep \ell \ptsr v_2 \vdash \bot.
+\]
+\end{lemma}
+
+\textit{Intuition.}
+Full ownership is unique.
+The ghost-map algebra rejects two fragments of fraction \(1\) at the same key, even if they agree on the value.
+This is the specification of non-aliasing.
+If a swap is specified with two points-to assumptions, applying it to one address twice is impossible: the precondition is false.
+The machine might still have a single cell there; the logic refuses to pretend there are two.
+
+The same algebra applies to block facts and to object fields.
+The development records the stack and raw cases because those are the ones the examples need to point at.
+
+\section{Main theorems}
+
+\subsection{Head reduction is deterministic}
+
+Theorem~1 above is \texttt{base\_step\_det}.
+Restated: the head reduction relation is a partial function of \((e,\sigma)\).
+Combined with the context machinery, a configuration has at most one successor.
+Stuckness is therefore unambiguous.
+Either the term is a value, or exactly one head redex is ready and the rule applies, or no rule applies and the program is stuck.
+
+\subsection{Well-formedness is an invariant of the verified steps}
+
+The state interpretation contains \(\pure{\WF(\sigma)}\).
+Each memory rule proves that the state after the step is well formed if the state before was.
+The statements are \texttt{wf\_stack\_alloc}, \texttt{wf\_stack\_delete}, \texttt{wf\_stack\_upd}, \texttt{wf\_raw\_store}, \texttt{wf\_alloc\_one}, \texttt{wf\_free\_one}, \texttt{wf\_new}, and \texttt{wf\_field\_store}.
+
+\begin{lemma}[Allocator invariant]
+\(\WF(\sigma_0)\).
+If \(\WF(\sigma)\) and a verified memory rule steps to \(\sigma'\), then \(\WF(\sigma')\).
+\end{lemma}
+
+The one-word cases are the ones used by the logic.
+For example, freeing a block of length \(1\) at \(\ell\) preserves coverage of every other block because disjointness puts their words outside \(\{\ell\}\).
+
+\subsection{Adequacy}
+
+\begin{lstlisting}
+Lemma cjr_adequacy S e (phi : val -> Prop) :
+  (forall `{!cjrGS S} `{!invGS_gen HasLc S},
+     |- wp e (fun v => pure (phi v))) ->
+  adequate NotStuck e state_init (fun v _ => phi v).
+\end{lstlisting}
+
+\begin{theorem}[Adequacy]
+Let \(\varphi\) be a pure predicate on values.
+Suppose that in every Iris instantiation of the \cjr{} ghost state one can prove
+\[
+\Wpre\,e\,\{\,v.\; \pure{\varphi(v)}\,\}.
+\]
+Then, executing \(e\) from \(\sigma_0\), every reachable configuration can take a step or is a value, and every final value \(v\) satisfies \(\varphi(v)\).
+\end{theorem}
+
+\noindent\textit{What the proof does.}
+It allocates four empty ghost maps, packages them as the \cjr{} ghost state, and observes \(\WF(\sigma_0)\).
+Iris's adequacy theorem for weakest preconditions then applies.
+The hypothesis is a proof that does not depend on a particular ghost name, so it can be used at the names chosen here.
+
+\noindent\textit{What it does not say.}
+It does not say that every closed expression is safe.
+An expression with a free variable, a null dereference, or a load of an address nobody allocated has no such proof, and the theorem is silent.
+It also does not extract a functional-correctness result beyond the pure \(\varphi\) that was proved.
+If the postcondition is only ``the result is unit'', adequacy says the program returns unit without getting stuck; the interesting memory facts were used and consumed inside the proof.
+
+The closed examples \texttt{sum\_one}, \texttt{bump\_keep}, \texttt{cell}, \texttt{class\_bump}, and \texttt{vtable\_prog} are instantiated at this theorem.
+The other examples are open: their hypotheses are points-to facts, so they are stated as weakest preconditions rather than as runs from \(\sigma_0\).
+
+\section{The examples}
+
+Each example uses a feature the previous one does not.
+They are the files in \texttt{theories/examples/}, in the order below.
+The programs are written here in surface syntax; the Coq definitions are the \texttt{expr} terms those files actually prove.
+
+\subsection{Arithmetic: \texttt{arith.v}}
+
+\paragraph{Program.}
+\begin{align*}
+&\mathsf{var}\;n = 1\;\mathsf{in}\\
+&\mathsf{var}\;s = 0\;\mathsf{in}\\
+&\mathsf{while}\;(1 \le n)\;\mathsf{do}\;(s := s+1;\; n := n-1);\\
+&s.
+\end{align*}
+
+\paragraph{Theorem.}
+\[
+\Wpre\,\mathsf{sum\_one}\,\{\,v.\; \pure{v=1}\,\}.
+\]
+From \(\sigma_0\), the program returns \(1\) and does not get stuck (\texttt{sum\_one\_adequate}).
+
+\paragraph{What is new.}
+Nothing is allocated on either heap.
+The proof uses \texttt{var}, stack load and assignment, \texttt{while}, \texttt{if}, sequencing, and integer \(+\) and \(-\).
+The loop condition is true once: \(n\) is \(1\), then \(0\).
+On the true branch, \(s\) becomes \(1\) and \(n\) becomes \(0\).
+On the false branch the loop returns unit, and the trailing read returns \(s\).
+
+The stack facts at the end are \(s \ptss 1\) and \(n \ptss 0\).
+They are given back to \texttt{wp\_var\_bind} through the existential, and \texttt{pop} deletes them.
+The pure postcondition does not mention the stack.
+That is the scope rule from the previous section, exercised on a loop that really mutates.
+
+\subsection{Stack structs: \texttt{struct\_upd.v}}
+
+\paragraph{Program.}
+\begin{align*}
+&\mathsf{var}\;p = \langle 0\rangle\;\mathsf{in}\\
+&(p.0 := 1;\; p.0).
+\end{align*}
+A second, closed program allocates a raw word and then runs the first program, then loads the raw word:
+\[
+\mathsf{let}\;r = \mathsf{alloc}(1)\;\mathsf{in}\;(\mathsf{bump};\; {!}\,r).
+\]
+
+\paragraph{Theorems.}
+\[
+\begin{aligned}
+&\ell \ptsr v \vdash
+  \Wpre\,\mathsf{bump}\,\{\,w.\; \pure{w=1} \sep \ell \ptsr v\,\},\\
+&\Wpre\,\mathsf{bump\_keep}\,\{\,v.\; \pure{v=0}\,\}.
+\end{aligned}
+\]
+The closed run from \(\sigma_0\) returns \(0\) (\texttt{bump\_adequate}).
+
+\paragraph{What is new.}
+The struct lives in a stack slot, not on the raw heap.
+The field write is \texttt{wp\_stack\_field}: the slot changes from \(\langle 0\rangle\) to \(\langle 1\rangle\), and the read copies the component out with \texttt{wp\_struct\_load}.
+No raw address is allocated by \(\mathsf{bump}\) itself.
+
+The first theorem is the frame.
+Its hypothesis is an arbitrary raw cell, and the postcondition returns that same cell.
+The proof of the stack update never mentions it, so it cannot have been changed.
+The closed program makes the same point operationally: the fresh raw word is \(0\) before \(\mathsf{bump}\) and \(0\) after, which is what the final load returns.
+The field update's result \(1\) is established on the way and then discarded by sequencing, because the observation we keep is the unchanged raw word.
+
+\subsection{One raw cell: \texttt{cell.v}}
+
+\paragraph{Program.}
+\[
+\mathsf{let}\;p = \mathsf{alloc}(1)\;\mathsf{in}\;
+(p := 7;\; ({!}\,p;\; \mathsf{free}\,p)).
+\]
+
+\paragraph{Theorem.}
+\[
+\Wpre\,\mathsf{cell}\,\{\,v.\; \pure{v=\Unit}\,\}.
+\]
+From \(\sigma_0\), the program returns unit and does not get stuck.
+
+\paragraph{What is new.}
+This is the first use of \(\ptsr\) and \(\ptsb\).
+Allocation produces \(\ell \ptsr 0\) and \(\ell \ptsb 1\).
+The store replaces the points-to fact by \(\ell \ptsr 7\).
+The load reads \(7\) and returns the same fact.
+The program then discards that \(7\) by sequencing and frees the block.
+Free consumes both facts and returns unit.
+
+The pure specification does not say ``the loaded value was \(7\)''.
+That fact is internal to the proof.
+What adequacy reports is that the whole expression, whose value is the value of \texttt{free}, returns unit without a stuck load, store, or double free.
+After \texttt{free}, no points-to fact remains, so a further load could not be verified.
+
+\subsection{Swap and aliasing: \texttt{swap.v}}
+
+\paragraph{Program.}
+For addresses \(\ell_1\) and \(\ell_2\),
+\[
+\mathsf{let}\;t = {!}\,\ell_1\;\mathsf{in}\;
+(\ell_1 := {!}\,\ell_2;\; \ell_2 := t).
+\]
+
+\paragraph{Theorems.}
+\[
+\begin{aligned}
+&\ell_1 \ptsr v_1 \sep \ell_2 \ptsr v_2
+  \vdash
+  \Wpre\,\mathsf{swap}(\ell_1,\ell_2)\,
+    \{\,\_.\; \ell_1 \ptsr v_2 \sep \ell_2 \ptsr v_1\,\},\\
+&\ell \ptsr v_1 \sep \ell \ptsr v_2 \vdash \bot.
+\end{aligned}
+\]
+
+\paragraph{What is new.}
+The postcondition needs both cells.
+The proof loads \(\ell_2\) while still owning \(\ell_1\), stores into \(\ell_1\), then stores the saved value into \(\ell_2\).
+Each rule mentions only the cell it touches.
+The other fact sits in the context and is framed.
+
+The second lemma is \texttt{raw\_mapsto\_exclusive}, re-exported as \texttt{swap\_aliased}.
+It is not a second proof of the same swap.
+It says that the swap specification cannot be instantiated at one address twice: the hypothesis of two points-to facts at that address is absurd.
+An overlapping specification would be a different theorem, for example a single cell updated twice, and it is not claimed here.
+
+\subsection{Indexed blocks: \texttt{sum\_block.v}}
+
+\paragraph{Program.}
+Given a pointer \(p\),
+\begin{align*}
+&\mathsf{var}\;i = 0\;\mathsf{in}\\
+&\mathsf{var}\;s = 0\;\mathsf{in}\\
+&\mathsf{while}\;(i \le 0)\;\mathsf{do}\\
+&\qquad (s := s + {!}\,(p+i);\; i := i+1);\\
+&s.
+\end{align*}
+
+\paragraph{Theorem.}
+\[
+p \ptsr 4 \sep p \ptsb 1
+\vdash
+\Wpre\,\mathsf{sum\_at}(p)\,
+\bigl\{\,v.\;
+  \pure{v=4}
+  \sep p \ptsr 4
+  \sep p \ptsb 1
+\,\bigr\}.
+\]
+
+\paragraph{What is new.}
+The address that is loaded is not the base written in the source.
+It is the value of \(\mathsf{Offset}\), that is \(p+i\).
+On the only iteration, \(i\) is \(0\), and \(p+0=p\), so the load is justified by the points-to fact at \(p\).
+The addition itself is the pure offset rule; it does not consume the points-to fact.
+The loop then increments \(i\) to \(1\), the condition \(i\le 0\) fails, and the sum \(4\) is returned.
+
+The block-length fact is never used by the load, and it is still there at the end.
+That is the split between ``I may read this word'' and ``I may free this block''.
+The example does not free.
+A load of \(p+1\) would not be provable from these hypotheses: there is no points-to fact at \(p+1\), and a one-word block does not contain that word.
+
+The loop invariant, in the ordinary sense, is the assertion carried across the unfolding:
+\(i\) and \(s\) are stack cells, \(s\) holds the sum of the prefix already visited, and the raw word is unchanged.
+For a one-iteration loop the prefix is either empty or the single element \(4\).
+
+\subsection{Final classes: \texttt{class\_upd.v}}
+
+\paragraph{Program.}
+\begin{align*}
+&\mathsf{let}\;r = \mathsf{alloc}(1)\;\mathsf{in}\\
+&\mathsf{let}\;o = \mathsf{new}(0)\;\mathsf{in}\\
+&(o.0 := 5;\; (o.0;\; {!}\,r)).
+\end{align*}
+
+\paragraph{Theorem.}
+\[
+\Wpre\,\mathsf{class\_bump}\,\{\,v.\; \pure{v=0}\,\}.
+\]
+From \(\sigma_0\), the program returns \(0\) and does not get stuck.
+
+\paragraph{What is new.}
+\texttt{new} allocates on the object map, not the raw map.
+The client receives \(o \ptso[0] 0\).
+The field store changes it to \(o \ptso[0] 5\), and the field load reads \(5\).
+The raw word allocated first is \(0\), is never stored, and is what the program returns.
+
+So the closed observation is again the framed cell: object update does not change the raw heap.
+The proof makes the separation concrete.
+After \texttt{wp\_alloc\_one}, the raw points-to fact stays in the context through \texttt{wp\_new}, \texttt{wp\_field\_store}, and \texttt{wp\_field\_load}.
+None of those lemmas takes a raw fact as a hypothesis.
+The final \texttt{wp\_load} is what consumes it.
+
+\subsection{Framing across a call: \texttt{frame\_call.v}}
+
+\paragraph{Program.}
+For pointers \(p\) and \(q\),
+\begin{align*}
+&\mathsf{let}\;f = (\mathsf{fun}\,x.\; x := 9)\;\mathsf{in}\\
+&(f\,p;\; {!}\,q).
+\end{align*}
+
+\paragraph{Theorem.}
+\[
+p \ptsr v \sep q \ptsr 3
+\vdash
+\Wpre\,\mathsf{write\_call}(p,q)\,
+\bigl\{\,w.\;
+  \pure{w=3}
+  \sep p \ptsr 9
+  \sep q \ptsr 3
+\,\bigr\}.
+\]
+
+\paragraph{What is new.}
+The callee is a closure.
+\texttt{wp\_rec} makes the closure, \texttt{wp\_app} substitutes the pointer \(p\) for \(x\), and \texttt{wp\_store} needs only \(p \ptsr v\).
+The fact \(q \ptsr 3\) is not in the callee's precondition.
+It is framed across the call, then used by the load, which returns \(3\).
+
+This is the frame rule applied at a function boundary.
+Nothing about \texttt{App} is special.
+Substitution puts a value in the body, and the body is an ordinary store.
+The guarantee that \(q\) is unchanged is the guarantee that the store's proof did not receive \(q\).
+
+\subsection{A hand-written vtable: \texttt{vtable.v}}
+
+\paragraph{Program.}
+\begin{align*}
+&\mathsf{let}\;\mathit{inc} =
+  (\mathsf{fun}\;\mathit{this}.\;
+     \mathit{this}.0 := \mathit{this}.0 + 1)
+  \;\mathsf{in}\\
+&\mathsf{let}\;\mathit{box} = \langle \mathit{inc}\rangle\;\mathsf{in}\\
+&\mathsf{let}\;o = \mathsf{new}(0)\;\mathsf{in}\\
+&\bigl(\mathit{box}.0\bigr)\,o;\; o.0.
+\end{align*}
+
+\paragraph{Theorem.}
+\[
+\Wpre\,\mathsf{vtable\_prog}\,\{\,v.\; \pure{v=1}\,\}.
+\]
+From \(\sigma_0\), the program returns \(1\) and does not get stuck.
+
+\paragraph{What is new.}
+The function is a value, the struct is a tuple holding that value, and the call is an ordinary application of a component that was loaded out of the tuple.
+There is no method table in the machine and no dynamic dispatch rule.
+A ``method'' is a function whose first argument is the object, and a ``vtable'' is a struct the programmer assembled.
+
+The proof follows that reading.
+The closure is formed by \texttt{wp\_rec}.
+The struct zipper evaluates the closure and becomes \(\langle \mathit{inc}\rangle\) by the pure struct rules.
+\texttt{new} yields \(o \ptso[0] 0\).
+\texttt{wp\_struct\_load} copies the closure out; this does not touch the object.
+\texttt{wp\_app} substitutes the object reference into the body.
+The body loads field \(0\), adds one, and stores \(1\).
+The trailing field load reads that \(1\), which is the value of the whole program.
+
+All three regions of the story meet: a stack-free unboxed struct of code, a code pointer, and an object field.
+The raw heap is not used.
+The earlier examples already showed that leaving it unused is safe.
+
+\section{What is deliberately missing}
+
+The semantics does not include concurrency, so there is no invariant-opening rule and no fork.
+Float literals exist, and no float operator does.
+Allocation in the machine accepts a positive word count; the named logic rule used throughout the examples is the one-word rule.
+Objects are not collected.
+Pointer arithmetic is word-addressed.
+Null, a freed address, and an address with no points-to fact are stuck rather than given a defined error value.
+
+The type grammar is not enforced.
+The adequacy theorem is the safety theorem for those programs whose specifications have been proved.
+
+\end{document}

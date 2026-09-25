@@ -1,0 +1,14 @@
+-R theories cjr
+theories/lang.v
+theories/lifting.v
+theories/primitive_laws.v
+theories/notation.v
+theories/adequacy.v
+theories/examples/arith.v
+theories/examples/struct_upd.v
+theories/examples/cell.v
+theories/examples/swap.v
+theories/examples/sum_block.v
+theories/examples/class_upd.v
+theories/examples/frame_call.v
+theories/examples/vtable.v
