@@ -63,7 +63,7 @@ syntax, semantics, and separation logic}
 This note is a reading guide to the Coq/Iris mechanization.
 Every concept is given twice: as the definition that is actually checked, and as ordinary mathematics with the same content.
 Every program-logic rule is followed by what it is for.
-The note ends by walking through the eight examples that exercise the rules in order.
+The note ends by walking through the examples that exercise the rules in order, and then a linked-list development with the usual list equations.
 \end{abstract}
 
 \section{What this development is}
@@ -82,6 +82,140 @@ The Coq sources live under \texttt{theories/}.
 The language is an Iris evaluation-context language, so the frame rule and the bind rule are Iris's, not a separate Hoare calculus.
 
 \section{Syntax}
+
+\subsection{Concrete syntax}
+
+The programs in this note are written in Cangjie, as specified by the language documentation at \url{https://docs.cangjie-lang.cn/en/docs/1.0.0/}.
+\cjr{} is the fragment of that language that the mechanization covers.
+The core in \texttt{theories/lang.v} is the lowering, not a second surface syntax.
+A multi-argument \texttt{func} lowers to one argument, a struct of the arguments, because core application is unary.
+A class that is not marked \texttt{open} cannot be inherited; that is the final class of the core.
+\texttt{CPointer} reads, writes, and offsets are the \texttt{unsafe} methods \texttt{read}, \texttt{write}, and \texttt{+} from the standard library, and allocation is the \texttt{foreign} function \texttt{malloc} from the Cangjie--C interoperability chapter.
+
+\begin{lstlisting}
+// types used below: Int64, Float64, Bool, Unit, struct, class, CPointer<T>
+
+func add(a: Int64, b: Int64): Int64 {
+    a + b
+}
+
+let frozen: Int64 = 1
+var n: Int64 = 1
+while (1 <= n) {
+    n = n - 1
+}
+
+if (n <= 0) {
+    0
+} else {
+    n
+}
+
+struct Cell {
+    public var x: Int64
+    public init(x: Int64) { this.x = x }
+}
+
+class Counter {          // not open, so it has no subclasses
+    public var value: Int64
+    public init(value: Int64) { this.value = value }
+}
+
+foreign func malloc(size: UIntNative): CPointer<Unit>
+foreign func free(ptr: CPointer<Unit>): Unit
+\end{lstlisting}
+
+\texttt{let} is immutable and is substitution in the core.
+\texttt{var} is mutable and is a stack slot.
+The last expression of a block is its value, and \texttt{()} is unit.
+
+\subsection{From Cangjie to the Coq core}
+
+Each row is one Cangjie form and the constructor in \texttt{theories/lang.v} it lowers to.
+Field names become positions: the first field of a \texttt{struct} or \texttt{class} is index \(0\).
+A call \texttt{f(a, b)} is \texttt{App} of \texttt{f} to \texttt{StructV} of the arguments, because \texttt{App} takes one argument.
+Forms that mention a string name of a \texttt{var} are rewritten by \texttt{subst\_var} into the administrative stack operations in the last rows.
+Those operations are not written in Cangjie.
+They appear only after a \texttt{var} has been given a stack slot.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.46\textwidth}p{0.48\textwidth}@{}}
+\hline
+Cangjie & Coq constructor \\
+\hline
+\texttt{Int64}, \texttt{Float64}, \texttt{Bool}, \texttt{Unit}
+  & \texttt{TyInt}, \texttt{TyFloat}, \texttt{TyBool}, \texttt{TyUnit} \\
+\texttt{struct S \{ ... \}}
+  & \texttt{TyStruct} of the field types \\
+\texttt{CPointer<T>}
+  & \texttt{TyPtr} \\
+\texttt{class C \{ ... \}} with no \texttt{open}
+  & \texttt{TyObj} of the field count \\
+\texttt{(T) -> U}
+  & \texttt{TyFun} \\
+\hline
+\texttt{1}, \texttt{1.0}, \texttt{true}, \texttt{()}
+  & \texttt{LitInt}, \texttt{LitFloat}, \texttt{LitBool}, \texttt{LitUnit} \\
+a \texttt{CPointer} value, including null from \texttt{CPointer<T>()}
+  & \texttt{LitPtr}, \texttt{LitNull} \\
+a class instance
+  & \texttt{LitObj} \\
+\texttt{func f(x) \{ e \}}
+  & \texttt{Rec} (some name, some parameter, body); a finished closure is \texttt{RecV} \\
+a struct value such as \texttt{Cell(0)}
+  & \texttt{StructV} \\
+\hline
+a name
+  & \texttt{Var} \\
+\texttt{let x = e1} followed by \texttt{e2}
+  & \texttt{Let} \\
+\texttt{var x = e1} followed by \texttt{e2}
+  & \texttt{VarBind} \\
+\texttt{x = e} for a \texttt{var x}
+  & \texttt{Assign} \\
+\texttt{if (e0) \{ e1 \} else \{ e2 \}}
+  & \texttt{If} \\
+\texttt{while (e1) \{ e2 \}}
+  & \texttt{While} \\
+two expressions in sequence, or a block
+  & \texttt{Seq} \\
+\texttt{+}, \texttt{-}, \texttt{<=}, \texttt{==} on \texttt{Int64}, \texttt{\&\&}
+  & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
+\texttt{f(a)}
+  & \texttt{App} \\
+\hline
+\texttt{Cell(e)}
+  & \texttt{Struct}, evaluated left to right \\
+\texttt{p.x} on a struct
+  & \texttt{StructLoad} at the index of \texttt{x} \\
+\texttt{p.x = e} on a \texttt{var} struct
+  & \texttt{StructStore} of that variable and index \\
+\texttt{Counter(e)}
+  & \texttt{New} \\
+\texttt{o.value}
+  & \texttt{FieldLoad} \\
+\texttt{o.value = e}
+  & \texttt{FieldStore} \\
+\hline
+\texttt{malloc} of one word, then \texttt{CPointer<Int64>(...)}
+  & \texttt{Alloc} of \texttt{1}, result \texttt{LitPtr} \\
+\texttt{free(p)}
+  & \texttt{Free} \\
+\texttt{unsafe \{ p.read() \}}
+  & \texttt{Load} \\
+\texttt{unsafe \{ p.write(v) \}}
+  & \texttt{Store} \\
+\texttt{unsafe \{ p + i \}}
+  & \texttt{Offset} \\
+\hline
+no Cangjie spelling; introduced for a \texttt{var} slot
+  & \texttt{Pop}, \texttt{StackLoad}, \texttt{StackAssign}, \texttt{StackFieldStore}, and the literal \texttt{LitStack} \\
+\hline
+\end{tabular}
+\end{center}
+
+The rest of this section defines those constructors and the machine they run on.
 
 \subsection{Locations, identifiers, and types}
 
@@ -944,17 +1078,23 @@ The other examples are open: their hypotheses are points-to facts, so they are s
 
 Each example uses a feature the previous one does not.
 They are the files in \texttt{theories/examples/}, in the order below.
-The programs are written here in surface syntax; the Coq definitions are the \texttt{expr} terms those files actually prove.
+The programs are written in the Cangjie fragment above.
+The Coq definitions are the core \texttt{expr} terms those files actually prove.
 
 \subsection{Arithmetic: \texttt{arith.v}}
 
 \paragraph{Program.}
-\begin{align*}
-&\mathsf{var}\;n = 1\;\mathsf{in}\\
-&\mathsf{var}\;s = 0\;\mathsf{in}\\
-&\mathsf{while}\;(1 \le n)\;\mathsf{do}\;(s := s+1;\; n := n-1);\\
-&s.
-\end{align*}
+\begin{lstlisting}
+func sumOne(): Int64 {
+    var n: Int64 = 1
+    var s: Int64 = 0
+    while (1 <= n) {
+        s = s + 1
+        n = n - 1
+    }
+    s
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -977,14 +1117,25 @@ That is the scope rule from the previous section, exercised on a loop that reall
 \subsection{Stack structs: \texttt{struct\_upd.v}}
 
 \paragraph{Program.}
-\begin{align*}
-&\mathsf{var}\;p = \langle 0\rangle\;\mathsf{in}\\
-&(p.0 := 1;\; p.0).
-\end{align*}
-A second, closed program allocates a raw word and then runs the first program, then loads the raw word:
-\[
-\mathsf{let}\;r = \mathsf{alloc}(1)\;\mathsf{in}\;(\mathsf{bump};\; {!}\,r).
-\]
+\begin{lstlisting}
+struct Cell {
+    public var x: Int64
+    public init(x: Int64) { this.x = x }
+}
+
+func bump(): Int64 {
+    var p = Cell(0)
+    p.x = 1
+    p.x
+}
+
+func bumpKeep(): Int64 {
+    let raw = unsafe { malloc(8) }          // one Int64 word
+    let r = unsafe { CPointer<Int64>(raw) }
+    bump()
+    unsafe { r.read() }                     // still 0
+}
+\end{lstlisting}
 
 \paragraph{Theorems.}
 \[
@@ -1010,10 +1161,15 @@ The field update's result \(1\) is established on the way and then discarded by 
 \subsection{One raw cell: \texttt{cell.v}}
 
 \paragraph{Program.}
-\[
-\mathsf{let}\;p = \mathsf{alloc}(1)\;\mathsf{in}\;
-(p := 7;\; ({!}\,p;\; \mathsf{free}\,p)).
-\]
+\begin{lstlisting}
+func cell(): Unit {
+    let raw = unsafe { malloc(8) }
+    let p = unsafe { CPointer<Int64>(raw) }
+    unsafe { p.write(7) }
+    let loaded = unsafe { p.read() }    // 7
+    unsafe { free(raw) }
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -1037,11 +1193,13 @@ After \texttt{free}, no points-to fact remains, so a further load could not be v
 \subsection{Swap and aliasing: \texttt{swap.v}}
 
 \paragraph{Program.}
-For addresses \(\ell_1\) and \(\ell_2\),
-\[
-\mathsf{let}\;t = {!}\,\ell_1\;\mathsf{in}\;
-(\ell_1 := {!}\,\ell_2;\; \ell_2 := t).
-\]
+\begin{lstlisting}
+func swap(l1: CPointer<Int64>, l2: CPointer<Int64>): Unit {
+    let t = unsafe { l1.read() }
+    unsafe { l1.write(unsafe { l2.read() }) }
+    unsafe { l2.write(t) }
+}
+\end{lstlisting}
 
 \paragraph{Theorems.}
 \[
@@ -1068,14 +1226,17 @@ An overlapping specification would be a different theorem, for example a single 
 \subsection{Indexed blocks: \texttt{sum\_block.v}}
 
 \paragraph{Program.}
-Given a pointer \(p\),
-\begin{align*}
-&\mathsf{var}\;i = 0\;\mathsf{in}\\
-&\mathsf{var}\;s = 0\;\mathsf{in}\\
-&\mathsf{while}\;(i \le 0)\;\mathsf{do}\\
-&\qquad (s := s + {!}\,(p+i);\; i := i+1);\\
-&s.
-\end{align*}
+\begin{lstlisting}
+func sumAt(base: CPointer<Int64>): Int64 {
+    var i: Int64 = 0
+    var s: Int64 = 0
+    while (i <= 0) {
+        s = s + unsafe { (base + i).read() }
+        i = i + 1
+    }
+    s
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -1108,11 +1269,21 @@ For a one-iteration loop the prefix is either empty or the single element \(4\).
 \subsection{Final classes: \texttt{class\_upd.v}}
 
 \paragraph{Program.}
-\begin{align*}
-&\mathsf{let}\;r = \mathsf{alloc}(1)\;\mathsf{in}\\
-&\mathsf{let}\;o = \mathsf{new}(0)\;\mathsf{in}\\
-&(o.0 := 5;\; (o.0;\; {!}\,r)).
-\end{align*}
+\begin{lstlisting}
+class Box {                         // not open
+    public var value: Int64
+    public init(value: Int64) { this.value = value }
+}
+
+func classBump(): Int64 {
+    let raw = unsafe { malloc(8) }
+    let r = unsafe { CPointer<Int64>(raw) }
+    let o = Box(0)
+    o.value = 5
+    let seen = o.value              // 5
+    unsafe { r.read() }             // still 0
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -1135,11 +1306,16 @@ The final \texttt{wp\_load} is what consumes it.
 \subsection{Framing across a call: \texttt{frame\_call.v}}
 
 \paragraph{Program.}
-For pointers \(p\) and \(q\),
-\begin{align*}
-&\mathsf{let}\;f = (\mathsf{fun}\,x.\; x := 9)\;\mathsf{in}\\
-&(f\,p;\; {!}\,q).
-\end{align*}
+\begin{lstlisting}
+func write(x: CPointer<Int64>): Unit {
+    unsafe { x.write(9) }
+}
+
+func frameCall(p: CPointer<Int64>, q: CPointer<Int64>): Int64 {
+    write(p)
+    unsafe { q.read() }             // still 3
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -1167,15 +1343,28 @@ The guarantee that \(q\) is unchanged is the guarantee that the store's proof di
 \subsection{A hand-written vtable: \texttt{vtable.v}}
 
 \paragraph{Program.}
-\begin{align*}
-&\mathsf{let}\;\mathit{inc} =
-  (\mathsf{fun}\;\mathit{this}.\;
-     \mathit{this}.0 := \mathit{this}.0 + 1)
-  \;\mathsf{in}\\
-&\mathsf{let}\;\mathit{box} = \langle \mathit{inc}\rangle\;\mathsf{in}\\
-&\mathsf{let}\;o = \mathsf{new}(0)\;\mathsf{in}\\
-&\bigl(\mathit{box}.0\bigr)\,o;\; o.0.
-\end{align*}
+\begin{lstlisting}
+class Counter {
+    public var n: Int64
+    public init(n: Int64) { this.n = n }
+}
+
+func inc(c: Counter): Unit {
+    c.n = c.n + 1
+}
+
+struct VTable {
+    public let inc: (Counter) -> Unit
+    public init(inc: (Counter) -> Unit) { this.inc = inc }
+}
+
+func run(): Int64 {
+    let box = VTable(inc)
+    let o = Counter(0)
+    box.inc(o)
+    o.n                             // 1
+}
+\end{lstlisting}
 
 \paragraph{Theorem.}
 \[
@@ -1200,6 +1389,266 @@ The trailing field load reads that \(1\), which is the value of the whole progra
 All three regions of the story meet: a stack-free unboxed struct of code, a code pointer, and an object field.
 The raw heap is not used.
 The earlier examples already showed that leaving it unused is safe.
+
+\section{A linked list}
+
+The file \texttt{theories/examples/list.v} is a self-contained implementation of a singly linked list, together with the equations that say the implementation really is a list.
+It is larger than the earlier examples because the specification is not a single pure result.
+It is a predicate on the object heap, and the programs are functions that allocate and read nodes.
+
+\subsection{Why a node is an object with a boolean tag}
+
+A textbook list cell is a pair of a head and a pointer to the rest, and the empty list is the null pointer.
+\cjr{} has null, and loading through null is stuck, which is the right machine behaviour.
+It does not have an equality test on pointers or on object references.
+\texttt{EqOp} compares integers only.
+A program therefore cannot branch on ``is this pointer null?''.
+
+The implementation uses a non-\texttt{open} class with three fields, and a boolean the language can already branch on.
+
+\begin{lstlisting}
+Definition nil_body : expr :=
+  New [LitV (LitBool false); LitV (LitInt 0); LitV LitUnit] [].
+
+Definition cons_body : expr :=
+  Let (Some "x") (StructLoad (Var "a") 0)
+    (Let (Some "xs") (StructLoad (Var "a") 1)
+      (New [] [Val (LitV (LitBool true)); Var "x"; Var "xs"])).
+\end{lstlisting}
+
+Field \(0\) is the tag: \(\False\) means empty, \(\True\) means cons.
+Field \(1\) is the head integer, which is \(0\) and unused when the tag is false.
+Field \(2\) is the tail.
+On an empty node it is unit.
+On a cons node it is the value that represents the rest of the list, itself either an empty node or another cons node.
+Objects are not freed, so a cons cell stays in the heap after its tail has been read.
+That matches the language: there is a \texttt{new} rule and no rule that deletes an object.
+
+In Cangjie the operations are ordinary functions.
+Core application takes one argument, so \texttt{cons(x, xs)} lowers to a call on the struct of those two arguments.
+The other functions take the node.
+
+\begin{lstlisting}
+class Node {                    // not open: no subclasses
+    public var isCons: Bool
+    public var value: Int64
+    public var next: Node
+    public init(isCons: Bool, value: Int64, next: Node) {
+        this.isCons = isCons
+        this.value = value
+        this.next = next
+    }
+}
+
+func cons(x: Int64, xs: Node): Node { Node(true, x, xs) }
+func head(n: Node): Int64 { n.value }
+func tail(n: Node): Node { n.next }
+func empty(n: Node): Bool {
+    if (n.isCons) { false } else { true }
+}
+\end{lstlisting}
+
+The empty node proved in \texttt{list.v} stores \texttt{()} in the unread tail field.
+Full Cangjie types that field as \texttt{Node}, so a well-typed empty node needs a \texttt{Node} there.
+The core is untyped and \texttt{empty} never reads \texttt{next} when \texttt{isCons} is \texttt{false}, which is why the mechanized nil term uses unit.
+The functions above are the Cangjie surface; \texttt{cons} of two arguments lowers to the unary core call on the struct \(\langle x, xs\rangle\).
+
+\texttt{empty} returns the negation of the tag.
+An empty node is empty.
+A cons node is not.
+The conditional is the only test.
+It does not inspect the tail pointer.
+
+\subsection{The representation predicate}
+
+On paper, a mathematical list \(xs\) is related to a value \(p\) by \(\mathsf{isList}(xs, p)\).
+
+\begin{definition}[List representation]
+\(\mathsf{isList}([], p)\) holds when \(p = \mathsf{obj}(o)\) and
+\[
+o \ptso[0] \False
+\sep
+o \ptso[1] 0
+\sep
+o \ptso[2] \Unit.
+\]
+\(\mathsf{isList}(x :: xs, p)\) holds when \(p = \mathsf{obj}(o)\) and there is a tail value \(q\) with
+\[
+o \ptso[0] \True
+\sep
+o \ptso[1] x
+\sep
+o \ptso[2] q
+\sep
+\mathsf{isList}(xs, q).
+\]
+\end{definition}
+
+The Coq predicate is the same recursion, as a separation-logic assertion.
+
+\begin{lstlisting}
+Fixpoint is_list (xs : list Z) (p : val) : iProp S :=
+  match xs with
+  | [] => exists o, pure (p = LitV (LitObj o)) *
+      ObjId o |->o[0] LitV (LitBool false) *
+      ObjId o |->o[1] LitV (LitInt 0) *
+      ObjId o |->o[2] LitV LitUnit
+  | x :: xs' => exists o nxt, pure (p = LitV (LitObj o)) *
+      ObjId o |->o[0] LitV (LitBool true) *
+      ObjId o |->o[1] LitV (LitInt x) *
+      ObjId o |->o[2] nxt *
+      is_list xs' nxt
+  end.
+\end{lstlisting}
+
+\textit{What the separating conjunction is doing.}
+The three fields of one node are three separate facts, so a proof may load the tag and still own the head and the tail.
+The recursive fact \(\mathsf{isList}(xs, q)\) owns every node of the tail and nothing of the cons cell.
+Those two regions are disjoint.
+That is why ``the tail is the original list'' can be stated by returning the original pointer together with \(\mathsf{isList}(xs, p)\), while the cons cell's own three fields sit beside it rather than inside it.
+
+A value that is not an object reference does not satisfy \(\mathsf{isList}\).
+The lemma \texttt{is\_list\_obj} records the useful direction: if the predicate holds, the value is \(\mathsf{obj}(o)\) for some \(o\).
+The proofs rewrite with that equality before they substitute, so an abstract pointer is a literal object reference by the time it is placed in a struct.
+Substitution then computes.
+
+\subsection{What each operation establishes}
+
+\paragraph{Empty list.}
+\[
+\Wpre\,\mathsf{nil}()\,\{\,v.\; \mathsf{isList}([], v)\,\}.
+\]
+\texttt{wp\_new} of the three initialising values returns exactly the three points-to facts in the empty clause.
+Nothing else is allocated.
+This is \texttt{nil\_spec}.
+
+\paragraph{Cons.}
+\[
+\mathsf{isList}(xs, p)
+\vdash
+\Wpre\,\mathsf{cons}\,\langle x, p\rangle
+\,\Bigl\{\,v.\;
+  \exists o.\;
+  v = \mathsf{obj}(o)
+  \sep
+  o \ptso[0] \True
+  \sep
+  o \ptso[1] x
+  \sep
+  o \ptso[2] p
+  \sep
+  \mathsf{isList}(xs, p)
+\,\Bigr\}.
+\]
+The argument struct is unboxed.
+\texttt{wp\_struct\_load} copies \(x\) and then \(p\) out of it; those loads do not touch the heap.
+The body then allocates one object.
+The third field is the original pointer \(p\), not a copy of the tail's nodes.
+The fact \(\mathsf{isList}(xs, p)\) is framed across allocation: \texttt{wp\_new} does not ask for it, so it cannot be changed.
+The postcondition is the unfolding of \(\mathsf{isList}(x :: xs, v)\) with the tail pointer pinned to the pointer that was passed in.
+Pinning it is what makes the later inverse law an equality of values, not only an equality of mathematical lists up to some existential.
+This is \texttt{cons\_spec}.
+
+\paragraph{Head.}
+\[
+\mathsf{isList}(x :: xs, p)
+\vdash
+\Wpre\,\mathsf{head}\,p
+\,\{\,v.\; \pure{v = x} \sep \mathsf{isList}(x :: xs, p)\,\}.
+\]
+The proof opens the cons clause, loads field \(1\), and puts the same facts back together.
+The list predicate after the call is the list predicate before the call.
+Head is a pure observation.
+This is \texttt{head\_spec}.
+
+\paragraph{Tail.}
+\[
+\begin{aligned}
+&\mathsf{isList}(x :: xs, p) \vdash {}\\
+&\quad\Wpre\,\mathsf{tail}\,p
+\,\Bigl\{\,v.\;
+  \mathsf{isList}(xs, v)
+  \sep
+  \exists o.\;
+  p = \mathsf{obj}(o)
+  \sep
+  o \ptso[0] \True
+  \sep
+  o \ptso[1] x
+  \sep
+  o \ptso[2] v
+\,\Bigr\}.
+\end{aligned}
+\]
+Loading field \(2\) returns the tail pointer and gives the points-to fact back.
+The recursive clause of \(\mathsf{isList}\) already owned \(\mathsf{isList}(xs, v)\) separately from the cons cell, so the postcondition splits the list into the cell that was examined and the list that remains.
+It does not duplicate nodes.
+This is \texttt{tail\_spec}.
+
+\paragraph{Emptiness.}
+\[
+\begin{aligned}
+\mathsf{isList}([], p)
+  &\vdash
+  \Wpre\,\mathsf{empty}\,p
+  \,\{\,v.\; \pure{v = \True} \sep \mathsf{isList}([], p)\,\},\\
+\mathsf{isList}(x :: xs, p)
+  &\vdash
+  \Wpre\,\mathsf{empty}\,p
+  \,\{\,v.\; \pure{v = \False} \sep \mathsf{isList}(x :: xs, p)\,\}.
+\end{aligned}
+\]
+Both proofs load the tag and take one branch of \texttt{if}.
+The other branch is dead in that specification: a proof of the empty law never has to show anything about the cons branch, and conversely.
+The predicate is restored, so emptiness is an observation rather than a destructive read.
+These are \texttt{empty\_nil} and \texttt{empty\_cons}.
+
+\subsection{Adding an element and removing it}
+
+The program that the inverse law talks about is the composition of the two functions, not a fused implementation.
+
+\begin{lstlisting}
+Definition cons_then_tail (x : Z) (p : val) : expr :=
+  Let (Some "node") (call_cons x p)
+    (App (Rec None (Some "n") tail_body) (Var "node")).
+\end{lstlisting}
+
+\begin{theorem}[Cons then tail]
+\[
+\mathsf{isList}(xs, p)
+\vdash
+\Wpre\,(\mathsf{tail}\,(\mathsf{cons}\,\langle x, p\rangle))
+\,\{\,v.\; \pure{v = p} \sep \mathsf{isList}(xs, v)\,\}.
+\]
+\end{theorem}
+
+The Coq statement is \texttt{cons\_then\_tail\_spec}.
+Read it as an equation of lists.
+The value returned by removing the element just added is the original pointer, and that pointer still represents the original mathematical list.
+
+The proof follows the program in order.
+\begin{enumerate}
+\item \texttt{cons\_spec} allocates the node and frames \(\mathsf{isList}(xs, p)\).
+Its postcondition says field \(2\) of the new object is exactly \(p\), and the original list predicate is still owned.
+\item The \texttt{let} substitutes that object for \texttt{node}.
+\item \texttt{tail} is the function above.
+It loads field \(2\).
+The load rule returns the value that the points-to fact describes, which is \(p\), and it returns the points-to fact as well.
+\item The cons cell's three fields are no longer needed for the equation.
+They are discarded.
+Iris assertions are affine, so ownership of leftover cells may be dropped.
+The object remains allocated in the machine; the specification simply stops mentioning it.
+What remains is \(\pure{v = p}\) and \(\mathsf{isList}(xs, p)\).
+\end{enumerate}
+
+Two companion readings are already in the lemmas above, and they are the other usual equations.
+Head after cons returns \(x\) and still owns \(\mathsf{isList}(x :: xs, \cdot)\).
+Emptiness distinguishes \([]\) from \(x :: xs\).
+Together they say that the tag, the head field, and the tail field agree with the mathematical constructors, and that reading them does not damage the list those constructors describe.
+
+What this development does not prove is induction over an arbitrary list operation such as append or reverse.
+The predicate is defined so that those proofs are the same shape: open one cons cell, recurse on the tail fact, and frame the cell.
+The equations above are the base that such a proof would use.
 
 \section{What is deliberately missing}
 
