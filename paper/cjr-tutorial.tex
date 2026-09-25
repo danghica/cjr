@@ -71,6 +71,7 @@ The note ends by walking through the examples that exercise the rules in order, 
 \cjr{} is sequential, monomorphic, and first-order, with code pointers so that a vtable can be written by hand.
 There are no generics, no inheritance, no \texttt{enum}/\texttt{match}, and no concurrency.
 Those features of a larger source language are treated as sugar that must lower into this core at the same time and space cost.
+The fragment is the one described in the working note \emph{Minimal Cangjie for Arbitrary Algorithms}~\cite{minimal-cangjie}.
 This development defines the core.
 It does not define the lowering, a garbage collector, or byte-level layout.
 
@@ -79,13 +80,14 @@ The grammar \texttt{ty} records the types one intends to use, but the operationa
 A program is safe when a weakest-precondition proof exists: adequacy then says that, from the empty machine, execution does not get stuck.
 
 The Coq sources live under \texttt{theories/}.
-The language is an Iris evaluation-context language, so the frame rule and the bind rule are Iris's, not a separate Hoare calculus.
+The language is an Iris evaluation-context language~\cite{iris-ground-up,iris-essence}, so the frame rule and the bind rule are Iris's, not a separate Hoare calculus.
+The shape follows HeapLang, the example language shipped with the Iris Coq development~\cite{iris-coq}.
 
 \section{Syntax}
 
 \subsection{Concrete syntax}
 
-The programs in this note are written in Cangjie, as specified by the language documentation at \url{https://docs.cangjie-lang.cn/en/docs/1.0.0/}.
+The programs in this note are written in Cangjie, as specified by the language documentation~\cite{cangjie-docs}.
 \cjr{} is the fragment of that language that the mechanization covers.
 The core in \texttt{theories/lang.v} is the lowering, not a second surface syntax.
 A multi-argument \texttt{func} lowers to one argument, a struct of the arguments, because core application is unary.
@@ -1661,5 +1663,94 @@ Null, a freed address, and an address with no points-to fact are stuck rather th
 
 The type grammar is not enforced.
 The adequacy theorem is the safety theorem for those programs whose specifications have been proved.
+
+\section{Reading list}
+
+The entries below are the sources this note relies on.
+The formal bibliography follows the same order.
+
+\paragraph{The language.}
+The Cangjie 1.0 documentation~\cite{cangjie-docs} is the surface syntax this fragment is cut from: \texttt{func}, \texttt{let} and \texttt{var}, \texttt{if} and \texttt{while}, \texttt{struct}, non-\texttt{open} \texttt{class}, and \texttt{CPointer}.
+The working note~\cite{minimal-cangjie} is what fixed the performance-parity cut: unboxed structs, word-addressed raw blocks, and final classes, with generics, inheritance, and concurrency left as sugar that must lower into that cut.
+
+\paragraph{Separation logic.}
+Reynolds~\cite{reynolds-lics02} is the logic of disjoint ownership of mutable structure, which is the reading of \(\ptss\), \(\ptsr\), \(\ptsb\), and \(\ptso\) in this development.
+O'Hearn, Reynolds, and Yang~\cite{ohearn-csl01} is the local-reasoning paper: a specification mentions only the cells the command uses, and the frame rule supplies the rest.
+That is the justification of the framing steps in the examples and in \texttt{cons\_spec}.
+
+\paragraph{Iris.}
+The POPL 2015 paper~\cite{iris-popl15} introduces the resource algebra that the four ghost maps instantiate.
+The ESOP 2017 paper~\cite{iris-essence} is the one to read for the program logic used here: weakest preconditions, evaluation contexts, the bind rule, and the lifting of a deterministic head step.
+\emph{Iris from the ground up}~\cite{iris-ground-up} is the self-contained account of the same logic, including adequacy.
+The Iris Proof Mode paper~\cite{iris-ipm} explains the \texttt{iApply}, \texttt{iDestruct}, and \texttt{iFrame} style of the Coq proofs.
+The lecture notes~\cite{iris-notes} are the shortest path through all of that with exercises.
+HeapLang, in the Iris 4.4.0 Coq development~\cite{iris-coq}, is the language whose \texttt{ectxi\_language} instance this one copies; \texttt{ghost\_map} is the library behind the points-to facts.
+
+\paragraph{The proof assistant.}
+The mechanization is checked with Coq 8.20.1~\cite{coq} and std++ 1.12.0~\cite{stdpp}.
+std++ supplies the finite maps, the list lemmas, and the \texttt{decide} tactic used for the pure arithmetic steps.
+
+\begin{thebibliography}{99}
+
+\bibitem{cangjie-docs}
+Cangjie documentation, version 1.0.0.
+\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/}.
+
+\bibitem{minimal-cangjie}
+\emph{Minimal Cangjie for Arbitrary Algorithms}.
+Working note, 2026.
+File \texttt{resources/Minimal Cangjie for Arbitrary Algorithms.pdf} in this repository.
+
+\bibitem{reynolds-lics02}
+John C. Reynolds.
+Separation logic: A logic for shared mutable data structures.
+In \emph{Proceedings of LICS}, pages 55--74. IEEE, 2002.
+
+\bibitem{ohearn-csl01}
+Peter W. O'Hearn, John C. Reynolds, and Hongseok Yang.
+Local reasoning about programs that alter data structures.
+In \emph{Proceedings of CSL}, volume 2142 of \emph{LNCS}, pages 1--19. Springer, 2001.
+
+\bibitem{iris-popl15}
+Ralf Jung, David Swasey, Filip Sieczkowski, Kasper Svendsen, Aaron Turon, Lars Birkedal, and Derek Dreyer.
+Iris: Monoids and invariants as an orthogonal basis for concurrent reasoning.
+In \emph{Proceedings of POPL}, pages 637--650. ACM, 2015.
+
+\bibitem{iris-essence}
+Robbert Krebbers, Ralf Jung, Ale\v{s} Bizjak, Jacques-Henri Jourdan, Derek Dreyer, and Lars Birkedal.
+The essence of higher-order concurrent separation logic.
+In \emph{Proceedings of ESOP}, volume 10201 of \emph{LNCS}, pages 696--723. Springer, 2017.
+
+\bibitem{iris-ground-up}
+Ralf Jung, Robbert Krebbers, Jacques-Henri Jourdan, Ale\v{s} Bizjak, Lars Birkedal, and Derek Dreyer.
+Iris from the ground up: A modular foundation for higher-order concurrent separation logic.
+\emph{Journal of Functional Programming}, 28:e20, 2018.
+
+\bibitem{iris-ipm}
+Robbert Krebbers, Amin Timany, and Lars Birkedal.
+Interactive proofs in higher-order concurrent separation logic.
+In \emph{Proceedings of POPL}, pages 205--217. ACM, 2017.
+
+\bibitem{iris-notes}
+Lars Birkedal and Ale\v{s} Bizjak.
+Lecture notes on Iris: Higher-order concurrent separation logic.
+\url{https://iris-project.org/pdfs/iris-lecture-notes.pdf}.
+
+\bibitem{iris-coq}
+The Iris Project.
+The Iris Coq development, version 4.4.0, including HeapLang.
+\url{https://gitlab.mpi-sws.org/iris/iris}.
+
+\bibitem{coq}
+The Coq Development Team.
+The Coq proof assistant, version 8.20.1.
+\url{https://coq.inria.fr/}.
+
+\bibitem{stdpp}
+The Iris Project.
+coq-std++, version 1.12.0.
+\url{https://gitlab.mpi-sws.org/iris/stdpp}.
+
+\end{thebibliography}
 
 \end{document}
