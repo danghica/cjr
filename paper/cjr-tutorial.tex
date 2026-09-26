@@ -59,38 +59,37 @@ syntax, semantics, and separation logic}
 \maketitle
 
 \begin{abstract}
-\cjr{} (Cangjie Radical) is the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, with \texttt{func}, \texttt{if}, and \texttt{while}.
+We present \cjr{} (Cangjie Radical), the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, together with \texttt{func}, \texttt{if}, and \texttt{while}.
 This note is a reading guide to the Coq/Iris mechanization.
-Every concept is given twice: as the definition that is actually checked, and as ordinary mathematics with the same content.
-Every program-logic rule is followed by what it is for.
-The note ends by walking through the examples that exercise the rules in order, and then a linked-list development with the usual list equations.
+We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
+Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development that establishes the usual list equations.
 \end{abstract}
 
 \section{What this development is}
 
-\cjr{} is sequential, monomorphic, and first-order, with code pointers so that a vtable can be written by hand.
-There are no generics, no inheritance, no \texttt{enum}/\texttt{match}, and no concurrency.
-Those features of a larger source language are treated as sugar that must lower into this core at the same time and space cost.
-The fragment is the one described in the working note \emph{Minimal Cangjie for Arbitrary Algorithms}~\cite{minimal-cangjie}.
-This development defines the core.
-It does not define the lowering, a garbage collector, or byte-level layout.
+We take as our starting point a deliberately small core.
+\cjr{} is sequential, monomorphic, and first-order; it has code pointers, so that a vtable can be written by hand.
+It has no generics, no inheritance, no \texttt{enum}/\texttt{match}, and no concurrency.
+Features of a larger source language that fall outside this cut are treated as sugar that must lower into the core at the same time and space cost.
+What follows defines that core.
+We do not define the lowering, a garbage collector, or byte-level layout.
 
-Safety is not a type system.
+Safety, in this development, is not a type system.
 The grammar \texttt{ty} records the types one intends to use, but the operational semantics is untyped.
-A program is safe when a weakest-precondition proof exists: adequacy then says that, from the empty machine, execution does not get stuck.
+A program is safe when a weakest-precondition proof exists; adequacy then says that, from the empty machine, execution does not get stuck.
 
 The Coq sources live under \texttt{theories/}.
-The language is an Iris evaluation-context language~\cite{iris-ground-up,iris-essence}, so the frame rule and the bind rule are Iris's, not a separate Hoare calculus.
-The shape follows HeapLang, the example language shipped with the Iris Coq development~\cite{iris-coq}.
+The language is an Iris evaluation-context language~\cite{iris-ground-up,iris-essence}, so the frame rule and the bind rule are Iris's, rather than those of a separate Hoare calculus.
+The overall shape follows HeapLang, the example language shipped with the Iris Coq development~\cite{iris-coq}.
 
 \section{Syntax}
 
 \subsection{Concrete syntax}
 
 The programs in this note are written in Cangjie, as specified by the language documentation~\cite{cangjie-docs}.
-\cjr{} is the fragment of that language that the mechanization covers.
-The core in \texttt{theories/lang.v} is the lowering, not a second surface syntax.
-A multi-argument \texttt{func} lowers to one argument, a struct of the arguments, because core application is unary.
+\cjr{} is precisely the fragment of that language that the mechanization covers.
+The core in \texttt{theories/lang.v} is the lowering target, not a second surface syntax.
+A multi-argument \texttt{func} lowers to a single argument---a struct of the arguments---because core application is unary.
 A class that is not marked \texttt{open} cannot be inherited; that is the final class of the core.
 \texttt{CPointer} reads, writes, and offsets are the \texttt{unsafe} methods \texttt{read}, \texttt{write}, and \texttt{+} from the standard library, and allocation is the \texttt{foreign} function \texttt{malloc} from the Cangjie--C interoperability chapter.
 
@@ -127,18 +126,18 @@ foreign func malloc(size: UIntNative): CPointer<Unit>
 foreign func free(ptr: CPointer<Unit>): Unit
 \end{lstlisting}
 
-\texttt{let} is immutable and is substitution in the core.
-\texttt{var} is mutable and is a stack slot.
+\texttt{let} is immutable, and in the core it is substitution.
+\texttt{var} is mutable, and it is a stack slot.
 The last expression of a block is its value, and \texttt{()} is unit.
 
 \subsection{From Cangjie to the Coq core}
 
-Each row is one Cangjie form and the constructor in \texttt{theories/lang.v} it lowers to.
+We summarise the correspondence in the table below.
+Each row pairs one Cangjie form with the constructor in \texttt{theories/lang.v} to which it lowers.
 Field names become positions: the first field of a \texttt{struct} or \texttt{class} is index \(0\).
-A call \texttt{f(a, b)} is \texttt{App} of \texttt{f} to \texttt{StructV} of the arguments, because \texttt{App} takes one argument.
-Forms that mention a string name of a \texttt{var} are rewritten by \texttt{subst\_var} into the administrative stack operations in the last rows.
-Those operations are not written in Cangjie.
-They appear only after a \texttt{var} has been given a stack slot.
+A call \texttt{f(a, b)} is \texttt{App} of \texttt{f} to a \texttt{StructV} of the arguments, because \texttt{App} takes one argument.
+Forms that mention a string name of a \texttt{var} are rewritten by \texttt{subst\_var} into the administrative stack operations listed in the last rows.
+Those operations have no spelling in Cangjie; they appear only after a \texttt{var} has been given a stack slot.
 
 \begin{center}
 \small
@@ -217,12 +216,12 @@ no Cangjie spelling; introduced for a \texttt{var} slot
 \end{tabular}
 \end{center}
 
-The rest of this section defines those constructors and the machine they run on.
+The rest of this section defines those constructors and the machine on which they run.
 
 \subsection{Locations, identifiers, and types}
 
 A location is an integer.
-Stack slots, raw words, and objects use distinct wrappers so that the four ghost maps of the program logic cannot be confused.
+We wrap stack slots, raw words, and objects in distinct constructors so that the four ghost maps of the program logic cannot be confused.
 
 \begin{lstlisting}
 Definition loc : Type := Z.
@@ -253,16 +252,16 @@ The type grammar is
   \mid \tau \to \tau.
 \end{aligned}
 \]
-\(\mathsf{class}_{n}\) means a final class with \(n\) fields.
+Here \(\mathsf{class}_{n}\) means a final class with \(n\) fields.
 Nothing in the semantics consults \(\tau\).
 The type is documentation of the fragment; the theorems that follow do not assume it.
 
 \subsection{Values and expressions}
 
 A binder is an optional name: \(\mathsf{None}\) is an ignored parameter.
-Literals cover integers, a float payload (no float operations are defined), booleans, unit, raw pointers, null, object references, and stack addresses.
+Literals cover integers, a float payload (for which no float operations are defined), booleans, unit, raw pointers, null, object references, and stack addresses.
 Values are literals, recursive closures, and unboxed struct tuples.
-Expressions are the core forms, plus administrative forms (\texttt{Pop}, \texttt{StackLoad}, \texttt{StackAssign}, \texttt{StackFieldStore}) introduced when a mutable variable is allocated.
+Expressions comprise the core forms, together with administrative forms (\texttt{Pop}, \texttt{StackLoad}, \texttt{StackAssign}, \texttt{StackFieldStore}) that are introduced when a mutable variable is allocated.
 
 \begin{lstlisting}
 Definition binder := option string.
@@ -310,10 +309,9 @@ v ::=\;
   \mid \mathsf{rec}\,f\,x.\,e
   \mid \langle v_0,\ldots,v_{k-1}\rangle
 \]
-and use the expression forms by the same names as the constructors.
+and we use the expression forms by the same names as the constructors.
 \(\mathsf{BinOp}\) ranges over \(+\), \(-\), \(\le\), \(=\), and boolean conjunction.
-Integer operations act on \(\mathsf{LitInt}\).
-Conjunction acts on booleans.
+Integer operations act on \(\mathsf{LitInt}\); conjunction acts on booleans.
 Anything else makes \(\mathsf{bin\_op\_eval}\) return \(\None\), and the machine gets stuck.
 
 Structs and objects are built by a list zipper.
@@ -333,10 +331,41 @@ So the values of the language, as Iris sees them, are exactly the expressions \(
 
 \subsection{Two kinds of binding}
 
-Immutable \texttt{let} and function parameters are substitution.
-Mutable \texttt{var} is not.
+We begin from a distinction that is already present in the surface language and then explain how the core encodes it.
+Immutable \texttt{let} and function parameters are substitution; mutable \texttt{var} is not.
 A \texttt{var} is given a fresh stack slot, and every use or assignment of that name is rewritten into an operation on the slot.
 A bare struct value is still copied: mutation in place happens only through a \texttt{var} slot or through a stored field.
+
+Those surface facts come from the Cangjie 1.0 user manual~\cite{cangjie-docs}.
+The stack-slot encoding below is this note's model of them, not a spelling in the language.
+\begin{itemize}
+\item
+  \textbf{Immutable vs mutable bindings.}
+  The chapter \emph{Program Structure}
+  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/basic_programming_concepts/program_structure.html})
+  introduces the mutability modifiers \texttt{let} and \texttt{var}:
+  a \texttt{let} variable is assigned once (initialization), whereas a \texttt{var} variable may be reassigned.
+  The chapter \emph{Function Definition}
+  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/function/define_functions.html})
+  states that function parameters are immutable and cannot be assigned to in the function body.
+\item
+  \textbf{Struct copying.}
+  The same \emph{Program Structure} chapter distinguishes value types (including \texttt{struct}) from reference types (including \texttt{class}):
+  assigning a value-type variable copies the instance; later mutation of one copy does not affect the other.
+  \emph{Creating a struct Instance}
+  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/create_instance.html})
+  repeats that assignment and parameter passing copy a \texttt{struct}, and that changing fields through an instance requires both the struct variable and the fields to be \texttt{var}.
+  The related page \emph{mut Function}
+  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/mut.html})
+  adds that \texttt{mut} methods need a mutable (\texttt{var}) receiver; they cannot be called on a \texttt{let} struct.
+\item
+  \textbf{Stored class fields.}
+  The chapter \emph{Classes}
+  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/class_and_interface/class.html})
+  states that \texttt{class} is a reference type: assignment does not copy the object, so field updates through one variable are visible through others that share it.
+  That is the ``stored field'' case in the sentence above.
+\end{itemize}
+What follows---fresh stack slots, \texttt{subst\_var}, \texttt{StackLoad}/\texttt{StackAssign}/\texttt{StackFieldStore}, \texttt{LitStack}, and \texttt{Pop}---is the Coq core's administrative rewriting, not Cangjie surface syntax.
 
 \begin{lstlisting}
 Definition subst_binder (b : binder) (v : val) (e : expr) : expr :=
@@ -351,9 +380,19 @@ A read \(\mathsf{Var}\,x\) becomes \(\mathsf{StackLoad}(\mathsf{stk}(\ell))\).
 An assignment \(\mathsf{Assign}\,x\,e\) becomes \(\mathsf{StackAssign}(\mathsf{stk}(\ell), e')\).
 A field write \(\mathsf{StructStore}\,x\,i\,e\) becomes \(\mathsf{StackFieldStore}(\mathsf{stk}(\ell), i, e')\).
 Other occurrences of \(x\) are rewritten recursively, again respecting capture.
-The slot address is a value, so later stack operations do not look up a string environment.
+The slot address is itself a value, so later stack operations do not look up a string environment.
 
-This split is the whole model of ``locals do not need a points-to fact until they are mutable.''
+For a concrete example, the fragment \(\mathsf{var}\;x = 1\;\mathsf{in}\;(x = x + 1)\)
+allocates a fresh slot \(\ell\), stores \(1\), and rewrites the body, reaching
+\[
+\mathsf{Pop}\,(\mathsf{StackId}(\ell))\,
+  (\mathsf{StackAssign}(\mathsf{stk}(\ell),\,
+    \mathsf{BinOp}\,{+}(\mathsf{StackLoad}(\mathsf{stk}(\ell)),\,1))).
+\]
+Informally that is \(\mathsf{pop}_{\ell}\,(\mathsf{stk}(\ell) := \mathsf{stk}(\ell) + 1)\):
+the read of \(x\) is a load from the slot, the assignment writes the slot, and \(\mathsf{Pop}\) deletes it when the body finishes.
+
+What is striking about this split is that it is the whole model of ``locals do not need a points-to fact until they are mutable.''
 An immutable binding disappears into the syntax.
 A mutable binding is a cell, and the cell has an owner.
 
@@ -361,7 +400,7 @@ A mutable binding is a cell, and the cell has an owner.
 
 \subsection{Three regions, one counter}
 
-The machine is one record.
+The machine is a single record.
 Locals and unboxed structs that are stored in \texttt{var} slots live in the stack map.
 \texttt{CPointer} words live in the raw map, and each allocated block records its length in a second map on the same addresses.
 Final class fields live in a map from \((\mathsf{ObjId}(\ell), i)\) to a value.
@@ -400,7 +439,7 @@ An out-of-bounds or use-after-free access is stuck for the same reason: the look
 
 \subsection{Well-formed states}
 
-Not every 5-tuple is a state the allocator is allowed to produce.
+Not every 5-tuple is a state that the allocator is allowed to produce.
 Well-formedness says that every address already in use lies strictly below the counter, that every block's words are present, and that live blocks do not overlap.
 
 \begin{lstlisting}
@@ -480,7 +519,7 @@ Both are hard-wired: \texttt{observation} is the empty type, and every rule prod
 The language is deterministic on the nose.
 
 \paragraph{Pure computation.}
-These rules do not read or write the heaps.
+These rules neither read nor write the heaps.
 \begin{align*}
 \mathsf{rec}\,f\,x.\,e
   &\step
@@ -514,7 +553,7 @@ v_1 \oplus v_2 &\step v
   &&\text{when }v\text{ is the }i\text{th component}.
 \end{align*}
 The \texttt{while} rule duplicates the loop.
-It is a head step, not an evaluation context, so the copies are syntax, not a shared mutable closure.
+It is a head step, not an evaluation context, so the copies are syntax rather than a shared mutable closure.
 The condition and the body are evaluated later, by ordinary contexts.
 
 \paragraph{Stack.}
@@ -543,7 +582,7 @@ Let \(\ell=\mathsf{next}(\sigma)\).
 \end{align*}
 The last rule replaces component \(i\) with \(\mathsf{set\_nth}\) and writes the struct back into the same slot.
 No raw or object address is allocated.
-That is why a stack update can be framed against a raw points-to fact: the two maps are different components of \(\sigma\).
+The most important consequence is that a stack update can be framed against a raw points-to fact: the two maps are different components of \(\sigma\).
 
 \paragraph{Raw heap.}
 For \(n>0\), allocation of \(n\) words at \(\ell=\mathsf{next}(\sigma)\) returns \(\mathsf{ptr}(\ell)\), records length \(Z.\mathsf{to\_nat}(n)\), zeroes the words, and sets the counter to \(\ell+n\).
@@ -618,8 +657,7 @@ K[e] \step K[e']
 (e,\sigma)\step(e',\sigma').
 \]
 Filling a non-value never produces a value, a value never head-reduces, and a head reduction of a filled term implies that the hole was already a value.
-Those are the mixin obligations.
-They are what let Iris treat \(K\) as a program context in the bind rule.
+Those are the mixin obligations; they are what let Iris treat \(K\) as a program context in the bind rule.
 
 \subsection{Determinism}
 
@@ -645,7 +683,7 @@ There is no scheduler and no choice of fresh address other than \(\mathsf{next}(
 
 The program logic does not talk about the whole machine.
 It talks about the cells a piece of code is allowed to use.
-Ownership is a ghost map, one authoritative map per region, with a points-to fact for each cell.
+Ownership is a ghost map---one authoritative map per region---with a points-to fact for each cell.
 Full ownership is the fraction \(1\).
 
 \begin{lstlisting}
@@ -660,7 +698,7 @@ Definition obj_mapsto (o : obj_id) (i : nat) (v : val) : iProp S :=
 \end{lstlisting}
 
 The notations in the sources are \(\ell \ptss v\), \(\ell \ptsr v\), \(\ell \ptsb n\), and \(o \ptso[i] v\).
-Four maps are used, rather than a single heap, because a stack slot, a raw word, a block length, and a class field are different kinds of cell.
+We use four maps, rather than a single heap, because a stack slot, a raw word, a block length, and a class field are different kinds of cell.
 A stack proof cannot accidentally be applied to a pointer.
 
 The state interpretation ties the ghost maps to the concrete machine and remembers well-formedness:
@@ -703,7 +741,7 @@ When a rule says
 \vdash
 \Wpre\,({!}\,\ell)\,\{\Phi\},
 \]
-the intended content is: if you own the cell, you may load it; you get the same cell back, together with the value that was there.
+the intended content is appealingly simple: ownership of the cell is enough to load it, and one gets the same cell back, together with the value that was there.
 The later and the credit are discharged by the step.
 In the example proofs they are thrown away with an introduction \(\mathtt{iIntros\ "> \_"}\).
 They do not change the memory reasoning.
@@ -729,7 +767,7 @@ If \(K\) is an evaluation context, then
 \end{lemma}
 
 \noindent\textit{Intuition.}
-To prove a specification of a term with a hole, prove a specification of the hole, and allow the postcondition of the hole to talk about the rest of the program.
+To prove a specification of a term with a hole, we prove a specification of the hole, and we allow the postcondition of the hole to talk about the rest of the program.
 Left-to-right evaluation is just a choice of \(K\).
 No memory fact has to be mentioned.
 Facts that the hole does not use stay outside this rule and are framed.
@@ -812,9 +850,8 @@ That is what lets a vtable be an ordinary struct of closures.
 \end{align*}
 
 \textit{Intuition for \texttt{while}.}
-The loop rule does not mention an invariant.
-It unfolds the loop once into a conditional.
-The invariant is whatever assertion the user has in hand when they come back to the same syntactic loop.
+The loop rule does not mention an invariant; it unfolds the loop once into a conditional.
+The invariant is whatever assertion one has in hand when returning to the same syntactic loop.
 If the condition is false, the unfolding takes the else branch and returns unit.
 If it is true, the body runs and the same rule applies again.
 Termination is not proved; the unfolding is used only as many times as the concrete execution needs.
@@ -885,9 +922,9 @@ In mathematics, with \(\ell\) a stack address:
 \end{align*}
 
 \textit{Intuition for \texttt{var}.}
-The rule allocates a fresh slot, hands you exclusive ownership of it, and asks you to prove the body after the name has been compiled into stack operations.
-You may change the contents.
-At the end you must give the slot back, at whatever value it then has.
+The rule allocates a fresh slot, hands exclusive ownership of it to the proof, and asks for a proof of the body after the name has been compiled into stack operations.
+The contents may be changed.
+At the end the slot must be given back, at whatever value it then has.
 The \(\mathsf{pop}\) administrative step deletes it, so the caller does not see a stack fact.
 This is lexical scope: the owner of the cell is the body, and the cell does not escape.
 
@@ -939,11 +976,11 @@ Lemma wp_store l v w Phi :
 \end{align*}
 
 \textit{Intuition.}
-Allocation creates a cell you did not own before, initialised to zero, and a separate fact that a block of length one starts there.
+Allocation creates a cell that was not owned before, initialised to zero, together with a separate fact that a block of length one starts there.
 The two facts have different jobs.
-The points-to fact lets you load and store the word.
-The block fact lets you free the block.
-Free consumes both, so the word cannot be used again: there is no fact left to feed to the load rule, and the concrete word has been deleted, so the machine would get stuck if you tried.
+The points-to fact lets one load and store the word.
+The block fact lets one free the block.
+Free consumes both, so the word cannot be used again: there is no fact left to feed to the load rule, and the concrete word has been deleted, so the machine would get stuck if one tried.
 
 Load does not disturb the cell.
 Store keeps ownership and changes the value.
@@ -1078,7 +1115,7 @@ The other examples are open: their hypotheses are points-to facts, so they are s
 
 \section{The examples}
 
-Each example uses a feature the previous one does not.
+Each example uses a feature that the previous one does not.
 They are the files in \texttt{theories/examples/}, in the order below.
 The programs are written in the Cangjie fragment above.
 The Coq definitions are the core \texttt{expr} terms those files actually prove.
@@ -1187,8 +1224,7 @@ The load reads \(7\) and returns the same fact.
 The program then discards that \(7\) by sequencing and frees the block.
 Free consumes both facts and returns unit.
 
-The pure specification does not say ``the loaded value was \(7\)''.
-That fact is internal to the proof.
+The pure specification does not say ``the loaded value was \(7\)''; that fact is internal to the proof.
 What adequacy reports is that the whole expression, whose value is the value of \texttt{free}, returns unit without a stuck load, store, or double free.
 After \texttt{free}, no points-to fact remains, so a further load could not be verified.
 
@@ -1217,13 +1253,12 @@ func swap(l1: CPointer<Int64>, l2: CPointer<Int64>): Unit {
 \paragraph{What is new.}
 The postcondition needs both cells.
 The proof loads \(\ell_2\) while still owning \(\ell_1\), stores into \(\ell_1\), then stores the saved value into \(\ell_2\).
-Each rule mentions only the cell it touches.
-The other fact sits in the context and is framed.
+Each rule mentions only the cell it touches; the other fact sits in the context and is framed.
 
 The second lemma is \texttt{raw\_mapsto\_exclusive}, re-exported as \texttt{swap\_aliased}.
 It is not a second proof of the same swap.
 It says that the swap specification cannot be instantiated at one address twice: the hypothesis of two points-to facts at that address is absurd.
-An overlapping specification would be a different theorem, for example a single cell updated twice, and it is not claimed here.
+An overlapping specification would be a different theorem---for example a single cell updated twice---and it is not claimed here.
 
 \subsection{Indexed blocks: \texttt{sum\_block.v}}
 
@@ -1253,8 +1288,7 @@ p \ptsr 4 \sep p \ptsb 1
 \]
 
 \paragraph{What is new.}
-The address that is loaded is not the base written in the source.
-It is the value of \(\mathsf{Offset}\), that is \(p+i\).
+The address that is loaded is not the base written in the source; it is the value of \(\mathsf{Offset}\), that is \(p+i\).
 On the only iteration, \(i\) is \(0\), and \(p+0=p\), so the load is justified by the points-to fact at \(p\).
 The addition itself is the pure offset rule; it does not consume the points-to fact.
 The loop then increments \(i\) to \(1\), the condition \(i\le 0\) fails, and the sum \(4\) is returned.
@@ -1338,9 +1372,8 @@ The fact \(q \ptsr 3\) is not in the callee's precondition.
 It is framed across the call, then used by the load, which returns \(3\).
 
 This is the frame rule applied at a function boundary.
-Nothing about \texttt{App} is special.
-Substitution puts a value in the body, and the body is an ordinary store.
-The guarantee that \(q\) is unchanged is the guarantee that the store's proof did not receive \(q\).
+Nothing about \texttt{App} is special: substitution puts a value in the body, and the body is an ordinary store.
+The guarantee that \(q\) is unchanged is simply the guarantee that the store's proof did not receive \(q\).
 
 \subsection{A hand-written vtable: \texttt{vtable.v}}
 
@@ -1380,13 +1413,13 @@ There is no method table in the machine and no dynamic dispatch rule.
 A ``method'' is a function whose first argument is the object, and a ``vtable'' is a struct the programmer assembled.
 
 The proof follows that reading.
-The closure is formed by \texttt{wp\_rec}.
-The struct zipper evaluates the closure and becomes \(\langle \mathit{inc}\rangle\) by the pure struct rules.
+First, the closure is formed by \texttt{wp\_rec}.
+Second, the struct zipper evaluates the closure and becomes \(\langle \mathit{inc}\rangle\) by the pure struct rules.
 \texttt{new} yields \(o \ptso[0] 0\).
 \texttt{wp\_struct\_load} copies the closure out; this does not touch the object.
 \texttt{wp\_app} substitutes the object reference into the body.
 The body loads field \(0\), adds one, and stores \(1\).
-The trailing field load reads that \(1\), which is the value of the whole program.
+Finally, the trailing field load reads that \(1\), which is the value of the whole program.
 
 All three regions of the story meet: a stack-free unboxed struct of code, a code pointer, and an object field.
 The raw heap is not used.
@@ -1395,18 +1428,17 @@ The earlier examples already showed that leaving it unused is safe.
 \section{A linked list}
 
 The file \texttt{theories/examples/list.v} is a self-contained implementation of a singly linked list, together with the equations that say the implementation really is a list.
-It is larger than the earlier examples because the specification is not a single pure result.
-It is a predicate on the object heap, and the programs are functions that allocate and read nodes.
+It is larger than the earlier examples because the specification is not a single pure result: it is a predicate on the object heap, and the programs are functions that allocate and read nodes.
 
 \subsection{Why a node is an object with a boolean tag}
 
 A textbook list cell is a pair of a head and a pointer to the rest, and the empty list is the null pointer.
 \cjr{} has null, and loading through null is stuck, which is the right machine behaviour.
-It does not have an equality test on pointers or on object references.
+What it does not have is an equality test on pointers or on object references.
 \texttt{EqOp} compares integers only.
 A program therefore cannot branch on ``is this pointer null?''.
 
-The implementation uses a non-\texttt{open} class with three fields, and a boolean the language can already branch on.
+The sticking point is resolved by using a non-\texttt{open} class with three fields, and a boolean the language can already branch on.
 
 \begin{lstlisting}
 Definition nil_body : expr :=
@@ -1421,8 +1453,7 @@ Definition cons_body : expr :=
 Field \(0\) is the tag: \(\False\) means empty, \(\True\) means cons.
 Field \(1\) is the head integer, which is \(0\) and unused when the tag is false.
 Field \(2\) is the tail.
-On an empty node it is unit.
-On a cons node it is the value that represents the rest of the list, itself either an empty node or another cons node.
+On an empty node it is unit; on a cons node it is the value that represents the rest of the list, itself either an empty node or another cons node.
 Objects are not freed, so a cons cell stays in the heap after its tail has been read.
 That matches the language: there is a \texttt{new} rule and no rule that deletes an object.
 
@@ -1456,8 +1487,7 @@ The core is untyped and \texttt{empty} never reads \texttt{next} when \texttt{is
 The functions above are the Cangjie surface; \texttt{cons} of two arguments lowers to the unary core call on the struct \(\langle x, xs\rangle\).
 
 \texttt{empty} returns the negation of the tag.
-An empty node is empty.
-A cons node is not.
+An empty node is empty; a cons node is not.
 The conditional is the only test.
 It does not inspect the tail pointer.
 
@@ -1654,8 +1684,8 @@ The equations above are the base that such a proof would use.
 
 \section{What is deliberately missing}
 
-The semantics does not include concurrency, so there is no invariant-opening rule and no fork.
-Float literals exist, and no float operator does.
+We deliberately omit concurrency from the semantics, so there is no invariant-opening rule and no fork.
+Float literals exist, yet no float operator does.
 Allocation in the machine accepts a positive word count; the named logic rule used throughout the examples is the one-word rule.
 Objects are not collected.
 Pointer arithmetic is word-addressed.
@@ -1670,8 +1700,8 @@ The entries below are the sources this note relies on.
 The formal bibliography follows the same order.
 
 \paragraph{The language.}
-The Cangjie 1.0 documentation~\cite{cangjie-docs} is the surface syntax this fragment is cut from: \texttt{func}, \texttt{let} and \texttt{var}, \texttt{if} and \texttt{while}, \texttt{struct}, non-\texttt{open} \texttt{class}, and \texttt{CPointer}.
-The working note~\cite{minimal-cangjie} is what fixed the performance-parity cut: unboxed structs, word-addressed raw blocks, and final classes, with generics, inheritance, and concurrency left as sugar that must lower into that cut.
+The Cangjie 1.0 documentation~\cite{cangjie-docs} is the surface syntax from which this fragment is cut: \texttt{func}, \texttt{let} and \texttt{var}, \texttt{if} and \texttt{while}, \texttt{struct}, non-\texttt{open} \texttt{class}, and \texttt{CPointer}.
+The performance-parity cut keeps unboxed structs, word-addressed raw blocks, and final classes, with generics, inheritance, and concurrency left as sugar that must lower into that cut.
 
 \paragraph{Separation logic.}
 Reynolds~\cite{reynolds-lics02} is the logic of disjoint ownership of mutable structure, which is the reading of \(\ptss\), \(\ptsr\), \(\ptsb\), and \(\ptso\) in this development.
@@ -1695,11 +1725,6 @@ std++ supplies the finite maps, the list lemmas, and the \texttt{decide} tactic 
 \bibitem{cangjie-docs}
 Cangjie documentation, version 1.0.0.
 \url{https://docs.cangjie-lang.cn/en/docs/1.0.0/}.
-
-\bibitem{minimal-cangjie}
-\emph{Minimal Cangjie for Arbitrary Algorithms}.
-Working note, 2026.
-File \texttt{resources/Minimal Cangjie for Arbitrary Algorithms.pdf} in this repository.
 
 \bibitem{reynolds-lics02}
 John C. Reynolds.
