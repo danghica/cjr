@@ -10,8 +10,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}[theorem]{Definition}
 
-\title{A tutorial on cjr:\\
-syntax, semantics, and separation logic}
+\title{A Tutorial on CJR:\\
+Syntax, Semantics, and Separation Logic}
 \author{Mechanized development in \texttt{theories/}}
 \date{}
 
@@ -30,7 +30,7 @@ syntax, semantics, and separation logic}
 }
 \lstset{style=coq}
 
-\newcommand{\cjr}{\textsc{cjr}}
+\newcommand{\cjr}{CJR}
 \newcommand{\sem}[1]{[\![#1]\!]}
 \newcommand{\step}{\longrightarrow}
 \newcommand{\steps}{\longrightarrow^{*}}
@@ -62,7 +62,7 @@ syntax, semantics, and separation logic}
 We present \cjr{} (Cangjie Radical), the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, together with \texttt{func}, \texttt{if}, and \texttt{while}.
 This note is a reading guide to the Coq/Iris mechanization.
 We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
-Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development and an array library, each with the usual equations of that data structure.
+Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development, an array library, and an array list, each with the usual equations of that data structure.
 \end{abstract}
 
 \section{What this development is}
@@ -1123,17 +1123,7 @@ The Coq definitions are the core \texttt{expr} terms those files actually prove.
 \subsection{Arithmetic: \texttt{arith.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-func sumOne(): Int64 {
-    var n: Int64 = 1
-    var s: Int64 = 0
-    while (1 <= n) {
-        s = s + 1
-        n = n - 1
-    }
-    s
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/arith.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1156,25 +1146,7 @@ That is the scope rule from the previous section, exercised on a loop that reall
 \subsection{Stack structs: \texttt{struct\_upd.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-struct Cell {
-    public var x: Int64
-    public init(x: Int64) { this.x = x }
-}
-
-func bump(): Int64 {
-    var p = Cell(0)
-    p.x = 1
-    p.x
-}
-
-func bumpKeep(): Int64 {
-    let raw = unsafe { malloc(8) }          // one Int64 word
-    let r = unsafe { CPointer<Int64>(raw) }
-    bump()
-    unsafe { r.read() }                     // still 0
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/struct_upd.cj}
 
 \paragraph{Theorems.}
 \[
@@ -1200,15 +1172,7 @@ The field update's result \(1\) is established on the way and then discarded by 
 \subsection{One raw cell: \texttt{cell.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-func cell(): Unit {
-    let raw = unsafe { malloc(8) }
-    let p = unsafe { CPointer<Int64>(raw) }
-    unsafe { p.write(7) }
-    let loaded = unsafe { p.read() }    // 7
-    unsafe { free(raw) }
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/cell.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1231,13 +1195,7 @@ After \texttt{free}, no points-to fact remains, so a further load could not be v
 \subsection{Swap and aliasing: \texttt{swap.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-func swap(l1: CPointer<Int64>, l2: CPointer<Int64>): Unit {
-    let t = unsafe { l1.read() }
-    unsafe { l1.write(unsafe { l2.read() }) }
-    unsafe { l2.write(t) }
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/swap.cj}
 
 \paragraph{Theorems.}
 \[
@@ -1263,17 +1221,7 @@ An overlapping specification would be a different theorem---for example a single
 \subsection{Indexed blocks: \texttt{sum\_block.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-func sumAt(base: CPointer<Int64>): Int64 {
-    var i: Int64 = 0
-    var s: Int64 = 0
-    while (i <= 0) {
-        s = s + unsafe { (base + i).read() }
-        i = i + 1
-    }
-    s
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/sum_block.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1305,21 +1253,7 @@ For a one-iteration loop the prefix is either empty or the single element \(4\).
 \subsection{Final classes: \texttt{class\_upd.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-class Box {                         // not open
-    public var value: Int64
-    public init(value: Int64) { this.value = value }
-}
-
-func classBump(): Int64 {
-    let raw = unsafe { malloc(8) }
-    let r = unsafe { CPointer<Int64>(raw) }
-    let o = Box(0)
-    o.value = 5
-    let seen = o.value              // 5
-    unsafe { r.read() }             // still 0
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/class_upd.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1342,16 +1276,7 @@ The final \texttt{wp\_load} is what consumes it.
 \subsection{Framing across a call: \texttt{frame\_call.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-func write(x: CPointer<Int64>): Unit {
-    unsafe { x.write(9) }
-}
-
-func frameCall(p: CPointer<Int64>, q: CPointer<Int64>): Int64 {
-    write(p)
-    unsafe { q.read() }             // still 3
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/frame_call.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1378,28 +1303,7 @@ The guarantee that \(q\) is unchanged is simply the guarantee that the store's p
 \subsection{A hand-written vtable: \texttt{vtable.v}}
 
 \paragraph{Program.}
-\begin{lstlisting}
-class Counter {
-    public var n: Int64
-    public init(n: Int64) { this.n = n }
-}
-
-func inc(c: Counter): Unit {
-    c.n = c.n + 1
-}
-
-struct VTable {
-    public let inc: (Counter) -> Unit
-    public init(inc: (Counter) -> Unit) { this.inc = inc }
-}
-
-func run(): Int64 {
-    let box = VTable(inc)
-    let o = Counter(0)
-    box.inc(o)
-    o.n                             // 1
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/vtable.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1461,25 +1365,7 @@ In Cangjie the operations are ordinary functions.
 Core application takes one argument, so \texttt{cons(x, xs)} lowers to a call on the struct of those two arguments.
 The other functions take the node.
 
-\begin{lstlisting}
-class Node {                    // not open: no subclasses
-    public var isCons: Bool
-    public var value: Int64
-    public var next: Node
-    public init(isCons: Bool, value: Int64, next: Node) {
-        this.isCons = isCons
-        this.value = value
-        this.next = next
-    }
-}
-
-func cons(x: Int64, xs: Node): Node { Node(true, x, xs) }
-func head(n: Node): Int64 { n.value }
-func tail(n: Node): Node { n.next }
-func empty(n: Node): Bool {
-    if (n.isCons) { false } else { true }
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/list.cj}
 
 The empty node proved in \texttt{list.v} stores \texttt{()} in the unread tail field.
 Full Cangjie types that field as \texttt{Node}, so a well-typed empty node needs a \texttt{Node} there.
@@ -1702,29 +1588,7 @@ Allocation of \(n\) words is \texttt{malloc} of \(n\) times the size of \texttt{
 \texttt{get} and \texttt{set} take the array and the index, and \texttt{set} also takes the new element.
 Core application is unary, so those calls lower to one struct argument, as \texttt{cons} did.
 
-\begin{lstlisting}
-class Array {                 // not open: no subclasses
-    public var len: Int64
-    public var data: CPointer<Int64>
-    public init(len: Int64, data: CPointer<Int64>) {
-        this.len = len
-        this.data = data
-    }
-}
-
-func make(n: Int64): Array {
-    let raw = unsafe { malloc(8 * n) }   // n Int64 words
-    let data = unsafe { CPointer<Int64>(raw) }
-    Array(n, data)
-}
-func length(a: Array): Int64 { a.len }
-func get(a: Array, i: Int64): Int64 {
-    unsafe { (a.data + i).read() }
-}
-func set(a: Array, i: Int64, x: Int64): Unit {
-    unsafe { (a.data + i).write(x) }
-}
-\end{lstlisting}
+\lstinputlisting{generated/cj/array.cj}
 
 The core terms are the same operations with the struct lowering made explicit.
 
@@ -1909,6 +1773,282 @@ A fresh array is a vector of zeroes of the requested length, and reading it does
 What this development does not prove is an arbitrary loop over the array, such as a sum of every cell.
 The cells are already a separating conjunction indexed by the mathematical list, which is the induction hypothesis such a loop would use.
 The equations above are the base: read and write agree with list update, and they do not disturb the length or the other cells.
+
+\section{Array lists}
+\label{sec:array-lists}
+
+The file \texttt{theories/examples/array\_list.v} lowers the resizable-buffer core of Cangjie's \texttt{ArrayList}: a default constructor, the live length, the capacity, emptiness, reading and writing an index, append, removal at an index, growth, and the version counter.
+The source class continues past that core, with an iterator, the \texttt{Collection} interface, ranges, higher-order methods, and an embedded sort.
+Those stay out.
+The core is monomorphic in \texttt{Int64}, and it uses the array library already proved: a final object, a raw block, and a word-by-word copy.
+
+\texttt{Alloc} of zero words is stuck, so the only constructor is the default one, at capacity \(16\).
+There is no shift, so growth doubles by adding the capacity to itself.
+There are no exceptions.
+An index outside \([0, \mathit{size})\) lowers to a load of a non-pointer, which has no step, and every specification takes the arm that is in range.
+\texttt{set} leaves the version alone.
+\texttt{add} and \texttt{remove} increment it.
+Growth replaces the buffer and drops the old block and the old array object.
+The source relies on collection for that drop.
+This language has a one-word free and no collection, so the old facts are not returned to the allocator.
+Iris is affine, and the proof simply does not use them again.
+
+\subsection{The library}
+
+In Cangjie the value is a non-\texttt{open} class.
+Field \(0\) is the buffer, itself the array of the previous section.
+Field \(1\) is the live length.
+Field \(2\) is the version.
+The buffer's own field \(0\) is the capacity, and its field \(1\) is the base pointer of a block of that many words.
+The live prefix of the block is the mathematical list.
+The tail is zero, which is what \texttt{Alloc} writes and what removal writes back.
+
+\lstinputlisting{generated/cj/array_list.cj}
+
+Core application is unary, so each method lowers to a closure applied to one struct of arguments, as \texttt{get} and \texttt{set} did for arrays.
+The pure model of the three mutating operations is ordinary list algebra.
+
+\begin{lstlisting}
+Definition al_set (xs : list Z) (i : nat) (x : Z) : list Z := <[i := x]> xs.
+Definition al_add (xs : list Z) (x : Z) : list Z := xs ++ [x].
+Definition al_remove (xs : list Z) (i : nat) : list Z :=
+  take i xs ++ drop (S i) xs.
+\end{lstlisting}
+
+Appending puts \(x\) at index \(\lvert xs \rvert\) and leaves every earlier index unchanged.
+Updating index \(i\) reads back \(x\) there and leaves every other index unchanged.
+Removing index \(i\) shortens the list by one and shifts the suffix down.
+
+\subsection{The representation}
+
+Two objects.
+The inner one is the buffer.
+The outer one is the list.
+
+\begin{definition}[Array-list representation]
+Write \(\mathsf{slots}(xs, c)\) for \(xs\) followed by \(c - \lvert xs \rvert\) zeroes, which is defined only for \(\lvert xs \rvert \le c\).
+\(\mathsf{isBuf}(\mathit{slots}, b)\) is the array predicate of the previous section with the whole capacity in place of the live prefix: field \(0\) holds \(\lvert \mathit{slots} \rvert\), field \(1\) holds the base pointer, and the block owns every word of \(\mathit{slots}\).
+\(\mathsf{isArrayList}(xs, c, v, a)\) holds when \(0 < c\), \(\lvert xs \rvert \le c\), \(a = \mathsf{obj}(o)\), and
+\[
+\begin{aligned}
+&o \ptso[0] b
+\sep
+o \ptso[1] \lvert xs \rvert
+\sep
+o \ptso[2] v
+\sep
+\mathsf{isBuf}(\mathsf{slots}(xs, c), b).
+\end{aligned}
+\]
+\end{definition}
+
+The Coq predicates are \texttt{slots\_of}, \texttt{is\_buf}, and \texttt{is\_arraylist}.
+The cells are \texttt{array\_cells}, reused from the array library, so a proof of a single load or store is the same lookup lemma as \texttt{get} and \texttt{set} there.
+The zero tail is part of the owned block.
+Appending into spare capacity overwrites the first zero.
+Removing the last live word writes a zero back, so the tail stays zero.
+
+\subsection{Copy and growth}
+
+Copy is one loop.
+It binds an index at \(0\) and, while that index plus one is at most the length, loads one word and stores it one step further along.
+The loop is \texttt{copy\_vars}.
+Two invariants share that body.
+
+The first is a copy between two blocks, used by growth.
+Source and destination do not overlap, so each iteration may read the source and write the destination in either order.
+\texttt{copy\_disjoint} says that after \(\mathit{len}\) steps the destination holds the source chunk at the destination offset, and the source is unchanged.
+
+The second is a forward shift on one block, used by removal.
+The source offset is the destination offset plus one, so each word is read before the next store overwrites it.
+\texttt{copy\_shift} says that the live prefix is the list with the suffix shifted down by one.
+A left shift of length zero, which is removal of the last element, is the loop condition failing at once.
+
+Growth asks for a minimum capacity.
+The new capacity is \(2c\) when the minimum is at most \(2c\), and the minimum otherwise.
+\[
+\mathsf{growCap}(c, m) =
+\begin{cases}
+2c & \text{if } m \le 2c,\\
+m & \text{otherwise.}
+\end{cases}
+\]
+Both arms allocate a positive block, copy the live prefix into it, and store the new array object in field \(0\).
+The mathematical list and the version are unchanged.
+The old block remains allocated and is not mentioned by the postcondition.
+This is \texttt{grow\_spec}.
+The Coq name of the capacity is \texttt{grow\_cap}; doubling is \texttt{doubled}, which is addition because the core has no shift.
+
+Append uses that rule only when the live length already equals the capacity.
+Then the minimum is the length plus one, which is at most \(2c\) for \(c > 0\), so the capacity doubles.
+When the length is strictly below the capacity, append writes into the zero tail and the capacity stays.
+
+\subsection{What each operation establishes}
+
+\paragraph{Init.}
+\[
+\Wpre\,\mathsf{init}()
+\,\{\,a.\; \mathsf{isArrayList}([], 16, 0, a)\,\}.
+\]
+Allocation of \(16\) words produces the zero block.
+The inner object stores \(16\) and the pointer.
+The outer object stores that buffer, length \(0\), and version \(0\).
+This is \texttt{init\_spec}.
+\texttt{default\_capacity} is \(16\).
+
+\paragraph{Size, capacity, emptiness, version.}
+Each is a field load, or a load followed by a comparison with zero.
+\[
+\begin{aligned}
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{size}(a)
+\,\{\,r.\; \pure{r = \lvert xs \rvert} \sep \mathsf{isArrayList}(xs, c, v, a)\,\},\\
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{capacity}(a)
+\,\{\,r.\; \pure{r = c} \sep \mathsf{isArrayList}(xs, c, v, a)\,\},\\
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{isEmpty}(a)
+\,\{\,r.\; \pure{r = (\lvert xs \rvert = 0)} \sep \mathsf{isArrayList}(xs, c, v, a)\,\},\\
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{version}(a)
+\,\{\,r.\; \pure{r = v} \sep \mathsf{isArrayList}(xs, c, v, a)\,\}.
+\end{aligned}
+\]
+These are \texttt{size\_spec}, \texttt{capacity\_spec}, \texttt{is\_empty\_spec}, and \texttt{version\_spec}.
+Capacity reads the buffer's length field, which \texttt{slots\_of} keeps equal to \(c\).
+
+\paragraph{Get and set.}
+If \(xs_i = y\),
+\[
+\begin{aligned}
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{get}(a, i)
+\,\{\,r.\; \pure{r = y} \sep \mathsf{isArrayList}(xs, c, v, a)\,\},\\
+\mathsf{isArrayList}(xs, c, v, a)
+&\vdash
+\Wpre\,\mathsf{set}(a, i, x)
+\,\{\,r.\; \pure{r = \Unit} \sep \mathsf{isArrayList}(xs[i \mapsto x], c, v, a)\,\}.
+\end{aligned}
+\]
+Both go through the buffer pointer and the raw word at index \(i\).
+The range test is two comparisons, \(c\) against the index and the index against \(-1\), and the specification is the success arm.
+\texttt{set} stores into the live prefix and does not touch field \(2\).
+These are \texttt{al\_get\_spec} and \texttt{al\_set\_spec}.
+The names are prefixed because the array library already exports \texttt{get\_spec} and \texttt{set\_spec}.
+
+\paragraph{Add.}
+\[
+\mathsf{isArrayList}(xs, c, v, a)
+\vdash
+\Wpre\,\mathsf{add}(a, x)
+\,\{\,r.\; \pure{r = \Unit} \sep
+  \mathsf{isArrayList}(xs \mathbin{+\mkern-6mu+} [x],\, \mathsf{addCap}(c, \lvert xs \rvert),\, v+1, a)\,\}.
+\]
+\(\mathsf{addCap}(c, n)\) is \(c\) when \(n < c\), and \(\mathsf{growCap}(c, n+1)\) otherwise.
+The body writes \(x\) at the old length, stores the new length, and increments the version.
+When the buffer is already full it first calls \texttt{grow}.
+This is \texttt{add\_spec}.
+
+\paragraph{Remove.}
+If \(xs_j = y\),
+\[
+\mathsf{isArrayList}(xs, c, v, a)
+\vdash
+\Wpre\,\mathsf{remove}(a, j)
+\,\{\,r.\; \pure{r = y} \sep
+  \mathsf{isArrayList}(\mathsf{delete}(xs, j),\, c,\, v+1, a)\,\}.
+\]
+\(\mathsf{delete}(xs, j)\) is the prefix of length \(j\) followed by the suffix after \(j\).
+The body loads \(y\) before the shift, copies the suffix down by one, writes zero at the old last index, stores the new length, and increments the version.
+The capacity is the same block.
+This is \texttt{remove\_spec}.
+
+\subsection{The array-list equations}
+
+The programs are compositions of the calls above.
+Each one is a \texttt{let} of one call followed by the next, proved from the triples by framing, as \texttt{set\_then\_get} was for arrays.
+
+\begin{theorem}[A fresh list]
+\[
+\begin{aligned}
+\Wpre\,(\mathsf{size}(\mathsf{init}()))
+&\,\{\,r.\; \exists a.\; \pure{r = 0} \sep \mathsf{isArrayList}([], 16, 0, a)\,\},\\
+\Wpre\,(\mathsf{isEmpty}(\mathsf{init}()))
+&\,\{\,r.\; \exists a.\; \pure{r = \True} \sep \mathsf{isArrayList}([], 16, 0, a)\,\},\\
+\Wpre\,(\mathsf{capacity}(\mathsf{init}()))
+&\,\{\,r.\; \exists a.\; \pure{r = 16} \sep \mathsf{isArrayList}([], 16, 0, a)\,\},\\
+\Wpre\,(\mathsf{version}(\mathsf{init}()))
+&\,\{\,r.\; \exists a.\; \pure{r = 0} \sep \mathsf{isArrayList}([], 16, 0, a)\,\}.
+\end{aligned}
+\]
+\end{theorem}
+
+Size and emptiness are \texttt{init\_then\_size\_spec} and \texttt{init\_then\_empty\_spec}.
+Capacity and version are \texttt{init\_then\_capacity\_spec} and \texttt{init\_then\_version\_spec}.
+
+\begin{theorem}[Append]
+\[
+\begin{aligned}
+&\mathsf{isArrayList}(xs, c, v, a) \vdash
+  \Wpre\,(\mathsf{size}(\mathsf{add}(a, x)))\\
+&\qquad \{\,r.\; \pure{r = \lvert xs \rvert + 1} \sep
+  \mathsf{isArrayList}(xs \mathbin{+\mkern-6mu+} [x],\,
+    \mathsf{addCap}(c, \lvert xs \rvert),\, v+1, a)\,\},\\
+&\mathsf{isArrayList}(xs, c, v, a) \vdash
+  \Wpre\,(\mathsf{get}(\mathsf{add}(a, x), \lvert xs \rvert))\\
+&\qquad \{\,r.\; \pure{r = x} \sep
+  \mathsf{isArrayList}(xs \mathbin{+\mkern-6mu+} [x],\,
+    \mathsf{addCap}(c, \lvert xs \rvert),\, v+1, a)\,\}.
+\end{aligned}
+\]
+If \(i < \lvert xs \rvert\) and \(xs_i = y\), the same append followed by \texttt{get} at \(i\) returns \(y\).
+The capacity is \(c\) when \(\lvert xs \rvert < c\), and \(2c\) when \(\lvert xs \rvert = c\).
+The version after append is \(v+1\).
+\end{theorem}
+
+Size and the new-index lookup are \texttt{add\_then\_size\_spec} and \texttt{add\_then\_get\_new\_spec}.
+An older index is \texttt{add\_then\_get\_old\_spec}.
+Spare capacity is \texttt{add\_then\_capacity\_room\_spec}, a full buffer is \texttt{add\_then\_capacity\_full\_spec}, and the version is \texttt{add\_then\_version\_spec}.
+The lookup at the new index is the lemma that an appended element sits at the old length.
+The lookup at an older index is the lemma that append does not change a shorter prefix, including across the growth that replaces the block.
+
+\begin{theorem}[Update]
+If \(xs_i = y\), then reading index \(i\) after writing \(x\) there returns \(x\), and the version is still \(v\).
+If \(j\) is also in range and \(i \neq j\), reading \(j\) returns \(xs_j\).
+The length after the update is still \(\lvert xs \rvert\).
+\end{theorem}
+
+The two lookups are \texttt{set\_then\_get\_same\_spec} and \texttt{set\_then\_get\_other\_spec}.
+Length and version are \texttt{set\_then\_size\_spec} and \texttt{set\_then\_version\_spec}.
+The version equation is the observation that \texttt{set} does not store field \(2\).
+
+\begin{theorem}[Append then remove]
+\[
+\begin{aligned}
+&\mathsf{isArrayList}(xs, c, v, a) \vdash
+  \Wpre\,(\mathsf{remove}(\mathsf{add}(a, x), \lvert xs \rvert))\\
+&\qquad \{\,r.\; \pure{r = x} \sep
+  \mathsf{isArrayList}(xs,\, \mathsf{addCap}(c, \lvert xs \rvert),\, v+2, a)\,\}.
+\end{aligned}
+\]
+Removing an in-range index and then reading the size returns \(\lvert xs \rvert - 1\).
+\end{theorem}
+
+The round trip is \texttt{add\_then\_remove\_last\_spec}.
+Removal of the element just appended restores \(xs\).
+The capacity is whatever append left behind, which may be \(2c\), and the version has been incremented twice.
+The size equation is \texttt{remove\_then\_size\_spec}.
+
+What this development does not prove is the iterator, equality of two lists, or a bulk operation such as \texttt{filter}.
+The predicate already owns the live prefix and the zero tail as one separating conjunction, which is the induction hypothesis a further loop would use.
+The equations above are the base: length, lookup, update, append, and removal agree with the list algebra, growth only changes the capacity, and the version moves only on append and removal.
+
+\input{generated/cj/further.tex}
 
 \section{What is deliberately missing}
 
