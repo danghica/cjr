@@ -754,3 +754,109 @@ Proof.
   assert (l = cjr_next σ) as -> by (eapply init_fields_carrier; exact H1).
   rewrite (obj_fresh _ j Hwf) in H2. discriminate.
 Qed.
+
+Lemma init_cells_lookup base n i :
+  (i < n)%nat →
+  init_cells base n !! RawId (base + Z.of_nat i)%Z = Some (LitV (LitInt 0)).
+Proof.
+  revert i. induction n as [|n IH]; intros i Hi; [lia|].
+  simpl.
+  destruct (decide (i = n)) as [->|Hne].
+  - by rewrite lookup_insert.
+  - rewrite lookup_insert_ne; last first.
+    { intros Heq. apply (inj RawId) in Heq. lia. }
+    apply IH. lia.
+Qed.
+
+Lemma init_cells_addr base n l v :
+  init_cells base n !! RawId l = Some v →
+  (base ≤ l < base + Z.of_nat n)%Z.
+Proof.
+  revert l v. induction n as [|n IH]; intros l v; simpl; [discriminate|].
+  destruct (decide (RawId l = RawId (base + Z.of_nat n)%Z)) as [Heq|Hne].
+  - rewrite Heq lookup_insert. intros [= <-].
+    apply (inj RawId) in Heq. lia.
+  - rewrite lookup_insert_ne //. intros Hlook.
+    specialize (IH l v Hlook). lia.
+Qed.
+
+Lemma init_cells_below base n z :
+  (z < base)%Z → init_cells base n !! RawId z = None.
+Proof.
+  intros Hz. destruct (init_cells base n !! RawId z) as [v|] eqn:Hlook; [|done].
+  apply init_cells_addr in Hlook. lia.
+Qed.
+
+Lemma init_cells_high base n z :
+  (base + Z.of_nat n ≤ z)%Z → init_cells base n !! RawId z = None.
+Proof.
+  intros Hz. destruct (init_cells base n !! RawId z) as [v|] eqn:Hlook; [|done].
+  apply init_cells_addr in Hlook. lia.
+Qed.
+
+Lemma init_cells_fresh σ n :
+  state_wf σ →
+  init_cells (cjr_next σ) n ##ₘ cjr_raw σ.
+Proof.
+  intros Hwf. apply map_disjoint_spec. intros [l] v1 v2 H1 H2.
+  apply init_cells_addr in H1.
+  apply elem_of_dom_2 in H2.
+  pose proof (wf_raw _ Hwf _ H2). lia.
+Qed.
+
+Lemma wf_alloc σ (n : Z) :
+  (0 < n)%Z → state_wf σ →
+  let base := cjr_next σ in
+  let len := Z.to_nat n in
+  state_wf
+    (set_next (base + n)%Z
+       (set_blocks (<[RawId base := len]> (cjr_blocks σ))
+          (set_raw (init_cells base len ∪ cjr_raw σ) σ))).
+Proof.
+  intros Hn Hwf.
+  cbv zeta.
+  set (base := cjr_next σ).
+  set (len := Z.to_nat n).
+  destruct Hwf as [Hs Hr Hb Ho Hc Hd].
+  assert (Z.of_nat len = n) as HlenZ by (unfold len; lia).
+  split; simpl.
+  - intros z Hz. pose proof (Hs z Hz). lia.
+  - intros z Hz. rewrite dom_union_L elem_of_union in Hz.
+    destruct Hz as [Hz|Hz].
+    + apply elem_of_dom in Hz as [v Hv]. apply init_cells_addr in Hv. lia.
+    + pose proof (Hr z Hz). lia.
+  - intros z Hz. rewrite dom_insert elem_of_union elem_of_singleton in Hz.
+    destruct Hz as [Hz|Hz].
+    + apply (inj RawId) in Hz. rewrite Hz. lia.
+    + pose proof (Hb z Hz). lia.
+  - intros z i Hz. pose proof (Ho z i Hz). lia.
+  - intros z k Hk. simpl in Hk.
+    destruct (decide (RawId z = RawId base)) as [Heq|Hne].
+    + apply (inj RawId) in Heq. rewrite Heq in Hk. rewrite Heq.
+      rewrite lookup_insert in Hk.
+      assert (k = len) as Hklen by congruence.
+      rewrite Hklen. split; [lia|]. intros i Hi.
+      eexists. apply lookup_union_Some_l. by apply init_cells_lookup.
+    + rewrite lookup_insert_ne // in Hk.
+      destruct (Hc z k Hk) as [Hle Hcell]. split; [lia|].
+      intros i Hi. destruct (Hcell i Hi) as [w Hw].
+      rewrite lookup_union_r; [by eauto|].
+      apply init_cells_below. lia.
+  - intros l1 n1 l2 n2 H1 H2 Hneq. simpl in H1, H2.
+    destruct (decide (RawId l1 = RawId base)) as [E1|N1];
+    destruct (decide (RawId l2 = RawId base)) as [E2|N2].
+    + apply (inj RawId) in E1, E2. rewrite E1 in Hneq. rewrite E2 in Hneq. done.
+    + apply (inj RawId) in E1. rewrite E1 in H1.
+      rewrite lookup_insert in H1.
+      assert (n1 = len) as -> by congruence.
+      rewrite lookup_insert_ne // in H2.
+      destruct (Hc l2 n2 H2) as [Hend _]. lia.
+    + apply (inj RawId) in E2. rewrite E2 in H2.
+      rewrite lookup_insert in H2.
+      assert (n2 = len) as -> by congruence.
+      rewrite lookup_insert_ne // in H1.
+      destruct (Hc l1 n1 H1) as [Hend _]. lia.
+    + rewrite lookup_insert_ne // in H1.
+      rewrite lookup_insert_ne // in H2.
+      eapply Hd; eauto.
+Qed.

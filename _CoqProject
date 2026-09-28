@@ -13,3 +13,4 @@ theories/examples/class_upd.v
 theories/examples/frame_call.v
 theories/examples/vtable.v
 theories/examples/list.v
+theories/examples/array.v

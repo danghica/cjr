@@ -62,7 +62,7 @@ syntax, semantics, and separation logic}
 We present \cjr{} (Cangjie Radical), the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, together with \texttt{func}, \texttt{if}, and \texttt{while}.
 This note is a reading guide to the Coq/Iris mechanization.
 We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
-Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development that establishes the usual list equations.
+Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development and an array library, each with the usual equations of that data structure.
 \end{abstract}
 
 \section{What this development is}
@@ -988,8 +988,8 @@ Neither rule needs the block fact.
 A client may therefore load and store while the right to free sits unused in the context, and the frame rule keeps it there.
 
 The operational rule for allocation accepts any positive length.
-The verified rule above is the one-word instance, which is what the examples use.
-A longer block would be the same pattern: a points-to fact per word, plus one block fact for the base and the length.
+The verified rule above is the one-word instance, which the small examples use.
+The array library uses the general rule: a points-to fact per word, plus one block fact for the base and the length.
 
 \subsection{Object rules}
 
@@ -1682,11 +1682,240 @@ What this development does not prove is induction over an arbitrary list operati
 The predicate is defined so that those proofs are the same shape: open one cons cell, recurse on the tail fact, and frame the cell.
 The equations above are the base that such a proof would use.
 
+\section{Arrays}
+\label{sec:arrays}
+
+The file \texttt{theories/examples/array.v} is a library, in the same sense as the list: the language has no array type, and the library builds one from a final class and a raw block.
+An array of \(n\) integers is an object with two fields and a contiguous block of \(n\) words.
+Field \(0\) holds \(n\).
+Field \(1\) holds the base pointer of the block.
+Word \(i\) of the block holds element \(i\).
+The index is a computed integer, so the elements cannot be object fields: a field index in the core is a static natural number, whereas \texttt{Offset} and \texttt{Load} take a value.
+
+\texttt{Alloc} of zero words is stuck, so \texttt{make} asks for a positive length.
+An index outside \(0,\ldots,n-1\) is likewise stuck: the specification owns only the words of the block, and a load with no points-to fact does not reduce.
+
+\subsection{The library}
+
+In Cangjie the value is a non-\texttt{open} class.
+Allocation of \(n\) words is \texttt{malloc} of \(n\) times the size of \texttt{Int64}; the core step is \texttt{Alloc} of the word count \(n\), which returns a pointer to \(n\) zero words.
+\texttt{get} and \texttt{set} take the array and the index, and \texttt{set} also takes the new element.
+Core application is unary, so those calls lower to one struct argument, as \texttt{cons} did.
+
+\begin{lstlisting}
+class Array {                 // not open: no subclasses
+    public var len: Int64
+    public var data: CPointer<Int64>
+    public init(len: Int64, data: CPointer<Int64>) {
+        this.len = len
+        this.data = data
+    }
+}
+
+func make(n: Int64): Array {
+    let raw = unsafe { malloc(8 * n) }   // n Int64 words
+    let data = unsafe { CPointer<Int64>(raw) }
+    Array(n, data)
+}
+func length(a: Array): Int64 { a.len }
+func get(a: Array, i: Int64): Int64 {
+    unsafe { (a.data + i).read() }
+}
+func set(a: Array, i: Int64, x: Int64): Unit {
+    unsafe { (a.data + i).write(x) }
+}
+\end{lstlisting}
+
+The core terms are the same operations with the struct lowering made explicit.
+
+\begin{lstlisting}
+Definition make_body : expr :=
+  Let (Some "p") (Alloc (Var "n"))
+    (New [] [Var "n"; Var "p"]).
+
+Definition get_body : expr :=
+  Let (Some "arr") (StructLoad (Var "args") 0)
+    (Let (Some "i") (StructLoad (Var "args") 1)
+      (Let (Some "p") (FieldLoad (Var "arr") 1)
+        (Load (Offset (Var "p") (Var "i"))))).
+
+Definition set_body : expr :=
+  Let (Some "arr") (StructLoad (Var "args") 0)
+    (Let (Some "i") (StructLoad (Var "args") 1)
+      (Let (Some "x") (StructLoad (Var "args") 2)
+        (Let (Some "p") (FieldLoad (Var "arr") 1)
+          (Store (Offset (Var "p") (Var "i")) (Var "x"))))).
+\end{lstlisting}
+
+\texttt{length} is a field load of index \(0\).
+
+\subsection{The representation}
+
+\begin{definition}[Array representation]
+\(\mathsf{isArray}(xs, a)\) holds when \(a = \mathsf{obj}(o)\), the base pointer is \(p\), and
+\[
+\begin{aligned}
+&o \ptso[0] \lvert xs \rvert
+\sep
+o \ptso[1] \mathsf{ptr}(p)
+\sep
+p \ptsb \lvert xs \rvert
+\sep
+\mathop{\ast}\limits_{i < \lvert xs \rvert}
+  (p+i) \ptsr xs_i.
+\end{aligned}
+\]
+\end{definition}
+
+The block fact is the right to treat \([p, p+\lvert xs \rvert)\) as one allocation.
+The separating conjunction of the words is what lets a proof load or store one index and still own the others.
+Two different indices are two different addresses, so the facts do not overlap.
+
+The Coq predicate is that assertion.
+\texttt{array\_cells} is the big separating conjunction, indexed by position in \(xs\).
+
+\begin{lstlisting}
+Definition array_cells (base : Z) (xs : list Z) : iProp S :=
+  (* separating conjunction over i |-> xs_i at address base+i *)
+  [ * list] i |-> x in xs,
+    RawId (base + Z.of_nat i) |->r LitV (LitInt x).
+
+Definition is_array (xs : list Z) (a : val) : iProp S :=
+  exists o base, pure (a = LitV (LitObj o)) *
+    ObjId o |->o[0] LitV (LitInt (Z.of_nat (length xs))) *
+    ObjId o |->o[1] LitV (LitPtr base) *
+    RawId base |->b (length xs) *
+    array_cells base xs.
+\end{lstlisting}
+
+\subsection{Allocation of \(n\) words}
+
+The one-word rule is not enough for \texttt{make}.
+The machine already steps \texttt{Alloc} of any positive word count: it zeroes that many words, records the length at the base, and advances the counter by the count.
+\texttt{wp\_alloc} is the matching logic rule.
+From \(0 < n\),
+\[
+\Wpre\,\mathsf{alloc}(n)
+\,\Bigl\{\,v.\;
+  \exists \ell.\;
+  v = \mathsf{ptr}(\ell)
+  \sep
+  \ell \ptsb n
+  \sep
+  \mathop{\ast}\limits_{i < n} (\ell+i) \ptsr 0
+\,\Bigr\}.
+\]
+The proof is the one-word proof with a finite map of cells instead of a singleton.
+\texttt{init\_cells} builds that map, \texttt{wf\_alloc} shows the resulting machine is well formed, and the ghost-map update hands back one points-to fact per word.
+
+\subsection{What each operation establishes}
+
+\paragraph{Make.}
+For \(0 < n\),
+\[
+\Wpre\,\mathsf{make}(n)
+\,\{\,a.\; \mathsf{isArray}(\mathsf{replicate}(n, 0), a)\,\}.
+\]
+Allocation produces the zero words and the block fact.
+The following \texttt{new} stores \(n\) and the pointer in the object.
+This is \texttt{make\_spec}.
+
+\paragraph{Length.}
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,\mathsf{length}(a)
+\,\{\,v.\; \pure{v = \lvert xs \rvert} \sep \mathsf{isArray}(xs, a)\,\}.
+\]
+The proof loads field \(0\) and returns the same predicate.
+Length is an observation.
+This is \texttt{length\_spec}.
+
+\paragraph{Get.}
+If \(xs_i = x\), writing \(i\) for the mathematical index,
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,\mathsf{get}(a, i)
+\,\{\,v.\; \pure{v = x} \sep \mathsf{isArray}(xs, a)\,\}.
+\]
+The body reads the pointer from field \(1\), adds \(i\), and loads that word.
+The lookup lemma for a big separating conjunction lends out the one cell and takes it back, so the other cells are not mentioned by the load rule and stay in the predicate.
+This is \texttt{get\_spec}.
+
+\paragraph{Set.}
+If index \(i\) is in range,
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,\mathsf{set}(a, i, x)
+\,\{\,v.\; \pure{v = \Unit} \sep \mathsf{isArray}(xs[i \mapsto x], a)\,\}.
+\]
+The store updates that one word.
+The length stored in the object and the block length are unchanged, because replacing an element does not change \(\lvert xs \rvert\).
+This is \texttt{set\_spec}.
+
+\subsection{The array equations}
+
+The programs are the compositions of the functions above.
+Each one is a \texttt{let} of one call followed by the next, not a fused body.
+
+\begin{theorem}[Read after write]
+If index \(i\) is in range, then
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,(\mathsf{get}(\mathsf{set}(a, i, x), i))
+\,\{\,v.\; \pure{v = x} \sep \mathsf{isArray}(xs[i \mapsto x], a)\,\}.
+\]
+If \(j\) is also in range and \(i \neq j\), then
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,(\mathsf{get}(\mathsf{set}(a, i, x), j))
+\,\{\,v.\; \pure{v = xs_j} \sep \mathsf{isArray}(xs[i \mapsto x], a)\,\}.
+\]
+\end{theorem}
+
+These are \texttt{set\_then\_get\_same} and \texttt{set\_then\_get\_other}.
+The first is \texttt{set\_spec} followed by \texttt{get\_spec} at the updated list, whose lookup at \(i\) is \(x\).
+The second uses the same \texttt{set\_spec}, then \texttt{get\_spec} at \(j\).
+The lookup of an updated list at a different index is the old element.
+The separating conjunction is why the store at \(i\) does not have a points-to fact for \(j\) among its hypotheses: that fact is framed, so it cannot change.
+
+\begin{theorem}[Length is invariant]
+If index \(i\) is in range, then
+\[
+\mathsf{isArray}(xs, a)
+\vdash
+\Wpre\,(\mathsf{length}(\mathsf{set}(a, i, x)))
+\,\{\,v.\; \pure{v = \lvert xs \rvert} \sep \mathsf{isArray}(xs[i \mapsto x], a)\,\}.
+\]
+For \(0 < n\) and \(i < n\),
+\[
+\begin{aligned}
+\Wpre\,(\mathsf{length}(\mathsf{make}(n)))
+&\,\{\,v.\; \exists a.\; \pure{v = n} \sep \mathsf{isArray}(\mathsf{replicate}(n, 0), a)\,\},\\
+\Wpre\,(\mathsf{get}(\mathsf{make}(n), i))
+&\,\{\,v.\; \exists a.\; \pure{v = 0} \sep \mathsf{isArray}(\mathsf{replicate}(n, 0), a)\,\}.
+\end{aligned}
+\]
+\end{theorem}
+
+The length equation is \texttt{set\_then\_length\_spec}: after \texttt{set}, \texttt{length} reads the field that still holds \(\lvert xs \rvert\).
+The two \texttt{make} equations are \texttt{make\_then\_length\_spec} and \texttt{make\_then\_get\_spec}.
+A fresh array is a vector of zeroes of the requested length, and reading it does not change that fact.
+
+What this development does not prove is an arbitrary loop over the array, such as a sum of every cell.
+The cells are already a separating conjunction indexed by the mathematical list, which is the induction hypothesis such a loop would use.
+The equations above are the base: read and write agree with list update, and they do not disturb the length or the other cells.
+
 \section{What is deliberately missing}
 
 We deliberately omit concurrency from the semantics, so there is no invariant-opening rule and no fork.
 Float literals exist, yet no float operator does.
-Allocation in the machine accepts a positive word count; the named logic rule used throughout the examples is the one-word rule.
+Allocation of a positive word count is the rule used by the array library.
+Freeing in the named logic rules remains the one-word rule.
 Objects are not collected.
 Pointer arithmetic is word-addressed.
 Null, a freed address, and an address with no points-to fact are stuck rather than given a defined error value.

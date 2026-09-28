@@ -324,6 +324,54 @@ Section laws.
     iApply ("HΦ" with "Hl Hblk").
   Qed.
 
+  Lemma init_cells_sep base n :
+    ([∗ map] k ↦ v ∈ init_cells base n,
+       ghost_map_elem cjr_raw_name k (DfracOwn 1) v) ⊢
+    [∗ list] k ↦ i ∈ seq 0 n, RawId (base + Z.of_nat i)%Z ↦ᵣ LitV (LitInt 0).
+  Proof.
+    revert base. induction n as [|n IH]; intros base.
+    - cbn. rewrite big_sepM_empty. done.
+    - cbn [init_cells].
+      rewrite big_sepM_insert; last by (apply init_cells_high; lia).
+      rewrite seq_S big_sepL_snoc.
+      iIntros "[Hlast Hpre]".
+      iSplitL "Hpre".
+      + iApply (IH with "Hpre").
+      + iFrame.
+  Qed.
+
+  Lemma wp_alloc (n : Z) E Φ :
+    (0 < n)%Z →
+    (∀ l, ([∗ list] i ∈ seq 0 (Z.to_nat n),
+             RawId (l + Z.of_nat i)%Z ↦ᵣ LitV (LitInt 0)) -∗
+           RawId l ↦ᵦ Z.to_nat n -∗ Φ (LitV (LitPtr l))) -∗
+    WP Alloc (Val (LitV (LitInt n))) @ E {{ Φ }}.
+  Proof.
+    iIntros (Hn) "HΦ".
+    iApply wp_lift_atomic_base_step_no_fork; [done|].
+    iIntros (σ ns κ κs nt) "(Hs & Hr & Hb & Ho & %Hwf)".
+    iModIntro. iSplit.
+    { iPureIntro. eexists [], _, _, []. eapply (AllocS n). lia. }
+    iIntros "!>" (e2 σ2 efs Hstep) "_".
+    set (base := cjr_next σ).
+    set (len := Z.to_nat n).
+    assert (base_step (Alloc (Val (LitV (LitInt n)))) σ []
+              (Val (LitV (LitPtr base)))
+              (set_next (base + n)%Z
+                 (set_blocks (<[RawId base := len]> (cjr_blocks σ))
+                    (set_raw (init_cells base len ∪ cjr_raw σ) σ))) []) as Hgood.
+    { eapply (AllocS n). lia. }
+    destruct (base_step_det _ _ _ _ _ _ _ _ _ _ Hstep Hgood) as (-> & -> & -> & ->).
+    iMod (ghost_map_insert_big (init_cells base len) with "Hr") as "[Hr Hcells]".
+    { by apply init_cells_fresh. }
+    iMod (ghost_map_insert (RawId base) len with "Hb") as "[Hb Hblk]".
+    { by eapply block_fresh. }
+    iModIntro. iSplit; [done|]. iSplitL "Hs Hr Hb Ho".
+    { iFrame. iPureIntro. by apply wf_alloc. }
+    iApply ("HΦ" with "[Hcells] Hblk").
+    by iApply (init_cells_sep with "Hcells").
+  Qed.
+
   Lemma wp_free_one l v E Φ :
     RawId l ↦ᵣ v -∗ RawId l ↦ᵦ 1 -∗ ▷ (£ 1 -∗ Φ (LitV LitUnit)) -∗
     WP Free (Val (LitV (LitPtr l))) @ E {{ Φ }}.
