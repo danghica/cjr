@@ -8,7 +8,7 @@ CJ_DIR := generated/cj
 CJ_RAW := $(CJ_DIR)/bundle.raw
 CJ_TEX := paper/cjr-tutorial.tex
 CJ_EXPECTED := arith struct_upd cell swap sum_block class_upd frame_call \
-  vtable list array array_list
+  vtable list array array_list qsort_array qsort_array_list
 
 .PHONY: cj
 cj:

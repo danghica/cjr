@@ -5,7 +5,7 @@ From Coq Require Import String ZArith List.
 From cjr Require Import lang.
 From cjr.examples Require Import cj_print.
 From cjr.examples Require arith struct_upd cell swap sum_block class_upd
-  frame_call vtable list array array_list.
+  frame_call vtable list array array_list qsort.
 Import ListNotations.
 
 Local Open Scope string_scope.
@@ -147,6 +147,81 @@ Definition p_array_list :=
             (App (Rec None (Some "args") array_list.remove_body) (Struct [] [Var "a"; int 0]))
             (App (Rec None (Some "a") array_list.size_body) (Var "a")))))).
 
+(** * Quicksort
+
+One algorithm, printed twice. The array file calls the free functions
+[length], [get], and [set]. The array-list file calls the methods
+[size], [get], and [set]. [add] is included so a program can fill the
+list, and [add] calls [grow]. *)
+
+Definition array_swap := qsort.swap_body array.get_body array.set_body.
+Definition array_partition :=
+  qsort.partition_body array.get_body array.set_body.
+Definition array_qsort := qsort.qsort_body array.get_body array.set_body.
+Definition array_sort :=
+  qsort.sort_body array.length_body array.get_body array.set_body.
+
+Definition p_qsort_array :=
+  Prog [array_c] []
+    [Fn "make" None (Some "n") array.make_body [t_int] "Array";
+     Fn "length" None (Some "a") array.length_body ["Array"] t_int;
+     Fn "get" None (Some "args") array.get_body ["Array"; t_int] t_int;
+     Fn "set" None (Some "args") array.set_body ["Array"; t_int; t_int] "Unit";
+     Fn "swap" None (Some "args") array_swap ["Array"; t_int; t_int] "Unit";
+     Fn "partition" None (Some "args") array_partition
+       ["Array"; t_int; t_int] t_int;
+     Fn "qsort" None (Some "args") array_qsort ["Array"; t_int; t_int] "Unit";
+     Fn "sort" None (Some "a") array_sort ["Array"] "Unit"]
+    (Let (Some "a") (App (Rec None (Some "n") array.make_body) (int 3))
+      (Let None
+        (App (Rec None (Some "args") array.set_body)
+          (Struct [] [Var "a"; int 0; int 3]))
+        (Let None
+          (App (Rec None (Some "args") array.set_body)
+            (Struct [] [Var "a"; int 1; int 1]))
+          (Let None
+            (App (Rec None (Some "args") array.set_body)
+              (Struct [] [Var "a"; int 2; int 2]))
+            (App (Rec None (Some "a") array_sort) (Var "a")))))).
+
+Definition list_swap :=
+  qsort.swap_body array_list.al_get_body array_list.al_set_body.
+Definition list_partition :=
+  qsort.partition_body array_list.al_get_body array_list.al_set_body.
+Definition list_qsort :=
+  qsort.qsort_body array_list.al_get_body array_list.al_set_body.
+Definition list_sort :=
+  qsort.sort_body array_list.size_body array_list.al_get_body
+    array_list.al_set_body.
+
+Definition p_qsort_array_list :=
+  Prog [array_c; array_list_c] []
+    [Fn "initArrayList" None None array_list.init_body [] "ArrayList";
+     Fn "size" al (Some "a") array_list.size_body [] t_int;
+     Fn "capacity" al (Some "a") array_list.capacity_body [] t_int;
+     Fn "version" al (Some "a") array_list.version_body [] t_int;
+     Fn "get" al (Some "args") array_list.al_get_body [t_int] t_int;
+     Fn "set" al (Some "args") array_list.al_set_body [t_int; t_int] "Unit";
+     Fn "grow" al (Some "args") array_list.grow_body [t_int] "Unit";
+     Fn "add" al (Some "args") array_list.add_body [t_int] "Unit";
+     Fn "swap" None (Some "args") list_swap ["ArrayList"; t_int; t_int] "Unit";
+     Fn "partition" None (Some "args") list_partition
+       ["ArrayList"; t_int; t_int] t_int;
+     Fn "qsort" None (Some "args") list_qsort
+       ["ArrayList"; t_int; t_int] "Unit";
+     Fn "sort" None (Some "a") list_sort ["ArrayList"] "Unit"]
+    (Let (Some "a") (App (Rec None None array_list.init_body) unit_e)
+      (Let None
+        (App (Rec None (Some "args") array_list.add_body)
+          (Struct [] [Var "a"; int 3]))
+        (Let None
+          (App (Rec None (Some "args") array_list.add_body)
+            (Struct [] [Var "a"; int 1]))
+          (Let None
+            (App (Rec None (Some "args") array_list.add_body)
+              (Struct [] [Var "a"; int 2]))
+            (App (Rec None (Some "a") list_sort) (Var "a")))))).
+
 (** * The files, in [_CoqProject] order *)
 
 Definition cj_files : list (string * prog) :=
@@ -160,7 +235,9 @@ Definition cj_files : list (string * prog) :=
    ("vtable", p_vtable);
    ("list", p_list);
    ("array", p_array);
-   ("array_list", p_array_list)].
+   ("array_list", p_array_list);
+   ("qsort_array", p_qsort_array);
+   ("qsort_array_list", p_qsort_array_list)].
 
 (** Every file, each preceded by a line [@@FILE NAME]. *)
 Definition cj_bundle : string :=

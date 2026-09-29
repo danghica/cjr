@@ -15,5 +15,6 @@ theories/examples/vtable.v
 theories/examples/list.v
 theories/examples/array.v
 theories/examples/array_list.v
+theories/examples/qsort.v
 theories/examples/cj_print.v
 theories/examples/emit_cj.v

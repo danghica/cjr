@@ -42,4 +42,5 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| **Total** | **3449** | | **420** | **8.2** |
+| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
+| **Total** | **5198** | | **649** | **8.0** |

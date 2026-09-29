@@ -104,7 +104,7 @@ Client theorems compose these calls with `let` and framing. A fresh list has siz
 
 Each `.v` file holds the expression, the specification, and the proof. The Cangjie a reader compares with a library is a rendering of the expression alone. `theories/examples/cj_print.v` defines that rendering. It imports the language and Coq's string library. Class and field names are arguments, so one file can print an array as `len` and `data`, an array list as `myData`, `mySize`, and `myVersion`, and a list node as `isCons`, `value`, and `next`.
 
-The printer inverts the tutorial's table: `let`, `var`, `while`, `malloc` of eight bytes times the word count followed by a `CPointer<Int64>` cast, `unsafe` read, write, and `+`, and constructor calls for `New`. The receiver is omitted from the parameter list. A body structurally equal to a known method prints as a call, so `add` calls `grow`. The copy loop prints as its `while`. The out-of-range arm prints as `unsafe { CPointer<Int64>().read() }`, a stuck null read. An administrative stack form prints a marker containing `unsupported`, and the build rejects any file that contains it. None of the eleven files does.
+The printer inverts the tutorial's table: `let`, `var`, `while`, `malloc` of eight bytes times the word count followed by a `CPointer<Int64>` cast, `unsafe` read, write, and `+`, and constructor calls for `New`. The receiver is omitted from the parameter list. A body structurally equal to a known method prints as a call, so `add` calls `grow`. The copy loop prints as its `while`. The out-of-range arm prints as `unsafe { CPointer<Int64>().read() }`, a stuck null read. An administrative stack form prints a marker containing `unsupported`, and the build rejects any file that contains it. None of the thirteen files does.
 
 `theories/examples/emit_cj.v` builds one string per example. The `cj` target in `Makefile.local-late` compiles that file, evaluates the strings, writes `generated/cj/`, writes `generated/cj/further.tex` for any generated file the tutorial does not yet name, and runs `pdflatex` twice. The tutorial includes those files with `\lstinputlisting`. The Coq listings of the core terms remain. Each generated file declares `malloc` and `free`, the types and functions, and a `main` that runs a closed program or calls a library's operations. The array-list factory is named `initArrayList`, leaving `init` for constructors. The parameter called `this` in the method-table term is printed as `self`. No Cangjie compiler is run.
 
@@ -123,9 +123,10 @@ The counts below are `wc -l` of the whole file. A `.v` file includes the program
 | `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| **Total** | **3449** | | **420** | **8.2** |
+| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
+| **Total** | **5198** | | **649** | **8.0** |
 
-Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 3449 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. Across the eleven files the specifications are 8.2 times as long as the extracted Cangjie.
+Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 5198 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. The quicksort specification is counted once and extracted twice, 76 lines for the array and 153 lines for the array list. Across the thirteen files the specifications are 8.0 times as long as the extracted Cangjie.
 
 ## What is omitted, and where to read
 

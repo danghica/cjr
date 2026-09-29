@@ -456,7 +456,11 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
       | Some k => fn_name k
       | None => "{ " +++ binder_name x +++ " => " +++ ex env ind body +++ " }"
       end
-  | Rec (Some _) _ _ => unsupported "recursive closure"
+  | Rec (Some _) _ body =>
+      match find_body env body with
+      | Some k => fn_name k
+      | None => unsupported "recursive closure"
+      end
   | App f a =>
       let k := match f with
                | Rec _ _ body => find_body env body
@@ -597,7 +601,11 @@ with exv (env : penv) (ind : string) (v : val) {struct v} : string :=
       | Some k => fn_name k
       | None => "{ " +++ binder_name x +++ " => " +++ ex env ind body +++ " }"
       end
-  | RecV (Some _) _ _ => unsupported "recursive closure"
+  | RecV (Some _) _ body =>
+      match find_body env body with
+      | Some k => fn_name k
+      | None => unsupported "recursive closure"
+      end
   | StructV vs =>
       let args := map (exv env ind) vs in
       match decl_by_arity (e_sty env) (List.length args) with

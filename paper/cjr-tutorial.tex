@@ -2058,6 +2058,638 @@ The equations above are the base: length, lookup, update, append, and removal ag
 
 \input{generated/cj/further.tex}
 
+\section{Quicksort}
+\label{sec:qsort}
+
+\texttt{theories/examples/qsort.v} is an in-place Lomuto quicksort of \texttt{Int64}.
+One Gallina function is the functional specification.
+One core-language program, parameterised by length, read, and write, is proved to compute that function.
+The fixed array and the array list each supply those three operations.
+The algorithm applies their specifications and leaves \(\mathsf{isArray}\) and \(\mathsf{isArrayList}\) folded.
+
+The slice is half-open, \([lo, hi)\).
+The pivot is the element at index \(hi - 1\).
+A scan walks \(j\) from \(lo\) up to that index.
+Each value \(\le\) the pivot is swapped into the stored prefix and the prefix boundary \(i\) advances.
+The pivot is then swapped to \(i\).
+The recursive calls sort \([lo, i)\) and \([i+1, hi)\).
+The exported operation reads the length \(n\) and sorts \([0, n)\): every word of an array, or the live prefix of an array list.
+The arithmetic in the program is subtraction and \(\le\).
+
+\subsection{The functional algorithm}
+
+Lists are mathematical lists of integers.
+\(xs_k\) means the lookup \(xs !! k\), and \(xs[k \mapsto z]\) means the update \(\langle k := z \rangle\, xs\).
+A missing lookup leaves the list alone.
+
+\begin{lstlisting}
+Definition swap_list (xs : list Z) (i j : nat) : list Z :=
+  match xs !! i, xs !! j with
+  | Some xi, Some xj => <[i := xj]> (<[j := xi]> xs)
+  | _, _ => xs
+  end.
+\end{lstlisting}
+
+\(\mathsf{swap}(xs, i, j)\) exchanges the elements at two in-range indexes.
+The code performs the two writes in the other order, first index \(i\) and then index \(j\).
+When both lookups exist, the two orders agree: if \(i = j\) both are the identity, and if \(i \neq j\) the updates commute.
+That equation is \texttt{swap\_list\_code}.
+
+\begin{lstlisting}
+Lemma swap_list_code xs i j xi xj :
+  xs !! i = Some xi -> xs !! j = Some xj ->
+  <[j := xi]> (<[i := xj]> xs) = swap_list xs i j.
+\end{lstlisting}
+
+The scan is a fuelled recursion.
+The fuel \(n\) is the number of indexes still to visit.
+\(i\) is the boundary of the stored prefix, \(j\) is the next index to read, and \(\mathit{bound}\) is the index of the pivot, which the scan does not move.
+
+\begin{lstlisting}
+Fixpoint lomuto (n : nat) (xs : list Z) (pivot : Z) (i j bound : nat)
+  : list Z * nat :=
+  match n with
+  | O => (xs, i)
+  | S n =>
+      if Nat.ltb j bound then
+        match xs !! j with
+        | Some v =>
+            if Z.leb v pivot then
+              lomuto n (swap_list xs i j) pivot (S i) (S j) bound
+            else lomuto n xs pivot i (S j) bound
+        | None => (xs, i)
+        end
+      else (xs, i)
+  end.
+\end{lstlisting}
+
+While \(j < \mathit{bound}\) and index \(j\) holds \(v\), a value \(v \le \mathit{pivot}\) is exchanged with index \(i\) and both cursors advance.
+A value \(v > \mathit{pivot}\) leaves the list unchanged and advances only \(j\).
+The result is the list and the final boundary.
+
+Partition reads the pivot, runs the scan from \(i = j = lo\) with fuel \((hi - 1) - lo\), and exchanges the pivot with the returned boundary.
+
+\begin{lstlisting}
+Definition partition_list (xs : list Z) (lo hi : nat) : list Z * nat :=
+  match xs !! (hi - 1)%nat with
+  | Some pivot =>
+      match lomuto ((hi - 1) - lo)%nat xs pivot lo lo (hi - 1)%nat with
+      | (zs, q) => (swap_list zs q (hi - 1)%nat, q)
+      end
+  | None => (xs, lo)
+  end.
+\end{lstlisting}
+
+The recursive sort is also fuelled.
+The fuel is at least the length of the slice.
+A slice of length at most one is already finished.
+A longer slice is partitioned, the left part is sorted, and the right part is sorted on that result.
+Both recursive calls reuse the predecessor fuel: each of those slices has length at most \(hi - lo - 1\).
+
+\begin{lstlisting}
+Fixpoint qsort_slice (n : nat) (xs : list Z) (lo hi : nat) : list Z :=
+  match n with
+  | O => xs
+  | S n =>
+      if Nat.leb hi (lo + 1)%nat then xs
+      else
+        let '(ys, p) := partition_list xs lo hi in
+        qsort_slice n (qsort_slice n ys lo p) (S p) hi
+  end.
+
+Definition qsort (xs : list Z) : list Z :=
+  qsort_slice (length xs) xs 0%nat (length xs).
+\end{lstlisting}
+
+\(\mathsf{qsort}(xs)\) sorts the whole list.
+The test \(\mathit{hi} \le lo + 1\) is the Gallina form of the program test \((lo + 1) \le (hi - 1)\) failing.
+On a slice of length \(0\) or \(1\) the function returns its input.
+
+\subsection{Sortedness and permutation}
+
+A slice is sorted when every pair of elements in it is in non-decreasing order.
+Indexes outside the slice are not constrained.
+
+\begin{lstlisting}
+Definition slice_sorted (xs : list Z) (lo hi : nat) : Prop :=
+  forall i j x y, (lo <= i)%nat -> (i < j)%nat -> (j < hi)%nat ->
+    xs !! i = Some x -> xs !! j = Some y -> (x <= y)%Z.
+\end{lstlisting}
+
+In mathematics, \(\mathsf{sorted}(xs, lo, hi)\) means
+\[
+lo \le i < j < hi \land xs_i = x \land xs_j = y \implies x \le y.
+\]
+Equal values satisfy the comparison in either order.
+The specification records the multiset of values, which a permutation preserves, and this order.
+
+The slice specification is the induction hypothesis of the fuel recursion.
+\[
+ys = \mathsf{qsortSlice}(n, xs, lo, hi).
+\]
+
+The source writes a permutation as \(x \equiv_p y\), a pure assertion in corner brackets, and a stack cell as \(l \mapsto_s v\).
+The listings spell those with \texttt{Permutation}, \texttt{bi\_pure}, and \texttt{stack\_mapsto}.
+The wand is written \texttt{-*}.
+
+\begin{lemma}[Slice]
+If \(hi \le \lvert xs \rvert\) and \(hi - lo \le n\), then \(\lvert ys \rvert = \lvert xs \rvert\), \(ys\) is a permutation of \(xs\), \(ys\) and \(xs\) agree at every index outside \([lo, hi)\), and \(\mathsf{sorted}(ys, lo, hi)\).
+\end{lemma}
+
+\begin{lstlisting}
+Lemma qsort_slice_spec n xs lo hi :
+  (hi <= length xs)%nat ->
+  (hi - lo <= n)%nat ->
+  let ys := qsort_slice n xs lo hi in
+  length ys = length xs /\ Permutation ys xs /\
+  (forall k, (k < lo \/ hi <= k)%nat -> ys !! k = xs !! k) /\
+  slice_sorted ys lo hi.
+\end{lstlisting}
+
+The whole-list facts are that lemma at \(lo = 0\), \(hi = \lvert xs \rvert\), and \(n = \lvert xs \rvert\).
+
+\begin{lemma}[Permutation]
+\(\mathsf{qsort}(xs)\) is a permutation of \(xs\).
+\end{lemma}
+
+\begin{lstlisting}
+Lemma qsort_perm xs : Permutation (qsort xs) xs.
+\end{lstlisting}
+
+\begin{lemma}[Sorted]
+\(\mathsf{sorted}(\mathsf{qsort}(xs),\, 0,\, \lvert xs \rvert)\).
+\end{lemma}
+
+\begin{lstlisting}
+Lemma qsort_sorted xs : slice_sorted (qsort xs) 0%nat (length xs).
+\end{lstlisting}
+
+One concrete run is computed in Coq.
+
+\begin{lstlisting}
+Lemma qsort_example : qsort [3%Z; 1%Z; 2%Z] = [1%Z; 2%Z; 3%Z].
+\end{lstlisting}
+
+\subsection{The partition invariant}
+
+The scan is the one loop.
+Its invariant relates the list at the start of the slice, \(xs_0\), to the list \(xs\) at an intermediate cursor \((i, j)\).
+The pivot value sits at \(\mathit{bound}\) throughout the scan.
+The final exchange of the pivot happens after the loop, so the invariant still has the pivot at the end of the slice.
+
+\begin{lstlisting}
+Record lomuto_inv (xs0 xs : list Z) (lo i j bound : nat) (pivot : Z) : Prop := {
+  linv_len : length xs = length xs0;
+  linv_perm : Permutation xs xs0;
+  linv_lo : (lo <= i)%nat;
+  linv_ij : (i <= j)%nat;
+  linv_jb : (j <= bound)%nat;
+  linv_lenb : (bound < length xs)%nat;
+  linv_piv : xs !! bound = Some pivot;
+  linv_out : forall k, (k < lo \/ bound < k)%nat -> xs !! k = xs0 !! k;
+  linv_left : forall k x, (lo <= k < i)%nat -> xs !! k = Some x -> (x <= pivot)%Z;
+  linv_mid : forall k x, (i <= k < j)%nat -> xs !! k = Some x -> (pivot < x)%Z
+}.
+\end{lstlisting}
+
+Read as a picture of \([lo, \mathit{bound}]\):
+
+\begin{itemize}
+\item The length is unchanged, and the list is a permutation of the original.
+\item The cursors satisfy \(lo \le i \le j \le \mathit{bound}\), and \(\mathit{bound}\) is in range.
+\item Index \(\mathit{bound}\) still holds the pivot.
+\item Every index outside \([lo, \mathit{bound}]\) is unchanged.
+\item Every element of \([lo, i)\) is \(\le\) the pivot.
+\item Every element of \([i, j)\) is \(>\) the pivot.
+\item The segment \([j, \mathit{bound})\) has not been classified yet.
+\end{itemize}
+
+At the start, \(i = j = lo\), so both classified segments are empty.
+
+\begin{lstlisting}
+Lemma lomuto_inv_start xs lo bound pivot :
+  (lo <= bound)%nat ->
+  (bound < length xs)%nat ->
+  xs !! bound = Some pivot ->
+  lomuto_inv xs xs lo lo lo bound pivot.
+\end{lstlisting}
+
+One iteration preserves the invariant.
+If \(j < \mathit{bound}\) and \(xs_j = v\), the next state is the swapped list with both cursors advanced when \(v \le \mathit{pivot}\), and the same list with only \(j\) advanced when \(v > \mathit{pivot}\).
+In the first branch the old element at \(i\), which was in the unclassified or the greater segment, moves to \(j\), and \(v\) becomes the new end of the lesser prefix.
+In the second branch \(v\) becomes the new end of the greater segment.
+
+\begin{lstlisting}
+Lemma lomuto_step xs0 xs lo i j bound pivot v :
+  lomuto_inv xs0 xs lo i j bound pivot ->
+  (j < bound)%nat ->
+  xs !! j = Some v ->
+  lomuto_inv xs0
+    (if Z.leb v pivot then swap_list xs i j else xs)
+    lo (if Z.leb v pivot then S i else i) (S j) bound pivot.
+\end{lstlisting}
+
+Running the fuelled scan from a state that satisfies the invariant, with fuel \(\mathit{bound} - j\), finishes in a state whose cursors are \((p, \mathit{bound})\).
+
+\begin{lstlisting}
+Lemma lomuto_go n xs0 xs lo i j bound pivot ys p :
+  lomuto_inv xs0 xs lo i j bound pivot ->
+  (n = bound - j)%nat ->
+  lomuto n xs pivot i j bound = (ys, p) ->
+  lomuto_inv xs0 ys lo p bound bound pivot.
+\end{lstlisting}
+
+The final exchange moves the pivot from \(\mathit{bound}\) to \(p\).
+What partition establishes, for a non-empty in-range slice, is the predicate \texttt{part\_ok}.
+
+\begin{lstlisting}
+Definition part_ok (xs ys : list Z) (lo hi p : nat) (pivot : Z) : Prop :=
+  length ys = length xs /\ Permutation ys xs /\ (lo <= p < hi)%nat /\
+  ys !! p = Some pivot /\
+  (forall k, (k < lo \/ hi <= k)%nat -> ys !! k = xs !! k) /\
+  (forall k x, (lo <= k < p)%nat -> ys !! k = Some x -> (x <= pivot)%Z) /\
+  (forall k x, (p < k < hi)%nat -> ys !! k = Some x -> (pivot < x)%Z).
+
+Lemma partition_list_ok xs lo hi ys p :
+  (lo < hi)%nat -> (hi <= length xs)%nat ->
+  partition_list xs lo hi = (ys, p) ->
+  exists pivot, part_ok xs ys lo hi p pivot.
+\end{lstlisting}
+
+So \(ys\) has the same length as \(xs\) and is a permutation of it, the returned index \(p\) lies in \([lo, hi)\), index \(p\) holds the pivot, indexes outside the slice are untouched, \([lo, p)\) is \(\le\) the pivot, and \((p, hi)\) is \(>\) the pivot.
+
+The recursive calls sort those two sides.
+A permutation of a side can rearrange it, so the comparison with the pivot has to be re-established after the recursive call.
+The argument counts elements that fail the comparison.
+\(\mathsf{count}(P, xs)\) is the number of elements of \(xs\) for which \(P\) returns true.
+
+\begin{lstlisting}
+Fixpoint count_if (P : Z -> bool) (xs : list Z) : nat :=
+  match xs with
+  | [] => 0
+  | x :: xs => (if P x then 1%nat else 0%nat) + count_if P xs
+  end.
+\end{lstlisting}
+
+If a slice of \(xs\) lies entirely in \(P\), a list \(ys\) of the same length that permutes \(xs\) and agrees with \(xs\) outside that slice still lies entirely in \(P\) on that slice.
+The count of failures on the slice is zero on both sides, because the count is preserved by permutation and the outside regions contribute the same count.
+
+\begin{lstlisting}
+Lemma region_preserved (P : Z -> bool) (xs ys : list Z) (lo hi : nat) :
+  length ys = length xs ->
+  (lo <= hi <= length xs)%nat ->
+  (forall k, (k < lo \/ hi <= k)%nat -> ys !! k = xs !! k) ->
+  Permutation ys xs ->
+  (forall k x, (lo <= k < hi)%nat -> xs !! k = Some x -> P x = true) ->
+  forall k x, (lo <= k < hi)%nat -> ys !! k = Some x -> P x = true.
+\end{lstlisting}
+
+Applied to \(P(z) = (z \le \mathit{pivot})\) on the left of \(p\), and to \(P(z) = (\mathit{pivot} < z)\) on the right of \(p\), this is what lets the two sorted sides and the pivot in the middle combine into one sorted slice.
+A slice of length at most one is sorted outright.
+
+\begin{lstlisting}
+Lemma slice_sorted_short xs lo hi :
+  (hi <= lo + 1)%nat -> slice_sorted xs lo hi.
+\end{lstlisting}
+
+Two adjacent sorted slices, with every element of \([lo, p)\) at most the pivot and every element of \((p, hi)\) greater than the pivot, form one sorted slice.
+
+\begin{lstlisting}
+Lemma slice_sorted_join xs lo p hi pivot :
+  (lo <= p)%nat -> (p < hi)%nat ->
+  xs !! p = Some pivot ->
+  (forall k x, (lo <= k < p)%nat -> xs !! k = Some x -> (x <= pivot)%Z) ->
+  (forall k x, (p < k < hi)%nat -> xs !! k = Some x -> (pivot < x)%Z) ->
+  slice_sorted xs lo p ->
+  slice_sorted xs (S p) hi ->
+  slice_sorted xs lo hi.
+\end{lstlisting}
+
+\subsection{The length, get, and set interface}
+
+The core language has no interfaces and no generics, so the shared program is a Coq section.
+Its parameters are a ghost type \(G\), a representation \(R\), and three expression bodies.
+
+\begin{lstlisting}
+Variable G : Type.
+Variable R : G -> list Z -> val -> iProp.
+Variable len_body get_body set_body : expr.
+\end{lstlisting}
+
+\(R(g, xs, a)\) says that the value \(a\) currently represents the list \(xs\), with ghost information \(g\).
+For the array, \(G\) is unit and \(R\) ignores it.
+For the array list, \(g\) is the pair of the capacity and the version.
+
+Each body must be closed apart from its own parameter.
+Length binds \texttt{"a"}.
+Reading and writing bind \texttt{"args"}.
+Substitution of any other name, whether a value or a stack location, leaves the body unchanged.
+The six hypotheses have this shape.
+
+\begin{lstlisting}
+Hypothesis len_sub : forall x v, x <> "a" -> subst x v len_body = len_body.
+Hypothesis len_subvar :
+  forall x (l : loc), x <> "a" -> subst_var x l len_body = len_body.
+Hypothesis get_sub : forall x v, x <> "args" -> subst x v get_body = get_body.
+Hypothesis get_subvar :
+  forall x (l : loc), x <> "args" -> subst_var x l get_body = get_body.
+Hypothesis set_sub : forall x v, x <> "args" -> subst x v set_body = set_body.
+Hypothesis set_subvar :
+  forall x (l : loc), x <> "args" -> subst_var x l set_body = set_body.
+\end{lstlisting}
+
+The three specifications are the only facts the algorithm applies about the library.
+Each one is stated at the call form the program builds: a closure applied to one struct of arguments.
+The ghost \(g\) is the same in the precondition and the postcondition.
+A write changes the list and leaves \(g\) alone.
+
+\begin{lstlisting}
+Hypothesis len_spec : forall g xs (a : val),
+  R g xs a -*
+  WP App (Rec None (Some "a") len_body) (Val a)
+    {{ v, bi_pure (v = LitV (LitInt (Z.of_nat (length xs)))) * R g xs a }}.
+
+Hypothesis get_spec : forall g xs (a : val) (i : nat) x,
+  xs !! i = Some x ->
+  R g xs a -*
+  WP App (Rec None (Some "args") get_body)
+       (Val (StructV [a; LitV (LitInt (Z.of_nat i))]))
+    {{ v, bi_pure (v = LitV (LitInt x)) * R g xs a }}.
+
+Hypothesis set_spec : forall g xs (a : val) (i : nat) y x,
+  xs !! i = Some y ->
+  R g xs a -*
+  WP App (Rec None (Some "args") set_body)
+       (Val (StructV [a; LitV (LitInt (Z.of_nat i)); LitV (LitInt x)]))
+    {{ v, bi_pure (v = LitV LitUnit) * R g (<[i := x]> xs) a }}.
+\end{lstlisting}
+
+In mathematics, with the call written as the operation it prints to:
+
+\begin{definition}[Library interface]
+\[
+\begin{aligned}
+R(g, xs, a) &\vdash \Wpre\,(\mathsf{length}(a))
+  \{\,v.\; \pure{v = \lvert xs \rvert} \sep R(g, xs, a)\,\},\\
+xs_i = x \land R(g, xs, a) &\vdash \Wpre\,(\mathsf{get}(a, i))
+  \{\,v.\; \pure{v = x} \sep R(g, xs, a)\,\},\\
+xs_i = y \land R(g, xs, a) &\vdash \Wpre\,(\mathsf{set}(a, i, x))
+  \{\,v.\; \pure{v = ()} \sep R(g,\, xs[i \mapsto x],\, a)\,\}.
+\end{aligned}
+\]
+\end{definition}
+
+The value that represents the container is a literal object.
+Substituting into it does nothing, which is the predicate \texttt{rigid}.
+An instance opens the representation far enough to see \(a = \mathsf{lit}(o)\) and then rebuilds it.
+A literal satisfies \texttt{rigid} by computation, which is \texttt{lit\_rigid}.
+
+\begin{lstlisting}
+Definition rigid (v : val) : Prop :=
+  (forall x w, subst_val x w v = v) /\
+  (forall x (l : loc), subst_var_val x l v = v).
+\end{lstlisting}
+
+\subsection{The program}
+
+Application in the core language is unary, so a call of two or three arguments builds a struct, binds it, and applies the library closure to that struct.
+The printer erases the struct and prints \texttt{get(a, i)} or \texttt{a.get(i)}, according to which body was supplied.
+\texttt{call2} binds the result.
+\texttt{call3} is the call itself.
+\texttt{call3\_seq} sequences the call before a continuation.
+
+\begin{lstlisting}
+Definition call2 (body : expr) (a b : expr) (dst : string) (k : expr) : expr :=
+  Let (Some "pack") (Struct [] [a; b])
+    (Let (Some dst) (App (Rec None (Some "args") body) (Var "pack")) k).
+
+Definition call3 (body : expr) (a b c : expr) : expr :=
+  Let (Some "pack") (Struct [] [a; b; c])
+    (App (Rec None (Some "args") body) (Var "pack")).
+
+Definition call3_seq (body : expr) (a b c k : expr) : expr :=
+  Let (Some "pack") (Struct [] [a; b; c])
+    (Let None (App (Rec None (Some "args") body) (Var "pack")) k).
+\end{lstlisting}
+
+Swap reads index \(i\) into \texttt{t}, reads index \(j\) into \texttt{u}, writes \texttt{u} at \(i\), and writes \texttt{t} at \(j\).
+
+\begin{lstlisting}
+Definition swap_body : expr :=
+  Let (Some "a") (StructLoad (Var "args") 0)
+  (Let (Some "i") (StructLoad (Var "args") 1)
+  (Let (Some "j") (StructLoad (Var "args") 2)
+    (call2 get_body (Var "a") (Var "i") "t"
+      (call2 get_body (Var "a") (Var "j") "u"
+        (call3_seq set_body (Var "a") (Var "i") (Var "u")
+          (call3 set_body (Var "a") (Var "j") (Var "t"))))))).
+\end{lstlisting}
+
+\begin{lemma}[Swap]
+If \(a\) is rigid, \(xs_i = x_i\), and \(xs_j = x_j\), then
+\[
+R(g, xs, a) \vdash
+  \Wpre\,(\mathsf{swap}(a, i, j))
+  \{\,v.\; \pure{v = ()} \sep R(g,\, \mathsf{swap}(xs, i, j),\, a)\,\}.
+\]
+\end{lemma}
+
+\begin{lstlisting}
+Lemma swap_spec g xs (a : val) (i j : nat) xi xj :
+  rigid a ->
+  xs !! i = Some xi -> xs !! j = Some xj ->
+  R g xs a -*
+  WP call_swap a i j
+    {{ v, bi_pure (v = LitV LitUnit) * R g (swap_list xs i j) a }}.
+\end{lstlisting}
+
+The scan is the \texttt{while} of partition.
+Its condition is \((j + 1) \le (hi - 1)\), that is \(j < hi - 1\).
+The body reads index \(j\).
+When the value is \(\le\) the pivot it swaps indexes \(i\) and \(j\) and advances \(i\).
+It then advances \(j\).
+The two cursors are mutable \texttt{var} bindings, allocated by \texttt{VarBind} from the initial value \(lo\).
+
+\begin{lstlisting}
+Definition scan (a hi pivot : expr) : expr :=
+  While (BinOp LeOp (plus1 (Var "j")) (minus1 hi))
+    (call2 get_body a (Var "j") "v"
+      (Let None
+        (If (BinOp LeOp (Var "v") pivot)
+          (Let None (call3 swap_body a (Var "i") (Var "j"))
+            (Assign "i" (plus1 (Var "i"))))
+          unitv)
+        (Assign "j" (plus1 (Var "j"))))).
+\end{lstlisting}
+
+After the two \texttt{var} bindings are opened, \(i\) and \(j\) reside in stack cells \(l_i\) and \(l_j\).
+The loop specification is an induction on the number of steps remaining, \((hi - 1) - j\).
+The postcondition is the Gallina scan: the list is \(\mathsf{lomuto}(n, xs, \mathit{pivot}, i, j, hi - 1)\), the cell \(l_i\) holds the returned boundary, and the cell \(l_j\) holds \(hi - 1\).
+The invariant maintained at each iteration is \(\mathsf{lomutoInv}\) of the section above, instantiated at the current cursors.
+The base case is the failing loop test, \(j = hi - 1\).
+
+\begin{lstlisting}
+Lemma wp_scan n g xs (a : val) (hi : nat) (pivot : Z) (i j : nat) (li lj : loc) :
+  rigid a ->
+  (0 < hi)%nat ->
+  ((hi - 1) - j = n)%nat ->
+  (j <= hi - 1)%nat ->
+  (i <= j)%nat ->
+  (hi - 1 < length xs)%nat ->
+  stack_mapsto (StackId li) (nval i) -*
+  stack_mapsto (StackId lj) (nval j) -*
+  R g xs a -*
+  WP scan_open a (Z.of_nat hi) pivot li lj
+  {{ _, exists ys p,
+      bi_pure (lomuto n xs pivot i j (hi - 1) = (ys, p)) *
+      stack_mapsto (StackId li) (nval p) *
+      stack_mapsto (StackId lj) (nval (hi - 1)) * R g ys a }}.
+\end{lstlisting}
+
+Partition reads the pivot at \(hi - 1\), allocates \(i\) and \(j\) at \(lo\), runs the scan, swaps the pivot into the returned boundary, and returns that boundary.
+
+\begin{lstlisting}
+Definition partition_body : expr :=
+  Let (Some "a") (StructLoad (Var "args") 0)
+  (Let (Some "lo") (StructLoad (Var "args") 1)
+  (Let (Some "hi") (StructLoad (Var "args") 2)
+    (call2 get_body (Var "a") (minus1 (Var "hi")) "pivot"
+      (VarBind "i" (Var "lo")
+        (VarBind "j" (Var "lo")
+          (Let None (scan (Var "a") (Var "hi") (Var "pivot"))
+            (Let None (call3 swap_body (Var "a") (Var "i") (minus1 (Var "hi")))
+              (Var "i")))))))).
+\end{lstlisting}
+
+\begin{lemma}[Partition]
+If \(a\) is rigid, \(lo < hi \le \lvert xs \rvert\), and \(xs_{hi-1} = \mathit{pivot}\), then
+\[
+\begin{aligned}
+&R(g, xs, a) \vdash \Wpre\,(\mathsf{partition}(a, lo, hi))\\
+&\qquad \{\,v.\; \exists\, ys, p.\;
+  \pure{\mathsf{partition}(xs, lo, hi) = (ys, p)} \sep
+  \pure{v = p} \sep R(g, ys, a)\,\}.
+\end{aligned}
+\]
+\end{lemma}
+
+\begin{lstlisting}
+Lemma partition_spec g xs (a : val) (lo hi : nat) (pivot : Z) :
+  rigid a ->
+  (lo < hi)%nat ->
+  (hi <= length xs)%nat ->
+  xs !! (hi - 1)%nat = Some pivot ->
+  R g xs a -*
+  WP call_partition a lo hi
+  {{ v, exists ys p,
+      bi_pure (partition_list xs lo hi = (ys, p)) *
+      bi_pure (v = nval p) * R g ys a }}.
+\end{lstlisting}
+
+The recursive procedure is named \texttt{qsort}.
+Its test is \((lo + 1) \le (hi - 1)\), that is \(hi \ge lo + 2\).
+The failing branch is unit, so the printed program has no \texttt{else}.
+The succeeding branch partitions and calls itself on \([lo, p)\) and on \([p+1, hi)\).
+
+\begin{lstlisting}
+Definition qsort_body : expr :=
+  Let (Some "a") (StructLoad (Var "args") 0)
+  (Let (Some "lo") (StructLoad (Var "args") 1)
+  (Let (Some "hi") (StructLoad (Var "args") 2)
+    (If (BinOp LeOp (plus1 (Var "lo")) (minus1 (Var "hi")))
+      (Let (Some "p")
+        (App (Rec None (Some "args") partition_body)
+          (Struct [] [Var "a"; Var "lo"; Var "hi"]))
+        (Let None
+          (App (Var "qsort") (Struct [] [Var "a"; Var "lo"; Var "p"]))
+          (App (Var "qsort")
+            (Struct [] [Var "a"; plus1 (Var "p"); Var "hi"]))))
+      unitv))).
+\end{lstlisting}
+
+The specification follows the fuel of \texttt{qsort\_slice}.
+With fuel at least \(hi - lo\), the call replaces the represented list by the sorted slice and leaves the ghost \(g\) unchanged.
+Outside the slice the functional specification already says the elements are untouched, so the representation of the whole list is the specification of the slice.
+
+\begin{lstlisting}
+Lemma wp_qslice n g xs (a : val) (lo hi : nat) :
+  rigid a ->
+  (hi <= length xs)%nat ->
+  (hi - lo <= n)%nat ->
+  R g xs a -*
+  WP call_qsort a lo hi {{ _, R g (qsort_slice n xs lo hi) a }}.
+\end{lstlisting}
+
+\texttt{sort} reads the length and calls \texttt{qsort} on \([0, n)\).
+
+\begin{lstlisting}
+Definition sort_body : expr :=
+  Let (Some "n") (App (Rec None (Some "a") len_body) (Var "a"))
+    (Let (Some "pack") (Struct [] [Var "a"; zero; Var "n"])
+      (App (Rec (Some "qsort") (Some "args") qsort_body) (Var "pack"))).
+\end{lstlisting}
+
+\begin{theorem}[Sort]
+If \(a\) is rigid, then
+\[
+R(g, xs, a) \vdash
+  \Wpre\,(\mathsf{sort}(a))
+  \{\,\_.\; R(g,\, \mathsf{qsort}(xs),\, a)\,\}.
+\]
+\end{theorem}
+
+\begin{lstlisting}
+Lemma sort_spec g xs (a : val) :
+  rigid a ->
+  R g xs a -*
+  WP call_sort a {{ _, R g (qsort xs) a }}.
+\end{lstlisting}
+
+The proof is the slice specification at fuel \(\lvert xs \rvert\), on the slice \([0, \lvert xs \rvert)\).
+The length read produces that upper bound.
+A permutation preserves the length, so an array list's size, which is the length of \(xs\), is the same after sorting.
+
+\subsection{The two instances}
+
+The array instance takes \(G\) to be unit and \(R(\_, ys, b)\) to be \(\mathsf{isArray}(ys, b)\), the predicate of Section~\ref{sec:arrays}.
+The three bodies are \texttt{length\_body}, \texttt{get\_body}, and \texttt{set\_body}.
+Their closedness hypotheses are computed from those concrete terms.
+Their specifications are the library lemmas \texttt{length\_spec}, \texttt{get\_spec}, and \texttt{set\_spec}, each applied in range.
+The resulting statement mentions only the array predicate and \texttt{qsort}.
+
+\begin{lstlisting}
+Lemma array_qsort_spec xs (a : val) :
+  is_array xs a -*
+  WP call_sort length_body get_body set_body a
+    {{ _, is_array (qsort xs) a }}.
+\end{lstlisting}
+
+The array-list instance takes \(G\) to be \(\mathbb{N} \times \mathbb{Z}\) and \(R((c, v), ys, b)\) to be \(\mathsf{isArrayList}(ys, c, v, b)\).
+The three bodies are \texttt{size\_body}, \texttt{al\_get\_body}, and \texttt{al\_set\_body}.
+The write specification of the library already returns the same capacity and the same version, and the interface requires exactly that.
+Size is \(\lvert xs \rvert\) before the call and \(\lvert \mathsf{qsort}(xs) \rvert\) after it, and those lengths are equal.
+
+\begin{lstlisting}
+Lemma arraylist_qsort_spec xs cap ver (a : val) :
+  is_arraylist xs cap ver a -*
+  WP call_sort size_body al_get_body al_set_body a
+    {{ _, is_arraylist (qsort xs) cap ver a }}.
+\end{lstlisting}
+
+\subsection{The printed programs}
+
+\texttt{get} is a free function on \texttt{Array} and a method on \texttt{ArrayList}, and each generated file is compiled by itself, so the same three procedures are printed twice.
+The array file carries \texttt{make}, \texttt{length}, \texttt{get}, \texttt{set}, \texttt{swap}, \texttt{partition}, \texttt{qsort}, and \texttt{sort}.
+The array-list file carries \texttt{initArrayList}, \texttt{size}, \texttt{capacity}, \texttt{version}, \texttt{get}, \texttt{set}, \texttt{grow}, \texttt{add}, and the same three procedures.
+A client fills the list with \texttt{add}, and \texttt{add} calls \texttt{grow}.
+\texttt{sort} itself calls the length, the read, and the write.
+On the array those calls are \texttt{length(a)}, \texttt{get(a, i)}, and \texttt{set(a, i, x)}.
+On the array list they are \texttt{a.size()}, \texttt{a.get(i)}, and \texttt{a.set(i, x)}.
+
+\lstinputlisting{generated/cj/qsort_array.cj}
+
+\lstinputlisting{generated/cj/qsort_array_list.cj}
+
 \section{What is deliberately missing}
 
 We deliberately omit concurrency from the semantics, so there is no invariant-opening rule and no fork.
