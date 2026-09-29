@@ -358,6 +358,24 @@ Definition is_binop (e : expr) : bool :=
 Definition is_unit (e : expr) : bool :=
   match e with Val (LitV LitUnit) => true | _ => false end.
 
+Definition val_is_unit (v : val) : bool :=
+  match v with LitV LitUnit => true | _ => false end.
+
+(** A class-typed field cannot be built by passing the object under
+construction. [LitUnit] in that argument is the placeholder printed as
+[None]; the class declaration stores it and reads the object back. *)
+Fixpoint ctor_args (d : decl) (i : nat) (items : list (bool * string)) : list string :=
+  match items with
+  | [] => []
+  | (u, s) :: rest =>
+      let s' :=
+        match nth_error (d_fields d) i with
+        | Some (_, t) => if u && String.eqb t (d_name d) then "None" else s
+        | None => s
+        end in
+      s' :: ctor_args d (S i) rest
+  end.
+
 Definition leaf (e : expr) : bool :=
   match e with
   | Val (LitV _) | Var _ | FieldLoad (Var _) _ | StructLoad (Var _) _ => true
@@ -552,9 +570,11 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
       var_name env x +++ "." +++ field_of env (var_class env x) i +++ " = "
       +++ arg (ex env) ind a
   | New vs es =>
-      let args := app (map (exv env ind) vs) (map (fun s => arg (ex env) ind s) es) in
-      match decl_by_arity (e_cls env) (List.length args) with
-      | Some d => d_name d +++ "(" +++ comma args +++ ")"
+      let items :=
+        app (map (fun v => (val_is_unit v, exv env ind v)) vs)
+            (map (fun e => (is_unit e, arg (ex env) ind e)) es) in
+      match decl_by_arity (e_cls env) (List.length items) with
+      | Some d => d_name d +++ "(" +++ comma (ctor_args d 0 items) +++ ")"
       | None => unsupported "object of unknown layout"
       end
   | FieldLoad (Var x) i => var_name env x +++ "." +++ field_of env (var_class env x) i
@@ -620,13 +640,37 @@ Definition owned_by (c : string) (k : fn) : bool :=
 Definition is_free (k : fn) : bool :=
   match fn_owner k with Some _ => false | None => true end.
 
+Definition self_field (kw : string) (d : decl) (t : string) : bool :=
+  String.eqb kw "class" && String.eqb t (d_name d).
+
+Definition print_one_field (kw : string) (d : decl) (f t : string) : string :=
+  if self_field kw d t then
+    "    var " +++ f +++ "_raw: ?" +++ t +++ nl
+    +++ "    public mut prop " +++ f +++ ": " +++ t +++ " {" +++ nl
+    +++ "        get() {" +++ nl
+    +++ "            match (this." +++ f +++ "_raw) {" +++ nl
+    +++ "                case Some(n) => n" +++ nl
+    +++ "                case None => this" +++ nl
+    +++ "            }" +++ nl
+    +++ "        }" +++ nl
+    +++ "        set(n) { this." +++ f +++ "_raw = n }" +++ nl
+    +++ "    }" +++ nl
+  else "    public var " +++ f +++ ": " +++ t +++ nl.
+
+Definition ctor_param (kw : string) (d : decl) (f t : string) : string :=
+  f +++ ": " +++ if self_field kw d t then "?" +++ t else t.
+
+Definition init_store (kw : string) (d : decl) (f t : string) : string :=
+  "        this." +++ (if self_field kw d t then f +++ "_raw" else f)
+  +++ " = " +++ f +++ nl.
+
 Definition print_decl (env : penv) (kw : string) (d : decl) : string :=
   let fs := d_fields d in
   kw +++ " " +++ d_name d +++ " {" +++ nl
-  +++ cat_all (map (fun '(f, t) => "    public var " +++ f +++ ": " +++ t +++ nl) fs)
-  +++ "    public init(" +++ comma (map (fun '(f, t) => f +++ ": " +++ t) fs)
+  +++ cat_all (map (fun '(f, t) => print_one_field kw d f t) fs)
+  +++ "    public init(" +++ comma (map (fun '(f, t) => ctor_param kw d f t) fs)
   +++ ") {" +++ nl
-  +++ cat_all (map (fun '(f, _) => "        this." +++ f +++ " = " +++ f +++ nl) fs)
+  +++ cat_all (map (fun '(f, t) => init_store kw d f t) fs)
   +++ "    }" +++ nl
   +++ cat_all (map (fun k => nl +++ print_fn env "    " k)
                   (filter (owned_by (d_name d)) (e_fns env)))

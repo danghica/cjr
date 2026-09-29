@@ -39,7 +39,7 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/class_upd.v` | 45 | `generated/cj/class_upd.cj` | 23 | 2.0 |
 | `theories/examples/frame_call.v` | 37 | `generated/cj/frame_call.cj` | 20 | 1.9 |
 | `theories/examples/vtable.v` | 70 | `generated/cj/vtable.cj` | 33 | 2.1 |
-| `theories/examples/list.v` | 215 | `generated/cj/list.cj` | 43 | 5.0 |
+| `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| **Total** | **3437** | | **409** | **8.4** |
+| **Total** | **3449** | | **420** | **8.2** |

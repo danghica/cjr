@@ -88,7 +88,7 @@ The files in `theories/examples/` add one feature at a time. Each Coq definition
 
 ## Lists, arrays, and array lists
 
-`list.v` is a singly linked list of integers. Equality compares integers only, so a program cannot branch on null, and a load through null is stuck. The empty list is an object with a false boolean in field 0, the integer 0 in field 1, and unit in field 2. A cons cell stores true, the head, and the object for the rest. A Cangjie type checker would require the empty tail to be a `Node`. The core does not check types, and `empty` does not read the tail when the tag is false. Objects are never deleted.
+`list.v` is a singly linked list of integers. Equality compares integers only, so a program cannot branch on null, and a load through null is stuck. The empty list is an object with a false boolean in field 0, the integer 0 in field 1, and a pointer to that same object in field 2. The allocation writes unit into the third field and then overwrites it with the new object before returning. A cons cell stores true, the head, and the object for the rest. `empty` does not read the tail when the tag is false. Objects are never deleted. The printed class stores the tail as an optional raw field, because a Cangjie constructor cannot receive the object it is building, and reads it back as a `Node`.
 
 `isList(xs, p)` recurses on the mathematical list and owns the fields of `p` together with, in the cons case, a separate `isList` fact for the tail. `nil` and `cons` allocate. `head`, `tail`, and `empty` read and return the same predicate. The equation `tail` after `cons` returns the original pointer, which still represents the original list. The new cell's fields are discarded. `head` after `cons` returns the inserted integer. Append and reverse are not proved. Either proof would open one cell, use the tail fact, and frame the cell.
 
@@ -120,12 +120,12 @@ The counts below are `wc -l` of the whole file. A `.v` file includes the program
 | `theories/examples/class_upd.v` | 45 | `generated/cj/class_upd.cj` | 23 | 2.0 |
 | `theories/examples/frame_call.v` | 37 | `generated/cj/frame_call.cj` | 20 | 1.9 |
 | `theories/examples/vtable.v` | 70 | `generated/cj/vtable.cj` | 33 | 2.1 |
-| `theories/examples/list.v` | 215 | `generated/cj/list.cj` | 43 | 5.0 |
+| `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| **Total** | **3437** | | **409** | **8.4** |
+| **Total** | **3449** | | **420** | **8.2** |
 
-Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 3437 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. Across the eleven files the specifications are 8.4 times as long as the extracted Cangjie.
+Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 3449 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. Across the eleven files the specifications are 8.2 times as long as the extracted Cangjie.
 
 ## What is omitted, and where to read
 

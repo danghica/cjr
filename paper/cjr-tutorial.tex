@@ -1346,7 +1346,9 @@ The sticking point is resolved by using a non-\texttt{open} class with three fie
 
 \begin{lstlisting}
 Definition nil_body : expr :=
-  New [LitV (LitBool false); LitV (LitInt 0); LitV LitUnit] [].
+  Let (Some "n")
+    (New [LitV (LitBool false); LitV (LitInt 0); LitV LitUnit] [])
+    (Seq (FieldStore (Var "n") 2 (Var "n")) (Var "n")).
 
 Definition cons_body : expr :=
   Let (Some "x") (StructLoad (Var "a") 0)
@@ -1357,7 +1359,10 @@ Definition cons_body : expr :=
 Field \(0\) is the tag: \(\False\) means empty, \(\True\) means cons.
 Field \(1\) is the head integer, which is \(0\) and unused when the tag is false.
 Field \(2\) is the tail.
-On an empty node it is unit; on a cons node it is the value that represents the rest of the list, itself either an empty node or another cons node.
+On an empty node it is that same node; on a cons node it is the value that represents the rest of the list, itself either an empty node or another cons node.
+The allocation writes unit into the field and then stores the new object there before \texttt{nil} returns.
+The points-to fact owns the field.
+The value in the field is a pointer to the object, so the fact does not own the object a second time, and the predicate does not unfold.
 Objects are not freed, so a cons cell stays in the heap after its tail has been read.
 That matches the language: there is a \texttt{new} rule and no rule that deletes an object.
 
@@ -1367,9 +1372,11 @@ The other functions take the node.
 
 \lstinputlisting{generated/cj/list.cj}
 
-The empty node proved in \texttt{list.v} stores \texttt{()} in the unread tail field.
-Full Cangjie types that field as \texttt{Node}, so a well-typed empty node needs a \texttt{Node} there.
-The core is untyped and \texttt{empty} never reads \texttt{next} when \texttt{isCons} is \texttt{false}, which is why the mechanized nil term uses unit.
+A Cangjie constructor cannot receive the object it is building, so the printed class takes an optional tail and stores it in a raw field.
+Unit, the placeholder written by the allocation, is printed as \texttt{None}.
+The property \texttt{next} reads that raw field back as a \texttt{Node}: the stored node when it is present, and the node itself when it is empty.
+After \texttt{nil} returns, the raw tail has been set to the node.
+\texttt{empty} does not read \texttt{next}.
 The functions above are the Cangjie surface; \texttt{cons} of two arguments lowers to the unary core call on the struct \(\langle x, xs\rangle\).
 
 \texttt{empty} returns the negation of the tag.
@@ -1388,7 +1395,7 @@ o \ptso[0] \False
 \sep
 o \ptso[1] 0
 \sep
-o \ptso[2] \Unit.
+o \ptso[2] \mathsf{obj}(o).
 \]
 \(\mathsf{isList}(x :: xs, p)\) holds when \(p = \mathsf{obj}(o)\) and there is a tail value \(q\) with
 \[
@@ -1410,7 +1417,7 @@ Fixpoint is_list (xs : list Z) (p : val) : iProp S :=
   | [] => exists o, pure (p = LitV (LitObj o)) *
       ObjId o |->o[0] LitV (LitBool false) *
       ObjId o |->o[1] LitV (LitInt 0) *
-      ObjId o |->o[2] LitV LitUnit
+      ObjId o |->o[2] LitV (LitObj o)
   | x :: xs' => exists o nxt, pure (p = LitV (LitObj o)) *
       ObjId o |->o[0] LitV (LitBool true) *
       ObjId o |->o[1] LitV (LitInt x) *
@@ -1436,7 +1443,8 @@ Substitution then computes.
 \[
 \Wpre\,\mathsf{nil}()\,\{\,v.\; \mathsf{isList}([], v)\,\}.
 \]
-\texttt{wp\_new} of the three initialising values returns exactly the three points-to facts in the empty clause.
+\texttt{wp\_new} of the three initialising values returns three points-to facts, with unit in the tail.
+\texttt{wp\_field\_store} then writes the new object into that field, which is the empty clause.
 Nothing else is allocated.
 This is \texttt{nil\_spec}.
 

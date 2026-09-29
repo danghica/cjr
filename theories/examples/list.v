@@ -1,8 +1,10 @@
 (** Singly linked lists as final class nodes, and the list equations
 cons/head, cons/tail, and emptiness. A node is an object with three fields:
 a boolean tag ([true] means cons), the head integer, and the tail.
-The empty list is a node whose tag is [false]. Pointer equality is not
-in the language, so emptiness is a boolean the program can branch on. *)
+The empty list is a node whose tag is [false] and whose tail is that same
+node. Pointer equality is not in the language, so emptiness is a boolean
+the program can branch on. The tail of an empty node is not read by
+[empty]. *)
 From iris.proofmode Require Import proofmode.
 From cjr Require Import notation primitive_laws.
 From iris.prelude Require Import options.
@@ -17,7 +19,7 @@ Section list.
         ∃ o, ⌜ p = LitV (LitObj o) ⌝ ∗
           ObjId o ↦ₒ[0] LitV (LitBool false) ∗
           ObjId o ↦ₒ[1] LitV (LitInt 0) ∗
-          ObjId o ↦ₒ[2] LitV LitUnit
+          ObjId o ↦ₒ[2] LitV (LitObj o)
     | x :: xs' =>
         ∃ o nxt, ⌜ p = LitV (LitObj o) ⌝ ∗
           ObjId o ↦ₒ[0] LitV (LitBool true) ∗
@@ -27,7 +29,9 @@ Section list.
     end.
 
   Definition nil_body : expr :=
-    New [LitV (LitBool false); LitV (LitInt 0); LitV LitUnit] [].
+    Let (Some "n")
+      (New [LitV (LitBool false); LitV (LitInt 0); LitV LitUnit] [])
+      (Seq (FieldStore (Var "n") 2 (Var "n")) (Var "n")).
 
   Definition cons_body : expr :=
     Let (Some "x") (StructLoad (Var "a") 0)
@@ -87,8 +91,16 @@ Section list.
     iApply (wp_bind [AppLCtx (Val (LitV LitUnit))]).
     iApply wp_rec. iIntros "!> _".
     iApply wp_app. simpl.
+    iApply (wp_bind [LetCtx (Some "n")
+      (Seq (FieldStore (Var "n") 2 (Var "n")) (Var "n"))]).
     iApply wp_new. iIntros (o) "H".
     iDestruct "H" as "[H0 [H1 [H2 _]]]".
+    iApply wp_let. simpl.
+    iApply (wp_bind [SeqCtx (Val (LitV (LitObj o)))]).
+    iApply (wp_field_store with "H2").
+    iIntros "!> _ H2".
+    iApply wp_seq.
+    iApply wp_value'.
     iExists o. iSplit; [done|]. iFrame.
   Qed.
 

@@ -6,16 +6,27 @@ foreign func free(ptr: CPointer<Unit>): Unit
 class Node {
     public var isCons: Bool
     public var value: Int64
-    public var next: Node
-    public init(isCons: Bool, value: Int64, next: Node) {
+    var next_raw: ?Node
+    public mut prop next: Node {
+        get() {
+            match (this.next_raw) {
+                case Some(n) => n
+                case None => this
+            }
+        }
+        set(n) { this.next_raw = n }
+    }
+    public init(isCons: Bool, value: Int64, next: ?Node) {
         this.isCons = isCons
         this.value = value
-        this.next = next
+        this.next_raw = next
     }
 }
 
 func nil(): Node {
-    Node(false, 0, ())
+    let n = Node(false, 0, None)
+    n.next = n
+    n
 }
 
 func cons(x: Int64, xs: Node): Node {
