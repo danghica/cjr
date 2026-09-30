@@ -20,7 +20,7 @@ make
 make verify    # optional: coqchk + Print Assumptions audit (see Makefile.local-late)
 ```
 
-Coq is invoked with `-w +admitted-proof` (and a few other promoted warnings in `_CoqProject`), so `Admitted` and similar bypasses fail at compile time. We do not use `-w +all` here: on Coq 8.20 it turns a benign Iris/stdlib `Fin.vo` notice into a build error. `make verify` runs `coqchk` on all `.vo` files (Coq 8.20 has no `--admit-opaque` switch; opaque `Qed` proofs are checked unless you pass `-admit`) and checks that representative adequacy theorems print **Closed under the global context** (`theories/verify_assumptions.v`).
+Coq is invoked with `-w +admitted-proof` (and a few other promoted warnings in `_CoqProject`), and `make verify` additionally rejects `Admitted` and declared `Axiom` bypasses in the source. We do not use `-w +all` here: on Coq 8.20 it turns a benign Iris/stdlib `Fin.vo` notice into a build error. `make verify` runs `coqchk` on all `.vo` files (Coq 8.20 has no `--admit-opaque` switch; opaque `Qed` proofs are checked unless you pass `-admit`) and checks that representative adequacy theorems print **Closed under the global context** (`theories/verify_assumptions.v`).
 
 ## Layout
 
@@ -50,12 +50,22 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
 | `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| `theories/examples/hash_map.v` | 2398 | `generated/cj/hash_map.cj` | 375 | 6.4 |
-| **Total** | **7883** | | **1089** | **7.2** |
+| `theories/examples/hash_map.v` | 3116 | `generated/cj/hash_map.cj` | 251 | 12.4 |
+| **Total** | **8601** | | **965** | **8.9** |
 
+
+The shared `hm_tactics.v` evaluation-context automation adds 110 supporting lines outside the example counts above.
 
 ## In-place list reversal
 
 `theories/examples/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
 
 The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `generated/cj/list_rev.cj`; `test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See `test/report.md` for the dated results.
+
+## Verified hash map
+
+`theories/examples/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
+
+The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `test/hash_map_test.cj` contains 13 runtime cases, including collisions, wraparound, negative keys, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+
+`add_spec` and its client theorems retain the resulting capacity existentially because insertion can grow. `grow(minCap)` performs one doubling; the retained argument does not promise arbitrary minimum capacity. The CJR integer model is unbounded; the proof does not establish absence of `Int64` overflow for arbitrary machine inputs.

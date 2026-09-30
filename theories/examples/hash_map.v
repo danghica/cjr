@@ -19,7 +19,7 @@ integer whose flag is false, not a stuck load. *)
 
 From iris.proofmode Require Import proofmode.
 From cjr Require Import notation primitive_laws.
-From cjr.examples Require Import array.
+From cjr.examples Require Import array hm_tactics.
 From iris.prelude Require Import options.
 From Coq Require Import Lia PeanoNat Wf_nat.
 Close Scope expr_scope.
@@ -1975,7 +1975,7 @@ Section hash_map.
         (VarBind "rem" (Var "k") residue_inner)).
 
   Definition call_residue (k cap : Z) : expr :=
-    App (Rec None (Some "args") residue_body)
+    App (Val (RecV None (Some "args") residue_body))
       (Val (StructV [LitV (LitInt k); LitV (LitInt cap)])).
 
   Definition residue_run (lh : Z) : expr := subst_var "rem" lh residue_inner.
@@ -2007,7 +2007,8 @@ Section hash_map.
     (0 < cap)%Z →
     StackId lslot ↦ₛ LitV (LitInt key) -∗
     WP (Seq (nonneg_while lslot cap) (Seq (below_while lslot cap) (sld lslot)))
-      {{ v, ⌜ v = LitV (LitInt (residue key cap)) ⌝ }}.
+      {{ v, ⌜ v = LitV (LitInt (residue key cap)) ⌝ ∗
+           StackId lslot ↦ₛ LitV (LitInt (residue key cap)) }}.
   Proof.
     intros Hcap. set (r := residue key cap).
     iIntros "Hh".
@@ -2028,13 +2029,21 @@ Section hash_map.
     assert (h2 = r)%Z as Heqr.
     { rewrite /r. unfold residue. rewrite Hh1 in Hh2. exact Hh2. }
     iIntros "Hstack".
-    iPureIntro. do 2 f_equal. exact Heqr.
+    rewrite Heqr. iFrame. done.
   Qed.
 
   Lemma residue_wp (k cap : Z) :
     (0 < cap)%Z →
     ⊢ WP call_residue k cap {{ v, ⌜ v = LitV (LitInt (residue k cap)) ⌝ }}.
-  Proof. Admitted.
+  Proof.
+    intros Hcap. unfold call_residue, residue_body. hm_pure.
+    iApply wp_var_bind. iIntros (lr) "Hr".
+    rewrite cap_residue_stack.
+    iApply (wp_wand with "[Hr]").
+    { iApply (residue_run_wp lr k cap Hcap with "Hr"). }
+    iIntros (r) "[%Hr Hslot]".
+    iExists (LitV (LitInt (residue k cap))). iFrame. done.
+  Qed.
 
 
   (** * Imperative [HashMap] *)
@@ -2074,6 +2083,13 @@ Section hash_map.
       ObjId o ↦ₒ[3] va ∗
       is_hm_slots cap tags keys vals ta ka va.
 
+  Lemma is_array_obj_hm xs a :
+    is_array xs a -∗ ∃ o, ⌜ a = LitV (LitObj o) ⌝ ∗ is_array xs a.
+  Proof.
+    iIntros "Ha". iDestruct "Ha" as (o base) "(%Ha & Hlen & Hptr & Hblk & Hcells)".
+    iExists o. iSplit; [done|]. iExists o, base. iSplit; [done|]. iFrame.
+  Qed.
+
   Lemma wp_new_step vs v es Φ :
     WP New (vs ++ [v]) es {{ Φ }} ⊢ WP New vs (Val v :: es) {{ Φ }}.
   Proof.
@@ -2108,38 +2124,111 @@ Section hash_map.
     App (Rec None (Some "m") is_empty_body) (Val m).
 
   Definition probe_slot_e (start step cap : expr) : expr :=
-    If (BinOp LeOp cap (BinOp PlusOp start step))
+    If (BinOp LeOp (BinOp PlusOp (BinOp PlusOp start step) (Val (LitV (LitInt 1)))) cap)
       (BinOp PlusOp start step)
       (BinOp MinusOp (BinOp PlusOp start step) cap).
 
-  Definition probe_done (found slot val : expr) : expr :=
-    Struct [] [found; slot; val].
+  Definition probe_done (found slot value : expr) : expr :=
+    Struct [] [found; slot; value].
 
-  Definition probe_while : expr :=
-    While (BinOp LeOp (BinOp PlusOp (Var "step") (Val (LitV (LitInt 1)))) (Var "cap"))
+  Definition hole_or_e (hole fallback : expr) : expr :=
+    If (BinOp EqOp hole lit_m1) fallback hole.
+
+  Definition scan_call_e (fuel start step cap tags keys vals key hole : expr) : expr :=
+    App (Var "scan") (Struct [] [fuel; start; step; cap; tags; keys; vals; key; hole]).
+
+  Definition scan_loop : expr :=
+    If (BinOp LeOp (Var "fuel") (Val (LitV (LitInt 0))))
+      (probe_done (Val (LitV (LitBool false)))
+        (hole_or_e (Var "hole") (Var "start")) (Val (LitV (LitInt 0))))
       (Let (Some "slot") (probe_slot_e (Var "start") (Var "step") (Var "cap"))
         (Let (Some "tag") (arr_get (Var "tags") (Var "slot"))
           (If (BinOp EqOp (Var "tag") lit_tag_empty)
-            (Seq
-              (VarBind "done"
-                (probe_done (Val (LitV (LitBool false))) (Var "slot") (Val (LitV (LitInt 0))))
-                (Var "done"))
-              (Assign "step" (Var "cap")))
+            (probe_done (Val (LitV (LitBool false)))
+              (hole_or_e (Var "hole") (Var "slot")) (Val (LitV (LitInt 0))))
             (If (BinOp EqOp (Var "tag") lit_tag_occ)
               (Let (Some "key") (arr_get (Var "keys") (Var "slot"))
                 (If (BinOp EqOp (Var "key") (Var "k"))
-                  (Seq
-                    (VarBind "done"
-                      (probe_done (Val (LitV (LitBool true))) (Var "slot")
-                        (arr_get (Var "vals") (Var "slot")))
-                      (Var "done"))
-                    (Assign "step" (Var "cap")))
-                  (Assign "step" (BinOp PlusOp (Var "step") (Val (LitV (LitInt 1)))))))
-              (Seq
-                (If (BinOp EqOp (Var "hole") lit_m1)
-                  (Assign "hole" (Var "slot"))
-                  (Val (LitV LitUnit)))
-                (Assign "step" (BinOp PlusOp (Var "step") (Val (LitV (LitInt 1)))))))))).
+                  (probe_done (Val (LitV (LitBool true))) (Var "slot")
+                    (arr_get (Var "vals") (Var "slot")))
+                  (scan_call_e (Var "fuel" - Val (LitV (LitInt 1)))
+                    (Var "start") (Var "step" + Val (LitV (LitInt 1)))
+                    (Var "cap") (Var "tags") (Var "keys") (Var "vals")
+                    (Var "k") (Var "hole"))))
+              (scan_call_e (Var "fuel" - Val (LitV (LitInt 1)))
+                (Var "start") (Var "step" + Val (LitV (LitInt 1)))
+                (Var "cap") (Var "tags") (Var "keys") (Var "vals")
+                (Var "k") (hole_or_e (Var "hole") (Var "slot"))))))).
+
+  Definition scan_body : expr :=
+    Let (Some "fuel") (StructLoad (Var "args") 0)
+      (Let (Some "start") (StructLoad (Var "args") 1)
+      (Let (Some "step") (StructLoad (Var "args") 2)
+      (Let (Some "cap") (StructLoad (Var "args") 3)
+      (Let (Some "tags") (StructLoad (Var "args") 4)
+      (Let (Some "keys") (StructLoad (Var "args") 5)
+      (Let (Some "vals") (StructLoad (Var "args") 6)
+      (Let (Some "k") (StructLoad (Var "args") 7)
+      (Let (Some "hole") (StructLoad (Var "args") 8)
+      (scan_loop))))))))).
+
+  Definition scan_v : val_cjr := RecV (Some "scan") (Some "args") scan_body.
+
+  Definition zlit (x : Z) : expr := Val (LitV (LitInt x)).
+  Definition nlit (n : nat) : expr := zlit (Z.of_nat n).
+  Definition hole_z (h : option nat) : Z :=
+    match h with None => -1 | Some i => Z.of_nat i end.
+  Definition probe_val (r : probe_out) : val_cjr :=
+    match r with
+    | PFound i v => StructV [LitV (LitBool true); LitV (LitInt (Z.of_nat i)); LitV (LitInt v)]
+    | PAbsent i => StructV [LitV (LitBool false); LitV (LitInt (Z.of_nat i)); LitV (LitInt 0)]
+    end.
+
+  Definition call_scan (fuel start step cap : nat) (ta ka va : val_cjr)
+      (key : Z) (hole : option nat) : expr :=
+    App (Val scan_v) (Val (StructV
+      [LitV (LitInt (Z.of_nat fuel)); LitV (LitInt (Z.of_nat start));
+       LitV (LitInt (Z.of_nat step)); LitV (LitInt (Z.of_nat cap));
+       ta; ka; va; LitV (LitInt key); LitV (LitInt (hole_z hole))])).
+
+  Definition buffer_probe_body : expr :=
+    Let (Some "tags") (StructLoad (Var "args") 0)
+    (Let (Some "keys") (StructLoad (Var "args") 1)
+    (Let (Some "vals") (StructLoad (Var "args") 2)
+    (Let (Some "cap") (StructLoad (Var "args") 3)
+    (Let (Some "k") (StructLoad (Var "args") 4)
+    (Let (Some "start")
+      (App (Val (RecV None (Some "args") residue_body)) (Struct [] [Var "k"; Var "cap"]))
+      (App (Val scan_v) (Struct [] [Var "cap"; Var "start"; zlit 0; Var "cap";
+        Var "tags"; Var "keys"; Var "vals"; Var "k"; lit_m1]))))))).
+
+  Definition buffer_probe_e (ta ka va cap k : expr) : expr :=
+    App (Val (RecV None (Some "args") buffer_probe_body))
+      (Struct [] [ta; ka; va; cap; k]).
+  Definition call_buffer_probe ta ka va cap k : expr :=
+    App (Val (RecV None (Some "args") buffer_probe_body))
+      (Val (StructV [ta; ka; va; LitV (LitInt (Z.of_nat cap)); LitV (LitInt k)])).
+
+  Definition put_body : expr :=
+    Let (Some "tags") (StructLoad (Var "args") 0)
+    (Let (Some "keys") (StructLoad (Var "args") 1)
+    (Let (Some "vals") (StructLoad (Var "args") 2)
+    (Let (Some "cap") (StructLoad (Var "args") 3)
+    (Let (Some "k") (StructLoad (Var "args") 4)
+    (Let (Some "v") (StructLoad (Var "args") 5)
+    (Let (Some "res") (buffer_probe_e (Var "tags") (Var "keys") (Var "vals") (Var "cap") (Var "k"))
+    (Let (Some "idx") (StructLoad (Var "res") 1)
+      (If (StructLoad (Var "res") 0)
+        (arr_set (Var "vals") (Var "idx") (Var "v"))
+        (Seq (arr_set (Var "tags") (Var "idx") lit_tag_occ)
+          (Seq (arr_set (Var "keys") (Var "idx") (Var "k"))
+            (arr_set (Var "vals") (Var "idx") (Var "v")))))))))))).
+
+  Definition put_e (ta ka va cap k v : expr) : expr :=
+    App (Val (RecV None (Some "args") put_body)) (Struct [] [ta; ka; va; cap; k; v]).
+  Definition call_put ta ka va cap k v : expr :=
+    App (Val (RecV None (Some "args") put_body))
+      (Val (StructV [ta; ka; va; LitV (LitInt (Z.of_nat cap)); LitV (LitInt k); LitV (LitInt v)])).
 
   Definition probe_open : expr :=
     Let (Some "tags") (FieldLoad (Var "m") 1)
@@ -2147,23 +2236,21 @@ Section hash_map.
         (Let (Some "vals") (FieldLoad (Var "m") 3)
           (Let (Some "cap") (arr_len (Var "tags"))
             (Let (Some "bargs") (Struct [] [Var "k"; Var "cap"])
-              (Let (Some "start") (App (Rec None (Some "args") residue_body) (Var "bargs"))
-                (VarBind "step" (Val (LitV (LitInt 0)))
-                  (VarBind "hole" lit_m1
-                    (VarBind "done" (probe_done (Val (LitV (LitBool false))) (Val (LitV (LitInt 0))) (Val (LitV (LitInt 0))))
-                      (Seq probe_while (Var "done")))))))))).
+              (Let (Some "start") (App (Val (RecV None (Some "args") residue_body)) (Var "bargs"))
+                (App (Rec (Some "scan") (Some "args") scan_body)
+                  (Struct [] [Var "cap"; Var "start"; zlit 0; Var "cap";
+                    Var "tags"; Var "keys"; Var "vals"; Var "k"; lit_m1]))))))).
 
   Definition probe_for_body : expr :=
     Let (Some "m") (StructLoad (Var "args") 0)
-      (Let (Some "k") (StructLoad (Var "args") 1)
-        probe_open).
+      (Let (Some "k") (StructLoad (Var "args") 1) probe_open).
 
   Definition call_probe (m : val_cjr) (k : Z) : expr :=
-    App (Rec None (Some "args") probe_for_body)
+    App (Val (RecV None (Some "args") probe_for_body))
       (Val (StructV [m; LitV (LitInt k)])).
 
   Definition call_probe_e (m k : expr) : expr :=
-    App (Rec None (Some "args") probe_for_body) (Struct [] [m; k]).
+    App (Val (RecV None (Some "args") probe_for_body)) (Struct [] [m; k]).
 
   Definition contains_body : expr :=
     Let (Some "m") (StructLoad (Var "args") 0)
@@ -2183,61 +2270,6 @@ Section hash_map.
 
   Definition call_get (m : val_cjr) (k : Z) : expr :=
     App (Rec None (Some "args") get_body)
-      (Val (StructV [m; LitV (LitInt k)])).
-
-  Definition grow_body : expr :=
-    Let (Some "m") (StructLoad (Var "args") 0)
-      (Let (Some "min") (StructLoad (Var "args") 1)
-        (Let (Some "tags") (FieldLoad (Var "m") 1)
-          (Let (Some "cap") (arr_len (Var "tags"))
-            (Let (Some "newCap") (BinOp PlusOp (Var "cap") (Var "cap"))
-              (Let (Some "n") (Var "newCap")
-                (Let (Some "ntags") (App (Rec None (Some "n") array.make_body) (Var "n"))
-                  (Let (Some "nkeys") (App (Rec None (Some "n") array.make_body) (Var "n"))
-                    (Let (Some "nvals") (App (Rec None (Some "n") array.make_body) (Var "n"))
-                      (Seq
-                        (FieldStore (Var "m") 1 (Var "ntags"))
-                        (Seq (FieldStore (Var "m") 2 (Var "nkeys"))
-                          (FieldStore (Var "m") 3 (Var "nvals")))))))))))).
-
-  Definition call_grow (m : val_cjr) (minCap : Z) : expr :=
-    App (Rec None (Some "args") grow_body)
-      (Val (StructV [m; LitV (LitInt minCap)])).
-
-  Definition add_body : expr :=
-    Let (Some "m") (StructLoad (Var "args") 0)
-      (Let (Some "k") (StructLoad (Var "args") 1)
-        (Let (Some "v") (StructLoad (Var "args") 2)
-          (Let (Some "res") (call_probe_e (Var "m") (Var "k"))
-            (If (StructLoad (Var "res") 0)
-              (Let (Some "idx") (StructLoad (Var "res") 1)
-                (Let None (arr_set (FieldLoad (Var "m") 3) (Var "idx") (Var "v")) (Val (LitV LitUnit))))
-              (Let (Some "idx") (StructLoad (Var "res") 1)
-                (Let None (arr_set (FieldLoad (Var "m") 1) (Var "idx") lit_tag_occ)
-                  (Let None (arr_set (FieldLoad (Var "m") 2) (Var "idx") (Var "k"))
-                    (Let None (arr_set (FieldLoad (Var "m") 3) (Var "idx") (Var "v"))
-                      (Let (Some "sz") (FieldLoad (Var "m") 0)
-                        (FieldStore (Var "m") 0 (BinOp PlusOp (Var "sz") (Val (LitV (LitInt 1)))))))))))))).
-
-  Definition call_add (m : val_cjr) (k v : Z) : expr :=
-    App (Rec None (Some "args") add_body)
-      (Val (StructV [m; LitV (LitInt k); LitV (LitInt v)])).
-
-  Definition remove_body : expr :=
-    Let (Some "m") (StructLoad (Var "args") 0)
-      (Let (Some "k") (StructLoad (Var "args") 1)
-        (Let (Some "res") (call_probe_e (Var "m") (Var "k"))
-          (If (StructLoad (Var "res") 0)
-            (Let (Some "idx") (StructLoad (Var "res") 1)
-              (Let (Some "old") (StructLoad (Var "res") 2)
-                (Let None (arr_set (FieldLoad (Var "m") 1) (Var "idx") lit_tag_tomb)
-                  (Let (Some "sz") (FieldLoad (Var "m") 0)
-                    (Seq (FieldStore (Var "m") 0 (BinOp MinusOp (Var "sz") (Val (LitV (LitInt 1)))))
-                      (Var "old"))))))
-            (Val (LitV (LitInt 0)))))).
-
-  Definition call_remove (m : val_cjr) (k : Z) : expr :=
-    App (Rec None (Some "args") remove_body)
       (Val (StructV [m; LitV (LitInt k)])).
 
   Lemma default_cap_pow : ∃ e, default_capacity = (2 ^ S e)%nat.
@@ -2267,37 +2299,566 @@ Section hash_map.
 
   Lemma init_spec :
     ⊢ WP call_init {{ m, is_hashmap ∅ default_capacity m }}.
-  Proof. Admitted.
+  Proof.
+    unfold call_init, init_body. hm_pure.
+    hm_take. iApply (wp_wand with "[]"). { iApply make_zero_spec. }
+    iIntros (ta) "Ht".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)". subst ta.
+    hm_pure.
+    hm_take. iApply (wp_wand with "[]"). { iApply make_zero_spec. }
+    iIntros (ka) "Hk".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)". subst ka.
+    hm_pure.
+    hm_take. iApply (wp_wand with "[]"). { iApply make_zero_spec. }
+    iIntros (va) "Hv".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst va.
+    hm_pure.
+    iApply wp_new. iIntros (o) "Hfields".
+    iEval (simpl) in "Hfields".
+    iDestruct "Hfields" as "(Hsz & Hta & Hka & Hva & _)".
+    iExists o, 0%Z, (LitV (LitObj ot)), (LitV (LitObj ok)), (LitV (LitObj ov)),
+      (replicate default_capacity 0%Z), (replicate default_capacity 0%Z),
+      (replicate default_capacity 0%Z).
+    rewrite contents_zeros count_zeros. iFrame.
+    iSplit; [done|]. iSplit; [done|]. iSplit; [done|].
+    unfold is_hm_slots. iFrame. iPureIntro.
+    split; [apply length_replicate|].
+    split; [apply length_replicate|].
+    split; [apply length_replicate|].
+    apply zeros_wf. apply default_cap_pow.
+  Qed.
 
   Lemma size_spec m cap (a : val_cjr) :
     is_hashmap m cap a -∗
     WP call_size a {{ v, ⌜ v = LitV (LitInt (Z.of_nat (size m))) ⌝ ∗ is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm".
+    iDestruct "Hm" as (o sz ta ka va tags keys vals)
+      "(%Ha & %Hmap & %Hsz & Hsize & Hta & Hka & Hva & Hslots)".
+    subst a sz. iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    assert (size m = count_occ tags) as Hcount.
+    { rewrite <- Hmap. apply size_contents; try lia. exact (wf_dup _ _ _ _ Hwf). }
+    unfold call_size, size_body. hm_pure. hm_read.
+    iSplit; [by rewrite Hcount|].
+    iExists o, (Z.of_nat (count_occ tags)), ta, ka, va, tags, keys, vals.
+    iFrame. repeat iSplit; try done.
+  Qed.
 
   Lemma capacity_spec m cap (a : val_cjr) :
     is_hashmap m cap a -∗
     WP call_capacity a {{ v, ⌜ v = LitV (LitInt (Z.of_nat cap)) ⌝ ∗ is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm".
+    iDestruct "Hm" as (o sz ta ka va tags keys vals)
+      "(%Ha & %Hmap & %Hsz & Hsize & Hta & Hka & Hva & Hslots)".
+    subst a sz. iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct "Ht" as (ot base) "(%Hta & Hlen & Hptr & Hblk & Hcells)". subst ta.
+    unfold call_capacity, capacity_body. hm_pure. hm_read. hm_pure. hm_read.
+    iSplit; [by rewrite Lt|].
+    iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), ka, va, tags, keys, vals.
+    iFrame. repeat iSplit; try done.
+  Qed.
 
   Lemma is_empty_spec m cap (a : val_cjr) :
     is_hashmap m cap a -∗
     WP call_is_empty a
       {{ v, ⌜ v = LitV (LitBool (bool_decide (size m = 0%nat))) ⌝ ∗ is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm".
+    iDestruct "Hm" as (o sz ta ka va tags keys vals)
+      "(%Ha & %Hmap & %Hsz & Hsize & Hta & Hka & Hva & Hslots)".
+    subst a sz. iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    assert (size m = count_occ tags) as Hcount.
+    { rewrite <- Hmap. apply size_contents; try lia. exact (wf_dup _ _ _ _ Hwf). }
+    unfold call_is_empty, is_empty_body. hm_pure. hm_read. hm_pure.
+    iSplit.
+    { iPureIntro. f_equal. f_equal. apply bool_decide_ext. rewrite Hcount. lia. }
+    iExists o, (Z.of_nat (count_occ tags)), ta, ka, va, tags, keys, vals.
+    iFrame. repeat iSplit; try done.
+  Qed.
+
+  Lemma arr_get_spec xs a i x :
+    xs !! i = Some x → is_array xs a -∗
+    WP arr_get (Val a) (nlit i)
+      {{ r, ⌜ r = LitV (LitInt x) ⌝ ∗ is_array xs a }}.
+  Proof.
+    intros Hi. iIntros "Ha".
+    iDestruct "Ha" as (o base) "(%Ha & Hlen & Hptr & Hblk & Hcells)". subst a.
+    unfold arr_get, nlit, zlit. hm_pure. hm_read. hm_pure.
+    iDestruct (big_sepL_lookup_acc with "Hcells") as "[Hi Hclose]"; [exact Hi|].
+    iApply (wp_load with "Hi"). iIntros "!> _ Hi".
+    iDestruct ("Hclose" with "Hi") as "Hcells".
+    iSplit; [done|]. iExists o, base. iSplit; [done|]. iFrame.
+  Qed.
+
+  Lemma arr_set_spec xs a i old x :
+    xs !! i = Some old → is_array xs a -∗
+    WP arr_set (Val a) (nlit i) (zlit x)
+      {{ r, ⌜ r = LitV LitUnit ⌝ ∗ is_array (<[i:=x]> xs) a }}.
+  Proof.
+    intros Hi. iIntros "Ha".
+    assert (length (<[i:=x]> xs) = length xs) as Hlen by
+      (apply length_insert; eapply lookup_lt_Some; exact Hi).
+    iDestruct "Ha" as (o base) "(%Ha & Hn & Hptr & Hblk & Hcells)". subst a.
+    unfold arr_set, nlit, zlit. hm_pure. hm_read. hm_pure.
+    iDestruct (big_sepL_insert_acc with "Hcells") as "[Hi Hclose]"; [exact Hi|].
+    iApply (wp_store with "Hi"). iIntros "!> _ Hi".
+    iDestruct ("Hclose" $! x with "Hi") as "Hcells".
+    iSplit; [done|]. iExists o, base. iSplit; [done|].
+    rewrite Hlen. iFrame.
+  Qed.
+
+  Lemma probe_slot_e_spec start step cap :
+    (0 < cap)%nat → (start < cap)%nat → (step < cap)%nat →
+    ⊢ WP probe_slot_e (nlit start) (nlit step) (nlit cap)
+      {{ r, ⌜ r = LitV (LitInt (Z.of_nat (probe_slot start step cap))) ⌝ }}.
+  Proof.
+    intros Hcap Hstart Hstep. unfold probe_slot_e, nlit, zlit. hm_pure.
+    rewrite (probe_slot_sub start step cap Hcap Hstart Hstep).
+    destruct (decide ((start + step) < cap)%nat) as [Hlt|Hge].
+    - rewrite bool_decide_eq_true_2; [|lia]. iApply wp_if_true. hm_pure.
+      iPureIntro. do 2 f_equal. lia.
+    - rewrite bool_decide_eq_false_2; [|lia]. iApply wp_if_false. hm_pure.
+      iPureIntro. do 2 f_equal. rewrite Nat2Z.inj_sub; lia.
+  Qed.
+
+  Lemma hole_or_e_spec hole fallback :
+    ⊢ WP hole_or_e (zlit (hole_z hole)) (nlit fallback)
+      {{ r, ⌜ r = LitV (LitInt (Z.of_nat (hole_or hole fallback))) ⌝ }}.
+  Proof.
+    destruct hole as [h|]; unfold hole_or_e, hole_z, hole_or, nlit, zlit, lit_m1;
+      hm_pure.
+    - rewrite bool_decide_eq_false_2; [|lia]. iApply wp_if_false. hm_pure. done.
+    - iApply wp_if_true. hm_pure. done.
+  Qed.
+
+  Lemma scan_spec fuel :
+    ∀ start step cap ta ka va tags keys vals k hole,
+    (0 < cap)%nat → (start < cap)%nat → (step + fuel ≤ cap)%nat →
+    length tags = cap → length keys = cap → length vals = cap →
+    is_array tags ta -∗ is_array keys ka -∗ is_array vals va -∗
+    WP call_scan fuel start step cap ta ka va k hole
+      {{ r, ⌜ r = probe_val (probe_from fuel start step cap tags keys vals k hole) ⌝ ∗
+            is_array tags ta ∗ is_array keys ka ∗ is_array vals va }}.
+  Proof.
+    induction fuel as [|fuel IH]; intros start step cap ta ka va tags keys vals k hole
+      Hcap Hstart Hbound Lt Lk Lv; iIntros "Ht Hk Hv";
+      iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)";
+      iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)";
+      iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)";
+      subst ta ka va;
+      unfold call_scan, scan_v, scan_body, scan_loop, scan_call_e, probe_done;
+      hm_pure.
+    - iApply wp_if_true. hm_pure. destruct hole as [h|]; simpl.
+      + rewrite bool_decide_eq_false_2; [|lia]. iApply wp_if_false. hm_pure. iFrame. done.
+      + iApply wp_if_true. hm_pure. iFrame. done.
+    - iApply wp_if_false.
+      hm_take. iApply (wp_wand with "[]").
+      { iApply probe_slot_e_spec; lia. }
+      iIntros (r) "%Hr". subst r. hm_admin.
+      set (idx := probe_slot start step cap).
+      assert (idx < cap)%nat as Hidx by (unfold idx; apply probe_slot_lt; done).
+      destruct (lookup_lt_is_Some_2 tags idx) as [tag Htag]; [lia|].
+      hm_take. iApply (wp_wand with "[Ht]").
+      { iApply (arr_get_spec tags _ idx tag Htag with "Ht"). }
+      iIntros (r) "[%Hr Ht]". subst r. hm_admin.
+      change (tags !! probe_slot start step cap = Some tag) in Htag.
+      cbn [probe_from]. rewrite Htag.
+      destruct (decide (tag = tag_empty)) as [He|He].
+      + rewrite bool_decide_eq_true_2; [|exact He]. iApply wp_if_true.
+        iApply array.wp_struct_step. simpl.
+        iApply (wp_bind [StructCtx [LitV (LitBool false)] [zlit 0]]).
+        iApply (wp_wand with "[]"). { iApply hole_or_e_spec. }
+        iIntros (r) "%Hr". subst r. hm_admin. iFrame. done.
+      + rewrite bool_decide_eq_false_2; [|exact He]. iApply wp_if_false. hm_admin.
+        destruct (decide (tag = tag_occ)) as [Ho|Ho].
+        * rewrite bool_decide_eq_true_2; [|exact Ho]. iApply wp_if_true. hm_admin.
+          destruct (lookup_lt_is_Some_2 keys idx) as [key Hkey]; [lia|].
+          destruct (lookup_lt_is_Some_2 vals idx) as [value Hval]; [lia|].
+          hm_take. iApply (wp_wand with "[Hk]").
+          { iApply (arr_get_spec keys _ idx key Hkey with "Hk"). }
+          iIntros (r) "[%Hr Hk]". subst r. hm_admin.
+          change (keys !! probe_slot start step cap = Some key) in Hkey.
+          change (vals !! probe_slot start step cap = Some value) in Hval.
+          rewrite Hkey Hval.
+          destruct (decide (key = k)) as [Hhit|Hmiss].
+          -- rewrite bool_decide_eq_true_2; [|exact Hhit]. iApply wp_if_true. hm_admin.
+             iApply (wp_bind [StructCtx
+               [LitV (LitBool true); LitV (LitInt (Z.of_nat idx))] []]).
+             iApply (wp_wand with "[Hv]").
+             { iApply (arr_get_spec vals _ idx value Hval with "Hv"). }
+             iIntros (r) "[%Hr Hv]". subst r. hm_admin. iFrame. done.
+          -- rewrite bool_decide_eq_false_2; [|exact Hmiss]. iApply wp_if_false. hm_admin.
+             replace (Z.of_nat (S fuel) - 1)%Z with (Z.of_nat fuel) by lia.
+             replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
+             iApply (IH start (S step) cap _ _ _ tags keys vals k hole with "Ht Hk Hv"); try done; lia.
+        * rewrite bool_decide_eq_false_2; [|exact Ho]. iApply wp_if_false. hm_admin.
+          destruct hole as [h|]; simpl.
+          -- rewrite bool_decide_eq_false_2; [|lia]. iApply wp_if_false. hm_admin.
+             replace (Z.of_nat (S fuel) - 1)%Z with (Z.of_nat fuel) by lia.
+             replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
+             iApply (IH start (S step) cap _ _ _ tags keys vals k (Some h) with "Ht Hk Hv"); try done; lia.
+          -- iApply wp_if_true. hm_admin.
+             replace (Z.of_nat (S fuel) - 1)%Z with (Z.of_nat fuel) by lia.
+             replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
+             iApply (IH start (S step) cap _ _ _ tags keys vals k (Some idx) with "Ht Hk Hv"); try done; lia.
+  Qed.
+
+  Lemma buffer_probe_spec cap ta ka va tags keys vals k :
+    (0 < cap)%nat → length tags = cap → length keys = cap → length vals = cap →
+    is_array tags ta -∗ is_array keys ka -∗ is_array vals va -∗
+    WP call_buffer_probe ta ka va cap k
+      {{ r, ⌜ r = probe_val (probe cap (bucket k cap) tags keys vals k) ⌝ ∗
+        is_array tags ta ∗ is_array keys ka ∗ is_array vals va }}.
+  Proof.
+    intros Hcap Lt Lk Lv. iIntros "Ht Hk Hv".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst ta ka va.
+    unfold call_buffer_probe, buffer_probe_body. iApply wp_app. simpl. hm_admin.
+    try try hm_take. hm_admin. iApply (wp_wand with "[]").
+    { iApply residue_wp. lia. }
+    iIntros (r) "%Hr". subst r. hm_admin.
+    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+      (unfold bucket; rewrite Z2Nat.id; pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
+    iApply (scan_spec cap (bucket k cap) 0 cap _ _ _ tags keys vals k None with "Ht Hk Hv");
+      try done; try (apply bucket_lt; done); lia.
+  Qed.
+
+  Lemma probe_slots cap tags keys vals k :
+    wf_table cap tags keys vals →
+    match probe cap (bucket k cap) tags keys vals k with
+    | PFound i v => (i < cap)%nat ∧ tags !! i = Some tag_occ ∧
+        keys !! i = Some k ∧ vals !! i = Some v
+    | PAbsent i => (i < cap)%nat ∧
+        (tags !! i = Some tag_empty ∨ tags !! i = Some tag_tomb)
+    end.
+  Proof.
+    intros Hwf. pose proof (cap_pos _ _ _ _ Hwf) as Hcap.
+    assert (count_occ tags < cap)%nat as Hcount by (pose proof (wf_load _ _ _ _ Hwf); lia).
+    pose proof (probe_from_inv cap (bucket k cap) 0 cap tags keys vals k None Hcap
+      (bucket_lt k cap Hcap) eq_refl (wf_tags_len _ _ _ _ Hwf)
+      (wf_keys_len _ _ _ _ Hwf) (wf_vals_len _ _ _ _ Hwf) (wf_ok _ _ _ _ Hwf)
+      Hcount (prefix_zero cap (bucket k cap) tags keys k ltac:(pose proof (bucket_lt k cap Hcap); lia))) as Hinfo.
+    unfold probe. destruct (probe_from cap (bucket k cap) 0 cap tags keys vals k None); simpl in *; tauto.
+  Qed.
+
+  Lemma put_spec cap ta ka va tags keys vals k v :
+    wf_table cap tags keys vals →
+    is_array tags ta -∗ is_array keys ka -∗ is_array vals va -∗
+    WP call_put ta ka va cap k v
+      {{ r, let '(t2,k2,v2) := write_fresh cap tags keys vals k v in
+        ⌜ r = LitV LitUnit ⌝ ∗ is_array t2 ta ∗ is_array k2 ka ∗ is_array v2 va }}.
+  Proof.
+    intros Hwf. iIntros "Ht Hk Hv".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst ta ka va.
+    unfold call_put, put_body. iApply wp_app. simpl. hm_admin.
+    try hm_take. hm_admin. iApply (wp_wand with "[Ht Hk Hv]").
+    { iApply (buffer_probe_spec with "Ht Hk Hv");
+        [eapply cap_pos; exact Hwf|apply (wf_tags_len _ _ _ _ Hwf)|
+         apply (wf_keys_len _ _ _ _ Hwf)|apply (wf_vals_len _ _ _ _ Hwf)]. }
+    iIntros (r) "(%Hr & Ht & Hk & Hv)". subst r.
+    pose proof (probe_slots cap tags keys vals k Hwf) as Hslots.
+    unfold write_fresh. destruct (probe cap (bucket k cap) tags keys vals k) as [idx old|idx]; simpl in *.
+    - destruct Hslots as (Hi & Htag & Hkey & Hval). hm_admin. iApply wp_if_true. hm_admin.
+      iApply (wp_wand with "[Hv]"). { iApply (arr_set_spec vals _ idx old v Hval with "Hv"). }
+      iIntros (r) "[%Hr Hv]". iFrame. done.
+    - destruct Hslots as [Hi Htag].
+      destruct (lookup_lt_is_Some_2 tags idx) as [tag Htidx]; [rewrite (wf_tags_len _ _ _ _ Hwf); done|].
+      destruct (lookup_lt_is_Some_2 keys idx) as [key Hkidx]; [rewrite (wf_keys_len _ _ _ _ Hwf); done|].
+      destruct (lookup_lt_is_Some_2 vals idx) as [old Hvidx]; [rewrite (wf_vals_len _ _ _ _ Hwf); done|].
+      hm_admin. iApply wp_if_false. hm_admin.
+      iApply (wp_bind [SeqCtx _]).
+      iApply (wp_wand with "[Ht]"). { iApply (arr_set_spec tags _ idx tag tag_occ Htidx with "Ht"). }
+      iIntros (r) "[%Hr Ht]". subst r. hm_admin.
+      iApply (wp_bind [SeqCtx _]).
+      iApply (wp_wand with "[Hk]"). { iApply (arr_set_spec keys _ idx key k Hkidx with "Hk"). }
+      iIntros (r) "[%Hr Hk]". subst r. hm_admin.
+      iApply (wp_wand with "[Hv]"). { iApply (arr_set_spec vals _ idx old v Hvidx with "Hv"). }
+      iIntros (r) "[%Hr Hv]". unfold place_slot. iFrame. done.
+  Qed.
+
+  Definition rehash_body : expr := Let (Some "fuel") (StructLoad (Var "args") 0)
+    (Let (Some "i") (StructLoad (Var "args") 1)
+      (Let (Some "st") (StructLoad (Var "args") 2)
+        (Let (Some "sk") (StructLoad (Var "args") 3)
+          (Let (Some "sv") (StructLoad (Var "args") 4)
+            (Let (Some "cap") (StructLoad (Var "args") 5)
+              (Let (Some "dt") (StructLoad (Var "args") 6)
+                (Let (Some "dk") (StructLoad (Var "args") 7)
+                  (Let (Some "dv") (StructLoad (Var "args") 8)
+                    (If (Var "fuel" ≤ zlit 0) (Val (LitV LitUnit))
+                      (Let (Some "tag") (arr_get (Var "st") (Var "i"))
+                        (Seq
+                        (If (BinOp EqOp (Var "tag") lit_tag_occ)
+                        (Let (Some "key") (arr_get (Var "sk") (Var "i"))
+                        (Let (Some "value") (arr_get (Var "sv") (Var "i")) (put_e (Var "dt") (Var "dk") (Var "dv") (Var "cap") (Var "key") (Var "value")))) (Val (LitV LitUnit))) (App (Var "rehash") (Struct [] [Var "fuel" - zlit 1; Var "i" + zlit 1; Var "st"; Var "sk"; Var "sv"; Var "cap"; Var "dt"; Var "dk"; Var "dv"]))))))))))))).
+  Definition rehash_v : val_cjr := RecV (Some "rehash") (Some "args") rehash_body.
+  Definition call_rehash fuel i st sk sv cap dt dk dv : expr :=
+    App (Val rehash_v) (Val (StructV [LitV (LitInt (Z.of_nat fuel)); LitV (LitInt (Z.of_nat i)); st; sk; sv; LitV (LitInt (Z.of_nat cap)); dt; dk; dv])).
+  Definition grow_body : expr := Let (Some "m") (StructLoad (Var "args") 0)
+    (Let (Some "min") (StructLoad (Var "args") 1)
+      (Let (Some "tags") (FieldLoad (Var "m") 1)
+        (Let (Some "keys") (FieldLoad (Var "m") 2)
+          (Let (Some "vals") (FieldLoad (Var "m") 3)
+            (Let (Some "cap") (arr_len (Var "tags"))
+              (Let (Some "newCap") (Var "cap" + Var "cap")
+                (Let (Some "ntags") (App (Rec None (Some "n") array.make_body) (Var "newCap"))
+                  (Let (Some "nkeys") (App (Rec None (Some "n") array.make_body) (Var "newCap"))
+                    (Let (Some "nvals") (App (Rec None (Some "n") array.make_body) (Var "newCap"))
+                      (Seq (App (Val rehash_v) (Struct [] [Var "cap"; zlit 0; Var "tags"; Var "keys"; Var "vals"; Var "newCap"; Var "ntags"; Var "nkeys"; Var "nvals"]))
+                        (Seq (FieldStore (Var "m") 1 (Var "ntags"))
+                        (Seq (FieldStore (Var "m") 2 (Var "nkeys")) (FieldStore (Var "m") 3 (Var "nvals")))))))))))))).
+  Definition call_grow m minCap : expr := App (Val (RecV None (Some "args") grow_body)) (Val (StructV [m; LitV (LitInt minCap)])).
+  Definition grow_e m minCap : expr := App (Val (RecV None (Some "args") grow_body)) (Struct [] [m; minCap]).
+  Definition add_room_body : expr := Let (Some "m") (StructLoad (Var "args") 0)
+    (Let (Some "k") (StructLoad (Var "args") 1)
+      (Let (Some "v") (StructLoad (Var "args") 2)
+        (Let (Some "found") (StructLoad (Var "args") 3)
+          (Let (Some "tags") (FieldLoad (Var "m") 1)
+            (Let (Some "keys") (FieldLoad (Var "m") 2)
+              (Let (Some "vals") (FieldLoad (Var "m") 3)
+                (Let (Some "cap") (arr_len (Var "tags"))
+                  (Seq (put_e (Var "tags") (Var "keys") (Var "vals") (Var "cap") (Var "k") (Var "v"))
+                    (If (Var "found") (Val (LitV LitUnit))
+                      (Let (Some "sz") (FieldLoad (Var "m") 0) (FieldStore (Var "m") 0 (Var "sz" + zlit 1)))))))))))).
+  Definition call_add_room m k v found : expr := App (Val (RecV None (Some "args") add_room_body)) (Val (StructV [m; LitV (LitInt k); LitV (LitInt v); LitV (LitBool found)])).
+  Definition add_room_e m k v found : expr := App (Val (RecV None (Some "args") add_room_body)) (Struct [] [m; k; v; found]).
+  Definition add_body : expr := Let (Some "m") (StructLoad (Var "args") 0)
+    (Let (Some "k") (StructLoad (Var "args") 1)
+      (Let (Some "v") (StructLoad (Var "args") 2)
+        (Let (Some "res") (call_probe_e (Var "m") (Var "k"))
+          (Let (Some "found") (StructLoad (Var "res") 0)
+            (If (Var "found") (add_room_e (Var "m") (Var "k") (Var "v") (Var "found"))
+              (Let (Some "sz") (App (Rec None (Some "m") size_body) (Var "m"))
+                (Let (Some "cap") (App (Rec None (Some "m") capacity_body) (Var "m"))
+                  (Seq
+                    (If (Var "cap" ≤ Var "sz" + Var "sz") (grow_e (Var "m") (Var "cap" + zlit 1)) (Val (LitV LitUnit))) (add_room_e (Var "m") (Var "k") (Var "v") (Var "found")))))))))).
+  Definition call_add m k v : expr := App (Val (RecV None (Some "args") add_body)) (Val (StructV [m; LitV (LitInt k); LitV (LitInt v)])).
+  Definition remove_body : expr := Let (Some "m") (StructLoad (Var "args") 0)
+    (Let (Some "k") (StructLoad (Var "args") 1)
+      (Let (Some "tags") (FieldLoad (Var "m") 1)
+        (Let (Some "keys") (FieldLoad (Var "m") 2)
+          (Let (Some "vals") (FieldLoad (Var "m") 3)
+            (Let (Some "cap") (arr_len (Var "tags"))
+              (Let (Some "res") (buffer_probe_e (Var "tags") (Var "keys") (Var "vals") (Var "cap") (Var "k"))
+                (If (StructLoad (Var "res") 0)
+                  (Let (Some "idx") (StructLoad (Var "res") 1)
+                    (Let (Some "old") (StructLoad (Var "res") 2)
+                      (Seq (arr_set (Var "tags") (Var "idx") lit_tag_tomb)
+                        (Let (Some "sz") (FieldLoad (Var "m") 0)
+                        (Seq (FieldStore (Var "m") 0 (Var "sz" - zlit 1)) (Var "old")))))) (zlit 0)))))))).
+  Definition call_remove m k : expr := App (Val (RecV None (Some "args") remove_body)) (Val (StructV [m; LitV (LitInt k)])).
+
+  Lemma head_drop_hm {A} (xs : list A) i x tail :
+    drop i xs = x :: tail → xs !! i = Some x ∧ drop (S i) xs = tail.
+  Proof.
+    revert xs. induction i as [|i IH]; intros [|y xs] H; simpl in *;
+      try discriminate; [by inversion H|apply IH; exact H].
+  Qed.
+
+  Lemma rehash_spec tags :
+    ∀ keys vals i st sk sv sta ska sva cap dt dk dv accT accK accV,
+    drop i st = tags → drop i sk = keys → drop i sv = vals →
+    length keys = length tags → length vals = length tags →
+    tags_ok tags → NoDup (occ_keys tags keys) →
+    wf_table cap accT accK accV →
+    (∀ x, x ∈ occ_keys tags keys → contents_of accT accK accV !! x = None) →
+    (2 * (count_occ accT + count_occ tags) ≤ cap)%nat →
+    is_array st sta -∗ is_array sk ska -∗ is_array sv sva -∗
+    is_array accT dt -∗ is_array accK dk -∗ is_array accV dv -∗
+    WP call_rehash (length tags) i sta ska sva cap dt dk dv
+      {{ r, let '(t2,k2,v2) := rehash_acc cap tags keys vals accT accK accV in
+        ⌜r = LitV LitUnit⌝ ∗ is_array st sta ∗ is_array sk ska ∗ is_array sv sva ∗
+        is_array t2 dt ∗ is_array k2 dk ∗ is_array v2 dv }}.
+  Proof.
+    induction tags as [|tag tags IH]; intros keys vals i st sk sv sta ska sva cap dt dk dv accT accK accV
+      Hdt Hdk Hdv Hlk Hlv Hok Hdup Hwf Hdis Hload;
+      iIntros "Hst Hsk Hsv Ht Hk Hv";
+      iDestruct (is_array_obj_hm with "Hst") as (ost) "(%Hsta & Hst)";
+      iDestruct (is_array_obj_hm with "Hsk") as (osk) "(%Hska & Hsk)";
+      iDestruct (is_array_obj_hm with "Hsv") as (osv) "(%Hsva & Hsv)";
+      iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Hdta & Ht)";
+      iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hdka & Hk)";
+      iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hdva & Hv)";
+      subst sta ska sva dt dk dv;
+      unfold call_rehash, rehash_v, rehash_body; iApply wp_app; simpl; hm_admin.
+    - destruct keys, vals; simpl in *; try discriminate.
+      iApply wp_if_true. hm_admin. iFrame. done.
+    - destruct keys as [|key keys]; [simpl in Hlk; discriminate|].
+      destruct vals as [|value vals]; [simpl in Hlv; discriminate|].
+      simpl in Hlk, Hlv. injection Hlk as Hlk. injection Hlv as Hlv.
+      apply Forall_cons in Hok as [Htok Hok].
+      destruct (head_drop_hm _ _ _ _ Hdt) as [Htag Hdt'];
+      destruct (head_drop_hm _ _ _ _ Hdk) as [Hkey Hdk'];
+      destruct (head_drop_hm _ _ _ _ Hdv) as [Hvalue Hdv'].
+      iApply wp_if_false. hm_admin. hm_take.
+      iApply (wp_wand with "[Hst]"). { iApply (arr_get_spec st _ i tag Htag with "Hst"). }
+      iIntros (r) "[%Hr Hst]". subst r. hm_admin.
+      simpl rehash_acc. simpl occ_keys in Hdup, Hdis. simpl count_occ in Hload.
+      destruct (decide (tag = tag_occ)) as [->|Hnot].
+      + rewrite bool_decide_eq_true_2; [|done]. iApply wp_if_true. hm_admin.
+        hm_take. iApply (wp_wand with "[Hsk]").
+        { iApply (arr_get_spec sk _ i key Hkey with "Hsk"). }
+        iIntros (r) "[%Hr Hsk]". subst r. hm_admin.
+        hm_take. iApply (wp_wand with "[Hsv]").
+        { iApply (arr_get_spec sv _ i value Hvalue with "Hsv"). }
+        iIntros (r) "[%Hr Hsv]". subst r. hm_admin.
+        apply NoDup_cons in Hdup as [Hnin Hdup].
+        assert (contents_of accT accK accV !! key = None) as Hmiss.
+        { apply Hdis. apply elem_of_cons. by left. }
+        destruct (write_fresh_new cap accT accK accV key value Hwf Hmiss ltac:(lia))
+          as (idx & Hwrite & Hidx & Hwf2 & Hins & Hcount).
+        iApply (wp_wand with "[Ht Hk Hv]"). { iApply (put_spec with "Ht Hk Hv"). exact Hwf. }
+        iIntros (r) "Hslots". iEval (rewrite Hwrite) in "Hslots".
+        iDestruct "Hslots" as "(%Hr & Ht & Hk & Hv)". subst r. hm_admin.
+        replace (Z.of_nat (S (length tags)) - 1)%Z with (Z.of_nat (length tags)) by lia.
+        replace (Z.of_nat i + 1)%Z with (Z.of_nat (S i)) by lia.
+        rewrite Hwrite. simpl.
+        iApply (IH keys vals (S i) st sk sv _ _ _ cap _ _ _ _ _ _
+          Hdt' Hdk' Hdv' Hlk Hlv Hok Hdup Hwf2 with "Hst Hsk Hsv Ht Hk Hv").
+        * intros x Hin. rewrite Hins. rewrite lookup_insert_ne.
+          -- apply Hdis. apply elem_of_cons. by right.
+          -- intros ->. apply Hnin. exact Hin.
+        * rewrite Hcount. lia.
+      + rewrite bool_decide_eq_false_2; [|done]. iApply wp_if_false. hm_admin.
+        replace (Z.of_nat (S (length tags)) - 1)%Z with (Z.of_nat (length tags)) by lia.
+        replace (Z.of_nat i + 1)%Z with (Z.of_nat (S i)) by lia.
+        iApply (IH keys vals (S i) st sk sv _ _ _ cap _ _ _ accT accK accV
+          Hdt' Hdk' Hdv' Hlk Hlv Hok Hdup Hwf Hdis with "Hst Hsk Hsv Ht Hk Hv"). lia.
+  Qed.
+
+  Lemma write_fresh_effect cap tags keys vals k v :
+    wf_table cap tags keys vals →
+    (contents_of tags keys vals !! k = None → (2 * count_occ tags < cap)%nat) →
+    let '(t2,k2,v2) := write_fresh cap tags keys vals k v in
+    wf_table cap t2 k2 v2 ∧
+    contents_of t2 k2 v2 = <[k:=v]> (contents_of tags keys vals) ∧
+    count_occ t2 = if bool_decide (is_Some (contents_of tags keys vals !! k))
+                  then count_occ tags else S (count_occ tags).
+  Proof.
+    intros Hwf Hroom. destruct (contents_of tags keys vals !! k) as [w|] eqn:Hlookup.
+    - destruct (write_fresh_found cap tags keys vals k v w Hwf Hlookup)
+        as (i & -> & Hi & Hwf2 & Hcontents). simpl. auto.
+    - destruct (write_fresh_new cap tags keys vals k v Hwf Hlookup (Hroom eq_refl))
+        as (i & -> & Hi & Hwf2 & Hcontents & Hcount). simpl. auto.
+  Qed.
+
+  Lemma add_room_spec m cap a k v found :
+    found = bool_decide (is_Some (m !! k)) →
+    (m !! k = None → (2 * size m < cap)%nat) →
+    is_hashmap m cap a -∗
+    WP call_add_room a k v found
+      {{ r, ⌜ r = LitV LitUnit ⌝ ∗ is_hashmap (<[k:=v]> m) cap a }}.
+  Proof.
+    intros Hfound Hroom. iIntros "Hm".
+    iDestruct "Hm" as (o sz ta ka va tags keys vals)
+      "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)".
+    subst a ta ka va sz m.
+    assert (size (contents_of tags keys vals) = count_occ tags) as Hsize.
+    { apply size_contents; [lia|lia|exact (wf_dup _ _ _ _ Hwf)]. }
+    rewrite Hsize in Hroom.
+    pose proof (write_fresh_effect cap tags keys vals k v Hwf Hroom) as Heffect.
+    destruct (write_fresh cap tags keys vals k v) as [[t2 k2] v2] eqn:Hwrite.
+    destruct Heffect as (Hwf2 & Hcontents & Hcount).
+    rewrite <- Hfound in Hcount.
+    unfold call_add_room, add_room_body. iApply wp_app. simpl. hm_admin.
+    hm_read. hm_admin. hm_read. hm_admin. hm_read. hm_admin.
+    hm_take. iApply (wp_wand with "[Ht]"). { iApply (array.length_spec with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
+    iApply (wp_wand with "[Ht Hk Hv]"). { iApply (put_spec with "Ht Hk Hv"). exact Hwf. }
+    iIntros (r) "Hslots". iEval (rewrite Hwrite) in "Hslots".
+    iDestruct "Hslots" as "(%Hr & Ht & Hk & Hv)". subst r. hm_admin.
+    destruct found.
+    - iApply wp_if_true. hm_admin. iSplit; [done|].
+      iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), (LitV (LitObj ok)),
+        (LitV (LitObj ov)), t2, k2, v2. unfold is_hm_slots.
+      iFrame. repeat iSplit; try done; iPureIntro; first [lia|apply Hwf2].
+    - iApply wp_if_false. hm_admin. hm_read. hm_admin.
+      hm_write.
+      replace (Z.of_nat (count_occ tags) + 1)%Z with (Z.of_nat (count_occ t2)) by (rewrite Hcount; lia).
+      iSplit; [done|]. iExists o, (Z.of_nat (count_occ t2)), (LitV (LitObj ot)),
+        (LitV (LitObj ok)), (LitV (LitObj ov)), t2, k2, v2.
+      unfold is_hm_slots. iFrame. repeat iSplit; try done; iPureIntro; first [lia|apply Hwf2].
+  Qed.
 
   Lemma probe_spec m cap (a : val_cjr) (k : Z) :
     is_hashmap m cap a -∗
     WP call_probe a k
       {{ res, ∃ found idx v,
           ⌜ res = StructV [LitV (LitBool found); LitV (LitInt (Z.of_nat idx)); LitV (LitInt v)] ⌝ ∗
+          ⌜ m !! k = if found then Some v else None ⌝ ∗
+          ⌜ found = false → v = 0%Z ⌝ ∗
           is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as
+      (o sz ta ka va tags keys vals) "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)".
+    subst a ta ka va sz m.
+    assert (0 < cap)%nat as Hcap.
+    { destruct (wf_pow _ _ _ _ Hwf) as [e ->]. apply pow_positive. }
+    unfold call_probe, probe_for_body, probe_open. hm_pure.
+    hm_read. hm_admin. hm_read. hm_admin. hm_read. hm_admin.
+    hm_take. iApply (wp_wand with "[Ht]").
+    { iApply (array.length_spec with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
+    try hm_take. iApply (wp_wand with "[]").
+    { iApply residue_wp. lia. }
+    iIntros (r) "%Hr". subst r. hm_args.
+    assert (0 ≤ residue k (Z.of_nat cap))%Z as Hres by
+      (pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
+    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+      (unfold bucket; rewrite Z2Nat.id; lia).
+    iApply (wp_wand with "[Ht Hk Hv]").
+    { iApply (scan_spec cap (bucket k cap) 0 cap _ _ _ tags keys vals k None with "Ht Hk Hv");
+        try done; try (apply bucket_lt; done); lia. }
+    iIntros (r) "(%Hr & Ht & Hk & Hv)".
+    assert (count_occ tags < cap)%nat as Hcount by
+      (pose proof (wf_load _ _ _ _ Hwf); lia).
+    pose proof (probe_shape cap tags keys vals k Hcap Lt Lk Lv
+      (wf_ok _ _ _ _ Hwf) (wf_dup _ _ _ _ Hwf) (wf_place _ _ _ _ Hwf) Hcount) as Hshape.
+    change (r = probe_val (probe cap (bucket k cap) tags keys vals k)) in Hr.
+    destruct (probe cap (bucket k cap) tags keys vals k) as [idx v|idx]; simpl in *; subst r.
+    - iExists true, idx, v. iSplit; [done|]. iSplit; [done|]. iSplit; [by iPureIntro; discriminate|].
+      iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), (LitV (LitObj ok)),
+        (LitV (LitObj ov)), tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
+    - destruct Hshape as (_ & _ & _ & Hnone).
+      iExists false, idx, 0%Z. iSplit; [done|]. iSplit; [done|]. iSplit; [done|].
+      iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), (LitV (LitObj ok)),
+        (LitV (LitObj ov)), tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
+  Qed.
+
+  Lemma is_hashmap_obj m cap a :
+    is_hashmap m cap a -∗ ∃ o, ⌜ a = LitV (LitObj o) ⌝ ∗ is_hashmap m cap a.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as (o sz ta ka va tags keys vals) "[%Ha Hrest]".
+    iExists o. iSplit; [done|]. iExists o, sz, ta, ka, va, tags, keys, vals.
+    iSplit; [done|]. iFrame.
+  Qed.
 
   Lemma contains_spec m cap (a : val_cjr) (k : Z) :
     is_hashmap m cap a -∗
     WP call_contains a k
       {{ v, ⌜ v = LitV (LitBool (bool_decide (is_Some (m !! k)))) ⌝ ∗ is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm". iDestruct (is_hashmap_obj with "Hm") as (o) "(%Ha & Hm)". subst a.
+    unfold call_contains, contains_body.
+    iApply (wp_bind [AppLCtx (Val (StructV [LitV (LitObj o); LitV (LitInt k)]))]).
+    iApply wp_rec. iIntros "!> _". iApply wp_app. simpl. hm_admin.
+    try hm_take. hm_admin. iApply (wp_wand with "[Hm]").
+    { iApply (probe_spec with "Hm"). }
+    iIntros (r) "(%found & %idx & %v & %Hr & %Hlookup & %Hzero & Hm)". subst r.
+    hm_pure. rewrite Hlookup. destruct found; simpl; iFrame; done.
+  Qed.
 
   Lemma get_spec m cap (a : val_cjr) (k : Z) :
     is_hashmap m cap a -∗
@@ -2306,13 +2867,125 @@ Section hash_map.
                       | Some v => StructV [LitV (LitBool true); LitV (LitInt v)]
                       | None => StructV [LitV (LitBool false); LitV (LitInt 0)]
                       end ⌝ ∗ is_hashmap m cap a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm". iDestruct (is_hashmap_obj with "Hm") as (o) "(%Ha & Hm)". subst a.
+    unfold call_get, get_body.
+    iApply (wp_bind [AppLCtx (Val (StructV [LitV (LitObj o); LitV (LitInt k)]))]).
+    iApply wp_rec. iIntros "!> _". iApply wp_app. simpl. hm_admin.
+    try hm_take. hm_admin. iApply (wp_wand with "[Hm]").
+    { iApply (probe_spec with "Hm"). }
+    iIntros (r) "(%found & %idx & %v & %Hr & %Hlookup & %Hzero & Hm)". subst r.
+    hm_pure. rewrite Hlookup. destruct found; simpl; iFrame.
+    - done.
+    - rewrite (Hzero eq_refl). done.
+  Qed.
+
+  Lemma grow_spec m cap (a : val_cjr) (minCap : nat) :
+    is_hashmap m cap a -∗
+    WP call_grow a (Z.of_nat minCap)
+      {{ u, ⌜ u = LitV LitUnit ⌝ ∗ is_hashmap m (doubled_cap cap) a }}.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as
+      (o sz ta ka va tags keys vals) "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst a ta ka va sz m.
+    set (nc := doubled_cap cap).
+    destruct (wf_pow _ _ _ _ Hwf) as [e Hpow].
+    assert (nc = (2 ^ S (S e))%nat) as Hnc by (apply doubled_cap_pow; done).
+    assert (0 < nc)%nat as Hpos by (rewrite Hnc; apply pow_positive).
+    assert (wf_table nc (replicate nc 0%Z) (replicate nc 0%Z) (replicate nc 0%Z)) as Hempty
+      by (apply zeros_wf; eauto).
+    unfold call_grow, grow_body. iApply wp_app. simpl. hm_admin.
+    hm_read. hm_admin. hm_read. hm_admin. hm_read. hm_admin.
+    hm_take. iApply (wp_wand with "[Ht]"). { iApply (array.length_spec with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
+    replace (Z.of_nat cap + Z.of_nat cap)%Z with (Z.of_nat nc) by (unfold nc, doubled_cap; lia).
+    hm_take. iApply (wp_wand with "[]"). { iApply array.make_spec. exact Hpos. }
+    iIntros (nta) "Hnt". iDestruct (is_array_obj_hm with "Hnt") as (ont) "(%Hnta & Hnt)". subst nta. hm_admin.
+    hm_take. iApply (wp_wand with "[]"). { iApply array.make_spec. exact Hpos. }
+    iIntros (nka) "Hnk". iDestruct (is_array_obj_hm with "Hnk") as (onk) "(%Hnka & Hnk)". subst nka. hm_admin.
+    hm_take. iApply (wp_wand with "[]"). { iApply array.make_spec. exact Hpos. }
+    iIntros (nva) "Hnv". iDestruct (is_array_obj_hm with "Hnv") as (onv) "(%Hnva & Hnv)". subst nva. hm_admin.
+    rewrite <- Lt.
+    iApply (wp_wand with "[Ht Hk Hv Hnt Hnk Hnv]").
+    { iApply (rehash_spec tags keys vals 0 tags keys vals _ _ _ nc _ _ _
+        (replicate nc 0%Z) (replicate nc 0%Z) (replicate nc 0%Z)
+        with "Ht Hk Hv Hnt Hnk Hnv"); try done.
+      - lia.
+      - lia.
+      - exact (wf_ok _ _ _ _ Hwf).
+      - exact (wf_dup _ _ _ _ Hwf).
+      - intros x Hin. rewrite contents_zeros. done.
+      - rewrite count_zeros. pose proof (wf_load _ _ _ _ Hwf). unfold nc, doubled_cap. lia. }
+    iIntros (r) "Harrays".
+    destruct (grow_table cap tags keys vals) as [[t2 k2] v2] eqn:Hg.
+    assert (rehash_acc nc tags keys vals (replicate nc 0%Z) (replicate nc 0%Z)
+      (replicate nc 0%Z) = (t2,k2,v2)) as Hrehash by exact Hg.
+    iEval (rewrite Hrehash) in "Harrays".
+    iDestruct "Harrays" as "(%Hr & Ht & Hk & Hv & Hnt & Hnk & Hnv)". subst r. hm_admin.
+    hm_write. hm_admin. hm_write. hm_admin. hm_write.
+    pose proof (grow_table_spec cap tags keys vals e Hpow Hwf) as Hpure.
+    rewrite Hg in Hpure. destruct Hpure as [Hwf2 Hcontents].
+    assert (count_occ t2 = count_occ tags) as Hcount.
+    { pose proof (size_contents tags keys vals ltac:(lia) ltac:(lia) (wf_dup _ _ _ _ Hwf)) as Hold.
+      pose proof (size_contents t2 k2 v2
+        ltac:(pose proof (wf_tags_len _ _ _ _ Hwf2); pose proof (wf_keys_len _ _ _ _ Hwf2); lia)
+        ltac:(pose proof (wf_tags_len _ _ _ _ Hwf2); pose proof (wf_vals_len _ _ _ _ Hwf2); lia)
+        (wf_dup _ _ _ _ Hwf2)) as Hnew.
+      rewrite Hcontents in Hnew. lia. }
+    iSplit; [done|]. iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ont)),
+      (LitV (LitObj onk)), (LitV (LitObj onv)), t2, k2, v2.
+    unfold is_hm_slots. iFrame. repeat iSplit; try done; iPureIntro; first [lia|apply Hwf2].
+  Qed.
+
+  Lemma hashmap_bounds m cap a :
+    is_hashmap m cap a -∗ ⌜(0 < cap ∧ 2 * size m ≤ cap)%nat⌝ ∗ is_hashmap m cap a.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as (o sz ta ka va tags keys vals)
+      "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iSplit.
+    - iPureIntro. split; [eapply cap_pos; exact Hwf|]. rewrite <- Hm.
+      rewrite (size_contents tags keys vals ltac:(lia) ltac:(lia) (wf_dup _ _ _ _ Hwf)).
+      exact (wf_load _ _ _ _ Hwf).
+    - iExists o, sz, ta, ka, va, tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
+  Qed.
 
   Lemma add_spec m cap (a : val_cjr) (k v : Z) :
     is_hashmap m cap a -∗
     WP call_add a k v
-      {{ u, ⌜ u = LitV LitUnit ⌝ ∗ is_hashmap (<[k:=v]> m) cap a }}.
-  Proof. Admitted.
+      {{ u, ⌜ u = LitV LitUnit ⌝ ∗ ∃ cap', is_hashmap (<[k:=v]> m) cap' a }}.
+  Proof.
+    iIntros "Hm". iDestruct (is_hashmap_obj with "Hm") as (o) "(%Ha & Hm)". subst a.
+    iDestruct (hashmap_bounds with "Hm") as "[%Hbounds Hm]".
+    destruct Hbounds as [Hcap Hload].
+    unfold call_add, add_body. iApply wp_app. simpl. hm_admin.
+    iApply (wp_wand with "[Hm]"). { iApply (probe_spec with "Hm"). }
+    iIntros (r) "(%found & %idx & %old & %Hr & %Hlookup & %Hzero & Hm)". subst r. hm_admin.
+    destruct found.
+    - iApply wp_if_true. hm_admin. iApply (wp_wand with "[Hm]").
+      { iApply (add_room_spec with "Hm"); [rewrite Hlookup; done|intros Hnone; congruence]. }
+      iIntros (r) "[%Hr Hm]". iSplit; [done|]. iExists cap. iFrame.
+    - iApply wp_if_false. hm_admin. hm_take.
+      iApply (wp_wand with "[Hm]"). { iApply (size_spec with "Hm"). }
+      iIntros (r) "[%Hr Hm]". subst r. hm_admin. hm_take.
+      iApply (wp_wand with "[Hm]"). { iApply (capacity_spec with "Hm"). }
+      iIntros (r) "[%Hr Hm]". subst r. hm_admin.
+      destruct (decide (cap ≤ 2 * size m)%nat) as [Hgrow|Hroom].
+      + rewrite bool_decide_eq_true_2; [|lia]. iApply wp_if_true. hm_admin.
+        replace (Z.of_nat cap + 1)%Z with (Z.of_nat (S cap)) by lia.
+        iApply (wp_wand with "[Hm]"). { iApply (grow_spec with "Hm"). }
+        iIntros (r) "[%Hr Hm]". subst r. hm_admin.
+        iApply (wp_wand with "[Hm]").
+        { iApply (add_room_spec with "Hm"); [rewrite Hlookup; done|intros _; unfold doubled_cap; lia]. }
+        iIntros (r) "[%Hr Hm]". iSplit; [done|]. iExists (doubled_cap cap). iFrame.
+      + rewrite bool_decide_eq_false_2; [|lia]. iApply wp_if_false. hm_admin.
+        iApply (wp_wand with "[Hm]").
+        { iApply (add_room_spec with "Hm"); [rewrite Hlookup; done|intros _; lia]. }
+        iIntros (r) "[%Hr Hm]". iSplit; [done|]. iExists cap. iFrame.
+  Qed.
 
   Lemma remove_spec m cap (a : val_cjr) (k : Z) :
     is_hashmap m cap a -∗
@@ -2321,13 +2994,43 @@ Section hash_map.
                       | Some v => LitV (LitInt v)
                       | None => LitV (LitInt 0)
                       end ⌝ ∗ is_hashmap (delete k m) cap a }}.
-  Proof. Admitted.
-
-  Lemma grow_spec m cap (a : val_cjr) (minCap : nat) :
-    is_hashmap m cap a -∗
-    WP call_grow a (Z.of_nat minCap)
-      {{ u, ⌜ u = LitV LitUnit ⌝ ∗ is_hashmap m (doubled_cap cap) a }}.
-  Proof. Admitted.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as
+      (o sz ta ka va tags keys vals) "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst a ta ka va sz m.
+    unfold call_remove, remove_body. iApply wp_app. simpl. hm_admin.
+    hm_read. hm_admin. hm_read. hm_admin. hm_read. hm_admin.
+    hm_take. iApply (wp_wand with "[Ht]"). { iApply (array.length_spec with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
+    iApply (wp_wand with "[Ht Hk Hv]").
+    { iApply (buffer_probe_spec with "Ht Hk Hv"); try done; eapply cap_pos; exact Hwf. }
+    iIntros (r) "(%Hr & Ht & Hk & Hv)". subst r.
+    pose proof (probe_slots cap tags keys vals k Hwf) as Hslots.
+    pose proof (probe_shape cap tags keys vals k (cap_pos _ _ _ _ Hwf) Lt Lk Lv
+      (wf_ok _ _ _ _ Hwf) (wf_dup _ _ _ _ Hwf) (wf_place _ _ _ _ Hwf)
+      ltac:(pose proof (wf_load _ _ _ _ Hwf); pose proof (cap_pos _ _ _ _ Hwf); lia)) as Hlookup.
+    pose proof (write_remove_spec cap tags keys vals k Hwf) as Hremove.
+    unfold write_remove in Hremove.
+    destruct (probe cap (bucket k cap) tags keys vals k) as [idx old|idx]; simpl in *.
+    - destruct Hslots as (Hi & Htag & Hkey & Hvalue).
+      destruct Hremove as [Hwf2 Hcontents].
+      hm_admin. iApply wp_if_true. hm_admin. iApply (wp_bind [SeqCtx _]).
+      iApply (wp_wand with "[Ht]"). { iApply (arr_set_spec tags _ idx tag_occ tag_tomb Htag with "Ht"). }
+      iIntros (r) "[%Hr Ht]". subst r. hm_admin. hm_read. hm_admin.
+      hm_write. hm_admin. rewrite Hlookup.
+      iSplit; [done|]. iExists o, (Z.of_nat (count_occ tags) - 1)%Z,
+        (LitV (LitObj ot)), (LitV (LitObj ok)), (LitV (LitObj ov)), (<[idx:=tag_tomb]> tags), keys, vals.
+      unfold is_hm_slots. iFrame. repeat iSplit; try done; iPureIntro;
+        first [pose proof (count_bury tags idx Htag); lia|apply Hwf2].
+    - destruct Hremove as [Hwf2 Hcontents]. destruct Hlookup as (_ & _ & _ & Hlookup).
+      hm_admin. iApply wp_if_false. hm_admin. rewrite Hlookup.
+      iSplit; [done|]. iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)),
+        (LitV (LitObj ok)), (LitV (LitObj ov)), tags, keys, vals.
+      unfold is_hm_slots. iFrame. repeat iSplit; done.
+  Qed.
 
   Definition size_at (m : expr) : expr :=
     App (Rec None (Some "m") size_body) m.
@@ -2386,13 +3089,28 @@ Section hash_map.
     is_hashmap m cap a -∗
     WP add_then_get a k v
       {{ res, ⌜ res = StructV [LitV (LitBool true); LitV (LitInt v)] ⌝ ∗
-              is_hashmap (<[k:=v]> m) cap a }}.
-  Proof. Admitted.
+              (∃ cap', is_hashmap (<[k:=v]> m) cap' a) }}.
+  Proof.
+    iIntros "Hm". unfold add_then_get.
+    iApply (wp_bind [LetCtx None (call_get a k)]).
+    iApply (wp_wand with "[Hm]"). { iApply (add_spec with "Hm"). }
+    iIntros (u) "[%Hu Hm]". iDestruct "Hm" as (cap') "Hm". subst u.
+    iApply wp_let. simpl. iApply (wp_wand with "[Hm]"). { iApply (get_spec with "Hm"). }
+    iIntros (r) "[%Hr Hm]". rewrite lookup_insert in Hr. iSplit; [done|]. iExists cap'. iFrame.
+  Qed.
 
   Lemma add_then_contains_spec m cap (a : val_cjr) (k v : Z) :
     is_hashmap m cap a -∗
     WP add_then_contains a k v
-      {{ b, ⌜ b = LitV (LitBool true) ⌝ ∗ is_hashmap (<[k:=v]> m) cap a }}.
-  Proof. Admitted.
+      {{ b, ⌜ b = LitV (LitBool true) ⌝ ∗ (∃ cap', is_hashmap (<[k:=v]> m) cap' a) }}.
+  Proof.
+    iIntros "Hm". unfold add_then_contains.
+    iApply (wp_bind [LetCtx None (call_contains a k)]).
+    iApply (wp_wand with "[Hm]"). { iApply (add_spec with "Hm"). }
+    iIntros (u) "[%Hu Hm]". iDestruct "Hm" as (cap') "Hm". subst u.
+    iApply wp_let. simpl. iApply (wp_wand with "[Hm]"). { iApply (contains_spec with "Hm"). }
+    iIntros (r) "[%Hr Hm]". rewrite lookup_insert in Hr. simpl in Hr.
+    iSplit; [done|]. iExists cap'. iFrame.
+  Qed.
 
 End hash_map.

@@ -4,7 +4,7 @@
 # make check-proofs / make check-axioms: run those steps alone.
 
 ASSUMPTIONS_LOG := build/assumptions.log
-VERIFY_THEOREMS := 8
+VERIFY_THEOREMS := 29
 
 .PHONY: verify check-proofs check-axioms check-no-cheats
 verify: all check-no-cheats check-proofs check-axioms

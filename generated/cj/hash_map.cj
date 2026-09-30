@@ -3,6 +3,26 @@
 foreign func malloc(size: UIntNative): CPointer<Unit>
 foreign func free(ptr: CPointer<Unit>): Unit
 
+struct Int64Option {
+    public var ok: Bool
+    public var value: Int64
+    public init(ok: Bool, value: Int64) {
+        this.ok = ok
+        this.value = value
+    }
+}
+
+struct ProbeResult {
+    public var found: Bool
+    public var index: Int64
+    public var value: Int64
+    public init(found: Bool, index: Int64, value: Int64) {
+        this.found = found
+        this.index = index
+        this.value = value
+    }
+}
+
 class Array {
     public var len: Int64
     public var data: CPointer<Int64>
@@ -24,6 +44,29 @@ class HashMap {
         this.vals = vals
     }
 
+    public func probe(k: Int64): ProbeResult {
+        let tags = this.tags
+        let keys = this.keys
+        let vals = this.vals
+        let cap = length(tags)
+        let start = residue(k, cap)
+        scan(cap, start, 0, cap, tags, keys, vals, k, -1)
+    }
+
+    public func addRoom(k: Int64, v: Int64, found: Bool): Unit {
+        let tags = this.tags
+        let keys = this.keys
+        let vals = this.vals
+        let cap = length(tags)
+        put(tags, keys, vals, cap, k, v)
+        if (found) {
+            ()
+        } else {
+            let sz = this.mySize
+            this.mySize = sz + 1
+        }
+    }
+
     public func size(): Int64 {
         this.mySize
     }
@@ -38,285 +81,40 @@ class HashMap {
     }
 
     public func contains(k: Int64): Bool {
-        let res = ({ args => let m = args[0]
-        let k = args[1]
-        let tags = this.f1
-        let keys = this.f2
-        let vals = this.f3
-        let cap = ({ a => a.f0 })(tags)
-        let start = ({ args => let k = args[0]
-        let cap = args[1]
-        var rem = k
-        while (rem <= -1) {
-            rem = rem + cap
-        }
-        while (cap <= rem) {
-            rem = rem - cap
-        }
-        rem })(k, cap)
-        var step = 0
-        var hole = -1
-        var done = (false, 0, 0)
-        while ((step + 1) <= cap) {
-            let slot = if (cap <= (start + step)) {
-                start + step
-            } else {
-                (start + step) - cap
-            }
-            let tag = ({ args => let arr = args[0]
-            let i = args[1]
-            let p = arr.f1
-            unsafe { (p + i).read() } })(tags, slot)
-            if (tag == 0) {
-                var done = (false, slot, 0)
-                done
-                step = cap
-            } else {
-                if (tag == 1) {
-                    let key = ({ args => let arr = args[0]
-                    let i = args[1]
-                    let p = arr.f1
-                    unsafe { (p + i).read() } })(keys, slot)
-                    if (key == k) {
-                        var done = (true, slot, ({ args => let arr = args[0]
-                        let i = args[1]
-                        let p = arr.f1
-                        unsafe { (p + i).read() } })(vals, slot))
-                        done
-                        step = cap
-                    } else {
-                        step = step + 1
-                    }
-                } else {
-                    if (hole == -1) {
-                        hole = slot
-                    }
-                    step = step + 1
-                }
-            }
-        }
-        done })(this, k)
-        res[0]
+        let res = this.probe(k)
+        res.found
     }
 
     public func get(k: Int64): Int64Option {
-        let res = ({ args => let m = args[0]
-        let k = args[1]
-        let tags = this.f1
-        let keys = this.f2
-        let vals = this.f3
-        let cap = ({ a => a.f0 })(tags)
-        let start = ({ args => let k = args[0]
-        let cap = args[1]
-        var rem = k
-        while (rem <= -1) {
-            rem = rem + cap
-        }
-        while (cap <= rem) {
-            rem = rem - cap
-        }
-        rem })(k, cap)
-        var step = 0
-        var hole = -1
-        var done = (false, 0, 0)
-        while ((step + 1) <= cap) {
-            let slot = if (cap <= (start + step)) {
-                start + step
-            } else {
-                (start + step) - cap
-            }
-            let tag = ({ args => let arr = args[0]
-            let i = args[1]
-            let p = arr.f1
-            unsafe { (p + i).read() } })(tags, slot)
-            if (tag == 0) {
-                var done = (false, slot, 0)
-                done
-                step = cap
-            } else {
-                if (tag == 1) {
-                    let key = ({ args => let arr = args[0]
-                    let i = args[1]
-                    let p = arr.f1
-                    unsafe { (p + i).read() } })(keys, slot)
-                    if (key == k) {
-                        var done = (true, slot, ({ args => let arr = args[0]
-                        let i = args[1]
-                        let p = arr.f1
-                        unsafe { (p + i).read() } })(vals, slot))
-                        done
-                        step = cap
-                    } else {
-                        step = step + 1
-                    }
-                } else {
-                    if (hole == -1) {
-                        hole = slot
-                    }
-                    step = step + 1
-                }
-            }
-        }
-        done })(this, k)
-        (res[0], res[2])
+        let res = this.probe(k)
+        Int64Option(res.found, res.value)
     }
 
     public func add(k: Int64, v: Int64): Unit {
-        let res = ({ args => let m = args[0]
-        let k = args[1]
-        let tags = this.f1
-        let keys = this.f2
-        let vals = this.f3
-        let cap = ({ a => a.f0 })(tags)
-        let start = ({ args => let k = args[0]
-        let cap = args[1]
-        var rem = k
-        while (rem <= -1) {
-            rem = rem + cap
-        }
-        while (cap <= rem) {
-            rem = rem - cap
-        }
-        rem })(k, cap)
-        var step = 0
-        var hole = -1
-        var done = (false, 0, 0)
-        while ((step + 1) <= cap) {
-            let slot = if (cap <= (start + step)) {
-                start + step
-            } else {
-                (start + step) - cap
-            }
-            let tag = ({ args => let arr = args[0]
-            let i = args[1]
-            let p = arr.f1
-            unsafe { (p + i).read() } })(tags, slot)
-            if (tag == 0) {
-                var done = (false, slot, 0)
-                done
-                step = cap
-            } else {
-                if (tag == 1) {
-                    let key = ({ args => let arr = args[0]
-                    let i = args[1]
-                    let p = arr.f1
-                    unsafe { (p + i).read() } })(keys, slot)
-                    if (key == k) {
-                        var done = (true, slot, ({ args => let arr = args[0]
-                        let i = args[1]
-                        let p = arr.f1
-                        unsafe { (p + i).read() } })(vals, slot))
-                        done
-                        step = cap
-                    } else {
-                        step = step + 1
-                    }
-                } else {
-                    if (hole == -1) {
-                        hole = slot
-                    }
-                    step = step + 1
-                }
-            }
-        }
-        done })(this, k)
-        if (res[0]) {
-            let idx = res[1]
-            ({ args => let arr = args[0]
-            let i = args[1]
-            let x = args[2]
-            let p = arr.f1
-            unsafe { (p + i).write(x) } })(this.vals, idx, v)
-            ()
+        let res = this.probe(k)
+        let found = res.found
+        if (found) {
+            this.addRoom(k, v, found)
         } else {
-            let idx = res[1]
-            ({ args => let arr = args[0]
-            let i = args[1]
-            let x = args[2]
-            let p = arr.f1
-            unsafe { (p + i).write(x) } })(this.tags, idx, 1)
-            ({ args => let arr = args[0]
-            let i = args[1]
-            let x = args[2]
-            let p = arr.f1
-            unsafe { (p + i).write(x) } })(this.keys, idx, k)
-            ({ args => let arr = args[0]
-            let i = args[1]
-            let x = args[2]
-            let p = arr.f1
-            unsafe { (p + i).write(x) } })(this.vals, idx, v)
-            let sz = this.mySize
-            this.mySize = sz + 1
+            let sz = this.size()
+            let cap = this.capacity()
+            if (cap <= (sz + sz)) {
+                this.grow(cap + 1)
+            }
+            this.addRoom(k, v, found)
         }
     }
 
     public func remove(k: Int64): Int64 {
-        let res = ({ args => let m = args[0]
-        let k = args[1]
-        let tags = this.f1
-        let keys = this.f2
-        let vals = this.f3
-        let cap = ({ a => a.f0 })(tags)
-        let start = ({ args => let k = args[0]
-        let cap = args[1]
-        var rem = k
-        while (rem <= -1) {
-            rem = rem + cap
-        }
-        while (cap <= rem) {
-            rem = rem - cap
-        }
-        rem })(k, cap)
-        var step = 0
-        var hole = -1
-        var done = (false, 0, 0)
-        while ((step + 1) <= cap) {
-            let slot = if (cap <= (start + step)) {
-                start + step
-            } else {
-                (start + step) - cap
-            }
-            let tag = ({ args => let arr = args[0]
-            let i = args[1]
-            let p = arr.f1
-            unsafe { (p + i).read() } })(tags, slot)
-            if (tag == 0) {
-                var done = (false, slot, 0)
-                done
-                step = cap
-            } else {
-                if (tag == 1) {
-                    let key = ({ args => let arr = args[0]
-                    let i = args[1]
-                    let p = arr.f1
-                    unsafe { (p + i).read() } })(keys, slot)
-                    if (key == k) {
-                        var done = (true, slot, ({ args => let arr = args[0]
-                        let i = args[1]
-                        let p = arr.f1
-                        unsafe { (p + i).read() } })(vals, slot))
-                        done
-                        step = cap
-                    } else {
-                        step = step + 1
-                    }
-                } else {
-                    if (hole == -1) {
-                        hole = slot
-                    }
-                    step = step + 1
-                }
-            }
-        }
-        done })(this, k)
-        if (res[0]) {
-            let idx = res[1]
-            let old = res[2]
-            ({ args => let arr = args[0]
-            let i = args[1]
-            let x = args[2]
-            let p = arr.f1
-            unsafe { (p + i).write(x) } })(this.tags, idx, 2)
+        let tags = this.tags
+        let keys = this.keys
+        let vals = this.vals
+        let cap = length(tags)
+        let res = bufferProbe(tags, keys, vals, cap, k)
+        if (res.found) {
+            let idx = res.index
+            let old = res.value
+            arraySet(tags, idx, 2)
             let sz = this.mySize
             this.mySize = sz - 1
             old
@@ -327,27 +125,105 @@ class HashMap {
 
     public func grow(min: Int64): Unit {
         let tags = this.tags
-        let cap = ({ a => a.f0 })(tags)
+        let keys = this.keys
+        let vals = this.vals
+        let cap = length(tags)
         let newCap = cap + cap
-        let n = newCap
-        let ntags = ({ n => let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * n))) }
-        Array(n, p) })(n)
-        let nkeys = ({ n => let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * n))) }
-        Array(n, p) })(n)
-        let nvals = ({ n => let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * n))) }
-        Array(n, p) })(n)
+        let ntags = make(newCap)
+        let nkeys = make(newCap)
+        let nvals = make(newCap)
+        rehash(cap, 0, tags, keys, vals, newCap, ntags, nkeys, nvals)
         this.tags = ntags
         this.keys = nkeys
         this.vals = nvals
     }
 }
 
-class Int64Option {
-    public var ok: Bool
-    public var value: Int64
-    public init(ok: Bool, value: Int64) {
-        this.ok = ok
-        this.value = value
+func make(n: Int64): Array {
+    let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * n))) }
+    Array(n, p)
+}
+
+func length(a: Array): Int64 {
+    a.len
+}
+
+func arrayGet(arr: Array, i: Int64): Int64 {
+    let p = arr.data
+    unsafe { (p + i).read() }
+}
+
+func arraySet(arr: Array, i: Int64, x: Int64): Unit {
+    let p = arr.data
+    unsafe { (p + i).write(x) }
+}
+
+func residue(k: Int64, cap: Int64): Int64 {
+    var rem = k
+    while (rem <= -1) {
+        rem = rem + cap
+    }
+    while (cap <= rem) {
+        rem = rem - cap
+    }
+    rem
+}
+
+func scan(fuel: Int64, start: Int64, step: Int64, cap: Int64, tags: Array, keys: Array, vals: Array, k: Int64, hole: Int64): ProbeResult {
+    if (fuel <= 0) {
+        ProbeResult(false, if (hole == -1) { start } else { hole }, 0)
+    } else {
+        let slot = if (((start + step) + 1) <= cap) {
+            start + step
+        } else {
+            (start + step) - cap
+        }
+        let tag = arrayGet(tags, slot)
+        if (tag == 0) {
+            ProbeResult(false, if (hole == -1) { slot } else { hole }, 0)
+        } else {
+            if (tag == 1) {
+                let key = arrayGet(keys, slot)
+                if (key == k) {
+                    ProbeResult(true, slot, arrayGet(vals, slot))
+                } else {
+                    scan(fuel - 1, start, step + 1, cap, tags, keys, vals, k, hole)
+                }
+            } else {
+                scan(fuel - 1, start, step + 1, cap, tags, keys, vals, k, if (hole == -1) { slot } else { hole })
+            }
+        }
+    }
+}
+
+func bufferProbe(tags: Array, keys: Array, vals: Array, cap: Int64, k: Int64): ProbeResult {
+    let start = residue(k, cap)
+    scan(cap, start, 0, cap, tags, keys, vals, k, -1)
+}
+
+func put(tags: Array, keys: Array, vals: Array, cap: Int64, k: Int64, v: Int64): Unit {
+    let res = bufferProbe(tags, keys, vals, cap, k)
+    let idx = res.index
+    if (res.found) {
+        arraySet(vals, idx, v)
+    } else {
+        arraySet(tags, idx, 1)
+        arraySet(keys, idx, k)
+        arraySet(vals, idx, v)
+    }
+}
+
+func rehash(fuel: Int64, i: Int64, st: Array, sk: Array, sv: Array, cap: Int64, dt: Array, dk: Array, dv: Array): Unit {
+    if (fuel <= 0) {
+        ()
+    } else {
+        let tag = arrayGet(st, i)
+        if (tag == 1) {
+            let key = arrayGet(sk, i)
+            let value = arrayGet(sv, i)
+            put(dt, dk, dv, cap, key, value)
+        }
+        rehash(fuel - 1, i + 1, st, sk, sv, cap, dt, dk, dv)
     }
 }
 

@@ -125,13 +125,19 @@ The counts below are `wc -l` of the whole file. A `.v` file includes the program
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
 | `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| `theories/examples/hash_map.v` | 2398 | `generated/cj/hash_map.cj` | 375 | 6.4 |
-| **Total** | **7883** | | **1089** | **7.2** |
+| `theories/examples/hash_map.v` | 3116 | `generated/cj/hash_map.cj` | 251 | 12.4 |
+| **Total** | **8601** | | **965** | **8.9** |
 
-Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. Loops are longer relative to the printed `while` because they need invariants. The data-structure examples add representation predicates and equations. `array_list.v` is 2416 of the 7883 specification lines; its generated program has 153 lines. `list_rev.v` has 287 lines for the program, algebra, representation helpers, iteration and loop proofs, and client theorems, compared with 65 generated lines. Quicksort is counted once in the specifications and printed twice. Across the fifteen generated files the specifications are 7.2 times as long as the printed Cangjie.
+Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. Loops are longer relative to the printed `while` because they need invariants. The data-structure examples add representation predicates and equations. `array_list.v` is 2416 of the 8601 specification lines; its generated program has 153 lines. `list_rev.v` has 287 lines for the program, algebra, representation helpers, iteration and loop proofs, and client theorems, compared with 65 generated lines. Quicksort is counted once in the specifications and printed twice. Across the fifteen generated files the specifications are 8.9 times as long as the printed Cangjie.
 
 ## What is omitted, and where to read
 
 Concurrency is absent, so there is no shared invariant and no fork. Objects are not collected. The named free rule is the one-word rule, while the array library uses allocation of a positive word count. Pointer arithmetic is by words. Null, a freed address, and an address with no points-to fact are stuck. Types are not enforced. Adequacy applies to the programs whose specifications have been proved.
 
 The tutorial's bibliography is the set of sources used here: the Cangjie 1.0 documentation; Reynolds's 2002 paper and the 2001 paper of O'Hearn, Reynolds, and Yang; the Iris papers named above, the Iris lecture notes, and the Iris 4.4.0 development; and the manuals for Coq 8.20.1 and std++ 1.12.0. In the repository, `theories/lang.v` is the syntax and the machine, `theories/primitive_laws.v` is the points-to facts and the rules, `theories/adequacy.v` is the link to execution, and `theories/examples/` holds the programs. The generated Cangjie is in `generated/cj/`.
+
+## Completing the hash map
+
+The hash map now includes checked operational proofs for all public methods and the bounded probe, insertion, and rehash kernels. The probe wraps correctly and continues past tombstones to find an existing equal key. Missing-key insertion grows at the half-full threshold; overwrite leaves capacity and size unchanged. Growth reinserts all live entries under the new capacity before replacing the buffers. The `add` contract exposes the resulting capacity existentially, so client proofs also cover growth.
+
+The tutorial explains the pure and spatial invariants, each probe case, preservation of placement and uniqueness, and the rehash induction; it includes complete source listings of the public proofs and central supporting arguments. The printer now recognizes closure-valued calls' result types and distinguishes a temporary function argument pack from a same-arity result struct. All 51 extracted-program runtime cases pass on Cangjie 1.0.5, including 13 hash map cases. The supporting evaluation-context tactics occupy a separate 110-line file, outside the table's example counts.

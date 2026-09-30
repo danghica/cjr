@@ -335,7 +335,7 @@ Definition class_of (env : penv) (e : expr) : option string :=
       option_map d_name (decl_by_arity (e_sty env) (List.length vs + List.length es))
   | Val (StructV vs) => option_map d_name (decl_by_arity (e_sty env) (List.length vs))
   | FieldLoad (Var y) i | StructLoad (Var y) i => field_ty env (var_class env y) i
-  | App (Rec _ _ b) _ =>
+  | App (Rec _ _ b) _ | App (Val (RecV _ _ b)) _ =>
       match find_body env b with
       | Some k => match decl_by_name (all_decls env) (fn_ret k) with
                   | Some _ => Some (fn_ret k)
@@ -344,6 +344,17 @@ Definition class_of (env : penv) (e : expr) : option string :=
       | None => None
       end
   | _ => None
+  end.
+
+(** A local struct passed immediately as the argument pack of a named
+    function must be expanded to that function's parameters. Its arity may
+    coincide with an unrelated result struct. *)
+Definition immediate_pack (env : penv) (x : string) (e : expr) : bool :=
+  let call := match e with Let _ a _ => a | _ => e end in
+  match call with
+  | App (Rec _ _ b) (Var y) | App (Val (RecV _ _ b)) (Var y) =>
+      String.eqb x y && match find_body env b with Some _ => true | None => false end
+  | _ => false
   end.
 
 Definition is_stmt (e : expr) : bool :=
@@ -507,7 +518,10 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
               +++ ex (with_ty env x "") ind e2
           end
       | Struct vs es =>
-          match decl_by_arity (e_sty env) (List.length vs + List.length es) with
+          if immediate_pack env x e2 then
+            ex (with_pack env x
+                  (app (map (exv env ind) vs) (map (fun s => arg (ex env) ind s) es))) ind e2
+          else match decl_by_arity (e_sty env) (List.length vs + List.length es) with
           | Some d =>
               "let " +++ sanitize x +++ " = " +++ ex env ind e1 +++ nl +++ ind
               +++ ex (with_ty env x (d_name d)) ind e2

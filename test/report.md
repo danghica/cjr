@@ -1,6 +1,6 @@
 # Unit test report
 
-Date: 29 September 2026.
+Date: 30 September 2026.
 
 Compiler: Cangjie 1.0.5 (cjnative), target aarch64-apple-darwin.
 
@@ -18,9 +18,9 @@ Out-of-range indexes are not called. In the extracted array list those arms are 
 
 ## Results
 
-32 cases ran. 32 passed. 0 failed.
+51 cases ran. 51 passed. 0 failed.
 
-`hash_map.cj` and `test/hash_map_test.cj` (5 cases) were added; they were not run in this report because `cjc` was unavailable in the CI agent environment.
+All fifteen generated programs were rebuilt and rerun, including the 13 hash map cases and six list reversal cases.
 
 | Program | Cases | Result |
 |---|---:|---|
@@ -33,8 +33,10 @@ Out-of-range indexes are not called. In the extracted array list those arms are 
 | `frame_call.cj` | 1 | passed |
 | `vtable.cj` | 1 | passed |
 | `list.cj` | 3 | passed |
+| `list_rev.cj` | 6 | passed |
 | `array.cj` | 3 | passed |
 | `array_list.cj` | 6 | passed |
+| `hash_map.cj` | 13 | passed |
 | `qsort_array.cj` | 5 | passed |
 | `qsort_array_list.cj` | 6 | passed |
 
@@ -88,8 +90,27 @@ DYLD_LIBRARY_PATH=/private/tmp/cangjie-sdk/cangjie/runtime/lib/darwin_aarch64_cj
 - `doubleReversal`: two calls restore `[5, -1, 5]`.
 - `rewiresOriginalNodesAndFramesOtherList`: references saved before reversing `[1, 2, 3]` observe the changed links `3 -> 2 -> 1 -> empty`; the original sentinel and a disjoint `[42]` list remain empty and unchanged, respectively. This detects copying that leaves the original links intact.
 
-The Coq module compiles. `make check-axioms` reports 8/8 audited theorems closed under the global context, including `reverse_spec` and `reverse_twice_spec`. The reversal theorem chain contains no `Admitted`, `admit`, or added `Axiom`. `make cj` produces the standalone reversal file and rebuilds the tutorial PDF.
+The Coq module compiles. `make check-axioms` reports 29/29 audited theorems closed under the global context, including `reverse_spec` and `reverse_twice_spec`. The reversal theorem chain contains no `Admitted`, `admit`, or added `Axiom`. `make cj` produces the standalone reversal file and rebuilds the tutorial PDF.
 
-The specification is a partial-correctness and safety theorem for the CJR term. The runtime cases check the printed Cangjie, rather than a separately handwritten reversal. They do not constitute a formal proof of the printer or compiler. Existing admitted obligations in `hash_map.v` are outside this reversal work.
+The specification is a partial-correctness and safety theorem for the CJR term. The runtime cases check the printed Cangjie, rather than a separately handwritten reversal. They do not constitute a formal proof of the printer or compiler.
 
-The three existing `list.cj` cases were also compiled and rerun on the same compiler; all passed. The list regression total for this run is 9/9 (six reversal cases plus three existing list cases). `coqchk` succeeds for the reversal module and `make check-proofs` completes for the project. The project-wide `make check-no-cheats` gate still fails on the 13 pre-existing `Proof. Admitted.` statements in `hash_map.v`; no such statements were added to or used by the reversal module.
+The three existing `list.cj` cases were also compiled and rerun on the same compiler; all passed. The list regression total for this run is 9/9 (six reversal cases plus three existing list cases). `coqchk` succeeds for the reversal module and `make check-proofs` completes for the project. The project-wide `make check-no-cheats` gate now passes: the hash map obligations have been completed, and the source contains no admitted proofs or declared axioms.
+
+## Hash map verification — 30 September 2026
+
+The regenerated `hash_map.cj` is compiled directly with `test/hash_map_test.cj`. All 13 cases pass. Eight regression cases extend the five original cases:
+
+- `collisionsAndWraparound` checks three colliding keys starting at the last slot and an absent colliding key.
+- `tombstoneDoesNotHideExistingKey` removes the first key, updates a later colliding key without duplicating it, and inserts another key into a reusable slot.
+- `negativeKeysAndZeroValues` distinguishes a stored zero from absence and checks negative colliding keys.
+- `updateAtLoadLimitDoesNotGrow` keeps capacity 16 and size eight while updating an existing entry.
+- `growthPreservesEveryEntry` inserts nine colliding keys, checks capacity 32, and reads every value afterward.
+- `repeatedGrowthAndRemoval` inserts 80 keys through several doublings, checks every entry, removes 40, checks a missing removal, and reinserts the deleted keys with new values.
+- `explicitGrowthPreservesContents` doubles a populated map and checks its size and colliding entries.
+- `tombstonesAcrossEntireProbeCycle` turns all 16 slots into tombstones, checks a bounded absent lookup, and successfully reuses a slot.
+
+The Coq module contains no admissions. `make verify` checks all 23 compiled modules with `coqchk`, rejects source bypasses, and audits 29 theorems as closed under the global context. The audit covers all public hash map methods, the remainder, scan, insertion, and rehash kernels, and the initialization and insertion client compositions. `make cj` regenerates the implementation and rebuilds the detailed tutorial, including complete checked proof listings.
+
+The printer changes also warranted rebuilding and rerunning every existing extracted-program test: all 51 cases across 15 programs pass. Compiler logs and binaries were kept outside the repository. The macOS SDK workaround described above was still required. The compiler reports benign unused-variable warnings for the retained growth hint and illustrative main result.
+
+The formal results concern the CJR expressions, whose integers are unbounded. Runtime tests validate the printed `Int64` programs on the tested inputs; the printer, compiler, and freedom from arbitrary machine-integer overflow are not formally verified. `grow(minCap)` performs one doubling, rather than guaranteeing an arbitrary requested minimum.

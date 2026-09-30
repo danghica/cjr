@@ -36,6 +36,14 @@ Syntax, Semantics, and Separation Logic}
            {∗}{{$*$}}1
            {⌜}{{$\ulcorner$}}1
            {⌝}{{$\urcorner$}}1
+           {≤}{{$\leq$}}1
+           {∧}{{$\land$}}1
+           {∨}{{$\lor$}}1
+           {∈}{{$\in$}}1
+           {⊢}{{$\vdash$}}1
+           {≠}{{$\neq$}}1
+           {∉}{{$\notin$}}1
+           {∅}{{$\emptyset$}}1
 }
 \lstset{style=coq}
 
@@ -3269,18 +3277,427 @@ On the array list they are \texttt{a.size()}, \texttt{a.get(i)}, and \texttt{a.s
 \section{Hash maps}
 \label{sec:hashmap}
 
-\texttt{theories/examples/hash\_map.v} lowers the monomorphic \texttt{Int64} core of Cangjie's \texttt{HashMap}.
-Three \texttt{Array} fields hold tags, keys, and values; tag $0$ is empty, $1$ occupied, $2$ a tombstone.
-The live size is stored in \texttt{mySize}.
-The mathematical content is a finite map with no duplicate keys; \texttt{wf\_table} and the probe invariants tie the three arrays to that map.
+\texttt{theories/examples/hash\_map.v} implements a monomorphic map from integer
+keys to integer values. The example uses open addressing: each key belongs in
+one of three parallel arrays, and collisions are resolved by scanning subsequent
+slots. The verified executable includes lookup, overwrite, insertion, removal,
+and rehashing when capacity doubles. Its model is a finite map
+$m : \mathbb{Z} \rightharpoonup \mathbb{Z}$, represented in Coq by
+\texttt{gmap Z Z}.
 
-The bucket index is \texttt{residue k cap}: add \texttt{cap} while the key is negative, then subtract \texttt{cap} while the representative is at least \texttt{cap}.
-That is the remainder the source would obtain with a power-of-two mask.
-Growth doubles the capacity when \texttt{size + size} reaches the capacity; the extracted program allocates fresh arrays (rehashing is still being wired to the \texttt{grow\_table} Gallina step).
+\subsection{Storage and the representation invariant}
 
-\texttt{get} returns an \texttt{Int64Option}: a boolean \texttt{ok} and an integer \texttt{value}.
-\texttt{contains} is the \texttt{ok} flag alone.
-\texttt{remove} of a missing key returns zero and leaves the table unchanged.
+A \texttt{HashMap} object has four fields: \texttt{mySize}, \texttt{tags},
+\texttt{keys}, and \texttt{vals}. All three arrays have the same capacity
+$c$. At index $i$, tag $0$ means empty, tag $1$ means occupied, and tag $2$
+means deleted, or a \emph{tombstone}. Only an occupied slot contributes its key
+and value to the mathematical map. Unoccupied keys and values are ignored;
+removal does not need to clear them.
+
+The pure function \texttt{contents\_of tags keys vals} walks the arrays and
+inserts occupied pairs into a finite map. By itself this function would conceal
+duplicate keys: a later map insertion can overwrite an earlier one. The
+invariant therefore proves separately that
+\texttt{NoDup (occ\_keys tags keys)}. Under that condition,
+\texttt{size\_contents} proves that the finite map's size is exactly
+\texttt{count\_occ tags}, the number of live slots.
+
+The record \texttt{wf\_table c tags keys vals} contains eight obligations.
+\begin{enumerate}
+\item The tag array has length $c$.
+\item The key array has length $c$.
+\item The value array has length $c$.
+\item $c=2^{e+1}$ for some natural number $e$, so $c$ is positive and even.
+\item Every tag is one of $0$, $1$, and $2$.
+\item Occupied keys have no duplicates.
+\item $2\,\texttt{count\_occ tags}\leq c$; at most half the slots are occupied.
+\item Every occupied key is \emph{placed}: the probe path from its bucket to
+its slot contains no empty slot before it.
+\end{enumerate}
+The last condition is essential. A search may stop at an empty slot only
+because no live key that belongs farther along that path can have crossed it.
+A tombstone is allowed on the path, so deleting an earlier key does not make a
+later colliding key unreachable.
+
+The spatial predicate \texttt{is\_hashmap m c a} adds ownership to these pure
+facts. It existentially names the map object, the three array objects, and their
+lists of contents. It owns all four map fields and all three array predicates,
+requires \texttt{contents\_of = m}, and requires
+\texttt{mySize = Z.of\_nat (count\_occ tags)}. Thus a proof must maintain both
+the finite-map meaning and the physical size field. The separating conjunction
+between the three array predicates also provides the disjoint ownership needed
+to write one array while framing the others.
+
+\subsection{Remainders and wrapped indexes}
+
+The starting bucket is
+\[
+ b(k,c)=\operatorname{Z.to\_nat}(\texttt{residue }k\ c).
+\]
+The executable remainder calculation first adds $c$ until a negative key
+becomes nonnegative, then subtracts $c$ until the result is below $c$.
+\texttt{residue\_spec} proves both
+$0\leq\texttt{residue }k\ c<c$ and equality with the mathematical remainder
+$k\bmod c$. Each adjustment preserves congruence modulo $c$; the two loop
+lemmas prove that sufficiently many adjustments establish the range. The
+weakest-precondition proofs \texttt{wp\_nonneg} and \texttt{wp\_below} relate
+those pure recurrences to a mutable stack slot. \texttt{residue\_run\_wp}
+returns ownership of that slot as well as its result, allowing
+\texttt{residue\_wp} to close the local variable's scope.
+
+A probe at step $s$ visits $(b+s)\bmod c$. The bounded scan maintains
+$b<c$ and $s<c$, hence $b+s<2c$. At most one subtraction is required:
+\[
+ \texttt{probe\_slot}(b,s,c)=
+ \begin{cases}b+s,&b+s<c,\\b+s-c,&c\leq b+s.\end{cases}
+\]
+\texttt{probe\_slot\_sub} proves this identity and
+\texttt{probe\_slot\_e\_spec} verifies the executable branch. In the language's
+available operators, the strict test is written as $b+s+1\leq c$. For example,
+capacity $16$, bucket $15$, and steps $0,1,2$ visit slots $15,0,1$.
+The comparison must choose the unmodified sum precisely in the first case;
+choosing it after crossing the capacity would produce an out-of-bounds read.
+
+\subsection{The bounded probe and its proof}
+
+The pure function \texttt{probe\_from} carries a remaining fuel $n$, a starting
+bucket $b$, a current step $s$, and an optional first deleted slot
+\texttt{hole}. The executable \texttt{scan\_body} has the same parameters.
+It uses $-1$ for no remembered hole, and a nonnegative index for an existing
+hole. \texttt{hole\_or\_e\_spec} proves that the executable sentinel test agrees
+with the pure function \texttt{hole\_or}.
+
+An empty tag ends the search with an absent result. An occupied tag causes a
+key comparison: a match returns the current index and value; a different key
+continues with one less unit of fuel and one greater step. A tombstone also
+continues, remembering its index only if no earlier tombstone was remembered.
+This distinction prevents a subtle duplicate-key bug. After seeing a tombstone,
+insertion must keep looking for an existing equal key; it cannot immediately
+reuse the deleted slot. Otherwise an update could create a second occupied copy
+of a key that already lies farther along the path.
+
+The prefix invariant \texttt{probe\_prefix} records what the search has already
+established: the step is within the cycle, earlier visited slots contain neither
+an empty tag nor an occupied copy of the requested key, and the remembered hole
+agrees with the first tombstone in that prefix. \texttt{prefix\_zero}
+establishes it before any slot is read. \texttt{probe\_from\_inv} advances it
+through each tag case and proves that a returned index is below capacity.
+For a found result it additionally identifies the occupied tag, matching key,
+and stored value. For an absent result it identifies an empty or tombstone slot
+and a path to that slot with no earlier empty tag.
+
+Why can a complete cycle return a valid hole? The placement invariant alone
+does not establish this. The load bound implies
+$\texttt{count\_occ tags}<c$, so a complete cycle cannot consist entirely of
+occupied slots. If the scan has not stopped at an empty slot, it must have
+visited a tombstone. \texttt{full\_scan\_hole} proves this implication. This also
+covers a table whose slots are all tombstones after successive insertions and
+removals: the scan consumes exactly $c$ steps and returns the first remembered
+hole. It does not loop forever or attempt a step beyond the cycle.
+
+\texttt{probe\_shape} connects the slot result to \texttt{contents\_of}.
+For a found result, \texttt{contents\_at} and uniqueness show that the finite
+map returns the same value. For an absent result, the prefix and placement
+conditions exclude every possible occupied location for the requested key.
+\texttt{probe\_found} proves the complementary property: any occupied slot for
+an existing key is reached by the probe.
+
+The operational theorem \texttt{scan\_spec} is an induction on remaining fuel.
+Its preconditions include $s+n\leq c$ and equal array lengths. It returns the
+exact value encoding of \texttt{probe\_from}, together with ownership of all
+three unchanged arrays. The zero-fuel branch verifies the remembered-hole
+encoding. In a successor branch, \texttt{probe\_slot\_e\_spec} yields a bounded
+index, and \texttt{arr\_get\_spec} reads the tag. The proof follows the same tag
+and key cases as the pure function. Recursive cases reduce fuel and increase
+step, preserving $s+n\leq c$; the induction hypothesis then applies.
+The found branch reads the value at the same bounded index. Every read returns
+its array ownership, so the caller can reconstruct the complete map predicate.
+
+\texttt{buffer\_probe\_spec} first verifies the remainder call, rewrites its
+result to the bucket index, and instantiates \texttt{scan\_spec} with
+$n=c$, $s=0$, and no hole. \texttt{probe\_spec} opens the map object, reads its
+array fields and capacity, applies that result, then closes the predicate.
+Its postcondition states not merely the shape of a returned struct but the
+semantic equation
+\[
+ m[k]=\begin{cases}\texttt{Some }v,&\texttt{found}=\texttt{true},\\
+ \texttt{None},&\texttt{found}=\texttt{false}.
+ \end{cases}
+\]
+An absent result additionally carries the canonical value zero.
+
+\subsection{Insertion and overwrite}
+
+\texttt{put\_body} is the shared operation on three buffers. It probes first.
+When the key is found, it writes only the value at the returned index. When
+absent, it writes an occupied tag, the requested key, and the requested value.
+\texttt{put\_spec} proves that its final arrays are exactly the triple computed
+by \texttt{write\_fresh}; it deliberately separates this physical claim from
+the stronger invariant claim.
+
+The array helper proofs expose the array's data pointer and use the bounded
+index to focus one cell with \texttt{big\_sepL\_lookup\_acc} or
+\texttt{big\_sepL\_insert\_acc}. A raw load or store acts on that cell, and the
+closing continuation restores ownership of the complete array. The store proof
+also establishes that an in-range list insertion preserves array length.
+These are the memory steps beneath both ordinary insertion and rehashing.
+
+For an existing key, \texttt{write\_fresh\_found} proves that overwriting the
+value preserves all eight table conditions and leaves the occupied count
+unchanged. No new key is introduced and no tag or probe path changes.
+For a missing key, \texttt{write\_fresh\_new} assumes strict room,
+$2\,\texttt{count\_occ tags}<c$. It proves that the chosen slot is available,
+that writing it introduces no duplicate, that its placement is valid, that old
+placements remain valid, and that the occupied count increases by one.
+Because $c$ is even, strict room implies
+$2(\texttt{count\_occ tags}+1)\leq c$, preserving the half-full bound.
+\texttt{write\_fresh\_effect} packages these two cases as one map update and a
+conditional occupied-count equation.
+
+\texttt{add\_room\_spec} opens the object, applies \texttt{put\_spec}, and uses
+\texttt{write\_fresh\_effect} to close the invariant. It increments
+\texttt{mySize} exactly when the initial probe said the key was absent.
+The public \texttt{add} checks presence before considering growth. An existing
+key is updated directly, including at the load limit. For a missing key, it
+reads size and capacity and grows when $c\leq 2\,\texttt{size}$.
+Otherwise strict room already holds. After doubling, the old load bound
+$2\,\texttt{size}\leq c$ and $c>0$ imply strict room in the new table.
+
+The public contract therefore permits the resulting capacity to change:
+\begin{lstlisting}
+Lemma add_spec m cap (a : val_cjr) (k v : Z) :
+  is_hashmap m cap a -∗
+  WP call_add a k v
+    {{ u, ⌜ u = LitV LitUnit ⌝ ∗
+          ∃ cap', is_hashmap (<[k:=v]> m) cap' a }}.
+\end{lstlisting} A fixed-capacity
+contract would be incorrect for an insertion that crosses the load threshold.
+In this implementation each call either keeps capacity or doubles it once.
+
+\subsection{Rehashing: why allocation alone is insufficient}
+
+Doubling changes bucket locations. Existing entries must be probed and inserted
+again under the new capacity; copying cells to the same indexes does not in
+general preserve placement. \texttt{grow\_table} describes the pure operation:
+allocate three zero lists of length $2c$, then fold over the old arrays with
+\texttt{rehash\_acc}. Empty and tombstone slots are skipped; each occupied pair
+is inserted into the destination with \texttt{write\_fresh}.
+
+The induction in \texttt{rehash\_acc\_lookup} maintains a well-formed destination,
+valid and unique remaining source keys, and two additional facts. First, every
+remaining occupied source key is absent from the destination. Second,
+\[
+ 2(\texttt{count\_occ destination}
+       +\texttt{count\_occ remaining})\leq 2c.
+\]
+When the source head is occupied, disjointness proves the insertion is new and
+the combined load bound proves strict room. \texttt{write\_fresh\_new}
+produces a well-formed destination whose count is one greater. Removing the
+source head decreases the remaining count by one, so the combined bound is
+preserved. Source uniqueness ensures the newly inserted key is absent from the
+remaining source, preserving disjointness. A skipped source head changes neither
+the destination nor the occupied count. At the empty source, the destination
+already satisfies the desired invariant.
+
+The lookup conclusion states that the final map is the source map combined
+with the initial accumulator. For fresh zero arrays the accumulator is empty.
+\texttt{grow\_table\_spec} obtains equality with the original map by
+pointwise finite-map equality. It also uses
+$2c=2^{(e+1)+1}$ to preserve the capacity condition. This proof explains both
+why no old entry disappears and why deleted entries are not resurrected.
+
+The executable \texttt{rehash\_body} is a recursive scan over the old arrays.
+Its arguments include a source index and remaining fuel, the three source
+arrays, and the new capacity and destination arrays. It calls \texttt{put\_body}
+only for an occupied source tag. \texttt{rehash\_spec} relates the index to
+suffixes of the source lists using \texttt{drop}. The small lemma
+\texttt{head\_drop\_hm} identifies the cell at the current index and the suffix
+at the next index. The proof follows the pure fold's induction, preserving all
+old array ownership and returning exactly its destination triple.
+
+Finally, \texttt{grow\_spec} allocates the new arrays, establishes
+\texttt{zeros\_wf}, invokes \texttt{rehash\_spec}, and only then replaces the
+object's three array fields. The old size field is retained.
+\texttt{size\_contents} applied to both well-formed tables and their equal maps
+proves that this unchanged size is the correct occupied count of the new table.
+The capacity becomes $2c$ and the contents remain $m$.
+The example's \texttt{grow(minCap)} interface performs one doubling;
+\texttt{minCap} is a retained interface argument, not a promise to grow repeatedly
+to an arbitrary requested capacity.
+
+\subsection{Removal, queries, and client proofs}
+
+\texttt{write\_remove\_spec} proves that marking a found slot as a tombstone
+produces \texttt{delete k m}. Uniqueness identifies the one occurrence being
+removed. \texttt{placed\_bury} preserves the paths of other keys: a tombstone,
+unlike an empty tag, does not terminate a probe. \texttt{count\_bury} proves
+that the old occupied count is the successor of the new one. The executable
+\texttt{remove\_spec} uses the precise probe result to write that tag, subtract
+one from \texttt{mySize}, return the old value, and reconstruct ownership.
+For a missing key it returns zero, performs no writes, and proves that deleting
+an absent key leaves the mathematical map unchanged.
+
+\texttt{get\_spec} returns \texttt{Int64Option(true,v)} when $m[k]=\texttt{Some }v$
+and \texttt{Int64Option(false,0)} when the key is absent.
+\texttt{contains\_spec} returns the boolean indicating whether that lookup is
+\texttt{Some}. Both proofs frame the unchanged map through
+\texttt{probe\_spec}, then verify the appropriate struct projections.
+The flag distinguishes a stored zero from absence. The older \texttt{remove}
+interface returns an integer alone, so removing a stored zero and removing a
+missing key both return zero; the map and its size still change differently.
+
+\texttt{init\_spec} verifies three zero-array allocations and the four-field
+object construction. Zero contents imply an empty map, valid tags, no duplicate
+keys, zero load, and vacuous placement. \texttt{size\_spec},
+\texttt{capacity\_spec}, and \texttt{is\_empty\_spec} read the owned fields and
+use the representation equations to obtain their abstract meanings.
+The three \texttt{init\_then\_*} lemmas compose initialization with those queries.
+
+The client theorems \texttt{add\_then\_get\_spec} and
+\texttt{add\_then\_contains\_spec} are short because the representation has
+already done the hard work. The first call establishes
+\texttt{is\_hashmap (<[k:=v]> m) cap' a}. The second uses the query contract and
+the finite-map law \texttt{lookup\_insert}: the updated map returns
+\texttt{Some v} at $k$. The resulting capacity is existentially retained, so
+the composition works both with and without growth. All program proofs are
+checked Coq proofs; the assumption audit includes the public operations and
+these client properties.
+
+\subsection{Executable validation and scope}
+
+The generated file below comes from these same core expressions. Its
+\texttt{ProbeResult} and \texttt{Int64Option} declarations are value structs;
+the mutable buffers and map remain classes. Runtime tests cover fresh maps,
+updates, removal, collision chains that wrap around capacity, negative keys,
+stored zero, a tombstone before an existing key, update at the load threshold,
+one and several doublings, explicit growth, and a complete cycle of tombstones.
+These tests exercise printing and compilation in addition to the formal core.
+
+The core's integer semantics uses unbounded \texttt{Z}; extracted Cangjie uses
+\texttt{Int64}. The Coq results do not establish freedom from finite-machine
+integer overflow for arbitrarily large keys, counts, or capacities. Remainder
+normalization uses repeated addition and subtraction, and a collision chain
+can scan the entire capacity; this is a small verified example rather than a
+performance specification for the full Cangjie standard library. Rehashing
+allocates new buffers without reclaiming the old ones, consistently with the
+example language's object-allocation model.
+
+\subsection{The checked proof scripts}
+
+These listings include the complete proofs of the public operations and client
+properties, together with the central probe, insertion, and rehash arguments.
+They are read directly from the checked source, rather than maintained as
+separate proof sketches. In the scripts, \texttt{hm\_admin} performs pure
+administrative reductions while leaving function calls for their specifications;
+\texttt{hm\_pure} also unfolds applications. \texttt{hm\_read} and
+\texttt{hm\_write} focus owned object fields, and \texttt{hm\_take} focuses the
+right-hand side of a let. Their evaluation-context definitions are in
+\texttt{theories/examples/hm\_tactics.v}. None supplies an assumption or
+changes the postcondition: each application constructs a proof from the
+language rules.\par
+\paragraph{The mutable remainder computation.} The intermediate theorem retains the local stack slot. This ownership is required to discharge the scope cleanup in the following wrapper.
+
+\lstinputlisting[firstline=2006,lastline=2033]{theories/examples/hash_map.v}
+
+\paragraph{The remainder wrapper.} The wrapper allocates the mutable binding, uses the two verified loops through the intermediate theorem, and returns both the result equation and the stack ownership needed by the binding rule.
+
+\lstinputlisting[firstline=2035,lastline=2046]{theories/examples/hash_map.v}
+
+\paragraph{Initialization.} Each array allocation is verified before the object is constructed. The final pure obligations are the zero-table invariant and the equality between zero occupied count and the stored size.
+
+\lstinputlisting[firstline=2300,lastline=2329]{theories/examples/hash_map.v}
+
+\paragraph{The pure search result.} This proof combines the prefix invariant with placement and uniqueness. The found branch identifies the finite-map entry; the absent branch rules out every occupied location for the key.
+
+\lstinputlisting[firstline=1020,lastline=1070]{theories/examples/hash_map.v}
+
+\paragraph{The executable bounded scan.} The induction follows the fuel parameter. Array reads preserve ownership, and each recursive call consumes one step while preserving the bound on the complete scan.
+
+\lstinputlisting[firstline=2435,lastline=2505]{theories/examples/hash_map.v}
+
+\paragraph{From a remainder to a buffer search.} The range theorem permits converting the remainder to a natural bucket index. The scan is then instantiated with the full capacity as fuel.
+
+\lstinputlisting[firstline=2507,lastline=2526]{theories/examples/hash_map.v}
+
+\paragraph{Physical insertion and overwrite.} The proof first obtains the exact probe result. It writes one value cell for a hit and three corresponding cells for an absent key; its postcondition is the exact pure update triple.
+
+\lstinputlisting[firstline=2546,lastline=2581]{theories/examples/hash_map.v}
+
+\paragraph{Preserving the invariant for a new key.} The pure proof checks the tag, key, value, uniqueness, load, and placement obligations. Strict room is used to preserve the half-full bound after increasing the live count.
+
+\lstinputlisting[firstline=1508,lastline=1553]{theories/examples/hash_map.v}
+
+\paragraph{Preserving the invariant for overwrite.} A present key determines an occupied slot. Updating its value changes neither the occupied key list nor any placement path.
+
+\lstinputlisting[firstline=1651,lastline=1690]{theories/examples/hash_map.v}
+
+\paragraph{The pure rehash induction.} Disjointness and the combined occupied-count bound are strengthened for the recursive call. The lookup equation then establishes preservation of every source key and accumulator key.
+
+\lstinputlisting[firstline=1566,lastline=1636]{theories/examples/hash_map.v}
+
+\paragraph{The executable rehash induction.} The source index is related to remaining suffixes with drop. Source arrays are framed through insertion into the destination, and the postcondition tracks the exact pure fold.
+
+\lstinputlisting[firstline=2662,lastline=2731]{theories/examples/hash_map.v}
+
+\paragraph{Updating the object and its stored size.} The buffer update is combined with the pure occupied-count equation. The size field is incremented in the absent-key case and retained in the overwrite case.
+
+\lstinputlisting[firstline=2749,lastline=2789]{theories/examples/hash_map.v}
+
+\paragraph{The public search contract.} The object fields are opened, the buffer search is verified, and the complete representation is reconstructed. The semantic lookup equation and canonical absent value are exposed to clients.
+
+\lstinputlisting[firstline=2791,lastline=2838]{theories/examples/hash_map.v}
+
+\paragraph{Presence queries.} The probe contract supplies the abstract lookup meaning. Projecting its first component yields exactly the presence boolean.
+
+\lstinputlisting[firstline=2848,lastline=2861]{theories/examples/hash_map.v}
+
+\paragraph{Value queries.} The two projections form the option result. The canonical absent-value fact is needed to prove that a missing result carries zero.
+
+\lstinputlisting[firstline=2863,lastline=2881]{theories/examples/hash_map.v}
+
+\paragraph{Replacing the buffers after rehashing.} New array ownership is established first, then the rehash theorem is applied, and only afterward are the three object fields replaced. Equality of map contents proves equality of occupied counts.
+
+\lstinputlisting[firstline=2883,lastline=2941]{theories/examples/hash_map.v}
+
+\paragraph{The public insertion proof.} The initial presence check separates overwrite from insertion. Only the missing-key branch checks the load threshold. Either strict room already holds or one verified doubling establishes it.
+
+\lstinputlisting[firstline=2956,lastline=2988]{theories/examples/hash_map.v}
+
+\paragraph{The public removal proof.} The found branch marks the slot as a tombstone and uses the occupied-count decrement equation to update the size. The missing branch proves deletion of an absent map key.
+
+\lstinputlisting[firstline=2990,lastline=3033]{theories/examples/hash_map.v}
+
+\paragraph{The stored size query.} The representation equation and size-contents lemma identify the field value with the finite map size.
+
+\lstinputlisting[firstline=2331,lastline=2345]{theories/examples/hash_map.v}
+
+\paragraph{The capacity query.} The owned tag array length equals the abstract capacity, so reading its length field returns that capacity.
+
+\lstinputlisting[firstline=2347,lastline=2360]{theories/examples/hash_map.v}
+
+\paragraph{The emptiness query.} The field equality and occupied-count theorem connect the zero comparison to emptiness of the mathematical map.
+
+\lstinputlisting[firstline=2362,lastline=2378]{theories/examples/hash_map.v}
+
+\paragraph{Initialization followed by size.} The allocation result is bound to the next call, whose contract returns zero for the empty map.
+
+\lstinputlisting[firstline=3049,lastline=3058]{theories/examples/hash_map.v}
+
+\paragraph{Initialization followed by capacity.} The initialized representation supplies the default capacity to the query contract.
+
+\lstinputlisting[firstline=3060,lastline=3070]{theories/examples/hash_map.v}
+
+\paragraph{Initialization followed by emptiness.} The empty finite map supplies the true result to the emptiness query.
+
+\lstinputlisting[firstline=3072,lastline=3081]{theories/examples/hash_map.v}
+
+\paragraph{Insertion followed by lookup.} The new capacity is unpacked from the insertion result and passed to the query contract. The finite-map insertion law determines the returned value.
+
+\lstinputlisting[firstline=3088,lastline=3100]{theories/examples/hash_map.v}
+
+\paragraph{Insertion followed by presence.} The same composition uses the insertion lookup law to establish a true presence result.
+
+\lstinputlisting[firstline=3102,lastline=3114]{theories/examples/hash_map.v}
 
 \lstinputlisting{generated/cj/hash_map.cj}
 

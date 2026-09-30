@@ -28,6 +28,8 @@ Definition array_list_c :=
   Decl "ArrayList" [("myData", "Array"); ("mySize", t_int); ("myVersion", t_int)].
 Definition hash_map_c :=
   Decl "HashMap" [("mySize", t_int); ("tags", "Array"); ("keys", "Array"); ("vals", "Array")].
+Definition probe_result_s :=
+  Decl "ProbeResult" [("found", "Bool"); ("index", t_int); ("value", t_int)].
 Definition int64_opt_c :=
   Decl "Int64Option" [("ok", "Bool"); ("value", t_int)].
 
@@ -146,8 +148,23 @@ Definition al := Some "ArrayList".
 Definition hm := Some "HashMap".
 
 Definition p_hash_map :=
-  Prog [array_c; hash_map_c; int64_opt_c] []
-    [Fn "initHashMap" None None hash_map.init_body [] "HashMap";
+  Prog [array_c; hash_map_c] [int64_opt_c; probe_result_s]
+    [Fn "make" None (Some "n") array.make_body [t_int] "Array";
+     Fn "length" None (Some "a") array.length_body ["Array"] t_int;
+     Fn "arrayGet" None (Some "args") array.get_body ["Array"; t_int] t_int;
+     Fn "arraySet" None (Some "args") array.set_body ["Array"; t_int; t_int] "Unit";
+     Fn "residue" None (Some "args") hash_map.residue_body [t_int; t_int] t_int;
+     Fn "scan" None (Some "args") hash_map.scan_body
+       [t_int; t_int; t_int; t_int; "Array"; "Array"; "Array"; t_int; t_int] "ProbeResult";
+     Fn "bufferProbe" None (Some "args") hash_map.buffer_probe_body
+       ["Array"; "Array"; "Array"; t_int; t_int] "ProbeResult";
+     Fn "put" None (Some "args") hash_map.put_body
+       ["Array"; "Array"; "Array"; t_int; t_int; t_int] "Unit";
+     Fn "rehash" None (Some "args") hash_map.rehash_body
+       [t_int; t_int; "Array"; "Array"; "Array"; t_int; "Array"; "Array"; "Array"] "Unit";
+     Fn "probe" hm (Some "args") hash_map.probe_for_body [t_int] "ProbeResult";
+     Fn "addRoom" hm (Some "args") hash_map.add_room_body [t_int; t_int; "Bool"] "Unit";
+     Fn "initHashMap" None None hash_map.init_body [] "HashMap";
      Fn "size" hm (Some "m") hash_map.size_body [] t_int;
      Fn "capacity" hm (Some "m") hash_map.capacity_body [] t_int;
      Fn "isEmpty" hm (Some "m") hash_map.is_empty_body [] "Bool";
