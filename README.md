@@ -1,8 +1,11 @@
 # cjr
 
-Mechanization of the performance-parity Cangjie fragment (Cangjie Radical) in Coq with [Iris](https://iris-project.org/).
+This is a mechanization of a performance-parity Cangjie fragment (called Cangjie Radical) in Coq with [Iris](https://iris-project.org/). 
+This allows the formal specification and proof of cjr programs using Iris.  
 
 The language is sequential and monomorphic. Mutable `var` bindings are stack slots, `CPointer` blocks are a raw word heap, and final class fields live on a separate object heap. The program logic is Iris's weakest precondition over an evaluation-context semantics.
+
+Actual compilable and executable Cangjie code is extracted from the the verification files using a Galina printer. 
 
 ## Build
 
@@ -14,7 +17,10 @@ opam install coq.8.20.1 coq-stdpp.1.12.0 coq-iris.4.4.0
 eval $(opam env)
 coq_makefile -f _CoqProject -o Makefile
 make
+make verify    # optional: coqchk + Print Assumptions audit (see Makefile.local-late)
 ```
+
+Coq is invoked with `-w +admitted-proof` (and a few other promoted warnings in `_CoqProject`), so `Admitted` and similar bypasses fail at compile time. We do not use `-w +all` here: on Coq 8.20 it turns a benign Iris/stdlib `Fin.vo` notice into a build error. `make verify` runs `coqchk` on all `.vo` files (Coq 8.20 has no `--admit-opaque` switch; opaque `Qed` proofs are checked unless you pass `-admit`) and checks that representative adequacy theorems print **Closed under the global context** (`theories/verify_assumptions.v`).
 
 ## Layout
 
@@ -43,4 +49,5 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
 | `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| **Total** | **5198** | | **649** | **8.0** |
+| `theories/examples/hash_map.v` | 2395 | `generated/cj/hash_map.cj` | 375 | 6.4 |
+| **Total** | **7593** | | **1024** | **7.4** |

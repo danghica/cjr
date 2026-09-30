@@ -1,4 +1,10 @@
 -R theories cjr
+-arg -w
+-arg +admitted-proof
+-arg -w
+-arg +deprecated-syntactic-definition
+-arg -w
+-arg +fragile-hint-constr
 theories/lang.v
 theories/lifting.v
 theories/primitive_laws.v
@@ -16,5 +22,7 @@ theories/examples/list.v
 theories/examples/array.v
 theories/examples/array_list.v
 theories/examples/qsort.v
+theories/examples/hash_map.v
 theories/examples/cj_print.v
 theories/examples/emit_cj.v
+theories/verify_assumptions.v

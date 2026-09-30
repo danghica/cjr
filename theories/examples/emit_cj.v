@@ -5,7 +5,7 @@ From Coq Require Import String ZArith List.
 From cjr Require Import lang.
 From cjr.examples Require Import cj_print.
 From cjr.examples Require arith struct_upd cell swap sum_block class_upd
-  frame_call vtable list array array_list qsort.
+  frame_call vtable list array array_list hash_map qsort.
 Import ListNotations.
 
 Local Open Scope string_scope.
@@ -26,6 +26,10 @@ Definition node_c := Decl "Node" [("isCons", "Bool"); ("value", t_int); ("next",
 Definition array_c := Decl "Array" [("len", t_int); ("data", t_ptr)].
 Definition array_list_c :=
   Decl "ArrayList" [("myData", "Array"); ("mySize", t_int); ("myVersion", t_int)].
+Definition hash_map_c :=
+  Decl "HashMap" [("mySize", t_int); ("tags", "Array"); ("keys", "Array"); ("vals", "Array")].
+Definition int64_opt_c :=
+  Decl "Int64Option" [("ok", "Bool"); ("value", t_int)].
 
 (** * Straight-line examples *)
 
@@ -125,6 +129,25 @@ Definition p_array :=
           (App (Rec None (Some "a") array.length_body) (Var "a"))))).
 
 Definition al := Some "ArrayList".
+Definition hm := Some "HashMap".
+
+Definition p_hash_map :=
+  Prog [array_c; hash_map_c; int64_opt_c] []
+    [Fn "initHashMap" None None hash_map.init_body [] "HashMap";
+     Fn "size" hm (Some "m") hash_map.size_body [] t_int;
+     Fn "capacity" hm (Some "m") hash_map.capacity_body [] t_int;
+     Fn "isEmpty" hm (Some "m") hash_map.is_empty_body [] "Bool";
+     Fn "contains" hm (Some "args") hash_map.contains_body [t_int] "Bool";
+     Fn "get" hm (Some "args") hash_map.get_body [t_int] "Int64Option";
+     Fn "add" hm (Some "args") hash_map.add_body [t_int; t_int] "Unit";
+     Fn "remove" hm (Some "args") hash_map.remove_body [t_int] t_int;
+     Fn "grow" hm (Some "args") hash_map.grow_body [t_int] "Unit"]
+    (Let (Some "m") (App (Rec None None hash_map.init_body) unit_e)
+      (Let None
+        (App (Rec None (Some "args") hash_map.add_body) (Struct [] [Var "m"; int 1; int 2]))
+        (Let (Some "r")
+          (App (Rec None (Some "args") hash_map.get_body) (Struct [] [Var "m"; int 1]))
+          (App (Rec None (Some "m") hash_map.size_body) (Var "m"))))).
 
 Definition p_array_list :=
   Prog [array_c; array_list_c] []
@@ -236,6 +259,7 @@ Definition cj_files : list (string * prog) :=
    ("list", p_list);
    ("array", p_array);
    ("array_list", p_array_list);
+   ("hash_map", p_hash_map);
    ("qsort_array", p_qsort_array);
    ("qsort_array_list", p_qsort_array_list)].
 

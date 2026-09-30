@@ -2690,6 +2690,24 @@ On the array list they are \texttt{a.size()}, \texttt{a.get(i)}, and \texttt{a.s
 
 \lstinputlisting{generated/cj/qsort_array_list.cj}
 
+\section{Hash maps}
+\label{sec:hashmap}
+
+\texttt{theories/examples/hash\_map.v} lowers the monomorphic \texttt{Int64} core of Cangjie's \texttt{HashMap}.
+Three \texttt{Array} fields hold tags, keys, and values; tag $0$ is empty, $1$ occupied, $2$ a tombstone.
+The live size is stored in \texttt{mySize}.
+The mathematical content is a finite map with no duplicate keys; \texttt{wf\_table} and the probe invariants tie the three arrays to that map.
+
+The bucket index is \texttt{residue k cap}: add \texttt{cap} while the key is negative, then subtract \texttt{cap} while the representative is at least \texttt{cap}.
+That is the remainder the source would obtain with a power-of-two mask.
+Growth doubles the capacity when \texttt{size + size} reaches the capacity; the extracted program allocates fresh arrays (rehashing is still being wired to the \texttt{grow\_table} Gallina step).
+
+\texttt{get} returns an \texttt{Int64Option}: a boolean \texttt{ok} and an integer \texttt{value}.
+\texttt{contains} is the \texttt{ok} flag alone.
+\texttt{remove} of a missing key returns zero and leaves the table unchanged.
+
+\lstinputlisting{generated/cj/hash_map.cj}
+
 \section{What is deliberately missing}
 
 We deliberately omit concurrency from the semantics, so there is no invariant-opening rule and no fork.

@@ -1,0 +1,4 @@
+# Proof-hardening (see README: make verify).
+# coqc warning flags live in _CoqProject (-arg …); re-run coq_makefile after editing those.
+#
+# Coq 8.20 coqchk has no --admit-opaque; it checks opaque bodies unless -admit is used.

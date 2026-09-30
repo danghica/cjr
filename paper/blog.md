@@ -124,9 +124,10 @@ The counts below are `wc -l` of the whole file. A `.v` file includes the program
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
 | `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| **Total** | **5198** | | **649** | **8.0** |
+| `theories/examples/hash_map.v` | 2395 | `generated/cj/hash_map.cj` | 375 | 6.4 |
+| **Total** | **7593** | | **1024** | **7.4** |
 
-Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 5198 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. The quicksort specification is counted once and extracted twice, 76 lines for the array and 153 lines for the array list. Across the thirteen files the specifications are 8.0 times as long as the extracted Cangjie.
+Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. The loops are longer relative to the printed `while` because each one needs an invariant. The list, the array, and the array list add a representation predicate and equations. `array_list.v` is 2416 of the 5198 specification lines. The printed file is 153 lines and contains `grow`, `add`, and `remove`. The quicksort specification is counted once and extracted twice, 76 lines for the array and 153 lines for the array list. Across the fourteen files the specifications are 7.4 times as long as the extracted Cangjie.
 
 ## What is omitted, and where to read
 

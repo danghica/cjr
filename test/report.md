@@ -20,6 +20,8 @@ Out-of-range indexes are not called. In the extracted array list those arms are 
 
 32 cases ran. 32 passed. 0 failed.
 
+`hash_map.cj` and `test/hash_map_test.cj` (5 cases) were added; they were not run in this report because `cjc` was unavailable in the CI agent environment.
+
 | Program | Cases | Result |
 |---|---:|---|
 | `arith.cj` | 1 | passed |
