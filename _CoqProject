@@ -19,6 +19,7 @@ theories/examples/class_upd.v
 theories/examples/frame_call.v
 theories/examples/vtable.v
 theories/examples/list.v
+theories/examples/list_rev.v
 theories/examples/array.v
 theories/examples/array_list.v
 theories/examples/qsort.v

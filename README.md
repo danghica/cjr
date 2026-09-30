@@ -46,8 +46,16 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/frame_call.v` | 37 | `generated/cj/frame_call.cj` | 20 | 1.9 |
 | `theories/examples/vtable.v` | 70 | `generated/cj/vtable.cj` | 33 | 2.1 |
 | `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
+| `theories/examples/list_rev.v` | 287 | `generated/cj/list_rev.cj` | 65 | 4.4 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
 | `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
 | `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| `theories/examples/hash_map.v` | 2395 | `generated/cj/hash_map.cj` | 375 | 6.4 |
-| **Total** | **7593** | | **1024** | **7.4** |
+| `theories/examples/hash_map.v` | 2398 | `generated/cj/hash_map.cj` | 375 | 6.4 |
+| **Total** | **7883** | | **1089** | **7.2** |
+
+
+## In-place list reversal
+
+`theories/examples/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
+
+The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `generated/cj/list_rev.cj`; `test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See `test/report.md` for the dated results.

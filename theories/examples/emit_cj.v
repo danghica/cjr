@@ -5,7 +5,7 @@ From Coq Require Import String ZArith List.
 From cjr Require Import lang.
 From cjr.examples Require Import cj_print.
 From cjr.examples Require arith struct_upd cell swap sum_block class_upd
-  frame_call vtable list array array_list hash_map qsort.
+  frame_call vtable list list_rev array array_list hash_map qsort.
 Import ListNotations.
 
 Local Open Scope string_scope.
@@ -115,6 +115,20 @@ Definition p_list :=
         (Let (Some "h") (App (Rec None (Some "n") list.head_body) (Var "l"))
           (Let (Some "t") (App (Rec None (Some "n") list.tail_body) (Var "l"))
             (App (Rec None (Some "n") list.empty_body) (Var "t")))))).
+
+(** Standalone reversal library, sharing the list representation and constructors. *)
+Definition p_list_rev :=
+  Prog [node_c] []
+    [Fn "nil" None None list.nil_body [] "Node";
+     Fn "cons" None (Some "a") list.cons_body [t_int; "Node"] "Node";
+     Fn "head" None (Some "n") list.head_body ["Node"] t_int;
+     Fn "tail" None (Some "n") list.tail_body ["Node"] "Node";
+     Fn "empty" None (Some "n") list.empty_body ["Node"] "Bool";
+     Fn "reverse" None (Some "n") list_rev.rev_body ["Node"] "Node"]
+    (Let (Some "e") (App (Rec None None list.nil_body) unit_e)
+      (Let (Some "l")
+        (App (Rec None (Some "a") list.cons_body) (Struct [] [int 1; Var "e"]))
+        (App (Rec None (Some "n") list_rev.rev_body) (Var "l")))).
 
 Definition p_array :=
   Prog [array_c] []
@@ -257,6 +271,7 @@ Definition cj_files : list (string * prog) :=
    ("frame_call", p_frame_call);
    ("vtable", p_vtable);
    ("list", p_list);
+   ("list_rev", p_list_rev);
    ("array", p_array);
    ("array_list", p_array_list);
    ("hash_map", p_hash_map);

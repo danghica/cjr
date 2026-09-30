@@ -26,7 +26,16 @@ Syntax, Semantics, and Separation Logic}
   xleftmargin=0.4em,
   xrightmargin=0.4em,
   aboveskip=0.8em,
-  belowskip=0.8em
+  belowskip=0.8em,
+  literate={Σ}{{$\Sigma$}}1
+           {↦ₛ}{{$\mapsto_s$}}2
+           {↦ₒ}{{$\mapsto_o$}}2
+           {→}{{$\rightarrow$}}1
+           {∀}{{$\forall$}}1
+           {∃}{{$\exists$}}1
+           {∗}{{$*$}}1
+           {⌜}{{$\ulcorner$}}1
+           {⌝}{{$\urcorner$}}1
 }
 \lstset{style=coq}
 
@@ -1572,9 +1581,576 @@ Head after cons returns \(x\) and still owns \(\mathsf{isList}(x :: xs, \cdot)\)
 Emptiness distinguishes \([]\) from \(x :: xs\).
 Together they say that the tag, the head field, and the tail field agree with the mathematical constructors, and that reading them does not damage the list those constructors describe.
 
-What this development does not prove is induction over an arbitrary list operation such as append or reverse.
-The predicate is defined so that those proofs are the same shape: open one cons cell, recurse on the tail fact, and frame the cell.
-The equations above are the base that such a proof would use.
+The next section proves in-place reversal of an arbitrary finite list using this representation.
+It opens one cons cell at a time, rewires its tail, and transfers that cell into a separate accumulator.
+Append remains outside this development.
+
+\section{In-place list reversal}
+\label{sec:list-reversal}
+
+The file \texttt{theories/examples/list\_rev.v} proves the classic iterative
+reversal of a singly linked list. This example changes the links of existing
+cons cells. It does not allocate replacement cons cells, copy the integers, or
+change the tag and head fields. It does allocate one fresh empty sentinel at
+entry, because the two list predicates in the loop invariant must own separate
+empty nodes. The old sentinel remains allocated when the loop finishes.
+The functional theorem describes the reversed contents; the proof also explains
+which field changes at each iteration and why that mutation is safe.
+
+\subsection{The representation being reused}
+
+There is one list representation in the development: \texttt{list.is\_list}
+from the preceding section. Reversal imports it rather than defining a second
+predicate. Its two clauses are
+\[
+\begin{aligned}
+\mathsf{isList}([],p) \equiv {}&
+ \exists o.\;\pure{p=\mathsf{obj}(o)}
+ \sep o\ptso[0]\False \sep o\ptso[1]0 \sep o\ptso[2]\mathsf{obj}(o),\\
+\mathsf{isList}(x::v,p) \equiv {}&
+ \exists o,q.\;\pure{p=\mathsf{obj}(o)}
+ \sep o\ptso[0]\True \sep o\ptso[1]x \sep o\ptso[2]q
+ \sep\mathsf{isList}(v,q).
+\end{aligned}
+\]
+The predicate owns all three fields of each node, including the terminal empty
+node. Its separating conjunction makes the recursive tail separate from the
+current cons cell. A finite list described this way cannot contain a cycle of
+cons cells or repeated ownership of a cons cell. The sentinel's self-link is
+allowed because the empty clause owns its three fields directly and does not
+recurse through that link.
+
+This ownership is the permission to perform the reversal. Another logical
+client cannot simultaneously hold full ownership of the same fields. An
+ordinary program variable can still contain an alias to a node: the algorithm
+mutates that node, so observations through such an alias change too. The
+specification transfers the input list's ownership into ownership of the
+returned list; it does not promise that the original head still denotes the
+original sequence.
+
+\subsection{The client specification}
+
+The main statement is \texttt{reverse\_spec}:
+\[
+\mathsf{isList}(xs,p)\vdash
+ \Wpre\,\mathsf{reverse}(p)
+ \,\{\,r.\;\mathsf{isList}(\mathsf{rev}(xs),r)\,\}.
+\]
+Here \(xs\) is a mathematical list of integers and \(p\) is a runtime value.
+The list predicate connects them. The output predicate establishes both the
+order of all values and a well-formed owned list. There is no positive-length
+precondition; the empty and singleton cases are included.
+
+The theorem uses Iris's ordinary weakest precondition, hence partial
+correctness and safety. It states the postcondition whenever execution returns
+and rules out getting stuck under its ownership precondition. The loop proof
+uses induction on the unprocessed finite list, which explains why each
+iteration consumes one remaining element. This chapter does not claim a
+separate total-correctness theorem, exact instruction count, physical pointer
+identity theorem, or verified equivalence between the CJR semantics and the
+Cangjie compiler. Executable tests complement the checked CJR theorem.
+
+By framing, a separate assertion \(R\) can accompany the input and output:
+\(\mathsf{isList}(xs,p)\sep R\) is transformed into
+\(\mathsf{isList}(\mathsf{rev}(xs),r)\sep R\). The proof needs none of the
+resources in \(R\); a disjoint second list is a concrete example.
+
+\subsection{The iteration definition: \texttt{rev\_step}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=61,lastline=65]{theories/examples/list_rev.v}
+\end{minipage}
+
+The immutable \texttt{let nxt} reads field \(2\) before the program overwrites
+it. Without this saved value, the algorithm would lose access to the remaining
+input. The field store then changes \texttt{cur.next} to the accumulator.
+The assignments make the current node the new accumulator head and advance
+\texttt{cur} to the saved tail. Their order matters: assigning \texttt{cur}
+first would lose the reference needed for \texttt{acc := cur}.
+
+Only field \(2\) is changed. The current node retains its true tag and its
+integer. After the store, that node and the old accumulator describe one new
+list with contents \(x::u\). The saved tail describes the remaining suffix
+\(v'\). The logical split follows the physical change in links.
+
+\subsection{The loop definition: \texttt{rev\_loop}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=67,lastline=68]{theories/examples/list_rev.v}
+\end{minipage}
+
+The condition loads the current node's tag. True means a cons node and permits
+one iteration; false means the empty sentinel and exits. The program does not
+use null as the stopping condition. The guard never reads field \(2\) of the
+empty node, so its self-link does not cause an extra iteration.
+
+\subsection{The function body: \texttt{rev\_body}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=70,lastline=74]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{call\_nil} allocates and initializes the fresh empty accumulator.
+\texttt{VarBind} allocates mutable stack bindings for \texttt{acc} and
+\texttt{cur}; \texttt{n} is the immutable function argument. The final expression
+reads the accumulator after the loop.
+
+\subsection{The call wrapper: \texttt{call\_reverse}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=76,lastline=77]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{call\_reverse} packages the body as a closure with one immutable
+argument \texttt{n}, then applies it to the supplied runtime value. The
+wrapper makes the client theorem talk about one complete function call rather
+than an open expression with a free argument.
+
+For an input with \(n\) cons cells, the source algorithm traverses those cells
+once and uses a constant number of local references. The only new list object
+is the empty sentinel. This is the intended linear-time, constant-extra-space
+algorithm; no resource-cost theorem is asserted by \texttt{reverse\_spec}.
+
+\subsection{Loading a local: \texttt{sld}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=57,lastline=57]{theories/examples/list_rev.v}
+\end{minipage}
+
+A \texttt{VarBind} replaces reads of a mutable variable with loads from a fresh
+stack slot. \texttt{sld z} abbreviates this concrete stack-load expression.
+Its argument is the slot's location, not the object reference stored there.
+The iteration proof uses the stack points-to fact to obtain that reference
+and then separately uses object-field ownership to access the node.
+
+\subsection{Assigning a local: \texttt{sas}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=58,lastline=59]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{sas z e} evaluates the expression \(e\) and writes the resulting value
+into stack slot \(z\). It changes the local reference rather than any object
+field. This distinction accounts for the three different writes in one
+iteration: one object-link write and two local-reference writes.
+
+\subsection{The iteration after substitution: \texttt{rev\_step\_at}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=79,lastline=82]{theories/examples/list_rev.v}
+\end{minipage}
+
+After allocating the accumulator and current bindings at locations
+\(l_a,l_c\), this is the iteration that actually executes in the CJR semantics.
+It reads the saved tail through \texttt{sld lc}, stores \texttt{sld la} in the
+current object's link, and performs the two local assignments using
+\texttt{sas}. It exposes the evaluation contexts used in the ownership proof.
+It is a proof-facing form of \texttt{rev\_step}, not a second algorithm.
+
+\subsection{The loop after substitution: \texttt{rev\_loop\_at}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=84,lastline=85]{theories/examples/list_rev.v}
+\end{minipage}
+
+The guard loads field \(0\) of the object referenced by the current stack
+slot, and the body is the substituted iteration. The accumulator location
+appears only in the body. Cangjie is printed from \texttt{rev\_body}, whose
+local variables retain their source names; these administrative stack forms
+are used to connect that source expression to primitive proof rules.
+
+\subsection{Iteration substitution: statement and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=87,lastline=91]{theories/examples/list_rev.v}
+\end{minipage}
+
+This equality connects the named iteration with code operating on two stack
+slots. The proof reduces \texttt{subst\_var} structurally through the
+expression constructors. \texttt{f\_equal} reduces equality of matching
+constructors to equality of their arguments; the remaining equalities are
+reflexive. This is an ordinary Coq equality between syntax trees. It assumes
+no ownership and executes no command.
+
+\subsection{Loop substitution: statement and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=93,lastline=98]{theories/examples/list_rev.v}
+\end{minipage}
+
+This proof unfolds the loop, reduces substitution in the condition, and uses
+\texttt{rev\_step\_at\_subst} for its body. Thus it connects the entire named
+loop to the loop verified over concrete stack slots. The main function proof
+uses the reverse order of the substitutions, which is definitionally the same
+for these two distinct variable names.
+
+\subsection{The loop invariant: \texttt{rev\_inv}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=100,lastline=106]{theories/examples/list_rev.v}
+\end{minipage}
+
+The witnesses \(u,v\) are respectively the contents of the accumulator and
+the unprocessed suffix. The witnesses \(a,c\) are their runtime references.
+The assertion says
+\[
+\exists u,v,a,c.\;
+ \pure{\mathsf{rev}(u)\mathbin{+\mkern-6mu+}v=xs}
+ \sep l_a\ptss a \sep l_c\ptss c
+ \sep\mathsf{isList}(v,c)\sep\mathsf{isList}(u,a).
+\]
+The accumulator already has reversed order. Reversing it mathematically
+recovers the processed prefix of the original input. Appending the remaining
+suffix must recover the entire original list. The stack facts describe the
+current values of the two mutable bindings, and the two list predicates give
+separate ownership of both chains.
+
+For \(xs=[1,2,3]\), the successive pairs \((u,v)\) are
+\(([],[1,2,3])\), \(([1],[2,3])\), \(([2,1],[3])\), and
+\(([3,2,1],[])\). For instance,
+\(\mathsf{rev}([2,1])\mathbin{+\mkern-6mu+}[3]=[1,2,3]\).
+At entry, \(u=[]\) and \(v=xs\). At exit, \(v=[]\), and the equation gives
+\(u=\mathsf{rev}(xs)\).
+
+Fresh allocation of the accumulator sentinel is essential to this particular
+invariant. Reusing the original terminal node would demand its full ownership
+inside both list predicates. The fresh sentinel lets the two complete chains
+remain separate throughout the traversal. At exit the original sentinel is
+owned by \(\mathsf{isList}([],c)\), while the new sentinel terminates the result.
+
+\subsection{Append right identity: statement and induction proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=13,lastline=14]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{app\_nil\_r'} proves \(xs\mathbin{+\mkern-6mu+}[]=xs\).
+Induction on \(xs\) has a reflexive empty case. In the cons case, simplification
+exposes the unchanged head and an append on the tail; rewriting the induction
+hypothesis completes the equality. This identity is needed when the loop exits.
+
+\subsection{Append associativity: statement and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=16,lastline=17]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{app\_assoc'} proves that append associates. Again, induction on the
+first list makes the empty case reflexive and reduces the cons case to the
+same statement for its tail. The identity changes grouping, not element order.
+It is the algebraic step that lets one processed element move between the
+prefix and suffix descriptions.
+
+\subsection{Reversing append: statement and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=19,lastline=24]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{rev\_app} proves
+\(\mathsf{rev}(xs\mathbin{+\mkern-6mu+}ys)=
+\mathsf{rev}(ys)\mathbin{+\mkern-6mu+}\mathsf{rev}(xs)\).
+The empty case reduces to right identity of append. In the cons case,
+\(\mathsf{rev}(x::xs)=\mathsf{rev}(xs)\mathbin{+\mkern-6mu+}[x]\).
+The induction hypothesis moves \(\mathsf{rev}(ys)\) to the front; associativity
+then reconciles the two groupings of the three appended lists.
+
+\subsection{Reversing cons: statement and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=26,lastline=27]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{rev\_cons} is the defining cons equation of Coq's \texttt{rev}.
+Simplification already proves it. Even this small lemma is useful as a named
+explanation of why prepending \(x\) to the accumulator corresponds to extending
+the processed prefix at its right end.
+
+\subsection{The invariant equation after one step}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=29,lastline=33]{theories/examples/list_rev.v}
+\end{minipage}
+
+Suppose \(v=x::v'\). Replacing the accumulator \(u\) by \(x::u\) and
+remaining list \(v\) by \(v'\) preserves the recovered original list:
+\[
+\begin{aligned}
+\mathsf{rev}(x::u)\mathbin{+\mkern-6mu+}v'
+ &= (\mathsf{rev}(u)\mathbin{+\mkern-6mu+}[x])
+       \mathbin{+\mkern-6mu+}v'\\
+ &= \mathsf{rev}(u)\mathbin{+\mkern-6mu+}([x]\mathbin{+\mkern-6mu+}v')\\
+ &= \mathsf{rev}(u)\mathbin{+\mkern-6mu+}(x::v').
+\end{aligned}
+\]
+The proof substitutes the premise \(v=x::v'\), rewrites \texttt{rev\_cons},
+uses associativity, and simplifies the singleton append. Thus the mutation
+proof can delegate its pure equality to this lemma.
+\subsection{The invariant equation at an empty suffix}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=35,lastline=37]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{rev\_prefix\_nil} records the exit identity as a direct application of
+right identity. It is an explanatory corollary; the loop proof can use
+\texttt{app\_nil\_r'} directly.
+
+\subsection{Double reversal of mathematical lists: proof by induction}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=39,lastline=43]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{rev\_rev} proves involution:
+\(\mathsf{rev}(\mathsf{rev}(xs))=xs\). The empty case is reflexive.
+For a cons list, the outer reversal sees an append; \texttt{rev\_app} turns it
+into the reversed singleton followed by the double-reversed tail. Simplification
+and the induction hypothesis produce \(x::xs\).
+
+\subsection{Recovering the accumulator contents from the exit equation}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=45,lastline=50]{theories/examples/list_rev.v}
+\end{minipage}
+
+\texttt{rev\_eq\_rev} derives
+\(\mathsf{rev}(u)=xs\Rightarrow u=\mathsf{rev}(xs)\).
+Its proof passes through \(\mathsf{rev}(\mathsf{rev}(u))\): involution gives the
+first equality, and congruence under \texttt{rev} gives the second. This is what
+converts the invariant equation at loop exit into the desired representation
+predicate for the result.
+
+\subsection{Opening a cons cell: definition and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=108,lastline=118]{theories/examples/list_rev.v}
+\end{minipage}
+
+This lemma exposes exactly the resources in the cons clause of
+\texttt{is\_list}. The pointer equality identifies the runtime value as an
+object reference. The three field facts authorize reading the tag, reading the
+head if needed, and reading or overwriting the link. The recursive predicate
+owns the suffix independently. \texttt{iDestruct} opens the existential
+witnesses and separating conjunction; \texttt{iExists}, \texttt{iSplit}, and
+\texttt{iFrame} return the same resources in the stated form. No memory changes
+and no ownership is duplicated by this lemma.
+
+\subsection{Closing the new accumulator: definition and proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=120,lastline=128]{theories/examples/list_rev.v}
+\end{minipage}
+
+Despite its historical name, this lemma constructs a cons at the front of the
+accumulator. After the current node's link has become \(a\), ownership of
+\(\mathsf{isList}(u,a)\) and the three fields of that node yields
+\(\mathsf{isList}(x::u,\mathsf{obj}(o))\). The proof chooses \(o,a\) as the
+existential witnesses, proves the pointer equality by reflexivity, and frames
+the four supplied resources. This is folding the predicate after mutation;
+it is not allocation and it does not copy a node.
+
+\subsection{One iteration: the full ownership proof}
+
+\lstinputlisting[firstline=131,lastline=176]{theories/examples/list_rev.v}
+
+The pure premise supplies the invariant equation with a nonempty remaining
+list. The four spatial premises supply the two stack slots and both lists.
+The proof opens the remaining cons cell and substitutes its pointer equality.
+It then follows the source iteration in evaluation order:
+\begin{enumerate}
+\item \texttt{wp\_bind} with a \texttt{LetCtx} focuses on the initializer of
+\texttt{nxt}. A nested \texttt{FieldLoadCtx} first loads the current pointer
+from its stack slot. \texttt{wp\_field\_load} reads field \(2\), producing the
+saved tail reference and returning its ownership. The stack load also returns
+the stack fact. These returned facts must remain available for later commands.
+\item \texttt{wp\_let} substitutes the saved reference into the continuation.
+A \texttt{SeqCtx} focuses on the store while retaining both assignments as
+pending code. The store's left and right evaluation contexts load \texttt{cur}
+and \texttt{acc}, respectively. \texttt{wp\_field\_store} replaces only the
+link fact \(o\ptso[2]\mathit{nxt}\) by \(o\ptso[2]a\).
+The tag, head, old accumulator, and suffix stay framed.
+\item After the store returns unit, \texttt{wp\_seq} takes the sequencing
+step. The next \texttt{SeqCtx} focuses on \texttt{acc := cur}.
+A \texttt{StackAssignRCtx} loads the current reference before the stack write.
+\texttt{wp\_stack\_assign} replaces \(l_a\ptss a\) by
+\(l_a\ptss\mathsf{obj}(o)\), retaining ownership of \(l_c\).
+\item Another sequencing step reaches \texttt{cur := nxt}. The saved tail
+reference is already a value. The stack write replaces
+\(l_c\ptss\mathsf{obj}(o)\) by \(l_c\ptss\mathit{nxt}\).
+The program now has the references claimed by the new invariant.
+\item The proof chooses the saved tail as the existential witness, applies
+\texttt{rev\_prefix\_step} to the pure equation, and frames the stack slots and
+suffix. Finally \texttt{is\_list\_snoc\_acc} folds the modified node and old
+accumulator into the new accumulator predicate.
+\end{enumerate}
+
+\texttt{iIntros "!> \_ ..."} after each primitive memory rule introduces the
+later step and discards the step credit that the rule supplies. The remaining
+named hypothesis is the returned ownership. Discarding a credit is harmless;
+discarding the link or stack ownership would prevent a later access.
+The code uses explicit evaluation contexts because a store or assignment
+returns a value inside a pending sequence: the residual sequencing step must
+be handled before proving the next command. The bind rule arranges the
+continuation; it does not itself execute that sequencing step.
+
+\subsection{The exit assertion: \texttt{rev\_done}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=179,lastline=181]{theories/examples/list_rev.v}
+\end{minipage}
+
+An invariant alone does not imply that the loop has finished. For example, the
+entry state satisfies \texttt{rev\_inv} with the entire input still unprocessed.
+The loop's postcondition therefore separately states that \texttt{cur} owns an
+empty list and \texttt{acc} owns the reversed input. Both stack facts are
+retained for the enclosing variable scopes. This is a stronger assertion than
+merely re-establishing the invariant, and avoids an invalid inference that
+\(\mathsf{rev}(u)\mathbin{+\mkern-6mu+}v=xs\) forces \(v=[]\).
+
+\subsection{The loop theorem: induction and both branches}
+
+\lstinputlisting[firstline=183,lastline=225]{theories/examples/list_rev.v}
+
+The induction is on the mathematical remaining list \(v\). The statement
+quantifies over \(u,a,c\) after fixing \(v\), so the induction hypothesis is
+available for any new accumulator and current reference. Fixing those values
+before induction would make the hypothesis too weak for the updates.
+
+\paragraph{Empty remaining list.}
+Opening \(\mathsf{isList}([],c)\) identifies the sentinel and gives its false
+tag. \texttt{wp\_while} unfolds one loop test into an \texttt{if}.
+The \texttt{IfCtx} retains the two branches while the nested load context
+reads the current reference and its tag. The field load returns false and
+\texttt{wp\_if\_false} selects unit. There is no body iteration in this case.
+Right identity reduces the invariant equation to \(\mathsf{rev}(u)=xs\);
+\texttt{rev\_eq\_rev} changes it to \(u=\mathsf{rev}(xs)\).
+The proof supplies both references to \texttt{rev\_done}, frames the accumulator
+and stack facts, and reconstructs the empty sentinel predicate from all three
+fields. The guard consumed none of the sentinel's ownership.
+
+\paragraph{Nonempty remaining list.}
+Opening \(\mathsf{isList}(x::v,c)\) gives the true tag and saved-tail witness.
+The guard proof reads the tag and selects the true branch. To invoke the body
+lemma, it must reassemble the cons predicate from the returned tag, head,
+link, and suffix ownership. A \texttt{SeqCtx} isolates the iteration from the
+recursive loop. \texttt{wp\_wand} first proves the iteration with its own
+postcondition, then supplies that postcondition to the remaining proof.
+
+The resulting existential tail reference and pure equation describe
+\(x::u\) and \(v\). After \texttt{wp\_seq}, the induction hypothesis applies to
+this strictly smaller remaining list with the updated references. It produces
+\texttt{rev\_done} directly. The proof never assumes that the loop has exited
+while a cons remains, and never needs to guess a final accumulator from the
+original invariant equation alone.
+
+\subsection{Packaging the invariant: \texttt{wp\_rev\_loop}}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=227,lastline=234]{theories/examples/list_rev.v}
+\end{minipage}
+
+This wrapper opens the four existential witnesses of \texttt{rev\_inv} and
+its pure equality, then applies \texttt{wp\_rev\_loop\_run} with those witnesses
+and all four spatial resources. There is no additional operational argument.
+It is the interface used by the function proof, which can initialize an
+invariant without exposing its witnesses at the call site.
+
+\subsection{The complete function proof}
+
+\lstinputlisting[firstline=236,lastline=266]{theories/examples/list_rev.v}
+
+First \texttt{is\_list\_obj} identifies the input value as an object reference
+while retaining its list ownership. This matters because the language's value
+type also includes closures: substituting a variable through an arbitrary
+value need not leave that value syntactically unchanged. An object literal has
+no free variables, so the substitutions reduce as required.
+
+The \texttt{AppLCtx} evaluates the closure, \texttt{wp\_rec} creates it, and
+\texttt{wp\_app} substitutes the object argument into the body. A
+\texttt{LetCtx} focuses on \texttt{call\_nil}. The proof uses
+\texttt{wp\_wand} with an empty resource selection to invoke \texttt{nil\_spec}:
+the allocator requires no input ownership, and the original list remains
+framed outside this call. The returned sentinel gives \(\mathsf{isList}([],a_0)\).
+
+The two \texttt{wp\_var\_bind} applications allocate the accumulator and current
+stack slots. Their postconditions require returning ownership of each slot at
+scope exit. After substitution the loop is \texttt{rev\_loop\_at}, and the last
+expression is \texttt{sld} of the accumulator slot. A \texttt{SeqCtx} focuses
+on the loop. Its invariant uses witnesses \([],xs,a_0,p\); the pure equality
+simplifies to \(xs=xs\), and the two stack facts and two list predicates are
+exactly the owned resources already available.
+
+\texttt{wp\_rev\_loop} yields the stronger exit assertion.
+After the final sequencing step, \texttt{wp\_stack\_load} returns the accumulator
+reference and its slot ownership. The two \texttt{iExists} and \texttt{iFrame}
+steps satisfy the nested variable scopes' requirements in the reverse order
+of their introduction: current slot first, accumulator slot second.
+The result predicate \(\mathsf{isList}(\mathsf{rev}(xs),a)\) remains for the
+client. Ownership of the old sentinel may be discarded because Iris is
+affine; this is not a deallocation step in the machine.
+
+\subsection{A client equation: reversing twice}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=268,lastline=270]{theories/examples/list_rev.v}
+\end{minipage}
+
+This client composes two calls using an immutable intermediate reference.
+\subsection{The double-reversal client theorem and its proof}
+
+\begin{minipage}{\linewidth}
+\lstinputlisting[firstline=273,lastline=285]{theories/examples/list_rev.v}
+\end{minipage}
+
+The proof focuses on the first call with \texttt{LetCtx}, applies
+\texttt{reverse\_spec}, and receives ownership of a list with contents
+\(\mathsf{rev}(xs)\). After substituting the returned reference, it applies the
+same theorem a second time. \texttt{rev\_rev} rewrites the second result's
+contents to \(xs\). This is an equation of represented sequences.
+Each call creates a fresh empty sentinel, so it is not a theorem that every
+heap field or the terminal sentinel's identity is restored.
+
+\subsection{The printed Cangjie program}
+
+\lstinputlisting{generated/cj/list_rev.cj}
+
+\texttt{p\_list\_rev} in \texttt{emit\_cj.v} declares the same \texttt{Node}
+layout, reuses the five list constructors and observers, and adds
+\texttt{reverse} with \texttt{rev\_body}. Its closed example builds a singleton
+and reverses it. The printer renders the source \texttt{VarBind}s as mutable
+Cangjie locals and field \(2\) as \texttt{next}. The generated file is standalone
+so its node declarations do not collide with \texttt{list.cj} in the tests.
+It is included in the normal \texttt{make cj} pipeline and the expected-output
+check. The executable under test is this generated file, without a separately
+handwritten reversal implementation.
+
+\subsection{Executable tests and what they check}
+
+\lstinputlisting{test/list_rev_test.cj}
+
+The six test cases cover empty input, a singleton, four distinct elements,
+duplicates and negative values, double reversal, and mutation through saved
+references while a separate list remains unchanged. The nonempty sequence
+tests inspect every expected element and check the terminal empty tag, so a
+missing or extra node is observable. The mutation test saves references to all
+three original cons nodes and observes their changed links. A copying
+implementation that left those original links unchanged would fail that test.
+The second list tests the concrete behavior expected from framing.
+
+These are finite runtime checks of the printed Cangjie on the installed
+compiler. They do not replace the general theorem over arbitrary mathematical
+lists. Conversely the Coq proof checks the CJR term and does not prove the
+compiler correct. The test command is
+\begin{lstlisting}
+cjc generated/cj/list_rev.cj test/list_rev_test.cj \
+    --test -o test/bin/list_rev_test
+test/bin/list_rev_test
+\end{lstlisting}
+The dated test report records the actual run. The assumption audit includes
+\texttt{reverse\_spec} and \texttt{reverse\_twice\_spec}; neither theorem is
+closed using an admitted obligation or an added axiom.
+
 
 \section{Arrays}
 \label{sec:arrays}
