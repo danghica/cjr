@@ -5,6 +5,9 @@
 \usepackage{listings}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -98,6 +101,104 @@ A program is safe when a weakest-precondition proof exists; adequacy then says t
 The Coq sources live under \texttt{theories/}.
 The language is an Iris evaluation-context language~\cite{iris-ground-up,iris-essence}, so the frame rule and the bind rule are Iris's, rather than those of a separate Hoare calculus.
 The overall shape follows HeapLang, the example language shipped with the Iris Coq development~\cite{iris-coq}.
+
+\section{Tool structure and workflow}
+\label{sec:tool-workflow}
+
+The intended workflow starts with two related inputs.  The first is an
+informal description of a data structure: its abstract contents, a concrete
+representation, and the algorithms for its operations.  The second is a set
+of properties that should validate the implementation.  These include the
+main representation-correctness claims (for example, that an implementation
+of list insertion produces the abstract list with the new element) and
+equational client properties (for example, that adding an element and then
+removing it restores the original list).  Such laws are separate obligations;
+they do not follow merely from writing down the operations.
+
+An engineer or an LLM can help translate the informal material into formal
+definitions and theorem statements.  The formal development gives a
+mathematical model of the abstract structure, a representation predicate
+connecting that model to the CJR heap, executable CJR expression trees for
+the operations, and specifications stated as weakest preconditions.  The
+translation is a proposal that must be reviewed: informal text does not
+become a theorem until its meaning has been made explicit in Rocq/Coq.
+
+The proofs use Iris's separation logic over the small-step semantics of CJR.
+The Iris weakest-precondition rules describe how each operation transforms
+owned heap resources and establishes its postcondition.  The proved
+implementation-correctness theorems connect the concrete representation to
+the abstract model; algebraic laws can then be proved by composing those
+verified operations.  Rocq/Coq's kernel checks the resulting proof terms.
+In this repository the development is built with Coq 8.20.1 and Iris 4.4.0.
+The language is called Gallina (two l's); Rocq is the prover, and Iris is the
+program logic and library used for the heap reasoning.
+
+Once the CJR definitions are available, \texttt{theories/examples/emit\_cj.v}
+uses a custom Gallina printer to turn the selected CJR syntax trees into
+Cangjie source files under \texttt{generated/cj/}.  This is not Rocq's
+standard extraction mechanism, and it does not extract proof terms: it
+serializes the program definitions.  A disciplined build runs
+\texttt{make verify} to check proofs and assumptions, then \texttt{make cj}
+to emit the programs.  Passing the proof check establishes the stated CJR
+properties; by itself it does not prove that the printer's output preserves
+the CJR semantics.
+
+Finally, Cangjie unit tests compile and execute representative cases of the
+generated code.  They are valuable sanity checks for the printer, compiler,
+and runtime together, but they cover finitely many inputs and do not replace
+the proofs.  The current project contains this formal semantics, Iris
+proofs, custom printer, and runtime tests.  It does not yet implement an
+automatic LLM front end that accepts arbitrary informal specifications.
+The distinction between the proved CJR program and the tested emitted
+Cangjie is important; Appendix~\ref{sec:limitations} records concrete risks
+at that boundary.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners=2pt, align=left, text width=5.35cm,
+              inner sep=6pt, font=\small},
+  process/.style={draw, rounded corners=2pt, align=left, text width=7.1cm,
+                  inner sep=6pt, font=\small},
+  arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+\node[box] (informal) {\textbf{Informal specification}\\
+  Abstract structure, representation, and operation algorithms};
+\node[box, right=8mm of informal] (facts) {\textbf{Validation facts}\\
+  Implementation correctness and inverse laws, e.g. adding then removing
+  restores the original structure};
+\node[process, below=11mm of $(informal.south)!0.5!(facts.south)$] (formal) {
+  \textbf{Formalization in Gallina / CJR}\\
+  Abstract model, representation predicate, CJR program definitions,
+  and explicit theorem statements};
+\node[process, below=8mm of formal] (proof) {
+  \textbf{Rocq/Coq proof checking with Iris}\\
+  Weakest-precondition proofs over the CJR operational semantics;
+  the kernel checks implementation specifications and client laws};
+\node[process, below=8mm of proof] (printer) {
+  \textbf{Custom Gallina printer: \texttt{emit\_cj.v}}\\
+  On the verified build path, serialize CJR program definitions into
+  standalone Cangjie source};
+\node[box, below=8mm of printer, xshift=-32mm] (generated) {
+  \textbf{Generated Cangjie}\\
+  \texttt{generated/cj/*.cj}};
+\node[box, right=8mm of generated] (tests) {
+  \textbf{Cangjie compile and unit tests}\\
+  Execute selected cases as runtime sanity checks};
+
+\draw[arrow] (informal.south) -- (formal.north west);
+\draw[arrow] (facts.south) -- (formal.north east);
+\draw[arrow] (formal) -- (proof);
+\draw[arrow] (proof) -- (printer);
+\draw[arrow] (printer.south west) -- (generated.north);
+\draw[arrow] (generated) -- (tests);
+\end{tikzpicture}
+\caption{The intended specification-to-test workflow and the components
+implemented in this repository.  The LLM-assisted formalization is a human
+review point; proof checking validates CJR theorems, while unit tests sample
+the separately printed Cangjie program.}
+\label{fig:tool-workflow}
+\end{figure}
 
 \section{Syntax}
 
@@ -3739,6 +3840,92 @@ HeapLang, in the Iris 4.4.0 Coq development~\cite{iris-coq}, is the language who
 \paragraph{The proof assistant.}
 The mechanization is checked with Coq 8.20.1~\cite{coq} and std++ 1.12.0~\cite{stdpp}.
 std++ supplies the finite maps, the list lemmas, and the \texttt{decide} tactic used for the pure arithmetic steps.
+
+\appendix
+\section{Limitations and target-code risks}
+\label{sec:limitations}
+
+The proofs in this tutorial establish properties of the CJR programs under
+the operational semantics defined in Coq.  They do not establish that every
+behavior of the separately printed Cangjie program agrees with that
+semantics.  In particular, the printer is a string-producing function, and
+the generated Cangjie is not extracted from Coq or verified against the CJR
+semantics.  The following cases identify concrete places where that gap
+matters.  They should be read alongside the earlier specifications: some are
+documented limitations of the examples, while others are mismatches between
+the formal allocation model and the generated runtime code.
+
+\subsection{Fresh memory is zero in the proofs, but not in generated code}
+\label{sec:uninitialized-allocation}
+
+The CJR allocation rule used in the examples initializes every allocated
+word to zero.  For example, \texttt{array.make} is specified to return an
+array containing \texttt{n} zeros, and its proof obtains those zero-valued
+points-to facts directly from allocation.  The HashMap initialization
+proofs similarly depend on freshly allocated tag and value buffers
+containing zeros.  The generated printer, however, translates \texttt{Alloc}
+to a call to \texttt{malloc} and does not emit a loop that clears the words.
+The C and POSIX \texttt{malloc} interfaces do not promise zero-filled
+storage; the initial values are unspecified.  Consequently, a generated
+array read immediately after construction, a HashMap operation that inspects
+an uninitialized tag, or the generated \texttt{bumpKeep} example's read of
+its newly allocated word can observe a nonzero value.  That would violate
+the corresponding CJR postcondition (and in the last example, the proved
+result zero).
+
+The current runtime tests pass on the tested Cangjie 1.0.5 environment, but
+that does not establish that its allocator always returns zeroed memory.
+An attempted allocator-reuse test did not reproduce stale contents in that
+environment; it is a useful negative result, not a guarantee supplied by
+\texttt{malloc}.  The generated programs also do not check for allocation
+failure before dereferencing the returned pointer.  A target-level repair
+needs to zero-initialize allocated words (or otherwise explicitly establish
+every initial value required by the representation) and handle allocation
+failure consistently.  The CJR allocation semantics and their proofs would
+then need to be related to that emitted initialization behavior.
+
+\subsection{HashMap growth does not honor its minimum-capacity argument}
+\label{sec:hashmap-grow-min}
+
+The method named \texttt{grow(min)} doubles the current capacity once and
+does not inspect \texttt{min}.  This is also what the formal body and its
+specification prove: the resulting capacity is exactly twice the old
+capacity.  A runtime call \texttt{grow(64)} on a fresh map of capacity 16
+therefore produces capacity 32, not 64; a standalone test of that expected
+minimum-capacity behavior fails.  The checked-in growth test asks for 32,
+which is satisfied by the single doubling.
+
+This behavior is documented by the example and its tutorial discussion, so
+it is not a hidden discrepancy between the Coq proof and the generated
+method.  It is nevertheless a contract limitation relative to the usual
+meaning of a \texttt{grow(min)} operation and to the companion ArrayList
+example, which chooses at least the requested minimum.  If HashMap is
+required to honor that conventional contract, both the formal body and its
+specification need to be strengthened, and a test where \texttt{min} is
+greater than twice the old capacity should be added.
+
+\subsection{HashMap residue computation can take impractical time}
+\label{sec:hashmap-residue-cost}
+
+The generated residue routine normalizes a key by repeatedly adding or
+subtracting the capacity until the value is in range.  This is mathematically
+finite for the supported positive capacities, and the proof establishes
+the result and range properties.  It does not establish a useful execution
+time bound.  At capacity 16, an extreme \texttt{Int64} key can require on
+the order of $2^{59}$ loop iterations.  Thus a valid lookup or insertion
+with such a key may appear to hang, even though ordinary negative keys and
+the tested collision cases complete quickly.  The current tests exercise
+moderate negative values, not the extremes.  A practical implementation
+should use a bounded-time remainder operation or another logarithmic/bounded
+normalization, with proofs that preserve the nonnegative bucket range and
+the map's key-to-slot invariant.
+
+These limitations do not invalidate the Coq proofs of the stated CJR
+specifications.  They delimit what those proofs and the current runtime
+tests establish about the generated Cangjie: target allocation behavior is
+not yet shown equivalent to CJR allocation, the HashMap growth contract is
+intentionally narrower than a minimum-capacity contract, and the residue
+proof is a functional result rather than a performance guarantee.
 
 \begin{thebibliography}{99}
 
