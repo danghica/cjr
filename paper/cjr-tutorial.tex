@@ -3843,9 +3843,17 @@ Those boundaries still require human judgement. As discussed in Appendix~\ref{se
 
 The quality of the generated code also deserves a qualified assessment. In the absence of exceptions, some error branches use null-pointer access as a substitute for panic, producing code that looks markedly unidiomatic. For executions covered by the proved preconditions, formal safety ensures that such accesses cannot occur in the CJR model. That is a meaningful guarantee, but it does not make the error-handling convention attractive, nor does it cover callers that violate the contract or discrepancies in the target runtime.
 
-The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Richer control mechanisms, including exceptions and effect handlers, and concurrency through threads present more substantial challenges.
+The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Extensions for errors, resumable effects, and concurrency are plausible next steps, with established Iris developments providing foundations rather than ready-made proofs for CJR.
 
-The experiment therefore suggests that this fragment can support the construction of complex software module by module. The verified HashMap is significant evidence: it is a demanding mutable data structure whose correctness depends on interacting representation invariants and algorithms. Achieving competitive performance and idiomatic target code across a broader range of applications will require further development of the language core and its verification infrastructure, with control flow and concurrency among the most challenging extensions.
+An explicit \texttt{Panic} expression would be a small first improvement. It could replace deliberate null accesses and be printed as a Cangjie \texttt{throw Exception(...)} expression~\cite{cangjie-exceptions}. If \texttt{Panic} remains stuck in the formal semantics, the current safety discipline still requires proving it unreachable under the operation's preconditions; this would improve generated code without establishing a contract for erroneous calls. Proving that invalid inputs raise an exception, and reasoning about recovery, would instead require defined exceptional outcomes, propagation through calls, and specifications for both normal and exceptional results. Cleanup and the ownership available to a handler would have to be included. Treating panic as an ordinary successful result would weaken the intended guarantee and is not the proposed extension.
+
+For general effect handlers, Hazel~\cite{hazel-popl21} provides an Iris-based logic for mutable state and shallow and deep handlers with one-shot continuations. Its effect protocols describe the operations a computation may perform and the replies its handler must provide. TesLogic~\cite{teslogic-esop23} extends this line of work to dynamically allocated effect labels. These are mechanized precedents for a CJR logic with resumable effects, but adopting their ideas would require formalizing CJR's own handler and continuation semantics, and supplying a supported implementation or encoding in the Cangjie target.
+
+Concurrency is already a central purpose of Iris: the framework supplies invariants and ownership reasoning for shared state, and HeapLang includes fork and atomic operations~\cite{iris-coq}. CJR would need thread creation and completion, synchronization primitives, and rules for transferring resources between threads. A first development could run operations on disjoint arrays, then protect the existing HashMap with one mutex, reusing its sequential contracts under exclusive ownership. ReLoC~\cite{reloc-lmcs21} provides mechanized relational reasoning for fine-grained concurrency and logical atomicity; Cosmo~\cite{cosmo-icfp20} addresses Multicore OCaml's weak memory model; and Actris~\cite{actris-lmcs22} provides protocols for message-passing concurrency. These developments offer useful methods, but their language and memory-model assumptions must not be silently attributed to Cangjie. Safety proofs alone would not establish termination, deadlock freedom, or lock-freedom.
+
+Effect handlers and concurrency are compatible in a single Iris-based development. Blaze~\cite{blaze-popl26} combines handlers, mutable state, primitive concurrency, and one-shot and multi-shot continuations, and relates handler-based asynchronous libraries to implementations using actual concurrency. This does not mean that two separate extensions can simply be joined unchanged. A combined CJR semantics must account for ownership captured by continuations, ownership transfer when a continuation is resumed on another thread, restrictions preventing multiple resumptions from duplicating exclusive resources, and cleanup when a continuation is discarded or an exception escapes. Suspension while holding a lock also requires explicit contracts. A conservative development sequence would introduce ordinary exceptions, thread creation and joining, and mutexes first, followed by one-shot resumable effects; lock-free structures and multi-shot effects would be more demanding follow-up work.
+
+The experiment therefore suggests that this fragment can support the construction of complex software module by module. The verified HashMap is significant evidence: it is a demanding mutable data structure whose correctness depends on interacting representation invariants and algorithms. Achieving competitive performance and idiomatic target code across a broader range of applications will require further development of the language core and its verification infrastructure. Control flow and concurrency remain substantial extensions of CJR, but the Iris literature shows that both, including their combination, have established formal foundations. The remaining work is to adapt those foundations to this language and justify their correspondence with Cangjie execution.
 
 \section{Reading list}
 
@@ -3854,7 +3862,7 @@ The formal bibliography follows the same order.
 
 \paragraph{The language.}
 The Cangjie 1.0 documentation~\cite{cangjie-docs} is the surface syntax from which this fragment is cut: \texttt{func}, \texttt{let} and \texttt{var}, \texttt{if} and \texttt{while}, \texttt{struct}, non-\texttt{open} \texttt{class}, and \texttt{CPointer}.
-The performance-parity cut keeps unboxed structs, word-addressed raw blocks, and final classes, with generics, inheritance, and concurrency left as sugar that must lower into that cut.
+The current cut keeps unboxed structs, word-addressed raw blocks, and final classes. Generics and inheritance require lowering into that cut; concurrency is currently excluded and would require the semantic and logical extensions discussed in the conclusion.
 
 \paragraph{Separation logic.}
 Reynolds~\cite{reynolds-lics02} is the logic of disjoint ownership of mutable structure, which is the reading of \(\ptss\), \(\ptsr\), \(\ptsb\), and \(\ptso\) in this development.
@@ -3872,6 +3880,9 @@ HeapLang, in the Iris 4.4.0 Coq development~\cite{iris-coq}, is the language who
 \paragraph{The proof assistant.}
 The mechanization is checked with Coq 8.20.1~\cite{coq} and std++ 1.12.0~\cite{stdpp}.
 std++ supplies the finite maps, the list lemmas, and the \texttt{decide} tactic used for the pure arithmetic steps.
+
+\paragraph{Possible extensions.}
+The Cangjie 1.0.5 exception guide~\cite{cangjie-exceptions} documents the target operation proposed for explicit panic. Hazel~\cite{hazel-popl21} and TesLogic~\cite{teslogic-esop23} provide foundations for effect-handler reasoning. ReLoC~\cite{reloc-lmcs21}, Cosmo~\cite{cosmo-icfp20}, and Actris~\cite{actris-lmcs22} address concurrent refinement, weak memory, and message passing respectively. Blaze~\cite{blaze-popl26} demonstrates a mechanized combination of effect handlers and primitive concurrency. These are references for future extensions, not components already integrated into CJR.
 
 \appendix
 \section{Limitations and target-code risks}
@@ -4015,6 +4026,48 @@ The Coq proof assistant, version 8.20.1.
 The Iris Project.
 coq-std++, version 1.12.0.
 \url{https://gitlab.mpi-sws.org/iris/stdpp}.
+
+\bibitem{cangjie-exceptions}
+Cangjie development guide, version 1.0.5.
+Throwing and handling exceptions (Chinese-language edition).
+\url{https://docs.cangjie-lang.cn/docs/1.0.5/dev-guide/source_zh_cn/error_handle/handle.html}.
+
+\bibitem{hazel-popl21}
+Paulo Em\'ilio de Vilhena and Fran\c{c}ois Pottier.
+A separation logic for effect handlers.
+\emph{Proceedings of the ACM on Programming Languages}, 5(POPL), article 33, pages 1--28, 2021.
+\url{https://doi.org/10.1145/3434314}.
+
+\bibitem{teslogic-esop23}
+Paulo Em\'ilio de Vilhena and Fran\c{c}ois Pottier.
+A type system for effect handlers and dynamic labels.
+In \emph{Proceedings of ESOP}, volume 13990 of \emph{LNCS}, pages 225--252. Springer, 2023.
+\url{https://doi.org/10.1007/978-3-031-30044-8_9}.
+
+\bibitem{reloc-lmcs21}
+Dan Frumin, Robbert Krebbers, and Lars Birkedal.
+ReLoC Reloaded: A mechanized relational logic for fine-grained concurrency and logical atomicity.
+\emph{Logical Methods in Computer Science}, 17(3), article 9, pages 1--59, 2021.
+\url{https://doi.org/10.46298/LMCS-17(3:9)2021}.
+
+\bibitem{cosmo-icfp20}
+Glen M\'evel, Jacques-Henri Jourdan, and Fran\c{c}ois Pottier.
+Cosmo: A concurrent separation logic for Multicore OCaml.
+\emph{Proceedings of the ACM on Programming Languages}, 4(ICFP), article 96, pages 1--29, 2020.
+\url{https://doi.org/10.1145/3408978}.
+
+\bibitem{actris-lmcs22}
+Jonas Kastberg Hinrichsen, Jesper Bengtson, and Robbert Krebbers.
+Actris 2.0: Asynchronous session-type based reasoning in separation logic.
+\emph{Logical Methods in Computer Science}, 18(2), article 16, pages 1--64, 2022.
+\url{https://doi.org/10.46298/LMCS-18(2:16)2022}.
+
+\bibitem{blaze-popl26}
+Paulo Em\'ilio de Vilhena, Simcha van Collem, Ines Wright, and Robbert Krebbers.
+A relational separation logic for effect handlers.
+\emph{Proceedings of the ACM on Programming Languages}, 10(POPL), article 34, pages 981--1009, 2026.
+\url{https://doi.org/10.1145/3776676}.
+Rocq formalization: \url{https://github.com/DeVilhena-Paulo/blaze}.
 
 \end{thebibliography}
 
