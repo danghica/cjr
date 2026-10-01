@@ -4,9 +4,10 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{listings}
 \usepackage{microtype}
-\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
 \usetikzlibrary{arrows.meta,calc,positioning}
 
 \newtheorem{theorem}{Theorem}
@@ -3801,6 +3802,11 @@ language rules.\par
 \lstinputlisting[firstline=3102,lastline=3114]{theories/examples/hash_map.v}
 
 \lstinputlisting{generated/cj/hash_map.cj}
+
+\input{paper/benchmark.tex}
+
+% generated/cj/most_frequent.cj is listed in the included section below.
+\input{paper/most-frequent.tex}
 
 \section{What is deliberately missing}
 

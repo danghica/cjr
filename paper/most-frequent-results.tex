@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lrrrr}
+\hline
+Distribution & $n$ & CJR ($\mu$s) & std.sort ($\mu$s) & HashMap ($\mu$s) \\
+\hline
+Dense signed values & 256 & 12.54 & 56.22 & 2.87 \\
+Dense signed values & 4,096 & 381.83 & 1,450.86 & 27.91 \\
+Dense signed values & 16,384 & 1,977.75 & 6,677.62 & 108.44 \\
+Reverse-sorted input & 256 & 132.66 & 24.26 & 4.35 \\
+Seven-value domain & 256 & 16.16 & 61.27 & 1.65 \\
+Seven-value domain & 4,096 & 1,550.89 & 1,339.86 & 25.78 \\
+Seven-value domain & 16,384 & 21,183.44 & 6,258.38 & 101.94 \\
+Sorted input & 256 & 218.68 & 21.50 & 4.19 \\
+Permuted distinct values & 256 & 13.63 & 58.86 & 4.24 \\
+Permuted distinct values & 4,096 & 331.67 & 1,360.72 & 72.31 \\
+Permuted distinct values & 16,384 & 1,702.56 & 6,397.56 & 310.12 \\
+\hline
+\end{tabular}
+\caption{Median time per complete operation; 21 samples per entry.}
+\end{table}

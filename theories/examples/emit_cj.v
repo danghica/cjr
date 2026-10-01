@@ -1,11 +1,13 @@
-(** The Cangjie text of every example, printed from the core terms the example
-files prove. [make cj] writes each string to [generated/cj/NAME.cj]. *)
+(** The Cangjie text of every example, printed from its defined core terms.
+Proof coverage is documented per example; the most-frequent example has
+a full Iris refinement theorem for its empty and nonempty branches. [make cj] writes each string to
+[generated/cj/NAME.cj]. *)
 
 From Coq Require Import String ZArith List.
 From cjr Require Import lang.
 From cjr.examples Require Import cj_print.
 From cjr.examples Require arith struct_upd cell swap sum_block class_upd
-  frame_call vtable list list_rev array array_list hash_map qsort.
+  frame_call vtable list list_rev array array_list hash_map qsort most_frequent.
 Import ListNotations.
 
 Local Open Scope string_scope.
@@ -276,6 +278,26 @@ Definition p_qsort_array_list :=
               (Struct [] [Var "a"; int 2]))
             (App (Rec None (Some "a") list_sort) (Var "a")))))).
 
+(** Most-frequent: printed from the parallel-array CJR terms. *)
+Definition p_most_frequent :=
+  Prog [array_c] [int64_opt_c]
+    [Fn "make" None (Some "n") array.make_body [t_int] "Array";
+     Fn "length" None (Some "a") array.length_body ["Array"] t_int;
+     Fn "get" None (Some "args") array.get_body ["Array"; t_int] t_int;
+     Fn "set" None (Some "args") array.set_body ["Array"; t_int; t_int] "Unit";
+     Fn "pairSwap" None (Some "args") most_frequent.mf_swap_body
+       ["Array"; "Array"; t_int; t_int] "Unit";
+     Fn "pairPartition" None (Some "args") most_frequent.mf_partition_body
+       ["Array"; "Array"; t_int; t_int] t_int;
+     Fn "pairQsort" None (Some "args") most_frequent.mf_qsort_body
+       ["Array"; "Array"; t_int; t_int] "Unit";
+     Fn "mostFrequent" None (Some "input") most_frequent.mf_body ["Array"] "Int64Option"]
+    (Let (Some "input") (App (Rec None (Some "n") array.make_body) (int 1))
+      (Let None
+        (App (Rec None (Some "args") array.set_body)
+          (Struct [] [Var "input"; int 0; int 42]))
+        (App (Rec None (Some "input") most_frequent.mf_body) (Var "input")))).
+
 (** * The files, in [_CoqProject] order *)
 
 Definition cj_files : list (string * prog) :=
@@ -293,7 +315,8 @@ Definition cj_files : list (string * prog) :=
    ("array_list", p_array_list);
    ("hash_map", p_hash_map);
    ("qsort_array", p_qsort_array);
-   ("qsort_array_list", p_qsort_array_list)].
+   ("qsort_array_list", p_qsort_array_list);
+   ("most_frequent", p_most_frequent)].
 
 (** Every file, each preceded by a line [@@FILE NAME]. *)
 Definition cj_bundle : string :=

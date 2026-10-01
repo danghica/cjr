@@ -1,0 +1,12 @@
+{
+  "date_utc": "2026-10-01T08:23:42.667221+00:00",
+  "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
+  "optimization": "-O2",
+  "runs": 3,
+  "samples_per_process": 7,
+  "machine": "Apple M4 Mac mini, 16 GB RAM, macOS 26.6.2",
+  "implementations": {
+    "generated/cj/most_frequent.cj": "5291190d7910cf65a476e38ffed7c75f380643a27c7eb7a0838398e0a9fe29ce",
+    "benchmark/most_frequent_bench.cj": "72a6d516ff24d09ccde581dc17a6fc2b27703e26d9d38b2e15e39b65af656b40"
+  }
+}

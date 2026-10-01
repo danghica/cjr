@@ -25,6 +25,8 @@ theories/examples/array_list.v
 theories/examples/qsort.v
 theories/examples/hm_tactics.v
 theories/examples/hash_map.v
+theories/examples/mf_memory.v
+theories/examples/most_frequent.v
 theories/examples/cj_print.v
 theories/examples/emit_cj.v
 theories/verify_assumptions.v

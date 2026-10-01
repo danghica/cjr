@@ -1,0 +1,28 @@
+{
+  "date_utc": "2026-09-30T16:11:44.122202+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
+  "optimization": "-O2",
+  "runs": 3,
+  "samples_per_process": 7,
+  "clock": "std.time.MonoTime.now()",
+  "calibration_target_ns": 20000000,
+  "allocation_batch_repetition_limit": "262144 / n",
+  "machine": "Mac mini, Apple M4, 10 cores (4 performance + 6 efficiency), 16 GB RAM",
+  "steady_batch_repetition_limit": 65536,
+  "sdkroot": "/private/tmp/cj-sdk",
+  "generated_source_sha256": {
+    "list": "72a6e1c5e09daef20102335c896edb4f306a7ff6102c4919aa0002ebd93c8e64",
+    "array": "ebfb2cf59f07dd854e6ad87b02cac0a9c1e22e2c7cff3e7da56cee6328fc6429",
+    "array_list": "35195de03b3166e1431d0aad7b50704c455b42a2495287f2e52c215e6218268f",
+    "hash_map": "f0b5dd82f7d9ef54c43b9defae03564400a325efc5c5258ac551fe28349b1a99"
+  },
+  "harness_source_sha256": {
+    "list": "aea1b9e34d217a4678197dd8b29651212f8bb3f388b6c67bf8e733bb9f201d92",
+    "array": "65c207742170e285d383b9449d7cf6c1ae62b95c62ecbc6fdb6680342a00ddae",
+    "array_list": "1f744908d57de8c3e671130de66b329bb110406e20b150b7fc02be264031a6bd",
+    "hash_map": "72923bc69c34145fac2544d7428bb96231d69c1ccfe4868d15969e73c07d1325"
+  },
+  "common_sha256": "d42b8f51ca41543e99b2f970fba592ff8dce9b5cb52d1649f90533d29ee85f4e"
+}

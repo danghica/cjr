@@ -114,3 +114,64 @@ The Coq module contains no admissions. `make verify` checks all 23 compiled modu
 The printer changes also warranted rebuilding and rerunning every existing extracted-program test: all 51 cases across 15 programs pass. Compiler logs and binaries were kept outside the repository. The macOS SDK workaround described above was still required. The compiler reports benign unused-variable warnings for the retained growth hint and illustrative main result.
 
 The formal results concern the CJR expressions, whose integers are unbounded. Runtime tests validate the printed `Int64` programs on the tested inputs; the printer, compiler, and freedom from arbitrary machine-integer overflow are not formally verified. `grow(minCap)` performs one doubling, rather than guaranteeing an arbitrary requested minimum.
+
+## Standard-library performance comparison — 30 September 2026
+
+The optimized benchmark suites compile the unchanged generated `list.cj`,
+`array.cj`, `array_list.cj`, and `hash_map.cj` directly beside comparisons with
+their standard-library counterparts. All twelve suite executions passed
+(three processes for each of four suites). Each measured batch's checksum
+passed: 1,512 observations, covering 36 workload/size points and 21 observations
+per implementation at each point. This is separate from the 51 functional
+unit tests above, which were not rerun for this documentation/harness addition.
+
+The Apple M4 / Cangjie 1.0.5 `-O2` results are mixed. At the largest tested
+sizes, list prepend-and-scan takes 0.30x standard time, array indexed read
+1.23x, array-list append-and-scan 0.84x, front rotation 15.81x, and ordinary
+hash-map hit 2.42x. Large-key lookup in a 256-entry map is roughly 280x
+slower. The tutorial includes two charts, absolute timings, and limitations;
+`benchmark/README.md` documents the inputs and timing protocol. Full raw
+data and source/configuration hashes are retained under `benchmark/results/`.
+Generated implementations were not changed. Raw-memory initialization and
+reclamation gaps remain, and the comparison does not prove performance parity.
+
+## Most-frequent integer (1 October 2026)
+
+The source is now genuinely emitted by `p_most_frequent` in `emit_cj.v`
+from the concrete terms in `most_frequent.v`. The Cangjie 1.0.5 `-O2`
+build passes all **11** methods in `most_frequent_test.cj`: nine required
+edge-case methods, exhaustive small arrays, and paired-record sorting.
+The exhaustive method checks all 3,280 arrays of lengths 0–7 over
+`{-1,0,1}` against an independent quadratic oracle. Every result test
+checks input preservation. The pair-sort test checks increasing
+lexicographic order, unique original indices, and value provenance.
+Boundary values include both `Int64` extremes.
+
+Empty inputs are represented by a zero-length view over a positive
+allocation; they do not depend on `malloc(0)`. The emitted operation
+allocates nothing on empty input and frees both raw temporary buffers
+before returning on nonempty input. Its group guard is an explicit `If`
+so the eager CJR `AndOp` cannot read one past the last cell.
+
+```sh
+cjc generated/cj/most_frequent.cj test/most_frequent_test.cj --test -O2 -o /tmp/most_frequent_tests
+/tmp/most_frequent_tests
+```
+
+The comparative benchmark produces 693 timed samples with all checks
+passing. See `benchmark/results/most_frequent/` and the tutorial section
+for methodology and charts. The complete functional `mf_sort_scan_correct`
+theorem proves run-summary completeness, minimum original indices, and
+the specified result without an oracle or assumed grouping correctness.
+
+The complete actual CJR operation now has `mf_nonempty_wp`, `mf_wp`, and
+`mf_spec_wp` Iris theorems. They prove allocation and full initialization
+of both buffers, paired quicksort, the guarded inner run scan, the outer
+best-summary scan with the first-occurrence tie rule, both final raw-buffer
+frees, and preservation of the input. Expression equalities connect the
+copy, partition, and group-loop contracts to the concrete terms supplied
+to the printer. Empty input requires only a zero length field; positive
+input requires the initialized array representation. The final result is
+exactly the checked functional sort-and-scan result. The representative
+assumption audit includes 73 theorems; the printer and native compiler
+remain outside the CJR semantic correctness theorem.

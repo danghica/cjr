@@ -1,0 +1,299 @@
+[
+  {
+    "case": "dense",
+    "n": 256,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 12540.0390625,
+    "q1_ns": 12354.4921875,
+    "q3_ns": 12596.6796875
+  },
+  {
+    "case": "dense",
+    "n": 256,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 2873.046875,
+    "q1_ns": 2865.234375,
+    "q3_ns": 2898.4375
+  },
+  {
+    "case": "dense",
+    "n": 256,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 56220.703125,
+    "q1_ns": 47605.46875,
+    "q3_ns": 56919.921875
+  },
+  {
+    "case": "dense",
+    "n": 4096,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 381828.125,
+    "q1_ns": 371640.625,
+    "q3_ns": 383312.5
+  },
+  {
+    "case": "dense",
+    "n": 4096,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 27906.25,
+    "q1_ns": 27515.625,
+    "q3_ns": 28046.875
+  },
+  {
+    "case": "dense",
+    "n": 4096,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 1450859.375,
+    "q1_ns": 1412671.875,
+    "q3_ns": 1531765.625
+  },
+  {
+    "case": "dense",
+    "n": 16384,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 1977750.0,
+    "q1_ns": 1974687.5,
+    "q3_ns": 1978875.0
+  },
+  {
+    "case": "dense",
+    "n": 16384,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 108437.5,
+    "q1_ns": 106687.5,
+    "q3_ns": 108875.0
+  },
+  {
+    "case": "dense",
+    "n": 16384,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 6677625.0,
+    "q1_ns": 6586937.5,
+    "q3_ns": 7023312.5
+  },
+  {
+    "case": "reverse_sorted",
+    "n": 256,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 132656.25,
+    "q1_ns": 130918.9453125,
+    "q3_ns": 132854.4921875
+  },
+  {
+    "case": "reverse_sorted",
+    "n": 256,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 4354.4921875,
+    "q1_ns": 4282.2265625,
+    "q3_ns": 12890.625
+  },
+  {
+    "case": "reverse_sorted",
+    "n": 256,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 24256.8359375,
+    "q1_ns": 23639.6484375,
+    "q3_ns": 25712.890625
+  },
+  {
+    "case": "small_domain",
+    "n": 256,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 16156.25,
+    "q1_ns": 15933.59375,
+    "q3_ns": 16224.609375
+  },
+  {
+    "case": "small_domain",
+    "n": 256,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 1651.3671875,
+    "q1_ns": 1645.5078125,
+    "q3_ns": 1695.3125
+  },
+  {
+    "case": "small_domain",
+    "n": 256,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 61266.6015625,
+    "q1_ns": 53404.296875,
+    "q3_ns": 62065.4296875
+  },
+  {
+    "case": "small_domain",
+    "n": 4096,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 1550890.625,
+    "q1_ns": 1543750.0,
+    "q3_ns": 1557171.875
+  },
+  {
+    "case": "small_domain",
+    "n": 4096,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 25781.25,
+    "q1_ns": 25406.25,
+    "q3_ns": 27640.625
+  },
+  {
+    "case": "small_domain",
+    "n": 4096,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 1339859.375,
+    "q1_ns": 1209312.5,
+    "q3_ns": 1380281.25
+  },
+  {
+    "case": "small_domain",
+    "n": 16384,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 21183437.5,
+    "q1_ns": 21011687.5,
+    "q3_ns": 21296562.5
+  },
+  {
+    "case": "small_domain",
+    "n": 16384,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 101937.5,
+    "q1_ns": 100750.0,
+    "q3_ns": 103312.5
+  },
+  {
+    "case": "small_domain",
+    "n": 16384,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 6258375.0,
+    "q1_ns": 6162937.5,
+    "q3_ns": 6416125.0
+  },
+  {
+    "case": "sorted",
+    "n": 256,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 218680.6640625,
+    "q1_ns": 216781.25,
+    "q3_ns": 219133.7890625
+  },
+  {
+    "case": "sorted",
+    "n": 256,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 4188.4765625,
+    "q1_ns": 3953.125,
+    "q3_ns": 4309.5703125
+  },
+  {
+    "case": "sorted",
+    "n": 256,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 21499.0234375,
+    "q1_ns": 20348.6328125,
+    "q3_ns": 22156.25
+  },
+  {
+    "case": "wide",
+    "n": 256,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 13633.7890625,
+    "q1_ns": 13458.984375,
+    "q3_ns": 13702.1484375
+  },
+  {
+    "case": "wide",
+    "n": 256,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 4242.1875,
+    "q1_ns": 4230.46875,
+    "q3_ns": 4282.2265625
+  },
+  {
+    "case": "wide",
+    "n": 256,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 58860.3515625,
+    "q1_ns": 58439.453125,
+    "q3_ns": 59429.6875
+  },
+  {
+    "case": "wide",
+    "n": 4096,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 331671.875,
+    "q1_ns": 330203.125,
+    "q3_ns": 333875.0
+  },
+  {
+    "case": "wide",
+    "n": 4096,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 72312.5,
+    "q1_ns": 70531.25,
+    "q3_ns": 74125.0
+  },
+  {
+    "case": "wide",
+    "n": 4096,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 1360718.75,
+    "q1_ns": 1337796.875,
+    "q3_ns": 1378500.0
+  },
+  {
+    "case": "wide",
+    "n": 16384,
+    "implementation": "CJR",
+    "samples": 21,
+    "median_ns": 1702562.5,
+    "q1_ns": 1696437.5,
+    "q3_ns": 1705187.5
+  },
+  {
+    "case": "wide",
+    "n": 16384,
+    "implementation": "StdHash",
+    "samples": 21,
+    "median_ns": 310125.0,
+    "q1_ns": 307125.0,
+    "q3_ns": 694687.5
+  },
+  {
+    "case": "wide",
+    "n": 16384,
+    "implementation": "StdSort",
+    "samples": 21,
+    "median_ns": 6397562.5,
+    "q1_ns": 6249062.5,
+    "q3_ns": 6523062.5
+  }
+]
