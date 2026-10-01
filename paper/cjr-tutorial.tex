@@ -3830,6 +3830,23 @@ Null, a freed address, and an address with no points-to fact are stuck rather th
 The type grammar is not enforced.
 The adequacy theorem is the safety theorem for those programs whose specifications have been proved.
 
+\section{Conclusion}
+\label{sec:conclusion}
+
+This experiment made substantially more progress than expected, largely because of the power and usability of Iris. In less than one week of work, conducted at varying levels of intensity with several models, we developed a formal language fragment, its operational semantics and program logic, and verified examples ranging from elementary operations to a HashMap. Iris made it practical to reason compositionally about mutable state and to connect algorithmic correctness arguments to executable implementations.
+
+Does this mean that we can generate code and use it without inspecting it? Perhaps, within carefully established boundaries. Formal verification shifts much of the inspection effort towards the specification: does the formal statement actually express the intended informal requirement? An agent can help make that correspondence accessible by presenting the Coq specification alongside an equivalent mathematical formulation and an English readout. These presentations give reviewers several ways to examine what has been proved, although their agreement with the formal statement also requires scrutiny.
+
+Testing and benchmarking of the generated Cangjie provide additional sanity checks. We also run the Coq development through compilation, independent kernel checking with \texttt{coqchk}, scans for \texttt{Admitted}, \texttt{Axiom} and cheating mechanisms, and an audit of theorem assumptions. These checks strengthen confidence that the stated results have genuine proofs. They cannot establish that the statements capture every relevant requirement, or that the generated program faithfully implements the formal model.
+
+Those boundaries still require human judgement. As discussed in Appendix~\ref{sec:limitations}, a specification can omit an expected behaviour, impose an impractical precondition, or establish functional correctness without a useful performance guarantee. A further obligation is the correspondence between the formal CJR core and real-world Cangjie execution. The relevant Cangjie behaviour is described informally in its specification documents, and the current printer does not come with a proved preservation theorem. Consequently, the guarantees established for CJR transfer to generated Cangjie only insofar as that correspondence holds.
+
+The quality of the generated code also deserves a qualified assessment. In the absence of exceptions, some error branches use null-pointer access as a substitute for panic, producing code that looks markedly unidiomatic. For executions covered by the proved preconditions, formal safety ensures that such accesses cannot occur in the CJR model. That is a meaningful guarantee, but it does not make the error-handling convention attractive, nor does it cover callers that violate the contract or discrepancies in the target runtime.
+
+The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Richer control mechanisms, including exceptions and effect handlers, and concurrency through threads present more substantial challenges.
+
+The experiment therefore suggests that this fragment can support the construction of complex software module by module. The verified HashMap is significant evidence: it is a demanding mutable data structure whose correctness depends on interacting representation invariants and algorithms. Achieving competitive performance and idiomatic target code across a broader range of applications will require further development of the language core and its verification infrastructure, with control flow and concurrency among the most challenging extensions.
+
 \section{Reading list}
 
 The entries below are the sources this note relies on.
