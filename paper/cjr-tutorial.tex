@@ -8,6 +8,11 @@
 \usepackage{float}
 \usepackage{tikz}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{linktoc=all}
+\setcounter{tocdepth}{2}
+\makeatletter
+\renewcommand{\l@subsection}{\@dottedtocline{2}{1.5em}{3.4em}}
+\makeatother
 \usetikzlibrary{arrows.meta,calc,positioning}
 
 \newtheorem{theorem}{Theorem}
@@ -85,6 +90,10 @@ This note is a reading guide to the Coq/Iris mechanization.
 We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
 Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development, an array library, and an array list, each with the usual equations of that data structure.
 \end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
 
 \section{What this development is}
 
@@ -3934,6 +3943,7 @@ intentionally narrower than a minimum-capacity contract, and the residue
 proof is a functional result rather than a performance guarantee.
 
 \begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
 
 \bibitem{cangjie-docs}
 Cangjie documentation, version 1.0.0.
