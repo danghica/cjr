@@ -69,3 +69,83 @@ The tutorial includes a detailed subsection for each definition and lemma, compl
 The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `test/hash_map_test.cj` contains 13 runtime cases, including collisions, wraparound, negative keys, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
 
 `add_spec` and its client theorems retain the resulting capacity existentially because insertion can grow. `grow(minCap)` performs one doubling; the retained argument does not promise arbitrary minimum capacity. The CJR integer model is unbounded; the proof does not establish absence of `Int64` overflow for arbitrary machine inputs.
+
+# Methodology 
+
+
+## Overview and Core Problem
+
+This project evaluates the verifiability of agentic code generation by addressing a specific research question: **Can agent-generated code be trusted, and what constitutes the minimal specification and artifact surface that requires manual inspection by a qualified human?**
+
+The project is structured into two components:
+
+1. **The verification framework**: A mechanized operational semantics and separation logic for a core fragment of Cangjie, formalized in Rocq using the Iris framework.
+2. **The synthesized examples**: Individual data structures and algorithms synthesized end-to-end from informal prompts into verified Rocq developments, which are subsequently extracted to Cangjie for compilation, testing, and benchmarking.
+
+Both components are generated using language model agents (such as Codex or Cursor). The manual inspection burden differs substantially between the foundational framework and the individual synthesized examples.
+
+---
+
+## Architecture and Workflow
+
+```
+[Informal Prompt]
+       │
+       ▼ (Agent Synthesis)
+[Rocq Formalization]
+  ├── Program Definition (Deep Embedding)
+  ├── Formal Specification
+  ├── Machine-Checked Proof: Program ⊨ Specification
+  └── Machine-Checked Proof: Specification ⊨ Validating Properties
+       │
+       ▼ (Extraction / Pretty-Printing)
+[Extracted Cangjie Source]
+       │
+       ├── Compiles via Cangjie Toolchain
+       └── Executes Test Cases & Benchmarks (Partial Correctness Sanity Check)
+
+```
+
+For each example:
+
+* **Synthesis:** An informal prompt defines data structures, algorithms, and expected validating properties (e.g., associativity of list concatenation). The agent synthesizes the complete Rocq formalization: the program, the specification, the proof that the program satisfies the specification, and the proof that the validating properties follow from the specification.
+* **Extraction and Execution:** The formal Rocq AST is extracted (pretty-printed) to concrete Cangjie syntax, compiled, executed against test suites, and benchmarked.
+* **Vacuity Detection:** Because Iris provides partial correctness guarantees, testing and benchmarking serve as empirical guards against non-termination, divergence, or vacuous proofs.
+
+---
+
+## The Trusted Computing Base (TCB)
+
+The foundational assumptions of the project rely on the correctness of established verification infrastructure:
+
+* **Rocq and Iris:** The Rocq kernel, the Iris framework, and standard mechanized soundness results are trusted. All strict safety flags in Rocq are enforced (e.g., verifying `Print Assumptions` to ensure no ad-hoc axioms, admits, or unsafe escape hatches bypass proof obligations).
+* **The Cangjie Toolchain:** The Cangjie compiler, runtime, and execution target are assumed to be correct.
+
+---
+
+## Human Inspection Requirements
+
+The surface that requires careful manual review is strictly bounded and partitioned between the framework and the generated instances.
+
+### 1. The Framework Inspection Burden
+
+The framework defines the semantic foundation. All items below must be audited whenever the framework undergoes non-trivial modification:
+
+* **Syntax Correspondence (Section 3):** Inspect the formal Rocq abstract syntax to verify that it accurately reflects the intended Cangjie fragment. In particular, verify the binding mechanisms (Section 3.5), which model the non-trivial scoping and variable binding semantics of Cangjie.
+* **Operational Semantics (Sections 4 & 5):** Review the small-step operational semantics and state transitions to ensure that the definitions accurately capture Cangjie execution behavior and contain no degeneracies or inaccurate behaviour.
+* **Separation Logic Construction (Section 6):** Verify that the instantiation of the Iris base logic—including the definitions of resources, points-to predicates, and weakest preconditions—is sound and faithful to the operational model.
+* **Adequacy Theorem (Section 7):** Check the formal statement of the adequacy theorem directly. Ensure that the mechanized theorem yields a genuine semantic safety guarantee linking weakest preconditions in Iris to the operational behavior of the language.
+
+### 2. The Per-Example Inspection Burden
+
+For each newly synthesized program or substantial iteration, manual auditing is restricted strictly to specifications and empirical harnesses:
+
+* **Formal Specifications and Validating Properties:** Inspect the formalized specifications and formal validating theorem statements to confirm that they accurately express the intent of the informal prompt.
+* *Exclusion:* **Machine-checked proofs do not require manual review.** Proof validity is guaranteed by the Rocq proof checker.
+
+
+* **Test Suites and Benchmarking Suites:** Verify that the generated test cases and benchmark inputs are meaningful and provide non-trivial test coverage.
+* *Exclusion:* **The generated Cangjie source code does not require manual review for correctness.** Because the source is extracted from verified Rocq definitions, semantic compliance is handled by the framework. Reviewers should note that extracted code may not follow human-idiomatic Cangjie programming patterns.
+
+> **Note:** Agents have been instructed to produce vernacular explanations of the formalisations. They are not part of the TCB and are only meant to aid the understanding of the formal Rocq code which must be inspected carefully. 
+
