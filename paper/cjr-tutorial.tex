@@ -404,7 +404,7 @@ Inductive val :=
   | RecV (f x : binder) (e : expr)
   | StructV (vs : list val)
 with expr :=
-  | Val (v : val) | Var (x : string)
+  | Val (v : val) | Panic | Var (x : string)
   | Rec (f x : binder) (e : expr)
   | App (e1 e2 : expr)
   | Let (x : binder) (e1 e2 : expr)
@@ -563,7 +563,7 @@ Class objects are not freed in this development: there is no \texttt{delete} for
 
 Null is a pointer value, not an address in \(\sigma_{r}\).
 Loading or storing through \(\NULL\) has no rule, so it is stuck.
-An out-of-bounds or use-after-free access is stuck for the same reason: the lookup premise of load, store, or free fails.
+An out-of-bounds or use-after-free access is stuck for the same reason: the lookup premise of load, store, or free fails. The explicit expression \texttt{Panic} is also stuck in the CJR semantics; its translation to a Cangjie exception raise does not add exception propagation or handlers to the formal language.
 
 \subsection{Well-formed states}
 
@@ -2487,8 +2487,13 @@ The core is monomorphic in \texttt{Int64}, and it uses the array library already
 
 \texttt{Alloc} of zero words is stuck, so the only constructor is the default one, at capacity \(16\).
 There is no shift, so growth doubles by adding the capacity to itself.
-There are no exceptions.
-An index outside \([0, \mathit{size})\) lowers to a load of a non-pointer, which has no step, and every specification takes the arm that is in range.
+An invalid array-list index takes the explicit \texttt{Panic} branch. In the
+CJR semantics, \texttt{Panic} has no successful reduction rule, so the
+verified operation proofs must establish that this branch is unreachable for
+their stated preconditions. The printer emits a Cangjie
+\texttt{throw Exception("CJR panic")}; CJR does not yet model exception
+propagation, catching, or recovery.
+An index outside \([0, \mathit{size})\) lowers to \texttt{Panic}, which has no CJR step, and every specification takes the arm that is in range.
 \texttt{set} leaves the version alone.
 \texttt{add} and \texttt{remove} increment it.
 Growth replaces the buffer and drops the old block and the old array object.
@@ -3841,11 +3846,11 @@ Testing and benchmarking of the generated Cangjie provide additional sanity chec
 
 Those boundaries still require human judgement. As discussed in Appendix~\ref{sec:limitations}, a specification can omit an expected behaviour, impose an impractical precondition, or establish functional correctness without a useful performance guarantee. A further obligation is the correspondence between the formal CJR core and real-world Cangjie execution. The relevant Cangjie behaviour is described informally in its specification documents, and the current printer does not come with a proved preservation theorem. Consequently, the guarantees established for CJR transfer to generated Cangjie only insofar as that correspondence holds.
 
-The quality of the generated code also deserves a qualified assessment. In the absence of exceptions, some error branches use null-pointer access as a substitute for panic, producing code that looks markedly unidiomatic. For executions covered by the proved preconditions, formal safety ensures that such accesses cannot occur in the CJR model. That is a meaningful guarantee, but it does not make the error-handling convention attractive, nor does it cover callers that violate the contract or discrepancies in the target runtime.
+The quality of the generated code also deserves a qualified assessment. Error branches now use an explicit CJR \texttt{Panic} operation, which the printer translates to a Cangjie \texttt{throw Exception("CJR panic")}. For executions covered by the proved preconditions, the proofs establish that these branches are unreachable in CJR. The target raise is not itself covered by a CJR exception semantics or a proved printer-preservation theorem, so callers that violate preconditions and discrepancies in target behavior remain outside that guarantee.
 
-The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Extensions for errors, resumable effects, and concurrency are plausible next steps, with established Iris developments providing foundations rather than ready-made proofs for CJR.
+The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Richer exceptional control, resumable effects, and concurrency are plausible next steps, with established Iris developments providing foundations rather than ready-made proofs for CJR.
 
-An explicit \texttt{Panic} expression would be a small first improvement. It could replace deliberate null accesses and be printed as a Cangjie \texttt{throw Exception(...)} expression~\cite{cangjie-exceptions}. If \texttt{Panic} remains stuck in the formal semantics, the current safety discipline still requires proving it unreachable under the operation's preconditions; this would improve generated code without establishing a contract for erroneous calls. Proving that invalid inputs raise an exception, and reasoning about recovery, would instead require defined exceptional outcomes, propagation through calls, and specifications for both normal and exceptional results. Cleanup and the ownership available to a handler would have to be included. Treating panic as an ordinary successful result would weaken the intended guarantee and is not the proposed extension.
+A small error-handling improvement is now implemented: the explicit \texttt{Panic} expression replaces deliberate null accesses and is printed as a Cangjie \texttt{throw Exception("CJR panic")} expression~\cite{cangjie-exceptions}. Since \texttt{Panic} remains stuck in the formal semantics, the current safety discipline requires proving it unreachable under the operation's preconditions. This improves generated error paths without establishing a contract for erroneous calls. Proving that invalid inputs raise a specified exception, and reasoning about recovery, would require defined exceptional outcomes, propagation through calls, and specifications for both normal and exceptional results. Cleanup and the ownership available to a handler would have to be included.
 
 For general effect handlers, Hazel~\cite{hazel-popl21} provides an Iris-based logic for mutable state and shallow and deep handlers with one-shot continuations. Its effect protocols describe the operations a computation may perform and the replies its handler must provide. TesLogic~\cite{teslogic-esop23} extends this line of work to dynamically allocated effect labels. These are mechanized precedents for a CJR logic with resumable effects, but adopting their ideas would require formalizing CJR's own handler and continuation semantics, and supplying a supported implementation or encoding in the Cangjie target.
 

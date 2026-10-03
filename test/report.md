@@ -1,6 +1,6 @@
 # Unit test report
 
-Date: 30 September 2026.
+Date: 3 October 2026.
 
 Compiler: Cangjie 1.0.5 (cjnative), target aarch64-apple-darwin.
 
@@ -14,13 +14,13 @@ The tests use `@Test`, `@TestCase`, and `@Expect` from the Cangjie `std.unittest
 
 The bundled linker in this SDK does not read the macOS 27 `libSystem.tbd`. The binaries were linked with `SDKROOT` pointed at a copy of the macOS 26 SDK whose stub files also list `arm64-macos`. That change is outside the repository.
 
-Out-of-range indexes are not called. In the extracted array list those arms are a null read, which stops the process. `cell` discards the value it loads, so its test only checks that the call returns.
+Array-list indexes outside `[0, size)` now compile to `throw Exception("CJR panic")`. Three new cases verify invalid `get`, `set`, and `remove` operations raise an exception. The CJR semantics leaves `Panic` stuck; the proofs show it is unreachable under the methods’ valid-index preconditions. `cell` discards the value it loads, so its test only checks that the call returns.
 
 ## Results
 
-51 cases ran. 51 passed. 0 failed.
+54 cases ran across the 15 base generated programs. 54 passed. 0 failed.
 
-All fifteen generated programs were rebuilt and rerun, including the 13 hash map cases and six list reversal cases.
+All fifteen generated programs were rebuilt and rerun, including the 13 hash map cases, six list reversal cases, and three explicit panic cases.
 
 | Program | Cases | Result |
 |---|---:|---|
@@ -35,7 +35,7 @@ All fifteen generated programs were rebuilt and rerun, including the 13 hash map
 | `list.cj` | 3 | passed |
 | `list_rev.cj` | 6 | passed |
 | `array.cj` | 3 | passed |
-| `array_list.cj` | 6 | passed |
+| `array_list.cj` | 9 | passed |
 | `hash_map.cj` | 13 | passed |
 | `qsort_array.cj` | 5 | passed |
 | `qsort_array_list.cj` | 6 | passed |
@@ -111,31 +111,31 @@ The regenerated `hash_map.cj` is compiled directly with `test/hash_map_test.cj`.
 
 The Coq module contains no admissions. `make verify` checks all 23 compiled modules with `coqchk`, rejects source bypasses, and audits 29 theorems as closed under the global context. The audit covers all public hash map methods, the remainder, scan, insertion, and rehash kernels, and the initialization and insertion client compositions. `make cj` regenerates the implementation and rebuilds the detailed tutorial, including complete checked proof listings.
 
-The printer changes also warranted rebuilding and rerunning every existing extracted-program test: all 51 cases across 15 programs pass. Compiler logs and binaries were kept outside the repository. The macOS SDK workaround described above was still required. The compiler reports benign unused-variable warnings for the retained growth hint and illustrative main result.
+The printer changes also warranted rebuilding and rerunning every extracted-program test: all 54 cases across 15 programs pass. Compiler logs and binaries were kept outside the repository. The macOS SDK workaround described above was still required. The compiler reports benign unused-variable warnings for the retained growth hint and illustrative main result.
 
 The formal results concern the CJR expressions, whose integers are unbounded. Runtime tests validate the printed `Int64` programs on the tested inputs; the printer, compiler, and freedom from arbitrary machine-integer overflow are not formally verified. `grow(minCap)` performs one doubling, rather than guaranteeing an arbitrary requested minimum.
 
-## Standard-library performance comparison — 30 September 2026
+## Standard-library performance comparison — 3 October 2026
 
-The optimized benchmark suites compile the unchanged generated `list.cj`,
-`array.cj`, `array_list.cj`, and `hash_map.cj` directly beside comparisons with
+The optimized benchmark suites compile the generated `list.cj`, `array.cj`, `array_list.cj`, and `hash_map.cj`
+directly beside comparisons with
 their standard-library counterparts. All twelve suite executions passed
 (three processes for each of four suites). Each measured batch's checksum
 passed: 1,512 observations, covering 36 workload/size points and 21 observations
-per implementation at each point. This is separate from the 51 functional
-unit tests above, which were not rerun for this documentation/harness addition.
+per implementation at each point. The complete 54-case functional suite was rerun separately.
 
 The Apple M4 / Cangjie 1.0.5 `-O2` results are mixed. At the largest tested
-sizes, list prepend-and-scan takes 0.30x standard time, array indexed read
-1.23x, array-list append-and-scan 0.84x, front rotation 15.81x, and ordinary
-hash-map hit 2.42x. Large-key lookup in a 256-entry map is roughly 280x
+sizes, list prepend-and-scan takes 0.29x standard time, array indexed read
+1.22x, array-list append-and-scan 0.84x, front rotation 15.77x, and ordinary
+hash-map hit 2.45x. Large-key lookup in a 256-entry map is roughly 286x
 slower. The tutorial includes two charts, absolute timings, and limitations;
 `benchmark/README.md` documents the inputs and timing protocol. Full raw
 data and source/configuration hashes are retained under `benchmark/results/`.
-Generated implementations were not changed. Raw-memory initialization and
-reclamation gaps remain, and the comparison does not prove performance parity.
+Only the generated array-list invalid-index branch changed for this rerun; benchmark
+inputs use valid indexes. Raw-memory initialization and reclamation gaps remain, and
+the comparison does not prove performance parity.
 
-## Most-frequent integer (1 October 2026)
+## Most-frequent integer (3 October 2026)
 
 The source is now genuinely emitted by `p_most_frequent` in `emit_cj.v`
 from the concrete terms in `most_frequent.v`. The Cangjie 1.0.5 `-O2`

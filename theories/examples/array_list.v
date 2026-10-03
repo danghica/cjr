@@ -6,9 +6,10 @@ length, and a version. The live prefix is the mathematical list; the tail is
 zero, which is what [Alloc] writes and what [remove] writes back.
 
 [Alloc] of zero words is stuck, so the only constructor is the default one,
-capacity 16. There is no shift, so [grow] doubles with addition. There are no
-exceptions: an index outside [0, size) reduces to [Load] of a non-pointer,
-which has no step, and every specification takes the in-range arm.
+capacity 16. There is no shift, so [grow] doubles with addition. An index
+outside [0, size) executes [Panic], which is stuck in the CJR semantics and is
+printed as a Cangjie exception raise. Every proved specification takes the
+in-range arm.
 [set] does not bump the version; [add] and [remove] do. The old block is
 dropped on [grow]: the source relies on collection, which this language does
 not have. *)
@@ -312,7 +313,7 @@ Section array_list.
       ObjId o ↦ₒ[2] LitV (LitInt ver) ∗
       is_buf (slots_of xs cap) buf.
 
-  Definition oob : expr := Load (Val (LitV LitUnit)).
+  Definition oob : expr := Panic.
 
   Definition sload (li : Z) : expr := StackLoad (Val (LitV (LitStack li))).
 

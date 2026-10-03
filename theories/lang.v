@@ -63,6 +63,7 @@ Inductive val :=
   | StructV (vs : list val)
 with expr :=
   | Val (v : val)
+  | Panic
   | Var (x : string)
   | Rec (f x : binder) (e : expr)
   | App (e1 e2 : expr)
@@ -103,6 +104,7 @@ Definition binds (x : string) (b : binder) : bool :=
 Fixpoint subst (x : string) (v : val) (e : expr) {struct e} : expr :=
   match e with
   | Val w => Val (subst_val x v w)
+  | Panic => Panic
   | Var y => if bool_decide (x = y) then Val v else Var y
   | Rec f y e1 =>
       Rec f y (if binds x f || binds x y then e1 else subst x v e1)
@@ -158,6 +160,7 @@ Fixpoint subst_var (x : string) (l : loc) (e : expr) {struct e} : expr :=
   let slot := Val (LitV (LitStack l)) in
   match e with
   | Val w => Val (subst_var_val x l w)
+  | Panic => Panic
   | Var y => if bool_decide (x = y) then StackLoad slot else Var y
   | Rec f y e1 =>
       Rec f y (if binds x f || binds x y then e1 else subst_var x l e1)

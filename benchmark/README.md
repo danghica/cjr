@@ -1,7 +1,7 @@
 # CJR / Cangjie standard-library benchmarks
 
-Measured on 30 September 2026 with Cangjie 1.0.5 (cjnative), `-O2`,
-aarch64-apple-darwin, on an Apple M4 Mac mini with 16 GB RAM and macOS 26.6.2.
+Refreshed on 3 October 2026 (initial baseline measured on 30 September 2026)
+with Cangjie 1.0.5 (cjnative), `-O2`, aarch64-apple-darwin, on an Apple M4 Mac mini with 16 GB RAM and macOS 26.6.2.
 The comparison uses the standard library shipped in that SDK, not version 1.1.
 
 ## Reproduce

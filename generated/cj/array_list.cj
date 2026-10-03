@@ -43,10 +43,10 @@ class ArrayList {
     public func get(i: Int64): Int64 {
         let n = this.mySize
         if (n <= i) {
-            unsafe { CPointer<Int64>().read() }
+            throw Exception("CJR panic")
         } else {
             if (i <= -1) {
-                unsafe { CPointer<Int64>().read() }
+                throw Exception("CJR panic")
             } else {
                 let buf = this.myData
                 let p = buf.data
@@ -58,10 +58,10 @@ class ArrayList {
     public func set(i: Int64, x: Int64): Unit {
         let n = this.mySize
         if (n <= i) {
-            unsafe { CPointer<Int64>().read() }
+            throw Exception("CJR panic")
         } else {
             if (i <= -1) {
-                unsafe { CPointer<Int64>().read() }
+                throw Exception("CJR panic")
             } else {
                 let buf = this.myData
                 let p = buf.data
@@ -109,10 +109,10 @@ class ArrayList {
     public func remove(at: Int64): Int64 {
         let n = this.mySize
         if (n <= at) {
-            unsafe { CPointer<Int64>().read() }
+            throw Exception("CJR panic")
         } else {
             if (at <= -1) {
-                unsafe { CPointer<Int64>().read() }
+                throw Exception("CJR panic")
             } else {
                 let buf = this.myData
                 let p = buf.data

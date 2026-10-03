@@ -66,6 +66,28 @@ class ArrayListTests {
     }
 
     @TestCase
+    func invalidGetRaisesException(): Unit {
+        let a = initArrayList()
+        a.add(7)
+        @AssertThrows[Exception](a.get(-1))
+        @AssertThrows[Exception](a.get(1))
+    }
+
+    @TestCase
+    func invalidSetRaisesException(): Unit {
+        let a = initArrayList()
+        a.add(7)
+        @AssertThrows[Exception](a.set(1, 8))
+    }
+
+    @TestCase
+    func invalidRemoveRaisesException(): Unit {
+        let a = initArrayList()
+        a.add(7)
+        @AssertThrows[Exception](a.remove(1))
+    }
+
+    @TestCase
     func addGrowsWhenFull(): Unit {
         let a = initArrayList()
         var i: Int64 = 0
