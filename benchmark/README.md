@@ -1,6 +1,6 @@
 # CJR / Cangjie standard-library benchmarks
 
-Refreshed on 3 October 2026 (initial baseline measured on 30 September 2026)
+Refreshed on 9 October 2026 (initial baseline measured on 30 September 2026)
 with Cangjie 1.0.5 (cjnative), `-O2`, aarch64-apple-darwin, on an Apple M4 Mac mini with 16 GB RAM and macOS 26.6.2.
 The comparison uses the standard library shipped in that SDK, not version 1.1.
 
@@ -39,7 +39,7 @@ process: 36 * 2 * 7 * 3 = 1,512 samples. Each implementation is warmed up
 twice and calibrated independently toward a 20 ms batch. Steady-state
 batches cap repetitions at 65,536; allocating batches cap repetitions at
 262,144 / n to limit unreclaimed raw buffers. The shortest actual measured
-batch was 838 microseconds. The order of CJR and standard-library measurements
+batch was 828 microseconds. The order of CJR and standard-library measurements
 alternates within each trial. Processes are run sequentially, without core
 pinning. The median is over 21 samples; IQR denotes the 25th to 75th percentiles,
 not a confidence interval. The relative-time plot uses the median and IQR of
@@ -68,7 +68,8 @@ size. All twelve suite executions passed.
   dividing by 2n. Sizes: 256, 4,096, 65,536. Constructors are excluded, and
   the harness writes every CJR cell before its first read. The baseline is
   `std.core.Array<Int64>` indexed with `[]`; CJR uses unchecked pointer access.
-- ArrayList read uses the same permutation. Build-and-scan appends 0..n-1
+- ArrayList access now uses unchecked pointer operations under valid-index
+  preconditions. Read uses the same permutation. Build-and-scan appends 0..n-1
   from the default constructor, including natural capacity growth, then
   reads every value. Sizes: 256, 4,096, 16,384. Front rotation performs n
   remove-at-zero / append pairs on a fixed-size list, returning to the
@@ -115,6 +116,7 @@ python3 benchmark/most_frequent_run.py --cjc /path/to/cangjie/bin/cjc --sdkroot 
 MPLBACKEND=Agg python3 benchmark/most_frequent_plot.py
 ```
 
+Refreshed on 9 October 2026 alongside the collection suites.
 Three processes, seven samples per process, three implementations, and
 11 distribution/size points produce 693 measurements in
 `results/most_frequent/raw.csv`. Each batch uses `262144/n` repetitions

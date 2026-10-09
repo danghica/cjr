@@ -3,7 +3,8 @@
 
 The generated implementations were benchmarked against the standard
 linked list, array, array list, and hash map, specialized at \texttt{Int64},
-on 30 September 2026.
+on 9 October 2026, after removing array-list
+bounds checks.
 The compiler and the standard library were those of Cangjie 1.0.5 (cjnative),
 with optimization \texttt{-O2}, targeting \texttt{aarch64-apple-darwin}.
 The machine was an Apple M4 Mac mini, with ten cores (four performance and
@@ -17,11 +18,11 @@ Each of the four generated source files was compiled with a
 Cangjie benchmark test containing both implementations.  The executable
 ran in three independent processes, sequentially, with seven samples of
 each implementation at each size in each process.  The 36 workload/size
-points therefore produced 1,512 timed samples. The measured generated code included bounds-error branches for array-list accesses; those checks have since been removed. Benchmark inputs use only valid indexes, but the reported timings describe the measured revision.  Both implementations were
+points therefore produced 1,512 timed samples. The measured array-list accesses have no runtime bounds checks; all benchmark inputs use valid indexes.  Both implementations were
 warmed up, and their batch sizes were calibrated independently toward
 20 milliseconds.  Allocating workloads were capped at $262144/n$
 repetitions; other workloads at 65,536.  The shortest observed batch was
-838 microseconds.  The order of the two implementations alternated between
+828 microseconds.  The order of the two implementations alternated between
 trials.  There was no core pinning, forced garbage collection, or subtraction
 of an empty-loop timing.
 
@@ -97,26 +98,26 @@ build/scan include construction and growth; the other setups are excluded.}
 
 \paragraph{Lists and arrays.} Prepend-and-scan on the smaller CJR list
 representation takes about 0.30 times the standard list time, and traversal
-about 0.82 times.  Those results reflect the different list representations,
+about 0.84 times.  Those results reflect the different list representations,
 as well as optimization and runtime behavior.  The generated arrays are
 not faster in these tests: indexed read takes 1.23 times the standard-array
-time, and the write/read workload 1.70 times.  The lack of raw-pointer bounds
+time, and the write/read workload 1.75 times.  The lack of raw-pointer bounds
 checks therefore does not imply a measured speed advantage for these loops.
 
-\paragraph{Array lists.} Append-and-scan takes about 0.84 times the standard
-time, while indexed read takes 1.12 times.  Front rotation is much more
-expensive: about 15.81 times the standard time at $n=4096$.  The generated
+\paragraph{Array lists.} Append-and-scan takes about 0.81 times the standard
+time, while indexed read takes 1.13 times.  Front rotation is much more
+expensive: about 15.79 times the standard time at $n=4096$.  The generated
 \texttt{remove} explicitly reads and writes every shifted word.  These
 measurements establish the observed cost difference, without an assembly
 analysis identifying all compiler and library contributions to it.
 
-\paragraph{Hash maps.} Ordinary successful lookup takes about 2.42 times
-the standard time, misses 2.51 times, and insert-and-scan 1.36 times at
+\paragraph{Hash maps.} Ordinary successful lookup takes about 2.41 times
+the standard time, misses 2.38 times, and insert-and-scan 1.42 times at
 $n=16384$.  The key pattern can cause a much greater slowdown.  The
-large-key workload at $n=256$ has median times of approximately 670.5 ns
-and 2.4 ns per query (roughly 280 times slower for CJR).  At $n=16384$,
-the paired ratio is still 7.54.  Colliding keys at $n=4096$ take about
-19.68 times the standard time.  Both maps slow down on this collision
+large-key workload at $n=256$ has median times of approximately 672.4 ns
+and 2.4 ns per query (roughly 283 times slower for CJR).  At $n=16384$,
+the paired ratio is still 7.24.  Colliding keys at $n=4096$ take about
+19.40 times the standard time.  Both maps slow down on this collision
 workload; the generated map does not have uniform lookup performance.
 
 \begin{figure}[!htbp]
@@ -157,6 +158,10 @@ in Appendix~\ref{sec:limitations}.  The tests use valid indexes, bounded
 values, a warm working set, and single-threaded code on an unpinned desktop
 process.  They support workload-specific comparisons on this machine,
 not a general correctness, complexity, or performance theorem.
+
+These results replace the previous measurements. Differences between runs
+do not isolate the effect of removing bounds checks: desktop scheduling,
+calibration, and runtime variation can also affect the timings.
 
 The reproducible harness is in \texttt{benchmark/}.  The unchanged source
 hashes, compiler configuration, every timed sample, and summary statistics
