@@ -2,8 +2,8 @@
 class FrameCallTests {
     @TestCase
     func writeTouchesOnlyThePassedPointer(): Unit {
-        let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * 1))) }
-        let q = unsafe { CPointer<Int64>(malloc(UIntNative(8 * 1))) }
+        let p = unsafe { CPointer<Int64>(calloc(UIntNative(1), UIntNative(8))) }
+        let q = unsafe { CPointer<Int64>(calloc(UIntNative(1), UIntNative(8))) }
         unsafe { p.write(0) }
         unsafe { q.write(3) }
         let r = frameCall(p, q)

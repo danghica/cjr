@@ -3,7 +3,7 @@ import std.core.Array as StdArray
 @Test
 class MostFrequentTests {
     func from(values: StdArray<Int64>): Array {
-        // A zero-length view over a positive allocation avoids malloc(0).
+        // A zero-length view over a positive allocation avoids a zero-byte allocation.
         let a = make(if (values.size == 0) { 1 } else { values.size })
         a.len = values.size
         var i: Int64 = 0

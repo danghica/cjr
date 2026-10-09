@@ -76,3 +76,19 @@ Qed.
 Lemma sum_one_adequate Σ `{!cjrGpreS Σ} :
   adequate NotStuck sum_one state_init (λ v _, v = LitV (LitInt 1)).
 Proof. eapply (cjr_adequacy Σ). intros ??. eapply sum_one_wp. Qed.
+
+(** Regression checks for signed remainder and its partial domain. *)
+Example remainder_signs :
+  bin_op_eval RemOp (LitV (LitInt 7)) (LitV (LitInt 3)) = Some (LitV (LitInt 1)) ∧
+  bin_op_eval RemOp (LitV (LitInt (-7))) (LitV (LitInt 3)) = Some (LitV (LitInt (-1))) ∧
+  bin_op_eval RemOp (LitV (LitInt 7)) (LitV (LitInt (-3))) = Some (LitV (LitInt 1)) ∧
+  bin_op_eval RemOp (LitV (LitInt (-7))) (LitV (LitInt (-3))) = Some (LitV (LitInt (-1))).
+Proof. vm_compute. repeat split; reflexivity. Qed.
+
+Example remainder_zero_divisor n :
+  bin_op_eval RemOp (LitV (LitInt n)) (LitV (LitInt 0)) = None.
+Proof. reflexivity. Qed.
+
+Example remainder_noninteger :
+  bin_op_eval RemOp (LitV (LitBool true)) (LitV (LitInt 3)) = None.
+Proof. reflexivity. Qed.

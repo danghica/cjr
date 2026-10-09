@@ -306,7 +306,8 @@ allocation model the value buffer is
 and the index buffer is $[0,\ldots,j-1]$ followed by $n-j$ zero cells.
 The zero suffix describes the modeled allocation. The emitted native
 routine writes every temporary cell before reading it, so this operation
-does not rely on \texttt{malloc} returning zeroed memory.
+explicitly initializes the copied records even though the printer now
+uses zero-filled \texttt{calloc} storage.
 The initialized prefix grows by one cell on each iteration. The loop
 condition supplies $j<n$, justifying the source read and both destination
 writes. Ownership of the input is retained throughout. At $j=n$, the
@@ -413,7 +414,7 @@ It identifies the forward scan's answer with \texttt{mf\_sort\_scan}.
 \texttt{mf\_spec\_wp} adds the specification to its postcondition.
 No copying, grouping, comparator, or sorting hypothesis is assumed for
 this contract. The representative project assumption audit checks
-73 theorems, including the complete operation and its kernels.
+88 theorems, including the complete operation and its kernels.
 
 \subsection{Testing and comparative benchmarks}
 

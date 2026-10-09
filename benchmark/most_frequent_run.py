@@ -59,7 +59,7 @@ def main():
                                  implementation=impl, elapsed_ns=int(elapsed), repetitions=int(reps),
                                  result=int(result), ns_per_call=int(elapsed)/int(reps)))
     with (args.output / "raw.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+        w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n"); w.writeheader(); w.writerows(rows)
     grouped = {}
     for row in rows:
         grouped.setdefault((row["case"], row["n"], row["implementation"]), []).append(row["ns_per_call"])

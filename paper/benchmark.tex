@@ -3,8 +3,9 @@
 
 The generated implementations were benchmarked against the standard
 linked list, array, array list, and hash map, specialized at \texttt{Int64},
-on 9 October 2026, after removing array-list
-bounds checks.
+on 9 October 2026, after primitive signed remainder, zero-filled native allocation,
+dedicated iterative HashMap lookup, and native ArrayList bulk copying. Array-list accesses retain the previously introduced
+unchecked implementation.
 The compiler and the standard library were those of Cangjie 1.0.5 (cjnative),
 with optimization \texttt{-O2}, targeting \texttt{aarch64-apple-darwin}.
 The machine was an Apple M4 Mac mini, with ten cores (four performance and
@@ -22,7 +23,7 @@ points therefore produced 1,512 timed samples. The measured array-list accesses 
 warmed up, and their batch sizes were calibrated independently toward
 20 milliseconds.  Allocating workloads were capped at $262144/n$
 repetitions; other workloads at 65,536.  The shortest observed batch was
-828 microseconds.  The order of the two implementations alternated between
+857 microseconds.  The order of the two implementations alternated between
 trials.  There was no core pinning, forced garbage collection, or subtraction
 of an empty-loop timing.
 
@@ -97,51 +98,83 @@ build/scan include construction and growth; the other setups are excluded.}
 \end{figure}
 
 \paragraph{Lists and arrays.} Prepend-and-scan on the smaller CJR list
-representation takes about 0.30 times the standard list time, and traversal
-about 0.84 times.  Those results reflect the different list representations,
-as well as optimization and runtime behavior.  The generated arrays are
-not faster in these tests: indexed read takes 1.23 times the standard-array
-time, and the write/read workload 1.75 times.  The lack of raw-pointer bounds
-checks therefore does not imply a measured speed advantage for these loops.
+representation takes about 0.29 times the standard
+list time, and traversal 0.81 times at the largest
+size. These results reflect different representations and runtime behavior.
+Indexed array read takes 1.34 times the standard-array
+time, and write/read 1.63 times. Raw-pointer access
+therefore does not imply a measured speed advantage for these loops.
 
-\paragraph{Array lists.} Append-and-scan takes about 0.81 times the standard
-time, while indexed read takes 1.13 times.  Front rotation is much more
-expensive: about 15.79 times the standard time at $n=4096$.  The generated
-\texttt{remove} explicitly reads and writes every shifted word.  These
-measurements establish the observed cost difference, without an assembly
-analysis identifying all compiler and library contributions to it.
+\paragraph{Array lists.} Append-and-scan takes about
+0.93 times the standard time, while indexed
+read takes 1.13 times. Front rotation takes
+0.97 times the standard time at $n=4096$.
+The printer now lowers the proved suffix-copy loop to overlap-safe
+\texttt{memmove}. The preceding saved CJR median was 4996 ns per pair;
+the new median is 309 ns versus
+317 ns for stdlib, about 16.2 times faster
+and essentially at parity. At $n=256$ and $n=1024$, the paired ratios are
+1.11 and 1.05.
+Growth also benefits: at $n=16384$, CJR append-and-scan fell from
+4.82 to 3.60 ns per item across these separate runs.
 
-\paragraph{Hash maps.} Ordinary successful lookup takes about 2.41 times
-the standard time, misses 2.38 times, and insert-and-scan 1.42 times at
-$n=16384$.  The key pattern can cause a much greater slowdown.  The
-large-key workload at $n=256$ has median times of approximately 672.4 ns
-and 2.4 ns per query (roughly 283 times slower for CJR).  At $n=16384$,
-the paired ratio is still 7.24.  Colliding keys at $n=4096$ take about
-19.40 times the standard time.  Both maps slow down on this collision
-workload; the generated map does not have uniform lookup performance.
+\paragraph{Hash maps.} Ordinary successful lookup takes
+1.85 times the standard time, misses
+1.96 times, and insert-and-scan
+1.55 times at $n=16384$.
+Large-key lookup takes 4.44 ns versus
+2.48 ns at $n=256$, a paired ratio of
+1.79. Collision-heavy lookup at $n=4096$ takes
+3.90 microseconds versus
+1.01 microseconds, a paired ratio of
+3.85. Before the iterative-lookup repair, the
+saved CJR median was 19.41 microseconds; the current result is about
+5.0 times faster. The printed HashMap
+source is unchanged by the ArrayList bulk-copy repair.
+
+The small-map miss point is 3.48 ns, with quartiles
+3.36 and 3.52 ns,
+versus 1.70 ns for stdlib. The old pre-initialization
+point had median 1,313 ns and quartiles 3.72--1,328 ns. That broad
+distribution is absent in this run. Before/after results span separate
+runs on an unpinned desktop; they do not isolate every timing effect.
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{paper/figures/benchmark-scaling.pdf}
 \caption{Scaling of front rotation and hash-map queries.  Both axes use
 logarithmic scales.  Lines show individual median times, with interquartile
-error whiskers.  In the large-key case, the CJR time falls as capacity grows,
-because remainder normalization needs fewer subtractions.  Colliding keys
-show increasing query costs for both implementations.}
+error whiskers. Large-key CJR lookup is now approximately flat across
+capacities. Colliding keys still show increasing query costs for both
+implementations.}
 \label{fig:benchmark-scaling}
 \end{figure}
 
 \subsection{Interpretation, limitations, and reproduction}
 
-The large-key behavior has a concrete source-level explanation: CJR's
-\texttt{residue} routine repeatedly subtracts the capacity.  A small map
-needs many such steps for keys near one million; a larger map needs fewer.
-The collision workload also combines a long probe with a costly remainder
-calculation.  These are valid keys and are materially different from the
-sequential-key test.  The measurements do not justify treating all hash-map
-keys as equally cheap or extrapolating to the extremes of \texttt{Int64}.
+The ArrayList representation remains contiguous. Front removal still moves
+$n-1$ words, clears the old last word, and updates the live length and
+version; append writes the freed end slot. Native bulk copying reduces the
+cost of the shift without changing its linear complexity. The lowering
+matches only the exact proved growth and removal bodies: their copies are
+disjoint or overlap to the left. Arbitrary forward-copy loops remain
+unchanged because right overlap can have different semantics from
+\texttt{memmove}. The native FFI and printer remain outside the CJR proof.
 
-The generated resizable buffers never free their old \texttt{malloc}
+CJR's \texttt{residue} performs one primitive signed remainder and at
+most one addition, avoiding the old normalization loops. Primitive
+allocation now emits zero-filled storage, matching the existing CJR
+allocation rule on successful native allocations. The dedicated lookup
+uses a bounded while loop, skips tombstones, and returns a two-field option
+without insertion-hole tracking or recursive probe calls. Its functional
+contract is proved against the same pure probe and map representation.
+
+Keys $i(2n)$ still start at zero and form a long linear-probe chain.
+Iteration reduces the measured cost substantially but does not change
+that collision pattern. Hash mixing or a different collision strategy
+would require a separate implementation and verification change.
+
+The generated resizable buffers never free their old raw
 blocks.  The harness does not repair that behavior or free buffers; batch
 limits and process exits bound the experiment's allocation pressure.
 Standard arrays and collections use the managed runtime instead.  This
@@ -149,18 +182,17 @@ comparison includes their natural allocation costs, but it is not a
 measurement of sustained memory consumption or the cost of reclamation
 that a production raw-memory implementation would need.
 
-Similarly, raw array construction is not equivalent to the standard array's
-initialized construction.  Explicitly writing cells before reads avoids
-using uninitialized contents in the array timing.  The generated map still
-relies on zero-valued fresh tags: its checks passed on this runtime, but
-the benchmark does not establish or fix the allocation assumption discussed
-in Appendix~\ref{sec:limitations}.  The tests use valid indexes, bounded
+Primitive allocation now prints \texttt{calloc}, supplying zero-filled
+storage on successful allocations as required by CJR's existing rules.
+The array timings still exclude construction and explicitly write every
+cell before reading it. The allocation repair and its remaining boundaries
+are discussed in Appendix~\ref{sec:limitations}. The tests use valid indexes, bounded
 values, a warm working set, and single-threaded code on an unpinned desktop
 process.  They support workload-specific comparisons on this machine,
 not a general correctness, complexity, or performance theorem.
 
 These results replace the previous measurements. Differences between runs
-do not isolate the effect of removing bounds checks: desktop scheduling,
+do not isolate every compiler or implementation effect: desktop scheduling,
 calibration, and runtime variation can also affect the timings.
 
 The reproducible harness is in \texttt{benchmark/}.  The unchanged source

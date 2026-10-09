@@ -1,5 +1,5 @@
 {
-  "date_utc": "2026-10-09T03:56:25.451917+00:00",
+  "date_utc": "2026-10-09T07:14:19.714169+00:00",
   "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
   "architecture": "arm64",
   "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
@@ -13,10 +13,10 @@
   "steady_batch_repetition_limit": 65536,
   "sdkroot": "/private/tmp/cjr-get-sdk",
   "generated_source_sha256": {
-    "list": "72a6e1c5e09daef20102335c896edb4f306a7ff6102c4919aa0002ebd93c8e64",
-    "array": "ebfb2cf59f07dd854e6ad87b02cac0a9c1e22e2c7cff3e7da56cee6328fc6429",
-    "array_list": "001b21b4ce219bf6c39e0f46bba232f059509aa1bbdb23914219ff47be07808f",
-    "hash_map": "f0b5dd82f7d9ef54c43b9defae03564400a325efc5c5258ac551fe28349b1a99"
+    "list": "35a6d627bdce94d9863e5b91b8cddabb2d9652bc1ecb3853855025288778097b",
+    "array": "a39f6e32a4929048558903d096832a149830da94832a255c3f66968f21160b04",
+    "array_list": "666fd8ec15f952a36c2fc10622a0afc85884736031e58e0f084da86826ac642a",
+    "hash_map": "5ef96605fa52a8ce161cf53e0d88f54a294df4c83905f38216547a4a3b676a26"
   },
   "harness_source_sha256": {
     "list": "aea1b9e34d217a4678197dd8b29651212f8bb3f388b6c67bf8e733bb9f201d92",

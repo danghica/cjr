@@ -4,6 +4,7 @@ example defines, are passed in with each example. *)
 
 From Coq Require Import String Ascii ZArith List Bool.
 From cjr Require Import lang.
+From cjr.examples Require Import array_list.
 Import ListNotations.
 
 Local Open Scope string_scope.
@@ -57,7 +58,7 @@ Definition binder_beq (a b : binder) : bool :=
 
 Definition binop_beq (a b : bin_op) : bool :=
   match a, b with
-  | PlusOp, PlusOp | MinusOp, MinusOp | LeOp, LeOp
+  | PlusOp, PlusOp | MinusOp, MinusOp | RemOp, RemOp | LeOp, LeOp
   | EqOp, EqOp | AndOp, AndOp => true
   | _, _ => false
   end.
@@ -200,7 +201,8 @@ Record penv := Env {
   e_this : option string;
   e_ty : list (string * string);
   e_pack : list (string * list string);
-  e_alias : list (string * string)
+  e_alias : list (string * string);
+  e_bulk_copy : bool
 }.
 
 Fixpoint assoc {A} (k : string) (xs : list (string * A)) : option A :=
@@ -239,30 +241,41 @@ Definition find_closed (env : penv) (e : expr) : option fn :=
 
 Definition with_ty (env : penv) (x t : string) : penv :=
   Env (e_cls env) (e_sty env) (e_fns env) (e_this env)
-      ((x, t) :: e_ty env) (e_pack env) (e_alias env).
+      ((x, t) :: e_ty env) (e_pack env) (e_alias env) (e_bulk_copy env).
 
 Definition with_ty_opt (env : penv) (x : string) (t : option string) : penv :=
   with_ty env x (match t with Some t => t | None => "" end).
 
 Definition with_pack (env : penv) (x : string) (ss : list string) : penv :=
   Env (e_cls env) (e_sty env) (e_fns env) (e_this env)
-      (e_ty env) ((x, ss) :: e_pack env) (e_alias env).
+      (e_ty env) ((x, ss) :: e_pack env) (e_alias env) (e_bulk_copy env).
 
 Definition with_alias (env : penv) (x n : string) : penv :=
   Env (e_cls env) (e_sty env) (e_fns env) (e_this env)
-      (e_ty env) (e_pack env) ((x, n) :: e_alias env).
+      (e_ty env) (e_pack env) ((x, n) :: e_alias env) (e_bulk_copy env).
 
 Definition with_this (env : penv) (r : option string) (owner : option string) : penv :=
   let tys := match r, owner with
              | Some r, Some c => (r, c) :: e_ty env
              | _, _ => e_ty env
              end in
-  Env (e_cls env) (e_sty env) (e_fns env) r tys (e_pack env) (e_alias env).
+  Env (e_cls env) (e_sty env) (e_fns env) r tys (e_pack env) (e_alias env) (e_bulk_copy env).
 
 Definition without (env : penv) (n : string) : penv :=
   Env (e_cls env) (e_sty env)
       (filter (fun k => negb (String.eqb (fn_name k) n)) (e_fns env))
-      (e_this env) (e_ty env) (e_pack env) (e_alias env).
+      (e_this env) (e_ty env) (e_pack env) (e_alias env) (e_bulk_copy env).
+
+(** Bulk copying is enabled only in these exact verified method bodies.
+    Growth copies between disjoint blocks; removal copies left within one
+    block. An arbitrary forward-copy loop can propagate overwritten values
+    during right overlap, so it must not be replaced by snapshot memmove. *)
+Definition bulk_copy_method (body : expr) : bool :=
+  expr_beq body array_list.grow_body || expr_beq body array_list.remove_body.
+
+Definition with_bulk_copy (env : penv) (enabled : bool) : penv :=
+  Env (e_cls env) (e_sty env) (e_fns env) (e_this env)
+      (e_ty env) (e_pack env) (e_alias env) enabled.
 
 Definition keywords : list string :=
   ["this"; "super"; "init"; "main"; "func"; "let"; "var"; "type"; "in"; "is";
@@ -416,6 +429,7 @@ Definition sym (op : bin_op) : string :=
   match op with
   | PlusOp => " + "
   | MinusOp => " - "
+  | RemOp => " % "
   | LeOp => " <= "
   | EqOp => " == "
   | AndOp => " && "
@@ -535,7 +549,16 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
   | Let None e1 e2 | Seq e1 e2 =>
       ex env ind e1 +++ nl +++ ind +++ ex env ind e2
   | VarBind x e1 e2 =>
-      "var " +++ sanitize x +++ " = " +++ arg (ex env) ind e1 +++ nl +++ ind
+      if e_bulk_copy env && String.eqb x "i" &&
+         expr_beq e1 (Val (LitV (LitInt 0))) && expr_beq e2 array_list.copy_vars then
+        "if (0 < " +++ var_name env "len" +++ ") {" +++ nl
+        +++ ind2 +++ "unsafe {" +++ nl
+        +++ ind2 +++ "    memmove(CPointer<Unit>(" +++ var_name env "dst"
+        +++ " + " +++ var_name env "doff" +++ "), CPointer<Unit>("
+        +++ var_name env "src" +++ " + " +++ var_name env "soff"
+        +++ "), UIntNative(" +++ var_name env "len" +++ ") * UIntNative(8))" +++ nl
+        +++ ind2 +++ "    ()" +++ nl +++ ind2 +++ "}" +++ nl +++ ind +++ "}"
+      else "var " +++ sanitize x +++ " = " +++ arg (ex env) ind e1 +++ nl +++ ind
       +++ ex (with_ty_opt env x (class_of env e1)) ind e2
   | Assign x a => var_name env x +++ " = " +++ arg (ex env) ind a
   | If c e1 e2 =>
@@ -554,8 +577,8 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
       +++ nl +++ ind +++ "}"
   | BinOp op a b => opnd (ex env) ind a +++ sym op +++ opnd (ex env) ind b
   | Alloc n =>
-      "unsafe { CPointer<Int64>(malloc(UIntNative(8 * " +++ opnd (ex env) ind n
-      +++ "))) }"
+      "unsafe { CPointer<Int64>(calloc(UIntNative(" +++ ex env ind n
+      +++ "), UIntNative(8))) }"
   | Free p => "unsafe { free(CPointer<Unit>(" +++ ex env ind p +++ ")) }"
   | Load (Offset b i) =>
       "unsafe { (" +++ ex env ind b +++ " + " +++ opnd (ex env) ind i +++ ").read() }"
@@ -645,12 +668,13 @@ Definition print_fn (env : penv) (ind : string) (k : fn) : string :=
   let env1 :=
     fold_left (fun env '(x, t) => with_ty env x t) typed
       (with_this (without env (fn_name k)) recv (fn_owner k)) in
+  let env2 := with_bulk_copy env1 (bulk_copy_method (fn_body k)) in
   let ind2 := ind +++ "    " in
   let kw := match fn_owner k with Some _ => "public func " | None => "func " end in
   ind +++ kw +++ fn_name k +++ "("
   +++ comma (map (fun '(x, t) => sanitize x +++ ": " +++ t) typed)
   +++ "): " +++ fn_ret k +++ " {" +++ nl
-  +++ ind2 +++ ex env1 ind2 body +++ nl
+  +++ ind2 +++ ex env2 ind2 body +++ nl
   +++ ind +++ "}" +++ nl.
 
 Definition owned_by (c : string) (k : fn) : bool :=
@@ -698,15 +722,29 @@ Definition print_decl (env : penv) (kw : string) (d : decl) : string :=
 Definition prelude : string :=
   "// Generated by theories/examples/emit_cj.v from the CJR core terms." +++ nl
   +++ nl
-  +++ "foreign func malloc(size: UIntNative): CPointer<Unit>" +++ nl
+  +++ "foreign func calloc(count: UIntNative, size: UIntNative): CPointer<Unit>" +++ nl
   +++ "foreign func free(ptr: CPointer<Unit>): Unit" +++ nl.
 
 Definition print_prog (p : prog) : string :=
-  let env := Env (p_classes p) (p_structs p) (p_fns p) None [] [] [] in
+  let env := Env (p_classes p) (p_structs p) (p_fns p) None [] [] [] false in
   prelude
+  +++ (if existsb (fun k => bulk_copy_method (fn_body k)) (p_fns p) then
+         "foreign func memmove(dst: CPointer<Unit>, src: CPointer<Unit>, size: UIntNative): CPointer<Unit>" +++ nl
+       else "")
   +++ cat_all (map (fun d => nl +++ print_decl env "struct" d) (p_structs p))
   +++ cat_all (map (fun d => nl +++ print_decl env "class" d) (p_classes p))
   +++ cat_all (map (fun k => nl +++ print_fn env "" k) (filter is_free (p_fns p)))
   +++ nl +++ "main(): Unit {" +++ nl
   +++ "    " +++ ex env "    " (p_main p) +++ nl
   +++ "}" +++ nl.
+
+(** Recognition regressions: canonical methods qualify; a forward-copy
+    loop in isolation or a different list method does not. *)
+Example bulk_copy_grow_enabled : bulk_copy_method array_list.grow_body = true.
+Proof. vm_compute. reflexivity. Qed.
+Example bulk_copy_remove_enabled : bulk_copy_method array_list.remove_body = true.
+Proof. vm_compute. reflexivity. Qed.
+Example bulk_copy_arbitrary_loop_disabled : bulk_copy_method array_list.copy_vars = false.
+Proof. vm_compute. reflexivity. Qed.
+Example bulk_copy_get_disabled : bulk_copy_method array_list.al_get_body = false.
+Proof. vm_compute. reflexivity. Qed.

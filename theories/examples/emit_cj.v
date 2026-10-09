@@ -160,6 +160,9 @@ Definition p_hash_map :=
        [t_int; t_int; t_int; t_int; "Array"; "Array"; "Array"; t_int; t_int] "ProbeResult";
      Fn "bufferProbe" None (Some "args") hash_map.buffer_probe_body
        ["Array"; "Array"; "Array"; t_int; t_int] "ProbeResult";
+     Fn "lookupBuffer" None (Some "args") hash_map.lookup_buffer_body
+       ["Array"; "Array"; "Array"; t_int; t_int; t_int] "Int64Option";
+     Fn "lookup" hm (Some "args") hash_map.lookup_for_body [t_int] "Int64Option";
      Fn "put" None (Some "args") hash_map.put_body
        ["Array"; "Array"; "Array"; t_int; t_int; t_int] "Unit";
      Fn "rehash" None (Some "args") hash_map.rehash_body

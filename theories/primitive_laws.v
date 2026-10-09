@@ -160,6 +160,16 @@ Section laws.
     - iIntros "!> Hcred". iApply wp_value'. iApply ("H" with "Hcred").
   Qed.
 
+  (** Signed remainder is defined only for a nonzero divisor. *)
+  Lemma wp_rem (n d : Z) E Φ :
+    d ≠ 0%Z →
+    ▷ (£ 1 -∗ Φ (LitV (LitInt (Z.rem n d)))) ⊢
+    WP BinOp RemOp (Val (LitV (LitInt n))) (Val (LitV (LitInt d))) @ E {{ Φ }}.
+  Proof.
+    intros Hd. apply wp_binop. simpl.
+    destruct (decide (d = 0)%Z); [contradiction|reflexivity].
+  Qed.
+
   Lemma wp_offset (l i : Z) E Φ :
     ▷ (£ 1 -∗ Φ (LitV (LitPtr (l + i)%Z))) ⊢
     WP Offset (Val (LitV (LitPtr l))) (Val (LitV (LitInt i))) @ E {{ Φ }}.

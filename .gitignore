@@ -18,3 +18,5 @@ Makefile.conf
 /html
 .coq-native
 *.timing
+.DS_Store
+.nia.cache

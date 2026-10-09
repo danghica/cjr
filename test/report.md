@@ -191,3 +191,127 @@ The `Panic` constructor and its substitution and printing cases have been remove
 All 16 generated programs were regenerated from `cj_bundle` and compiled with Cangjie 1.0.5. Their 62 runtime tests passed with no failures or errors. No current Coq source or generated Cangjie file contains the panic operation. The language, array-list, and sorting proof modules also passed independent `coqchk` kernel checking. The source scan for admissions and declared axioms and `git diff --check` passed.
 
 The full `make -j2 all` build completed successfully, including every dependent proof and `verify_assumptions.v`; the assumption audit reported the checked theorems closed under the global context.
+
+## Primitive signed remainder — 9 October 2026
+
+Added `RemOp`, modeled by `Z.rem` for integer operands with a nonzero divisor,
+and printed as Cangjie `%`. The new `wp_rem` rule requires a nonzero divisor.
+Core regression examples check all four operand-sign combinations, rejection
+of a zero divisor, and rejection of a non-integer operand.
+
+HashMap normalization now uses one primitive remainder and at most one
+addition. `residue_spec` proves the original nonnegative mathematical-modulo
+contract for positive capacity; `residue_wp` proves the new implementation.
+The loop recurrences and their stack-slot proofs have been removed.
+
+All 16 printer-emitted programs were regenerated, compiled with Cangjie 1.0.5
+cjnative, and tested using the SDK linker workaround described above.
+All **64 tests passed**, with no failures or errors. HashMap now has 15 cases:
+the two new cases check signed remainder and normalization, both Int64
+extremes at capacities 3 and 16, and insertion, lookup, and removal of extreme
+keys. The remaining 49 cases also pass, including the 11 most-frequent cases.
+Logs and binaries remain outside the repository.
+
+`make -j4 verify` passed: all 25 modules were checked independently by
+`coqchk`, the source scans found no admissions or declared axioms, and all
+75 audited theorem reports were closed under the global context. The audit
+now includes `wp_rem` and the normalized `residue_spec` contract.
+
+Both complete benchmark suites were rerun sequentially after verification:
+all 1,512 collection measurements and 693 most-frequent measurements passed
+their checksum checks. Metadata hashes match the measured generated sources.
+The benchmark tables and figures were regenerated, and the tutorial PDF was
+rebuilt and visually checked. `git diff --check` passes. Benchmark runners now
+write LF-terminated CSV records to avoid trailing-whitespace diagnostics.
+
+## Zero-filled allocation and iterative HashMap lookup — 9 October 2026
+
+The printer now emits `calloc(count, 8)` for primitive allocation, supplying
+zero-filled `Int64` storage on successful native allocations. The core's
+allocation rule and existing zero-array proofs are unchanged. Direct raw
+allocations in the frame-call, swap, and sum-block test fixtures use the same
+foreign allocator.
+
+HashMap `get` and `contains` now use a dedicated bounded while loop returning
+`Int64Option`. It skips tombstones, wraps once, and terminates on an empty
+slot, a matching key, or capacity exhaustion. Insertion and removal retain
+the slot-aware probe. `lookup_loop_spec`, `lookup_buffer_spec`, and
+`lookup_spec` connect the new implementation to the existing pure probe and
+abstract map; the public lookup contracts remain unchanged.
+
+All 16 printer-emitted programs were regenerated and compiled with Cangjie
+1.0.5 cjnative using the SDK linker workaround above. All **66 native tests
+passed** with no failures or errors. HashMap has 17 cases, including repeated
+dirty/free/reallocate checks of fresh arrays and all three map buffers, and
+lookup through tombstones across a wraparound collision chain. The existing
+full-cycle tombstone miss test also passed.
+
+`make -j4 verify` passed: `coqchk` checked all 25 modules, source scans found
+no admissions or declared axioms, and all **79 audited theorem reports** were
+closed under the global context. The four added audit entries cover the
+stopped loop, loop induction, local-state wrapper, and abstract lookup.
+
+Both benchmark suites passed all checksum checks: **1,512 collection samples**
+and **693 most-frequent samples**. The saved metadata hashes match the measured
+sources. Figures, tables, benchmark commentary, and the tutorial were updated.
+Collision lookup at n=4,096 is 3.48 microseconds for CJR versus 1.02 for stdlib,
+with median paired ratio 3.43; the preceding saved CJR median was 19.41
+microseconds. These are separate desktop runs with allocation and lookup
+changed together, not an isolated timing study of either change.
+
+Successful native allocation now supplies the initialization required by the
+proofs. Allocation failure, arbitrary finite-machine overflow, and correctness
+of the printer and compiler remain outside the formal results.
+
+The tutorial PDF was compiled twice after the final documentation edits
+(129 pages) and its updated lookup proofs, benchmark pages, figures, and
+allocation discussion were visually checked. All 29 HashMap proof listings
+cover complete current lemma ranges. `git diff --check` passed.
+
+## Native bulk copying for ArrayList — 9 October 2026
+
+The printer recognizes the exact verified ArrayList `grow` and `remove`
+method bodies and emits `memmove` for their internal copy loop. Growth copies
+between separate allocations; removal moves a suffix left inside one buffer.
+The emitted byte count is eight times the number of `Int64` words. A positive
+length guard skips empty copies. Tail clearing, size, capacity, version,
+returned values, and the public contracts are preserved.
+
+The CJR loop bodies and their Iris proofs are unchanged. Recognition is
+restricted because an arbitrary forward-copy loop with right overlap can
+propagate overwritten values, unlike snapshot `memmove`. Four Rocq
+regressions check enabled canonical methods and disabled unrelated bodies.
+The native FFI and printer are still outside the formal correctness theorem.
+
+All 16 printer-emitted programs were regenerated and compiled with Cangjie
+1.0.5 cjnative. All **69 native tests passed**, with no failures or errors.
+ArrayList now has nine cases, including three new cases for repeated
+front-removal/append cycles across capacities, middle removal after multiple
+growths with tail clearing and subsequent append, and empty growth with a
+zero-length copy followed by single-element removal.
+
+`make -j4 verify` passed: all 25 modules were kernel-checked by `coqchk`,
+source scans found no admissions or declared axioms, and all **88 audited
+reports** were closed under the global context. The nine added entries cover
+the two copy kernels, growth, append, removal, and the four recognition
+regressions.
+
+The complete collection benchmark refresh passed all **1,512 checked
+measurements**. At n=4,096, front removal plus append fell from 4,995.85 to
+309.01 ns per pair (about 16.2 times faster), versus 316.96 ns for stdlib;
+the median paired ratio is 0.97, down from 15.76. At n=256 and 1,024, CJR
+improved by about 14.1 and 15.7 times respectively. Append-and-scan at
+n=16,384 fell from 4.82 to 3.60 ns per item. These comparisons span separate
+desktop runs. Front removal retains linear complexity.
+
+The most-frequent source is unchanged and its existing saved measurements
+remain valid; its source hash was checked. Collection figures and tables,
+benchmark commentary, and the tutorial were refreshed for the new results.
+
+The final tutorial PDF compiled successfully in two passes (130 pages).
+The emitted bulk-copy code, copy-domain explanation, result table, comparison
+figure, and benchmark interpretation were rendered and visually checked.
+Metadata hashes match the measured sources; list, array, HashMap, and
+most-frequent generated sources are unchanged by this repair. All 29
+HashMap proof listings retain complete current source ranges.
+`git diff --check` passed.

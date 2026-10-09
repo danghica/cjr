@@ -87,7 +87,7 @@ def main():
     if args.compile_only:
         return
     with (args.output / "raw.csv").open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader(); writer.writerows(rows)
     groups = {}
     for r in rows:

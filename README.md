@@ -37,7 +37,7 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 
 | Spec | Lines | Extracted | Lines | Spec / extracted |
 |---|---:|---|---:|---:|
-| `theories/examples/arith.v` | 78 | `generated/cj/arith.cj` | 18 | 4.3 |
+| `theories/examples/arith.v` | 94 | `generated/cj/arith.cj` | 18 | 5.2 |
 | `theories/examples/struct_upd.v` | 57 | `generated/cj/struct_upd.cj` | 27 | 2.1 |
 | `theories/examples/cell.v` | 35 | `generated/cj/cell.cj` | 15 | 2.3 |
 | `theories/examples/swap.v` | 40 | `generated/cj/swap.cj` | 18 | 2.2 |
@@ -48,10 +48,10 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 | `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
 | `theories/examples/list_rev.v` | 287 | `generated/cj/list_rev.cj` | 65 | 4.4 |
 | `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
-| `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| `theories/examples/hash_map.v` | 3116 | `generated/cj/hash_map.cj` | 251 | 12.4 |
-| **Total** | **8601** | | **965** | **8.9** |
+| `theories/examples/array_list.v` | 2340 | `generated/cj/array_list.cj` | 127 | 18.4 |
+| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (135) | 211 | 8.3 |
+| `theories/examples/hash_map.v` | 2684 | `generated/cj/hash_map.cj` | 245 | 11.0 |
+| **Total** | **8109** | | **915** | **8.9** |
 
 
 The shared `hm_tactics.v` evaluation-context automation adds 110 supporting lines outside the example counts above.
@@ -66,7 +66,9 @@ The tutorial includes a detailed subsection for each definition and lemma, compl
 
 `theories/examples/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
 
-The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `test/hash_map_test.cj` contains 13 runtime cases, including collisions, wraparound, negative keys, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `test/hash_map_test.cj` contains 17 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+
+Primitive signed remainder (`RemOp`, printed as `%`) follows division truncated toward zero. Its WP rule requires a nonzero divisor. HashMap bucket normalization now uses one remainder and at most one addition, with a proof that the result equals mathematical modulo for positive capacity; it no longer iterates in proportion to the key magnitude. Collision chains still use linear probing without hash mixing.
 
 `add_spec` and its client theorems retain the resulting capacity existentially because insertion can grow. `grow(minCap)` performs one doubling; the retained argument does not promise arbitrary minimum capacity. The CJR integer model is unbounded; the proof does not establish absence of `Int64` overflow for arbitrary machine inputs.
 
@@ -149,3 +151,7 @@ For each newly synthesized program or substantial iteration, manual auditing is 
 
 > **Note:** Agents have been instructed to produce vernacular explanations of the formalisations. They are not part of the TCB and are only meant to aid the understanding of the formal Rocq code which must be inspected carefully. 
 
+
+HashMap reads use a separately verified bounded while loop that returns an option directly; insertion and removal retain the slot-aware probe. The printer emits `calloc` for primitive allocation, matching the core's zero-filled memory on successful native allocations.
+
+ArrayList growth and suffix removal retain their proved CJR copy loops. The printer recognizes these exact method bodies and lowers their disjoint or left-overlapping copies to native `memmove`, with a positive-length guard. Other forward-copy loops are unchanged. Native tests cover repeated front-removal/append cycles, middle removal after growth, zeroed tails, and empty copies.

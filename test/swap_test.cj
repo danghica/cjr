@@ -2,8 +2,8 @@
 class SwapTests {
     @TestCase
     func swapExchangesTwoCells(): Unit {
-        let l1 = unsafe { CPointer<Int64>(malloc(UIntNative(8 * 1))) }
-        let l2 = unsafe { CPointer<Int64>(malloc(UIntNative(8 * 1))) }
+        let l1 = unsafe { CPointer<Int64>(calloc(UIntNative(1), UIntNative(8))) }
+        let l2 = unsafe { CPointer<Int64>(calloc(UIntNative(1), UIntNative(8))) }
         unsafe { l1.write(1) }
         unsafe { l2.write(2) }
         swap(l1, l2)

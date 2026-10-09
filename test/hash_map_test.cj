@@ -1,6 +1,42 @@
 @Test
 class HashMapTests {
     @TestCase
+    func signedRemainder(): Unit {
+        // Match the core's truncation-toward-zero semantics in all sign cases.
+        let a: Int64 = 7
+        let b: Int64 = -7
+        let c: Int64 = 3
+        let d: Int64 = -3
+        @Expect(a % c, 1)
+        @Expect(b % c, -1)
+        @Expect(a % d, 1)
+        @Expect(b % d, -1)
+        @Expect(residue(-7, 3), 2)
+        @Expect(residue(-6, 3), 0)
+        @Expect(residue(7, 3), 1)
+    }
+
+    @TestCase
+    func extremeKeys(): Unit {
+        let lo: Int64 = -9223372036854775807 - 1
+        let hi: Int64 = 9223372036854775807
+        @Expect(residue(lo, 16), 0)
+        @Expect(residue(hi, 16), 15)
+        @Expect(residue(lo, 3), 1)
+        @Expect(residue(hi, 3), 1)
+        let m = initHashMap()
+        m.add(lo, 11)
+        m.add(hi, 22)
+        @Expect(m.get(lo).ok, true)
+        @Expect(m.get(lo).value, 11)
+        @Expect(m.get(hi).ok, true)
+        @Expect(m.get(hi).value, 22)
+        @Expect(m.remove(lo), 11)
+        @Expect(m.contains(lo), false)
+        @Expect(m.get(hi).value, 22)
+    }
+
+    @TestCase
     func freshMap(): Unit {
         let m = initHashMap()
         @Expect(m.size(), 0)
@@ -158,4 +194,47 @@ class HashMapTests {
         @Expect(m.get(31).value, 310)
         @Expect(m.size(), 1)
     }
+    @TestCase
+    func freshBuffersAreZero(): Unit {
+        for (round in 0..32) {
+            let a = make(32)
+            for (i in 0..32) { @Expect(arrayGet(a, i), 0) }
+            for (i in 0..32) { arraySet(a, i, round + i + 1) }
+            unsafe { free(CPointer<Unit>(a.data)) }
+            let m = initHashMap()
+            for (i in 0..16) {
+                @Expect(arrayGet(m.tags, i), 0)
+                @Expect(arrayGet(m.keys, i), 0)
+                @Expect(arrayGet(m.vals, i), 0)
+                arraySet(m.tags, i, 1)
+                arraySet(m.keys, i, round + i + 1)
+                arraySet(m.vals, i, round + i + 1)
+            }
+            unsafe {
+                free(CPointer<Unit>(m.tags.data))
+                free(CPointer<Unit>(m.keys.data))
+                free(CPointer<Unit>(m.vals.data))
+            }
+        }
+    }
+
+    @TestCase
+    func lookupWrapsPastTombstones(): Unit {
+        let m = initHashMap()
+        for (i in 0..8) { m.add(i * 16 + 15, i - 3) }
+        @Expect(m.remove(15), -3)
+        @Expect(m.remove(47), -1)
+        for (i in 0..8) {
+            let present = i != 0 && i != 2
+            @Expect(m.contains(i * 16 + 15), present)
+            let r = m.get(i * 16 + 15)
+            @Expect(r.ok, present)
+            @Expect(r.value, if (present) { i - 3 } else { 0 })
+        }
+        @Expect(m.get(143).ok, false)
+        @Expect(m.get(143).value, 0)
+        @Expect(m.size(), 6)
+        @Expect(m.capacity(), 16)
+    }
+
 }

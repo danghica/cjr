@@ -14,9 +14,16 @@ Print Assumptions vtable_adequate.
 Print Assumptions reverse_spec.
 Print Assumptions reverse_twice_spec.
 
+Print Assumptions wp_rem.
+Print Assumptions hash_map.residue_spec.
+
 (** HashMap operations, kernels, and client compositions. *)
 Print Assumptions hash_map.residue_wp.
 Print Assumptions hash_map.scan_spec.
+Print Assumptions hash_map.lookup_stopped.
+Print Assumptions hash_map.lookup_loop_spec.
+Print Assumptions hash_map.lookup_buffer_spec.
+Print Assumptions hash_map.lookup_spec.
 Print Assumptions hash_map.buffer_probe_spec.
 Print Assumptions hash_map.put_spec.
 Print Assumptions hash_map.rehash_spec.
@@ -86,3 +93,15 @@ Print Assumptions most_frequent.mf_group_outer_is_code.
 Print Assumptions most_frequent.mf_nonempty_wp.
 Print Assumptions most_frequent.mf_wp.
 Print Assumptions most_frequent.mf_spec_wp.
+
+(** ArrayList copy contracts and guarded native lowering recognition. *)
+From cjr.examples Require Import array_list cj_print.
+Print Assumptions array_list.copy_disjoint.
+Print Assumptions array_list.copy_shift.
+Print Assumptions array_list.grow_spec.
+Print Assumptions array_list.add_spec.
+Print Assumptions array_list.remove_spec.
+Print Assumptions cj_print.bulk_copy_grow_enabled.
+Print Assumptions cj_print.bulk_copy_remove_enabled.
+Print Assumptions cj_print.bulk_copy_arbitrary_loop_disabled.
+Print Assumptions cj_print.bulk_copy_get_disabled.

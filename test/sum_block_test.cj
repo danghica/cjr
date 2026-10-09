@@ -2,7 +2,7 @@
 class SumBlockTests {
     @TestCase
     func sumAtReadsTheWrittenWord(): Unit {
-        let p = unsafe { CPointer<Int64>(malloc(UIntNative(8 * 1))) }
+        let p = unsafe { CPointer<Int64>(calloc(UIntNative(1), UIntNative(8))) }
         unsafe { p.write(4) }
         let s = sumAt(p)
         @Expect(s, 4)

@@ -16,7 +16,7 @@ The subset is sequential and monomorphic. It has `func`, `let`, `var`, `if`, `wh
 
 Application in the core takes one argument. A Cangjie function of several parameters is a function of one struct, and the components of the struct are the parameters. Field names are positions. The first field of a struct or a class is index 0.
 
-The syntax in `theories/lang.v` is an inductive definition, one constructor per form. Four constructors, `Pop`, `StackLoad`, `StackAssign`, and `StackFieldStore`, have no Cangjie spelling. They appear only after a `var` has been assigned a stack slot. The tutorial tabulates the rest of the correspondence. Integer arithmetic is addition, subtraction, comparison, and equality. There is no shift and no division. Boolean conjunction is present. Floating-point literals are in the grammar, and no floating-point operator is.
+The syntax in `theories/lang.v` is an inductive definition, one constructor per form. Four constructors, `Pop`, `StackLoad`, `StackAssign`, and `StackFieldStore`, have no Cangjie spelling. They appear only after a `var` has been assigned a stack slot. The tutorial tabulates the rest of the correspondence. Integer arithmetic is addition, subtraction, signed remainder, comparison, and equality. There is no shift and no division. Boolean conjunction is present. Floating-point literals are in the grammar, and no floating-point operator is.
 
 ## The machine
 

@@ -21,8 +21,8 @@
 
 \title{A Tutorial on CJR:\\
 Syntax, Semantics, and Separation Logic}
-\author{Mechanized development in \texttt{theories/}}
-\date{}
+\author{Dan R. Ghica}
+\date{\today}
 
 \lstdefinestyle{coq}{
   basicstyle=\ttfamily\small,
@@ -309,8 +309,8 @@ a name
   & \texttt{While} \\
 two expressions in sequence, or a block
   & \texttt{Seq} \\
-\texttt{+}, \texttt{-}, \texttt{<=}, \texttt{==} on \texttt{Int64}, \texttt{\&\&}
-  & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
+\texttt{+}, \texttt{-}, \texttt{\%}, \texttt{<=}, \texttt{==} on \texttt{Int64}, \texttt{\&\&}
+  & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{RemOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
 \texttt{f(a)}
   & \texttt{App} \\
 \hline
@@ -438,7 +438,7 @@ v ::=\;
   \mid \langle v_0,\ldots,v_{k-1}\rangle
 \]
 and we use the expression forms by the same names as the constructors.
-\(\mathsf{BinOp}\) ranges over \(+\), \(-\), \(\le\), \(=\), and boolean conjunction.
+\(\mathsf{BinOp}\) ranges over \(+\), \(-\), signed remainder, \(\le\), \(=\), and boolean conjunction.
 Integer operations act on \(\mathsf{LitInt}\); conjunction acts on booleans.
 Anything else makes \(\mathsf{bin\_op\_eval}\) return \(\None\), and the machine gets stuck.
 
@@ -470,26 +470,26 @@ The stack-slot encoding below is this note's model of them, not a spelling in th
 \item
   \textbf{Immutable vs mutable bindings.}
   The chapter \emph{Program Structure}
-  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/basic_programming_concepts/program_structure.html})
+  (\href{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/basic_programming_concepts/program_structure.html}{manual})
   introduces the mutability modifiers \texttt{let} and \texttt{var}:
   a \texttt{let} variable is assigned once (initialization), whereas a \texttt{var} variable may be reassigned.
   The chapter \emph{Function Definition}
-  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/function/define_functions.html})
+  (\href{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/function/define_functions.html}{manual})
   states that function parameters are immutable and cannot be assigned to in the function body.
 \item
   \textbf{Struct copying.}
   The same \emph{Program Structure} chapter distinguishes value types (including \texttt{struct}) from reference types (including \texttt{class}):
   assigning a value-type variable copies the instance; later mutation of one copy does not affect the other.
   \emph{Creating a struct Instance}
-  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/create_instance.html})
+  (\href{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/create_instance.html}{manual})
   repeats that assignment and parameter passing copy a \texttt{struct}, and that changing fields through an instance requires both the struct variable and the fields to be \texttt{var}.
   The related page \emph{mut Function}
-  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/mut.html})
+  (\href{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/struct/mut.html}{manual})
   adds that \texttt{mut} methods need a mutable (\texttt{var}) receiver; they cannot be called on a \texttt{let} struct.
 \item
   \textbf{Stored class fields.}
   The chapter \emph{Classes}
-  (\url{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/class_and_interface/class.html})
+  (\href{https://docs.cangjie-lang.cn/en/docs/1.0.0/user_manual/source_en/class_and_interface/class.html}{manual})
   states that \texttt{class} is a reference type: assignment does not copy the object, so field updates through one variable are visible through others that share it.
   That is the ``stored field'' case in the sentence above.
 \end{itemize}
@@ -936,7 +936,7 @@ Each concrete rule below is an instance.
 Where the step produces a value immediately, the postcondition is under a later, because that is how the generic lemma returns the credit.
 Where the step produces another expression, the rule simply asks for a weakest precondition of that expression.
 
-\paragraph{Closures and application.}
+\paragraph{Closures and application.}\mbox{}\par
 \begin{lstlisting}
 Lemma wp_rec f x e Phi :
   later (pound 1 -*- Phi (RecV f x e)) |- wp (Rec f x e) Phi.
@@ -976,6 +976,19 @@ That is what lets a vtable be an ordinary struct of closures.
 \later(\Phi(\mathsf{ptr}(\ell+i)))
   &\vdash \Wpre\,(\mathsf{ptr}(\ell)+i)\,\{\Phi\}.
 \end{align*}
+
+The specialized remainder rule makes its domain explicit:
+\begin{lstlisting}
+Lemma wp_rem (n d : Z) E Phi :
+  d <> 0 ->
+  later (pound 1 -*- Phi (LitV (LitInt (Z.rem n d))))
+  |- WP BinOp RemOp (Val (LitV (LitInt n)))
+                  (Val (LitV (LitInt d))) @ E {{ Phi }}.
+\end{lstlisting}
+Its proof specializes \texttt{wp\_binop}; no new ghost state or ownership
+rule is needed. The printer emits Cangjie's \texttt{\%} operator.
+The nonzero premise excludes a stuck zero-divisor operation in CJR;
+the language does not yet model the target's arithmetic exceptions.
 
 \textit{Intuition for \texttt{while}.}
 The loop rule does not mention an invariant; it unfolds the loop once into a conditional.
@@ -1244,13 +1257,13 @@ The other examples are open: their hypotheses are points-to facts, so they are s
 \section{The examples}
 
 Each example uses a feature that the previous one does not.
-They are the files in \texttt{theories/examples/}, in the order below.
+The files appear below in tutorial order.
 The programs are written in the Cangjie fragment above.
 The Coq definitions are the core \texttt{expr} terms those files actually prove.
 
 \subsection{Arithmetic: \texttt{arith.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/arith.cj}
 
 \paragraph{Theorem.}
@@ -1273,7 +1286,7 @@ That is the scope rule from the previous section, exercised on a loop that reall
 
 \subsection{Stack structs: \texttt{struct\_upd.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/struct_upd.cj}
 
 \paragraph{Theorems.}
@@ -1299,7 +1312,7 @@ The field update's result \(1\) is established on the way and then discarded by 
 
 \subsection{One raw cell: \texttt{cell.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/cell.cj}
 
 \paragraph{Theorem.}
@@ -1322,7 +1335,7 @@ After \texttt{free}, no points-to fact remains, so a further load could not be v
 
 \subsection{Swap and aliasing: \texttt{swap.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/swap.cj}
 
 \paragraph{Theorems.}
@@ -1348,7 +1361,7 @@ An overlapping specification would be a different theorem---for example a single
 
 \subsection{Indexed blocks: \texttt{sum\_block.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/sum_block.cj}
 
 \paragraph{Theorem.}
@@ -1380,7 +1393,7 @@ For a one-iteration loop the prefix is either empty or the single element \(4\).
 
 \subsection{Final classes: \texttt{class\_upd.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/class_upd.cj}
 
 \paragraph{Theorem.}
@@ -1403,7 +1416,7 @@ The final \texttt{wp\_load} is what consumes it.
 
 \subsection{Framing across a call: \texttt{frame\_call.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/frame_call.cj}
 
 \paragraph{Theorem.}
@@ -1430,7 +1443,7 @@ The guarantee that \(q\) is unchanged is simply the guarantee that the store's p
 
 \subsection{A hand-written vtable: \texttt{vtable.v}}
 
-\paragraph{Program.}
+\paragraph{Program.}\mbox{}\par
 \lstinputlisting{generated/cj/vtable.cj}
 
 \paragraph{Theorem.}
@@ -1571,7 +1584,7 @@ Substitution then computes.
 \[
 \Wpre\,\mathsf{nil}()\,\{\,v.\; \mathsf{isList}([], v)\,\}.
 \]
-\texttt{wp\_new} of the three initialising values returns three points-to facts, with unit in the tail.
+\texttt{wp\_new} returns ownership of the three initial fields. The tail initially holds unit.
 \texttt{wp\_field\_store} then writes the new object into that field, which is the empty clause.
 Nothing else is allocated.
 This is \texttt{nil\_spec}.
@@ -2670,8 +2683,27 @@ If \(xs_j = y\),
 \]
 \(\mathsf{delete}(xs, j)\) is the prefix of length \(j\) followed by the suffix after \(j\).
 The body loads \(y\) before the shift, copies the suffix down by one, writes zero at the old last index, stores the new length, and increments the version.
-The capacity is the same block.
-This is \texttt{remove\_spec}.
+The capacity is the same block. This is \texttt{remove\_spec}.
+
+\paragraph{Native bulk copying.} The CJR body and its copy proofs retain the
+word-by-word loop. For the exact verified array-list \texttt{grow} and
+\texttt{remove} method bodies, the printer now emits native \texttt{memmove}
+for that loop. Growth copies between disjoint allocations; removal copies
+a suffix left within the same allocation, requiring an overlap-safe move.
+The byte count is eight times the word count, and a positive-count guard
+skips empty copies. Clearing the old last word, updating size, and advancing
+the version remain explicit operations.
+
+This lowering is restricted to those exact method bodies. An arbitrary
+forward-copy loop with right overlap can propagate values written by earlier
+iterations, whereas \texttt{memmove} has snapshot-copy behavior. Replacing
+such a loop would change its meaning. Printer recognition regressions check
+both the enabled method bodies and excluded unrelated loops. The existing
+\texttt{copy\_disjoint} and \texttt{copy\_shift} contracts describe the valid
+copy domains; these remain CJR proofs, not a formal proof of the native FFI or
+printer. Front removal still moves a linear number of words, but native bulk
+copying avoids the emitted per-word pointer-access overhead.
+
 
 \subsection{The array-list equations}
 
@@ -3447,16 +3479,24 @@ The starting bucket is
 \[
  b(k,c)=\operatorname{Z.to\_nat}(\texttt{residue }k\ c).
 \]
-The executable remainder calculation first adds $c$ until a negative key
-becomes nonnegative, then subtracts $c$ until the result is below $c$.
+The executable calculation uses primitive signed remainder:
+\texttt{let rem = k \% cap}, followed by \texttt{rem + cap} when
+\texttt{rem < 0}. Cangjie integer division truncates toward zero, so the
+primitive is modeled by \texttt{Z.rem}, not \texttt{Z.modulo}.
+For example, $-7$ remainder $3$ is $-1$, and its normalized bucket is $2$.
+The \texttt{RemOp} evaluator rejects a zero divisor; \texttt{wp\_rem}
+requires a nonzero divisor and returns the signed remainder through the
+usual pure-step rule. Non-integer operands are also stuck.
+
 \texttt{residue\_spec} proves both
-$0\leq\texttt{residue }k\ c<c$ and equality with the mathematical remainder
-$k\bmod c$. Each adjustment preserves congruence modulo $c$; the two loop
-lemmas prove that sufficiently many adjustments establish the range. The
-weakest-precondition proofs \texttt{wp\_nonneg} and \texttt{wp\_below} relate
-those pure recurrences to a mutable stack slot. \texttt{residue\_run\_wp}
-returns ownership of that slot as well as its result, allowing
-\texttt{residue\_wp} to close the local variable's scope.
+$0\leq\texttt{residue }k\ c<c$ and equality with $k\bmod c$ for $c>0$.
+The proof uses the absolute bound on \texttt{Z.rem} and the quotient/remainder
+identity. In the negative branch, adding $c$ adjusts the quotient by one;
+in the nonnegative branch, no adjustment is needed. Uniqueness of the
+nonnegative remainder identifies the result with mathematical modulo.
+\texttt{residue\_wp} applies \texttt{wp\_rem}, evaluates the comparison,
+and proves the corresponding branch. All bindings are immutable, so this
+routine needs neither loop induction nor stack-slot cleanup.
 
 A probe at step $s$ visits $(b+s)\bmod c$. The bounded scan maintains
 $b<c$ and $s<c$, hence $b+s<2c$. At most one subtraction is required:
@@ -3538,6 +3578,27 @@ semantic equation
  \end{cases}
 \]
 An absent result additionally carries the canonical value zero.
+
+\subsection{Dedicated iterative lookup}
+
+Insertion and removal retain the tombstone-aware probe and its slot index.
+The \texttt{get} and \texttt{contains} methods instead call a dedicated
+\texttt{lookupBuffer} loop. Two mutable locals hold the probe step and an
+\texttt{Int64Option(false,0)} result. Each iteration computes the wrapped
+slot, reads its tag, and compares the key only for an occupied slot. An empty
+tag ends the loop; a match stores \texttt{Int64Option(true,value)} and ends
+it. Other occupied slots and tombstones advance the step. The loop is
+bounded by capacity, so even a complete cycle of tombstones terminates.
+It tracks no insertion hole and constructs no three-field probe result.
+
+\texttt{lookup\_loop\_spec} uses induction on the remaining capacity. Its
+postcondition equals \texttt{lookup\_val} applied to the existing pure
+\texttt{probe\_from}, discarding the slot index and remembered hole. All
+three arrays are preserved. \texttt{lookup\_buffer\_spec} allocates and
+releases the two local stack slots, and \texttt{lookup\_spec} combines this
+kernel with the existing placement argument to return the abstract map
+lookup. The public \texttt{get\_spec} and \texttt{contains\_spec} contracts
+remain unchanged.
 
 \subsection{Insertion and overwrite}
 
@@ -3654,7 +3715,7 @@ an absent key leaves the mathematical map unchanged.
 and \texttt{Int64Option(false,0)} when the key is absent.
 \texttt{contains\_spec} returns the boolean indicating whether that lookup is
 \texttt{Some}. Both proofs frame the unchanged map through
-\texttt{probe\_spec}, then verify the appropriate struct projections.
+\texttt{lookup\_spec}, which returns the option directly; \texttt{contains} projects its flag.
 The flag distinguishes a stored zero from absence. The older \texttt{remove}
 interface returns an integer alone, so removing a stored zero and removing a
 missing key both return zero; the map and its size still change differently.
@@ -3689,8 +3750,8 @@ These tests exercise printing and compilation in addition to the formal core.
 The core's integer semantics uses unbounded \texttt{Z}; extracted Cangjie uses
 \texttt{Int64}. The Coq results do not establish freedom from finite-machine
 integer overflow for arbitrarily large keys, counts, or capacities. Remainder
-normalization uses repeated addition and subtraction, and a collision chain
-can scan the entire capacity; this is a small verified example rather than a
+normalization uses one signed remainder and at most one addition, but a
+collision chain can scan the entire capacity; this is a small verified example rather than a
 performance specification for the full Cangjie standard library. Rehashing
 allocates new buffers without reclaiming the old ones, consistently with the
 example language's object-allocation model.
@@ -3708,109 +3769,121 @@ right-hand side of a let. Their evaluation-context definitions are in
 \texttt{theories/examples/hm\_tactics.v}. None supplies an assumption or
 changes the postcondition: each application constructs a proof from the
 language rules.\par
-\paragraph{The mutable remainder computation.} The intermediate theorem retains the local stack slot. This ownership is required to discharge the scope cleanup in the following wrapper.
+\paragraph{The normalized remainder contract.} The signed remainder is corrected once, and the quotient/remainder identity establishes the same mathematical bucket as before.
 
-\lstinputlisting[firstline=2006,lastline=2033]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=48,lastline=65]{theories/examples/hash_map.v}
 
-\paragraph{The remainder wrapper.} The wrapper allocates the mutable binding, uses the two verified loops through the intermediate theorem, and returns both the result equation and the stack ownership needed by the binding rule.
+\paragraph{The executable remainder proof.} The wrapper uses immutable bindings, applies the primitive remainder rule under positive capacity, and selects the correction branch.
 
-\lstinputlisting[firstline=2035,lastline=2046]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1600,lastline=1615]{theories/examples/hash_map.v}
 
 \paragraph{Initialization.} Each array allocation is verified before the object is constructed. The final pure obligations are the zero-table invariant and the equality between zero occupied count and the stored size.
 
-\lstinputlisting[firstline=2300,lastline=2329]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1928,lastline=1957]{theories/examples/hash_map.v}
 
 \paragraph{The pure search result.} This proof combines the prefix invariant with placement and uniqueness. The found branch identifies the finite-map entry; the absent branch rules out every occupied location for the key.
 
-\lstinputlisting[firstline=1020,lastline=1070]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=800,lastline=850]{theories/examples/hash_map.v}
 
 \paragraph{The executable bounded scan.} The induction follows the fuel parameter. Array reads preserve ownership, and each recursive call consumes one step while preserving the bound on the complete scan.
 
-\lstinputlisting[firstline=2435,lastline=2505]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2063,lastline=2133]{theories/examples/hash_map.v}
 
 \paragraph{From a remainder to a buffer search.} The range theorem permits converting the remainder to a natural bucket index. The scan is then instantiated with the full capacity as fuel.
 
-\lstinputlisting[firstline=2507,lastline=2526]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2271,lastline=2290]{theories/examples/hash_map.v}
+
+\paragraph{The iterative lookup kernel.} The induction advances one slot for a mismatch or tombstone, and verifies termination directly after an empty tag or matching key.
+
+\lstinputlisting[firstline=2167,lastline=2245]{theories/examples/hash_map.v}
+
+\paragraph{The lookup local-state wrapper.} Two owned stack cells hold the step and result; both are returned to their lexical scopes after reading the final option.
+
+\lstinputlisting[firstline=2246,lastline=2269]{theories/examples/hash_map.v}
+
+\paragraph{The dedicated abstract lookup.} The unchanged table invariant connects the loop result to the mathematical map lookup.
+
+\lstinputlisting[firstline=2604,lastline=2650]{theories/examples/hash_map.v}
 
 \paragraph{Physical insertion and overwrite.} The proof first obtains the exact probe result. It writes one value cell for a hit and three corresponding cells for an absent key; its postcondition is the exact pure update triple.
 
-\lstinputlisting[firstline=2546,lastline=2581]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2310,lastline=2345]{theories/examples/hash_map.v}
 
 \paragraph{Preserving the invariant for a new key.} The pure proof checks the tag, key, value, uniqueness, load, and placement obligations. Strict room is used to preserve the half-full bound after increasing the live count.
 
-\lstinputlisting[firstline=1508,lastline=1553]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1288,lastline=1333]{theories/examples/hash_map.v}
 
 \paragraph{Preserving the invariant for overwrite.} A present key determines an occupied slot. Updating its value changes neither the occupied key list nor any placement path.
 
-\lstinputlisting[firstline=1651,lastline=1690]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1431,lastline=1470]{theories/examples/hash_map.v}
 
 \paragraph{The pure rehash induction.} Disjointness and the combined occupied-count bound are strengthened for the recursive call. The lookup equation then establishes preservation of every source key and accumulator key.
 
-\lstinputlisting[firstline=1566,lastline=1636]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1346,lastline=1416]{theories/examples/hash_map.v}
 
 \paragraph{The executable rehash induction.} The source index is related to remaining suffixes with drop. Source arrays are framed through insertion into the destination, and the postcondition tracks the exact pure fold.
 
-\lstinputlisting[firstline=2662,lastline=2731]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2426,lastline=2495]{theories/examples/hash_map.v}
 
 \paragraph{Updating the object and its stored size.} The buffer update is combined with the pure occupied-count equation. The size field is incremented in the absent-key case and retained in the overwrite case.
 
-\lstinputlisting[firstline=2749,lastline=2789]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2513,lastline=2553]{theories/examples/hash_map.v}
 
 \paragraph{The public search contract.} The object fields are opened, the buffer search is verified, and the complete representation is reconstructed. The semantic lookup equation and canonical absent value are exposed to clients.
 
-\lstinputlisting[firstline=2791,lastline=2838]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2555,lastline=2602]{theories/examples/hash_map.v}
 
-\paragraph{Presence queries.} The probe contract supplies the abstract lookup meaning. Projecting its first component yields exactly the presence boolean.
+\paragraph{Presence queries.} The dedicated lookup contract supplies the abstract lookup meaning. Projecting its flag yields exactly the presence boolean.
 
-\lstinputlisting[firstline=2848,lastline=2861]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2660,lastline=2673]{theories/examples/hash_map.v}
 
-\paragraph{Value queries.} The two projections form the option result. The canonical absent-value fact is needed to prove that a missing result carries zero.
+\paragraph{Value queries.} The dedicated lookup contract already supplies the option result, including the canonical zero for an absent key.
 
-\lstinputlisting[firstline=2863,lastline=2881]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2675,lastline=2690]{theories/examples/hash_map.v}
 
 \paragraph{Replacing the buffers after rehashing.} New array ownership is established first, then the rehash theorem is applied, and only afterward are the three object fields replaced. Equality of map contents proves equality of occupied counts.
 
-\lstinputlisting[firstline=2883,lastline=2941]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2692,lastline=2750]{theories/examples/hash_map.v}
 
 \paragraph{The public insertion proof.} The initial presence check separates overwrite from insertion. Only the missing-key branch checks the load threshold. Either strict room already holds or one verified doubling establishes it.
 
-\lstinputlisting[firstline=2956,lastline=2988]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2765,lastline=2797]{theories/examples/hash_map.v}
 
 \paragraph{The public removal proof.} The found branch marks the slot as a tombstone and uses the occupied-count decrement equation to update the size. The missing branch proves deletion of an absent map key.
 
-\lstinputlisting[firstline=2990,lastline=3033]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2799,lastline=2842]{theories/examples/hash_map.v}
 
 \paragraph{The stored size query.} The representation equation and size-contents lemma identify the field value with the finite map size.
 
-\lstinputlisting[firstline=2331,lastline=2345]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1959,lastline=1973]{theories/examples/hash_map.v}
 
 \paragraph{The capacity query.} The owned tag array length equals the abstract capacity, so reading its length field returns that capacity.
 
-\lstinputlisting[firstline=2347,lastline=2360]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1975,lastline=1988]{theories/examples/hash_map.v}
 
 \paragraph{The emptiness query.} The field equality and occupied-count theorem connect the zero comparison to emptiness of the mathematical map.
 
-\lstinputlisting[firstline=2362,lastline=2378]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1990,lastline=2006]{theories/examples/hash_map.v}
 
 \paragraph{Initialization followed by size.} The allocation result is bound to the next call, whose contract returns zero for the empty map.
 
-\lstinputlisting[firstline=3049,lastline=3058]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2858,lastline=2867]{theories/examples/hash_map.v}
 
 \paragraph{Initialization followed by capacity.} The initialized representation supplies the default capacity to the query contract.
 
-\lstinputlisting[firstline=3060,lastline=3070]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2869,lastline=2879]{theories/examples/hash_map.v}
 
 \paragraph{Initialization followed by emptiness.} The empty finite map supplies the true result to the emptiness query.
 
-\lstinputlisting[firstline=3072,lastline=3081]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2881,lastline=2890]{theories/examples/hash_map.v}
 
 \paragraph{Insertion followed by lookup.} The new capacity is unpacked from the insertion result and passed to the query contract. The finite-map insertion law determines the returned value.
 
-\lstinputlisting[firstline=3088,lastline=3100]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2897,lastline=2909]{theories/examples/hash_map.v}
 
 \paragraph{Insertion followed by presence.} The same composition uses the insertion lookup law to establish a true presence result.
 
-\lstinputlisting[firstline=3102,lastline=3114]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2911,lastline=2923]{theories/examples/hash_map.v}
 
 \lstinputlisting{generated/cj/hash_map.cj}
 
@@ -3897,37 +3970,26 @@ semantics.  In particular, the printer is a string-producing function, and
 the generated Cangjie is not extracted from Coq or verified against the CJR
 semantics.  The following cases identify concrete places where that gap
 matters.  They should be read alongside the earlier specifications: some are
-documented limitations of the examples, while others are mismatches between
+documented limitations of the examples, while others describe repairs and remaining boundaries between
 the formal allocation model and the generated runtime code.
 
-\subsection{Fresh memory is zero in the proofs, but not in generated code}
+\subsection{Zero-filled native allocation and its remaining boundary}
 \label{sec:uninitialized-allocation}
 
-The CJR allocation rule used in the examples initializes every allocated
-word to zero.  For example, \texttt{array.make} is specified to return an
-array containing \texttt{n} zeros, and its proof obtains those zero-valued
-points-to facts directly from allocation.  The HashMap initialization
-proofs similarly depend on freshly allocated tag and value buffers
-containing zeros.  The generated printer, however, translates \texttt{Alloc}
-to a call to \texttt{malloc} and does not emit a loop that clears the words.
-The C and POSIX \texttt{malloc} interfaces do not promise zero-filled
-storage; the initial values are unspecified.  Consequently, a generated
-array read immediately after construction, a HashMap operation that inspects
-an uninitialized tag, or the generated \texttt{bumpKeep} example's read of
-its newly allocated word can observe a nonzero value.  That would violate
-the corresponding CJR postcondition (and in the last example, the proved
-result zero).
+CJR's allocation rule initializes every allocated word to zero. The printer
+now emits \texttt{calloc} with \texttt{UIntNative(n)} words of
+\texttt{UIntNative(8)} bytes, converted to a
+\texttt{CPointer<Int64>}. This supplies zero-filled storage for successful
+allocations, including \texttt{array.make}, initial HashMap buffers, and
+buffers created during growth. The repair is in the printer; the CJR
+allocation semantics and the existing zero-array proofs are unchanged.
+Native regression tests repeatedly dirty and free buffers, then check every
+word of fresh arrays and each initial HashMap buffer.
 
-The current runtime tests pass on the tested Cangjie 1.0.5 environment, but
-that does not establish that its allocator always returns zeroed memory.
-An attempted allocator-reuse test did not reproduce stale contents in that
-environment; it is a useful negative result, not a guarantee supplied by
-\texttt{malloc}.  The generated programs also do not check for allocation
-failure before dereferencing the returned pointer.  A target-level repair
-needs to zero-initialize allocated words (or otherwise explicitly establish
-every initial value required by the representation) and handle allocation
-failure consistently.  The CJR allocation semantics and their proofs would
-then need to be related to that emitted initialization behavior.
+The generated programs still do not check allocation failure before using
+the pointer. These tests do not prove the printer or compiler correct, and
+the allocation model still abstracts away failure and finite address space.
+A target-level correctness argument must account for these remaining cases.
 
 \subsection{HashMap growth does not honor its minimum-capacity argument}
 \label{sec:hashmap-grow-min}
@@ -3949,27 +4011,29 @@ required to honor that conventional contract, both the formal body and its
 specification need to be strengthened, and a test where \texttt{min} is
 greater than twice the old capacity should be added.
 
-\subsection{HashMap residue computation can take impractical time}
+\subsection{HashMap remainder normalization and collision cost}
 \label{sec:hashmap-residue-cost}
 
-The generated residue routine normalizes a key by repeatedly adding or
-subtracting the capacity until the value is in range.  This is mathematically
-finite for the supported positive capacities, and the proof establishes
-the result and range properties.  It does not establish a useful execution
-time bound.  At capacity 16, an extreme \texttt{Int64} key can require on
-the order of $2^{59}$ loop iterations.  Thus a valid lookup or insertion
-with such a key may appear to hang, even though ordinary negative keys and
-the tested collision cases complete quickly.  The current tests exercise
-moderate negative values, not the extremes.  A practical implementation
-should use a bounded-time remainder operation or another logarithmic/bounded
-normalization, with proofs that preserve the nonnegative bucket range and
-the map's key-to-slot invariant.
+The former implementation normalized keys by repeatedly adding or subtracting
+the capacity. At capacity 16, extreme \texttt{Int64} keys could require on
+the order of $2^{59}$ iterations. Primitive signed remainder removes that
+loop: normalization now uses one remainder and at most one addition.
+Native tests cover both extreme \texttt{Int64} keys and positive and negative
+operands. The range and mathematical-modulo contracts are preserved.
+
+The map still uses the key's normalized remainder without hash mixing.
+Keys that are multiples of capacity therefore collide, and a successful
+lookup may scan a linear number of entries. The functional specification
+establishes lookup correctness, not an execution-time bound. Unbounded core
+integers also do not provide a general finite-machine overflow theorem;
+zero divisors are excluded by the primitive rule, and positive capacity
+excludes the signed minimum divided by $-1$ corner case in this routine.
 
 These limitations do not invalidate the Coq proofs of the stated CJR
 specifications.  They delimit what those proofs and the current runtime
 tests establish about the generated Cangjie: target allocation behavior is
 not yet shown equivalent to CJR allocation, the HashMap growth contract is
-intentionally narrower than a minimum-capacity contract, and the residue
+intentionally narrower than a minimum-capacity contract, and the lookup
 proof is a functional result rather than a performance guarantee.
 
 \begin{thebibliography}{99}

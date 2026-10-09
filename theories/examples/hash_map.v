@@ -5,11 +5,11 @@ The library stores entries in a bucket array and an entry array. An entry
 with hash [-1] is empty; a deleted entry sits on a free list. The load
 limit is three quarters, and growth uses a shift to reach one and a half
 times the old capacity. A raw cell of this language holds one integer, and
-the operators are addition, subtraction, and comparison, so the table here
+the operators include addition, subtraction, remainder, and comparison, so the table here
 is three arrays from the array library: a tag, a key, and a value. Tag [0]
 is empty, which is what allocation writes; tag [1] is occupied; tag [2] is
 a deleted slot. The bucket is the non-negative remainder of the key by the
-capacity, computed by adding or subtracting the capacity, and the table
+capacity, computed by primitive signed remainder and one correction, and the table
 doubles, by adding the capacity to itself, when [size + size] reaches the
 capacity. Both agree with a power-of-two mask and a load of one half.
 Lookup walks from that bucket, skips deleted slots, and stops at an empty
@@ -40,248 +40,28 @@ Lemma tags_ok_lookup tags i t :
   tags_ok tags → tags !! i = Some t → tag_ok t.
 Proof. intros Hok Hi. by eapply Forall_lookup_1. Qed.
 
-(** Bring a negative representative up to zero by adding the capacity,
-then bring a representative that is at least the capacity down by
-subtracting it. The fuel is the value itself, so each step is smaller. *)
-
-Fixpoint bring_nonneg (fuel : nat) (h cap : Z) : Z :=
-  match fuel with
-  | O => h
-  | S fuel =>
-      if decide (h < 0)%Z then bring_nonneg fuel (h + cap)%Z cap else h
-  end.
-
-Fixpoint bring_below (fuel : nat) (h cap : Z) : Z :=
-  match fuel with
-  | O => h
-  | S fuel =>
-      if decide (cap ≤ h)%Z then bring_below fuel (h - cap)%Z cap else h
-  end.
-
+(** A signed primitive remainder followed by one nonnegative correction. *)
 Definition residue (k cap : Z) : Z :=
-  let h := bring_nonneg (Z.to_nat (Z.max 0 (- k))) k cap in
-  bring_below (Z.to_nat h) h cap.
-
-Lemma z_to_nat_0 n : (Z.to_nat n = 0)%nat → (n ≤ 0)%Z.
-Proof. destruct n; simpl; lia. Qed.
-
-Lemma bring_nonneg_spec h cap fuel :
-  (0 < cap)%Z →
-  (Z.to_nat (Z.max 0 (- h)) ≤ fuel)%nat →
-  (0 ≤ bring_nonneg fuel h cap)%Z ∧
-  Z.modulo (bring_nonneg fuel h cap) cap = Z.modulo h cap.
-Proof.
-  revert h. induction fuel as [|fuel IH]; intros h Hcap Hfuel; simpl.
-  - assert (Z.to_nat (Z.max 0 (- h)) = 0)%nat as Hz.
-    { destruct (Z.to_nat (Z.max 0 (- h))) as [|n]; [done|lia]. }
-    apply z_to_nat_0 in Hz.
-    assert ((- h) ≤ 0)%Z.
-    { destruct (Z.max_spec 0 (- h)) as [[Hm Heq]|[Hm Heq]]; lia. }
-    split; [lia|done].
-  - destruct (decide (h < 0)%Z) as [Hn|Hn].
-    + destruct (IH (h + cap)%Z) as [H0 Hmod]; [done| |].
-      * assert (0 < cap)%Z as Hpos by done.
-        destruct (Z_lt_le_dec (h + cap) 0) as [Hstill|Hdone].
-        -- assert (Z.max 0 (- (h + cap)) = (- h - cap))%Z as ->.
-           { rewrite Z.max_r; lia. }
-           assert (Z.max 0 (- h) = (- h))%Z as Heq.
-           { rewrite Z.max_r; lia. }
-           rewrite Heq in Hfuel.
-           replace (Z.to_nat (- h)) with
-             (Z.to_nat (- h - cap) + Z.to_nat cap)%nat in Hfuel.
-           { assert ((1 ≤ Z.to_nat cap)%nat) as Hone.
-             { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-               apply Z2Nat.inj_le; lia. }
-             lia. }
-           { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-        -- assert (Z.max 0 (- (h + cap)) = 0)%Z as -> by (rewrite Z.max_l; lia).
-           simpl. lia.
-      * split; [done|]. rewrite Hmod.
-        replace (h + cap)%Z with (h + 1 * cap)%Z by lia.
-        rewrite Z.mod_add; lia.
-    + split; [lia|done].
-Qed.
-
-Lemma bring_below_spec h cap fuel :
-  (0 < cap)%Z →
-  (0 ≤ h)%Z →
-  (Z.to_nat h ≤ fuel)%nat →
-  (0 ≤ bring_below fuel h cap < cap)%Z ∧
-  Z.modulo (bring_below fuel h cap) cap = Z.modulo h cap.
-Proof.
-  revert h. induction fuel as [|fuel IH]; intros h Hcap Hnn Hfuel; simpl.
-  - assert (Z.to_nat h = 0)%nat as Hz.
-    { destruct (Z.to_nat h) as [|n]; [done|lia]. }
-    apply z_to_nat_0 in Hz. split; [lia|]. rewrite Z.mod_small; lia.
-  - destruct (decide (cap ≤ h)%Z) as [Hge|Hlt].
-    + destruct (IH (h - cap)%Z) as [Hrng Hmod]; [done|lia| |].
-      * replace (Z.to_nat h) with (Z.to_nat (h - cap) + Z.to_nat cap)%nat in Hfuel.
-        { assert ((1 ≤ Z.to_nat cap)%nat) as Hone.
-          { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-            apply Z2Nat.inj_le; lia. }
-          lia. }
-        { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-      * split; [done|]. rewrite Hmod.
-        replace (h - cap)%Z with (h + (-1) * cap)%Z by lia.
-        rewrite Z.mod_add; lia.
-    + split; [lia|]. rewrite Z.mod_small; lia.
-Qed.
-
-Lemma bring_nonneg_ge h cap fuel :
-  (0 < cap)%Z →
-  (Z.to_nat (Z.max 0 (- h)) ≤ fuel)%nat →
-  bring_nonneg fuel h cap = bring_nonneg (Z.to_nat (Z.max 0 (- h))) h cap.
-Proof.
-  intros Hcap Hle. revert h Hle.
-  induction fuel as [fuel IH] using lt_wf_ind. intros h Hle.
-  destruct fuel as [|fuel].
-  - assert (Z.to_nat (Z.max 0 (- h)) = 0)%nat as -> by lia. reflexivity.
-  - simpl. destruct (decide (h < 0)%Z) as [Hn|Hp].
-    + assert (Z.max 0 (- h) = - h)%Z as Hm by (rewrite Z.max_r; lia).
-      rewrite Hm in Hle.
-      assert (0 < Z.to_nat (- h))%nat as Hpos.
-      { apply Nat.neq_0_lt_0. intros Hz. apply z_to_nat_0 in Hz. lia. }
-      rewrite Hm.
-      assert (Z.to_nat (- h) = S (Nat.pred (Z.to_nat (- h)))) as -> by lia.
-      simpl. destruct (decide (h < 0)%Z); [|lia].
-      assert (Z.to_nat (Z.max 0 (- (h + cap))) ≤ fuel)%nat as Hfuel.
-      { destruct (Z_lt_le_dec (h + cap) 0) as [Hstill|Hdone].
-        - assert (Z.max 0 (- (h + cap)) = (- h - cap))%Z as -> by (rewrite Z.max_r; lia).
-          assert (Z.to_nat (- h) = (Z.to_nat (- h - cap) + Z.to_nat cap)%nat) as Hsum.
-          { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-          assert (1 ≤ Z.to_nat cap)%nat as Hone.
-          { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-            apply Z2Nat.inj_le; lia. }
-          lia.
-        - assert (Z.max 0 (- (h + cap)) = 0)%Z as -> by (rewrite Z.max_l; lia). lia. }
-      assert (Z.to_nat (Z.max 0 (- (h + cap))) ≤ Nat.pred (Z.to_nat (- h)))%nat as Hpred.
-      { destruct (Z_lt_le_dec (h + cap) 0) as [Hstill|Hdone].
-        - assert (Z.max 0 (- (h + cap)) = (- h - cap))%Z as -> by (rewrite Z.max_r; lia).
-          assert (Z.to_nat (- h) = (Z.to_nat (- h - cap) + Z.to_nat cap)%nat) as Hsum.
-          { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-          assert (1 ≤ Z.to_nat cap)%nat as Hone.
-          { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-            apply Z2Nat.inj_le; lia. }
-          lia.
-        - assert (Z.max 0 (- (h + cap)) = 0)%Z as -> by (rewrite Z.max_l; lia). lia. }
-      assert (fuel < S fuel)%nat as Hlt by lia.
-      assert (Nat.pred (Z.to_nat (- h)) < S fuel)%nat as Hlt2 by lia.
-      rewrite (IH fuel Hlt (h + cap)%Z Hfuel).
-      rewrite (IH (Nat.pred (Z.to_nat (- h))) Hlt2 (h + cap)%Z Hpred).
-      reflexivity.
-    + assert (Z.max 0 (- h) = 0)%Z as -> by (rewrite Z.max_l; lia). reflexivity.
-Qed.
-
-Lemma bring_below_ge h cap fuel :
-  (0 < cap)%Z → (0 ≤ h)%Z →
-  (Z.to_nat h ≤ fuel)%nat →
-  bring_below fuel h cap = bring_below (Z.to_nat h) h cap.
-Proof.
-  intros Hcap Hnn Hle. revert h Hnn Hle.
-  induction fuel as [fuel IH] using lt_wf_ind. intros h Hnn Hle.
-  destruct fuel as [|fuel].
-  - assert (Z.to_nat h = 0)%nat as -> by lia. reflexivity.
-  - simpl. destruct (decide (cap ≤ h)%Z) as [Hge|Hlt].
-    + assert (0 < Z.to_nat h)%nat as Hpos.
-      { apply Nat.neq_0_lt_0. intros Hz. apply z_to_nat_0 in Hz. lia. }
-      set (p := Nat.pred (Z.to_nat h)).
-      assert (Z.to_nat h = S p) as Hs by (unfold p; lia).
-      rewrite Hs. simpl. destruct (decide (cap ≤ h)%Z); [|lia].
-      assert (0 ≤ h - cap)%Z as Hnn' by lia.
-      assert (Z.to_nat (h - cap) ≤ fuel)%nat as Hle1.
-      { assert (Z.to_nat h = (Z.to_nat (h - cap) + Z.to_nat cap)%nat) as Hsum.
-        { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-        assert (1 ≤ Z.to_nat cap)%nat as Hone.
-        { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-          apply Z2Nat.inj_le; lia. }
-        lia. }
-      assert (Z.to_nat (h - cap) ≤ p)%nat as Hle2.
-      { unfold p. 
-        assert (Z.to_nat h = (Z.to_nat (h - cap) + Z.to_nat cap)%nat) as Hsum.
-        { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-        assert (1 ≤ Z.to_nat cap)%nat as Hone.
-        { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-          apply Z2Nat.inj_le; lia. }
-        lia. }
-      assert (fuel < S fuel)%nat as Hsmall by lia.
-      assert (p < S fuel)%nat as Hsmall2 by (unfold p; lia).
-      rewrite (IH fuel Hsmall (h - cap)%Z Hnn' Hle1).
-      rewrite (IH p Hsmall2 (h - cap)%Z Hnn' Hle2).
-      reflexivity.
-    + destruct (Z.to_nat h) as [|n] eqn:Hn.
-      * reflexivity.
-      * simpl. destruct (decide (cap ≤ h)%Z); [lia|]. reflexivity.
-Qed.
-
-Lemma bring_nonneg_step h cap :
-  (0 < cap)%Z → (h < 0)%Z →
-  bring_nonneg (Z.to_nat (Z.max 0 (- h))) h cap =
-    bring_nonneg (Z.to_nat (Z.max 0 (- (h + cap)))) (h + cap) cap.
-Proof.
-  intros Hcap Hn.
-  assert (Z.max 0 (- h) = - h)%Z as -> by (rewrite Z.max_r; lia).
-  assert (0 < Z.to_nat (- h))%nat as Hpos.
-  { apply Nat.neq_0_lt_0. intros Hz. apply z_to_nat_0 in Hz. lia. }
-  set (p := Nat.pred (Z.to_nat (- h))).
-  assert (Z.to_nat (- h) = S p) as -> by (unfold p; lia).
-  simpl. destruct (decide (h < 0)%Z); [|lia].
-  rewrite (bring_nonneg_ge (h + cap)%Z cap p Hcap).
-  { reflexivity. }
-  unfold p.
-  destruct (Z_lt_le_dec (h + cap) 0) as [Hstill|Hdone].
-  - assert (Z.max 0 (- (h + cap)) = (- h - cap))%Z as -> by (rewrite Z.max_r; lia).
-    assert (Z.to_nat (- h) = (Z.to_nat (- h - cap) + Z.to_nat cap)%nat) as Hsum.
-    { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-    assert (1 ≤ Z.to_nat cap)%nat as Hone.
-    { replace 1%nat with (Z.to_nat 1%Z) by reflexivity. apply Z2Nat.inj_le; lia. }
-    lia.
-  - assert (Z.max 0 (- (h + cap)) = 0)%Z as -> by (rewrite Z.max_l; lia). lia.
-Qed.
-
-Lemma bring_below_finished h cap :
-  (0 ≤ h)%Z → (h < cap)%Z →
-  bring_below (Z.to_nat h) h cap = h.
-Proof.
-  intros H0 Hlt.
-  destruct (Z.to_nat h) as [|n]; simpl.
-  - reflexivity.
-  - destruct (decide (cap ≤ h)%Z); [lia|reflexivity].
-Qed.
-
-Lemma bring_below_step h cap :
-  (0 < cap)%Z → (0 ≤ h)%Z → (cap ≤ h)%Z →
-  bring_below (Z.to_nat h) h cap =
-    bring_below (Z.to_nat (h - cap)) (h - cap) cap.
-Proof.
-  intros Hcap Hnn Hge.
-  assert (0 < Z.to_nat h)%nat as Hpos.
-  { apply Nat.neq_0_lt_0. intros Hz. apply z_to_nat_0 in Hz. lia. }
-  set (p := Nat.pred (Z.to_nat h)).
-  assert (Z.to_nat h = S p) as -> by (unfold p; lia).
-  simpl. destruct (decide (cap ≤ h)%Z); [|lia].
-  rewrite (bring_below_ge (h - cap)%Z cap p Hcap).
-  { reflexivity. }
-  { lia. }
-  unfold p.
-  assert (Z.to_nat h = (Z.to_nat (h - cap) + Z.to_nat cap)%nat) as Hsum.
-  { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-  assert (1 ≤ Z.to_nat cap)%nat as Hone.
-  { replace 1%nat with (Z.to_nat 1%Z) by reflexivity. apply Z2Nat.inj_le; lia. }
-  lia.
-Qed.
+  let r := Z.rem k cap in
+  if decide (r < 0)%Z then (r + cap)%Z else r.
 
 Lemma residue_spec k cap :
   (0 < cap)%Z →
   (0 ≤ residue k cap < cap)%Z ∧ residue k cap = Z.modulo k cap.
 Proof.
-  intros Hcap. unfold residue. cbv beta zeta.
-  set (h := bring_nonneg (Z.to_nat (Z.max 0 (- k))) k cap).
-  assert ((0 ≤ h)%Z ∧ Z.modulo h cap = Z.modulo k cap) as [Hnn Hmod].
-  { unfold h. apply bring_nonneg_spec; [done|lia]. }
-  destruct (bring_below_spec h cap (Z.to_nat h)) as [Hrng Hmod']; [done|done|lia|].
-  split; [done|].
-  rewrite <- (Z.mod_small (bring_below (Z.to_nat h) h cap) cap Hrng).
-  rewrite Hmod'. rewrite Hmod. done.
+  intros Hcap.
+  pose proof (Z.rem_bound_abs k cap ltac:(lia)) as Hb.
+  rewrite (Z.abs_eq cap ltac:(lia)) in Hb.
+  pose proof (Z.quot_rem k cap ltac:(lia)) as Heq.
+  unfold residue. destruct (decide (Z.rem k cap < 0)%Z) as [Hneg|Hpos].
+  - assert (0 ≤ Z.rem k cap + cap < cap)%Z as Hr by
+      (rewrite (Z.abs_neq (Z.rem k cap) ltac:(lia)) in Hb; lia).
+    split; [exact Hr|].
+    apply (Z.mod_unique_pos k cap (Z.quot k cap - 1)); [exact Hr|nia].
+  - assert (0 ≤ Z.rem k cap < cap)%Z as Hr by
+      (rewrite (Z.abs_eq (Z.rem k cap) ltac:(lia)) in Hb; lia).
+    split; [exact Hr|].
+    apply (Z.mod_unique_pos k cap (Z.quot k cap)); [exact Hr|nia].
 Qed.
 
 Lemma pow_positive e : (0 < 2 ^ e)%nat.
@@ -1806,245 +1586,33 @@ Section hash_map.
   Definition sas (z : Z) (e : expr) : expr :=
     StackAssign (Val (LitV (LitStack z))) e.
 
-  Definition nonneg_while (lh cap : Z) : expr :=
-    While (sld lh ≤ Val (LitV (LitInt (-1))))
-      (sas lh (sld lh + Val (LitV (LitInt cap)))).
-
-  Definition below_while (lh cap : Z) : expr :=
-    While (Val (LitV (LitInt cap)) ≤ sld lh)
-      (sas lh (sld lh - Val (LitV (LitInt cap)))).
-
-  Lemma wp_nonneg (lh : Z) (h0 cap : Z) :
-    (0 < cap)%Z →
-    StackId lh ↦ₛ LitV (LitInt h0) -∗
-    WP nonneg_while lh cap
-      {{ _, ∃ h', ⌜ h' = bring_nonneg (Z.to_nat (Z.max 0 (- h0))) h0 cap ⌝ ∗
-                   StackId lh ↦ₛ LitV (LitInt h') }}.
-  Proof.
-    intros Hcap.
-    remember (Z.to_nat (Z.max 0 (- h0))) as fuel eqn:Hfuel.
-    revert h0 Hfuel.
-    induction fuel as [fuel IH] using lt_wf_ind.
-    intros h0 Hfuel.
-    iIntros "Hh".
-    unfold nonneg_while.
-    iApply wp_while.
-    iApply (wp_bind [IfCtx
-      (Seq (sas lh (sld lh + Val (LitV (LitInt cap)))) (nonneg_while lh cap))
-      (Val (LitV LitUnit))]).
-    iApply (wp_bind [BinOpLCtx LeOp (Val (LitV (LitInt (-1))))]).
-    iApply (wp_stack_load (StackId lh) with "Hh").
-    iIntros "!> _ Hh".
-    iApply wp_binop.
-    { reflexivity. }
-    iIntros "!> _".
-    destruct fuel as [|fuel].
-    - assert (Z.to_nat (Z.max 0 (- h0)) = 0)%nat as Hz by (symmetry; exact Hfuel).
-      apply z_to_nat_0 in Hz.
-      assert (bool_decide (h0 ≤ -1)%Z = false) as ->.
-      { apply bool_decide_eq_false. lia. }
-      iApply wp_if_false.
-      iApply wp_value'.
-      iExists h0. iFrame "Hh". iPureIntro. reflexivity.
-    - assert (h0 < 0)%Z as Hn.
-      { assert (0 < Z.to_nat (Z.max 0 (- h0)))%nat as Hpos by (rewrite <- Hfuel; lia).
-        destruct (Z_lt_le_dec h0 0) as [Hlt|Hge]; [exact Hlt|].
-        assert (Z.max 0 (- h0) = 0)%Z as Heq by (rewrite Z.max_l; lia).
-        rewrite Heq in Hpos. simpl in Hpos. lia. }
-      assert (bool_decide (h0 ≤ -1)%Z = true) as ->.
-      { apply bool_decide_eq_true. lia. }
-      iApply wp_if_true.
-      iApply (wp_bind [SeqCtx (nonneg_while lh cap)]).
-      iApply (wp_bind [StackAssignRCtx (LitV (LitStack lh))]).
-      iApply (wp_bind [BinOpLCtx PlusOp (Val (LitV (LitInt cap)))]).
-      iApply (wp_stack_load (StackId lh) with "Hh").
-      iIntros "!> _ Hh".
-      iApply wp_binop.
-      { reflexivity. }
-      iIntros "!> _".
-      iApply (wp_stack_assign with "Hh").
-      iIntros "!> _ Hh".
-      iApply wp_seq.
-      fold nonneg_while.
-      set (y := Z.to_nat (Z.max 0 (- (h0 + cap)))).
-      assert (y < S fuel)%nat as Hlt.
-      { unfold y. rewrite Hfuel.
-        assert (Z.max 0 (- h0) = - h0)%Z as -> by (rewrite Z.max_r; lia).
-        destruct (Z_lt_le_dec (h0 + cap) 0) as [Hstill|Hdone].
-        - assert (Z.max 0 (- (h0 + cap)) = (- h0 - cap))%Z as -> by (rewrite Z.max_r; lia).
-          assert (Z.to_nat (- h0) = (Z.to_nat (- h0 - cap) + Z.to_nat cap)%nat) as Hsum.
-          { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-          assert (1 ≤ Z.to_nat cap)%nat as Hone.
-          { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-            apply Z2Nat.inj_le; lia. }
-          lia.
-        - assert (Z.max 0 (- (h0 + cap)) = 0)%Z as -> by (rewrite Z.max_l; lia).
-          lia. }
-      iApply (wp_wand with "[Hh]").
-      { iApply (IH y Hlt (h0 + cap)%Z eq_refl with "Hh"). }
-      iIntros (_) "(%h' & %Heq & Hh)".
-      iExists h'. iFrame "Hh". iPureIntro.
-      rewrite Heq. unfold y. symmetry. rewrite Hfuel.
-      apply bring_nonneg_step; [exact Hcap|exact Hn].
-  Qed.
-
-  Lemma wp_below (lh : Z) (h0 cap : Z) :
-    (0 < cap)%Z → (0 ≤ h0)%Z →
-    StackId lh ↦ₛ LitV (LitInt h0) -∗
-    WP below_while lh cap
-      {{ _, ∃ h', ⌜ h' = bring_below (Z.to_nat h0) h0 cap ⌝ ∗
-                   StackId lh ↦ₛ LitV (LitInt h') }}.
-  Proof.
-    intros Hcap Hnn0.
-    remember (Z.to_nat h0) as fuel eqn:Hfuel.
-    revert h0 Hnn0 Hfuel.
-    induction fuel as [fuel IH] using lt_wf_ind.
-    intros h0 Hnn Hfuel.
-    iIntros "Hh".
-    unfold below_while.
-    iApply wp_while.
-    iApply (wp_bind [IfCtx
-      (Seq (sas lh (sld lh - Val (LitV (LitInt cap)))) (below_while lh cap))
-      (Val (LitV LitUnit))]).
-    iApply (wp_bind [BinOpRCtx LeOp (LitV (LitInt cap))]).
-    iApply (wp_stack_load (StackId lh) with "Hh").
-    iIntros "!> _ Hh".
-    iApply wp_binop.
-    { reflexivity. }
-    iIntros "!> _".
-    destruct fuel as [|fuel].
-    - assert (Z.to_nat h0 = 0)%nat as Hz by (symmetry; exact Hfuel).
-      apply z_to_nat_0 in Hz.
-      assert (bool_decide (cap ≤ h0)%Z = false) as ->.
-      { apply bool_decide_eq_false. lia. }
-      iApply wp_if_false.
-      iApply wp_value'.
-      iExists h0. iFrame "Hh". iPureIntro. reflexivity.
-    - destruct (Z_lt_le_dec h0 cap) as [Hlt|Hge].
-      + assert (bool_decide (cap ≤ h0)%Z = false) as ->.
-        { apply bool_decide_eq_false. lia. }
-        iApply wp_if_false.
-        iApply wp_value'.
-        iExists h0. iFrame "Hh". iPureIntro.
-        assert (bring_below (Z.to_nat h0) h0 cap = h0) as Heq
-          by (apply bring_below_finished; [exact Hnn|exact Hlt]).
-        rewrite <- Hfuel in Heq. symmetry. exact Heq.
-      + assert (bool_decide (cap ≤ h0)%Z = true) as ->.
-        { apply bool_decide_eq_true. exact Hge. }
-        iApply wp_if_true.
-        iApply (wp_bind [SeqCtx (below_while lh cap)]).
-        iApply (wp_bind [StackAssignRCtx (LitV (LitStack lh))]).
-        iApply (wp_bind [BinOpLCtx MinusOp (Val (LitV (LitInt cap)))]).
-        iApply (wp_stack_load (StackId lh) with "Hh").
-        iIntros "!> _ Hh".
-        iApply wp_binop.
-        { reflexivity. }
-        iIntros "!> _".
-        iApply (wp_stack_assign with "Hh").
-        iIntros "!> _ Hh".
-        iApply wp_seq.
-        fold below_while.
-        set (y := Z.to_nat (h0 - cap)).
-        assert (0 ≤ h0 - cap)%Z as Hnn' by lia.
-        assert (y < S fuel)%nat as Hlty.
-        { unfold y. rewrite Hfuel.
-          assert (Z.to_nat h0 = (Z.to_nat (h0 - cap) + Z.to_nat cap)%nat) as Hsum.
-          { rewrite <- Z2Nat.inj_add by lia. f_equal. lia. }
-          assert (1 ≤ Z.to_nat cap)%nat as Hone.
-          { replace 1%nat with (Z.to_nat 1%Z) by reflexivity.
-            apply Z2Nat.inj_le; lia. }
-          lia. }
-        iApply (wp_wand with "[Hh]").
-        { iApply (IH y Hlty (h0 - cap)%Z Hnn' eq_refl with "Hh"). }
-        iIntros (_) "(%h' & %Heq & Hh)".
-        iExists h'. iFrame "Hh". iPureIntro.
-        rewrite Heq. symmetry. rewrite Hfuel.
-        apply bring_below_step; [exact Hcap|exact Hnn|exact Hge].
-  Qed.
-
-  Definition residue_inner : expr :=
-    Seq (While (Var "rem" ≤ Val (LitV (LitInt (-1))))
-           (Assign "rem" (Var "rem" + Var "cap")))
-      (Seq (While (Var "cap" ≤ Var "rem")
-             (Assign "rem" (Var "rem" - Var "cap")))
-        (Var "rem")).
-
   Definition residue_body : expr :=
     Let (Some "k") (StructLoad (Var "args") 0)
       (Let (Some "cap") (StructLoad (Var "args") 1)
-        (VarBind "rem" (Var "k") residue_inner)).
+        (Let (Some "rem") (BinOp RemOp (Var "k") (Var "cap"))
+          (If (Var "rem" ≤ Val (LitV (LitInt (-1))))
+            (Var "rem" + Var "cap") (Var "rem")))).
 
   Definition call_residue (k cap : Z) : expr :=
     App (Val (RecV None (Some "args") residue_body))
       (Val (StructV [LitV (LitInt k); LitV (LitInt cap)])).
-
-  Definition residue_run (lh : Z) : expr := subst_var "rem" lh residue_inner.
-
-  Lemma residue_after_bind (lh : Z) :
-    subst_var "rem" lh residue_inner = residue_run lh.
-  Proof. reflexivity. Qed.
-
-  Lemma subst_cap_residue (cap : Z) :
-    subst "cap" (LitV (LitInt cap)) residue_inner =
-    Seq (While (Var "rem" ≤ Val (LitV (LitInt (-1))))
-           (Assign "rem" (Var "rem" + Val (LitV (LitInt cap)))))
-      (Seq (While (Val (LitV (LitInt cap)) ≤ Var "rem")
-             (Assign "rem" (Var "rem" - Val (LitV (LitInt cap)))))
-        (Var "rem")).
-  Proof.
-    cbn [subst]. f_equal; repeat f_equal; reflexivity.
-  Qed.
-
-  Lemma cap_residue_stack (lslot cap : Z) :
-    subst_var "rem" lslot (subst "cap" (LitV (LitInt cap)) residue_inner) =
-    Seq (nonneg_while lslot cap) (Seq (below_while lslot cap) (sld lslot)).
-  Proof.
-    unfold nonneg_while, below_while, sld, sas.
-    rewrite subst_cap_residue. cbn [subst_var]. f_equal; reflexivity.
-  Qed.
-
-  Lemma residue_run_wp (lslot : Z) (key cap : Z) :
-    (0 < cap)%Z →
-    StackId lslot ↦ₛ LitV (LitInt key) -∗
-    WP (Seq (nonneg_while lslot cap) (Seq (below_while lslot cap) (sld lslot)))
-      {{ v, ⌜ v = LitV (LitInt (residue key cap)) ⌝ ∗
-           StackId lslot ↦ₛ LitV (LitInt (residue key cap)) }}.
-  Proof.
-    intros Hcap. set (r := residue key cap).
-    iIntros "Hh".
-    iApply (wp_bind [SeqCtx (Seq (below_while lslot cap) (sld lslot))]).
-    iApply (wp_wand with "[Hh]").
-    { iApply (wp_nonneg with "Hh"). exact Hcap. }
-    iIntros (w) "(%h1 & %Hh1 & Hh)".
-    assert (0 ≤ h1)%Z as Hnn1.
-    { rewrite Hh1. apply (proj1 (bring_nonneg_spec key cap (Z.to_nat (Z.max 0 (- key))) Hcap ltac:(lia))). }
-    iApply wp_seq.
-    iApply (wp_bind [SeqCtx (sld lslot)]).
-    iApply (wp_wand with "[Hh]").
-    { iApply (wp_below lslot h1 cap Hcap Hnn1 with "Hh"). }
-    iIntros (w') "(%h2 & %Hh2 & Hh)".
-    iApply wp_seq.
-    iApply (wp_stack_load (StackId lslot) with "Hh").
-    iIntros "!> _".
-    assert (h2 = r)%Z as Heqr.
-    { rewrite /r. unfold residue. rewrite Hh1 in Hh2. exact Hh2. }
-    iIntros "Hstack".
-    rewrite Heqr. iFrame. done.
-  Qed.
 
   Lemma residue_wp (k cap : Z) :
     (0 < cap)%Z →
     ⊢ WP call_residue k cap {{ v, ⌜ v = LitV (LitInt (residue k cap)) ⌝ }}.
   Proof.
     intros Hcap. unfold call_residue, residue_body. hm_pure.
-    iApply wp_var_bind. iIntros (lr) "Hr".
-    rewrite cap_residue_stack.
-    iApply (wp_wand with "[Hr]").
-    { iApply (residue_run_wp lr k cap Hcap with "Hr"). }
-    iIntros (r) "[%Hr Hslot]".
-    iExists (LitV (LitInt (residue k cap))). iFrame. done.
+    iApply (wp_bind [LetCtx (Some "rem") _]).
+    iApply wp_rem; [lia|]. iIntros "!> _".
+    hm_pure.
+    unfold residue. destruct (decide (Z.rem k cap < 0)%Z) as [Hneg|Hpos].
+    - assert (bool_decide (Z.rem k cap ≤ -1)%Z = true) as -> by
+        (apply bool_decide_eq_true; lia).
+      iApply wp_if_true. hm_pure. done.
+    - assert (bool_decide (Z.rem k cap ≤ -1)%Z = false) as -> by
+        (apply bool_decide_eq_false; lia).
+      iApply wp_if_false. hm_pure. done.
   Qed.
-
 
   (** * Imperative [HashMap] *)
 
@@ -2252,10 +1820,71 @@ Section hash_map.
   Definition call_probe_e (m k : expr) : expr :=
     App (Val (RecV None (Some "args") probe_for_body)) (Struct [] [m; k]).
 
+Definition lookup_val (r : probe_out) : val_cjr :=
+  match r with
+  | PFound _ v => StructV [LitV (LitBool true); LitV (LitInt v)]
+  | PAbsent _ => StructV [LitV (LitBool false); LitV (LitInt 0)]
+  end.
+
+Definition lookup_loop_e (step : expr) (setstep setres : expr → expr)
+    (start cap tags keys vals k : expr) : expr :=
+  While (step + zlit 1 ≤ cap)
+    (Let (Some "s") step
+    (Let (Some "slot") (probe_slot_e start (Var "s") cap)
+      (Let (Some "tag") (arr_get tags (Var "slot"))
+        (If (BinOp EqOp (Var "tag") lit_tag_empty)
+          (setstep cap)
+          (If (BinOp EqOp (Var "tag") lit_tag_occ)
+            (Let (Some "key") (arr_get keys (Var "slot"))
+              (If (BinOp EqOp (Var "key") k)
+                (Seq (setres (Struct [] [Val (LitV (LitBool true)); arr_get vals (Var "slot")]))
+                  (setstep cap))
+                (setstep (step + zlit 1))))
+            (setstep (step + zlit 1))))))).
+
+Definition lookup_inner : expr :=
+  Seq (lookup_loop_e (Var "step") (Assign "step") (Assign "res")
+        (Var "start") (Var "cap") (Var "tags") (Var "keys") (Var "vals") (Var "k"))
+    (Var "res").
+
+Definition lookup_buffer_body : expr :=
+  Let (Some "tags") (StructLoad (Var "args") 0)
+  (Let (Some "keys") (StructLoad (Var "args") 1)
+  (Let (Some "vals") (StructLoad (Var "args") 2)
+  (Let (Some "cap") (StructLoad (Var "args") 3)
+  (Let (Some "start") (StructLoad (Var "args") 4)
+  (Let (Some "k") (StructLoad (Var "args") 5)
+    (VarBind "step" (zlit 0)
+      (VarBind "res" (Val (lookup_val (PAbsent 0))) lookup_inner))))))).
+
+Definition call_lookup_buffer ta ka va cap start k : expr :=
+  App (Val (RecV None (Some "args") lookup_buffer_body))
+    (Val (StructV [ta;ka;va;LitV (LitInt (Z.of_nat cap));
+      LitV (LitInt (Z.of_nat start));LitV (LitInt k)])).
+
+Definition lookup_open : expr :=
+  Let (Some "tags") (FieldLoad (Var "m") 1)
+  (Let (Some "keys") (FieldLoad (Var "m") 2)
+  (Let (Some "vals") (FieldLoad (Var "m") 3)
+  (Let (Some "cap") (arr_len (Var "tags"))
+  (Let (Some "start")
+    (App (Val (RecV None (Some "args") residue_body)) (Struct [] [Var "k"; Var "cap"]))
+    (App (Val (RecV None (Some "args") lookup_buffer_body))
+      (Struct [] [Var "tags"; Var "keys"; Var "vals"; Var "cap"; Var "start"; Var "k"])))))).
+Definition lookup_for_body : expr :=
+  Let (Some "m") (StructLoad (Var "args") 0)
+    (Let (Some "k") (StructLoad (Var "args") 1) lookup_open).
+Definition call_lookup (m : val_cjr) (k : Z) : expr :=
+  App (Val (RecV None (Some "args") lookup_for_body))
+    (Val (StructV [m; LitV (LitInt k)])).
+Definition call_lookup_e (m k : expr) : expr :=
+  App (Val (RecV None (Some "args") lookup_for_body)) (Struct [] [m; k]).
+
+
   Definition contains_body : expr :=
     Let (Some "m") (StructLoad (Var "args") 0)
       (Let (Some "k") (StructLoad (Var "args") 1)
-        (Let (Some "res") (call_probe_e (Var "m") (Var "k"))
+        (Let (Some "res") (call_lookup_e (Var "m") (Var "k"))
           (StructLoad (Var "res") 0))).
 
   Definition call_contains (m : val_cjr) (k : Z) : expr :=
@@ -2265,8 +1894,7 @@ Section hash_map.
   Definition get_body : expr :=
     Let (Some "m") (StructLoad (Var "args") 0)
       (Let (Some "k") (StructLoad (Var "args") 1)
-        (Let (Some "res") (call_probe_e (Var "m") (Var "k"))
-          (Struct [] [StructLoad (Var "res") 0; StructLoad (Var "res") 2]))).
+        (call_lookup_e (Var "m") (Var "k"))).
 
   Definition call_get (m : val_cjr) (k : Z) : expr :=
     App (Rec None (Some "args") get_body)
@@ -2503,6 +2131,142 @@ Section hash_map.
              replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
              iApply (IH start (S step) cap _ _ _ tags keys vals k (Some idx) with "Ht Hk Hv"); try done; lia.
   Qed.
+
+Lemma lookup_stopped ls lr start cap ta ka va k res :
+  StackId ls ↦ₛ LitV (LitInt (Z.of_nat cap)) -∗ StackId lr ↦ₛ res -∗
+  WP lookup_loop_e (sld ls) (sas ls) (sas lr)
+      (nlit start) (nlit cap) (Val ta) (Val ka) (Val va) (zlit k)
+    {{ _, StackId ls ↦ₛ LitV (LitInt (Z.of_nat cap)) ∗ StackId lr ↦ₛ res }}.
+Proof.
+  iIntros "Hs Hr". unfold lookup_loop_e.
+  iApply wp_while.
+  iApply (wp_bind [IfCtx _ _]).
+  iApply (wp_bind [BinOpLCtx LeOp (nlit cap)]).
+  iApply (wp_bind [BinOpLCtx PlusOp (zlit 1)]).
+  iApply (wp_stack_load with "Hs"). iIntros "!> _ Hs".
+  hm_pure. rewrite bool_decide_eq_false_2; [|lia].
+  iApply wp_if_false. hm_pure. iFrame.
+Qed.
+
+Ltac lookup_stack_head :=
+  match goal with
+  | |- environments.envs_entails _ (WP StackLoad (Val (LitV (LitStack ?z))) {{ ?P }}) =>
+      iApply (wp_stack_load (StackId z) with "[$]"); iIntros "!> _ ?"
+  | |- environments.envs_entails _ (WP StackAssign (Val (LitV (LitStack ?z))) (Val ?v) {{ ?P }}) =>
+      iApply (wp_stack_assign (StackId z) with "[$]"); iIntros "!> _ ?"
+  | |- environments.envs_entails _ (WP StackAssign (Val ?v) ?e {{ ?P }}) =>
+      iApply (wp_bind [StackAssignRCtx v])
+  end.
+Ltac lookup_stack :=
+  unfold sld, sas;
+  match goal with
+  | |- environments.envs_entails _ (WP ?e {{ ?P }}) => hm_focus e ltac:(fun _ => lookup_stack_head)
+  end.
+Ltac lookup_admin := repeat (first [progress hm_admin | lookup_stack]).
+
+Lemma lookup_loop_spec fuel :
+  ∀ ls lr start step cap ta ka va tags keys vals k hole,
+  (0 < cap)%nat → (start < cap)%nat → (step + fuel = cap)%nat →
+  length tags = cap → length keys = cap → length vals = cap →
+  StackId ls ↦ₛ LitV (LitInt (Z.of_nat step)) -∗
+  StackId lr ↦ₛ lookup_val (PAbsent 0) -∗
+  is_array tags ta -∗ is_array keys ka -∗ is_array vals va -∗
+  WP lookup_loop_e (sld ls) (sas ls) (sas lr)
+      (nlit start) (nlit cap) (Val ta) (Val ka) (Val va) (zlit k)
+    {{ _, StackId ls ↦ₛ LitV (LitInt (Z.of_nat cap)) ∗
+          StackId lr ↦ₛ lookup_val (probe_from fuel start step cap tags keys vals k hole) ∗
+          is_array tags ta ∗ is_array keys ka ∗ is_array vals va }}.
+Proof.
+  induction fuel as [|fuel IH]; intros ls lr start step cap ta ka va tags keys vals k hole
+    Hcap Hstart Hbound Lt Lk Lv; iIntros "Hs Hr Ht Hk Hv";
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ha & Ht)";
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hb & Hk)";
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hc & Hv)"; subst ta ka va.
+  - assert (step = cap) as -> by lia. simpl.
+    iApply (wp_wand with "[-Ht Hk Hv]").
+    { iApply (lookup_stopped with "Hs Hr"). }
+    iIntros (_) "[Hs Hr]". iFrame.
+  - unfold lookup_loop_e at 1. iApply wp_while.
+    iApply (wp_bind [IfCtx _ _]).
+    iApply (wp_bind [BinOpLCtx LeOp (nlit cap)]).
+    iApply (wp_bind [BinOpLCtx PlusOp (zlit 1)]).
+    iApply (wp_stack_load with "Hs"). iIntros "!> _ Hs".
+    hm_admin. rewrite bool_decide_eq_true_2; [|lia]. iApply wp_if_true.
+    iApply (wp_bind [SeqCtx _]).
+    hm_take. iApply (wp_stack_load with "Hs"). iIntros "!> _ Hs".
+    iApply wp_let. simpl.
+    hm_take. iApply (wp_wand with "[]").
+    { iApply probe_slot_e_spec; lia. }
+    iIntros (r) "%Hr". subst r. hm_admin.
+    set (idx := probe_slot start step cap).
+    assert (idx < cap)%nat as Hidx by (unfold idx; apply probe_slot_lt; done).
+    destruct (lookup_lt_is_Some_2 tags idx) as [tag Htag]; [lia|].
+    hm_take. iApply (wp_wand with "[Ht]").
+    { iApply (arr_get_spec tags _ idx tag Htag with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. hm_admin.
+    change (tags !! probe_slot start step cap = Some tag) in Htag.
+    cbn [probe_from]. rewrite Htag.
+    destruct (decide (tag = tag_empty)) as [He|He].
+    + rewrite bool_decide_eq_true_2; [|exact He]. iApply wp_if_true.
+      lookup_admin.
+      iApply (wp_wand with "[-Ht Hk Hv]").
+      { iApply (lookup_stopped with "[$] [$]"). }
+      iIntros (_) "[Hs Hr]". iFrame.
+    + rewrite bool_decide_eq_false_2; [|exact He]. iApply wp_if_false. hm_admin.
+      destruct (decide (tag = tag_occ)) as [Ho|Ho].
+      * rewrite bool_decide_eq_true_2; [|exact Ho]. iApply wp_if_true. hm_admin.
+        destruct (lookup_lt_is_Some_2 keys idx) as [key Hkey]; [lia|].
+        destruct (lookup_lt_is_Some_2 vals idx) as [value Hval]; [lia|].
+        hm_take. iApply (wp_wand with "[Hk]").
+        { iApply (arr_get_spec keys _ idx key Hkey with "Hk"). }
+        iIntros (r) "[%Hr Hk]". subst r. hm_admin.
+        change (keys !! probe_slot start step cap = Some key) in Hkey.
+        change (vals !! probe_slot start step cap = Some value) in Hval.
+        rewrite Hkey Hval.
+        destruct (decide (key = k)) as [Hhit|Hmiss].
+        -- rewrite bool_decide_eq_true_2; [|exact Hhit]. iApply wp_if_true. hm_admin.
+           lookup_stack.
+           iApply wp_struct_step. iApply (wp_bind [StructCtx [LitV (LitBool true)] []]).
+           iApply (wp_wand with "[Hv]").
+           { iApply (arr_get_spec vals _ idx value Hval with "Hv"). }
+           iIntros (r) "[%Hr Hv]". subst r. lookup_admin.
+           iApply (wp_wand with "[-Ht Hk Hv]").
+           { iApply (lookup_stopped with "[$] [$]"). }
+           iIntros (_) "[Hs Hr]". iFrame.
+        -- rewrite bool_decide_eq_false_2; [|exact Hmiss]. iApply wp_if_false.
+           lookup_admin.
+           replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
+           iApply (IH ls lr start (S step) cap _ _ _ tags keys vals k hole with "[$] [$] Ht Hk Hv"); try done; lia.
+      * rewrite bool_decide_eq_false_2; [|exact Ho]. iApply wp_if_false.
+        lookup_admin.
+        replace (Z.of_nat step + 1)%Z with (Z.of_nat (S step)) by lia.
+        iApply (IH ls lr start (S step) cap _ _ _ tags keys vals k
+          (match hole with None => Some idx | _ => hole end) with "[$] [$] Ht Hk Hv"); try done; lia.
+Qed.
+Lemma lookup_buffer_spec cap start ta ka va tags keys vals k :
+  (0 < cap)%nat → (start < cap)%nat →
+  length tags = cap → length keys = cap → length vals = cap →
+  is_array tags ta -∗ is_array keys ka -∗ is_array vals va -∗
+  WP call_lookup_buffer ta ka va cap start k
+    {{ r, ⌜ r = lookup_val (probe cap start tags keys vals k) ⌝ ∗
+          is_array tags ta ∗ is_array keys ka ∗ is_array vals va }}.
+Proof.
+  intros Hcap Hstart Lt Lk Lv. iIntros "Ht Hk Hv".
+  iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ha & Ht)".
+  iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hb & Hk)".
+  iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hc & Hv)". subst ta ka va.
+  unfold call_lookup_buffer, lookup_buffer_body. iApply wp_app. simpl. hm_admin.
+  iApply wp_var_bind. iIntros (ls) "Hs". simpl.
+  iApply wp_var_bind. iIntros (lr) "Hr". simpl.
+  iApply (wp_bind [SeqCtx (sld lr)]).
+  iApply (wp_wand with "[Hs Hr Ht Hk Hv]").
+  { iApply (lookup_loop_spec cap ls lr start 0 cap _ _ _ tags keys vals k None
+      with "Hs Hr Ht Hk Hv"); try done; lia. }
+  iIntros (u) "(Hs & Hr & Ht & Hk & Hv)". iApply wp_seq.
+  iApply (wp_stack_load with "Hr"). iIntros "!> _ Hr".
+  iExists (lookup_val (probe cap start tags keys vals k)). iFrame "Hr".
+  iExists (LitV (LitInt (Z.of_nat cap))). iFrame "Hs Ht Hk Hv". done.
+Qed.
 
   Lemma buffer_probe_spec cap ta ka va tags keys vals k :
     (0 < cap)%nat → length tags = cap → length keys = cap → length vals = cap →
@@ -2837,6 +2601,54 @@ Section hash_map.
         (LitV (LitObj ov)), tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
   Qed.
 
+  Lemma lookup_spec m cap (a : val_cjr) (k : Z) :
+    is_hashmap m cap a -∗
+    WP call_lookup a k
+      {{ res, ⌜ res = match m !! k with
+                      | Some v => StructV [LitV (LitBool true); LitV (LitInt v)]
+                      | None => StructV [LitV (LitBool false); LitV (LitInt 0)]
+                      end ⌝ ∗ is_hashmap m cap a }}.
+  Proof.
+    iIntros "Hm". iDestruct "Hm" as
+      (o sz ta ka va tags keys vals) "(%Ha & %Hm & %Hsz & Hsz & Hta & Hka & Hva & Hslots)".
+    iDestruct "Hslots" as "(Ht & Hk & Hv & %Lt & %Lk & %Lv & %Hwf)".
+    iDestruct (is_array_obj_hm with "Ht") as (ot) "(%Ht & Ht)".
+    iDestruct (is_array_obj_hm with "Hk") as (ok) "(%Hk & Hk)".
+    iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)".
+    subst a ta ka va sz m.
+    assert (0 < cap)%nat as Hcap.
+    { destruct (wf_pow _ _ _ _ Hwf) as [e ->]. apply pow_positive. }
+    unfold call_lookup, lookup_for_body, lookup_open. hm_pure.
+    hm_read. hm_admin. hm_read. hm_admin. hm_read. hm_admin.
+    hm_take. iApply (wp_wand with "[Ht]").
+    { iApply (array.length_spec with "Ht"). }
+    iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
+    try hm_take. iApply (wp_wand with "[]").
+    { iApply residue_wp. lia. }
+    iIntros (r) "%Hr". subst r. hm_args.
+    assert (0 ≤ residue k (Z.of_nat cap))%Z as Hres by
+      (pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
+    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+      (unfold bucket; rewrite Z2Nat.id; lia).
+    iApply (wp_wand with "[Ht Hk Hv]").
+    { iApply (lookup_buffer_spec cap (bucket k cap) _ _ _ tags keys vals k with "Ht Hk Hv");
+        try done; try (apply bucket_lt; done); lia. }
+    iIntros (r) "(%Hr & Ht & Hk & Hv)".
+    assert (count_occ tags < cap)%nat as Hcount by
+      (pose proof (wf_load _ _ _ _ Hwf); lia).
+    pose proof (probe_shape cap tags keys vals k Hcap Lt Lk Lv
+      (wf_ok _ _ _ _ Hwf) (wf_dup _ _ _ _ Hwf) (wf_place _ _ _ _ Hwf) Hcount) as Hshape.
+    change (r = lookup_val (probe cap (bucket k cap) tags keys vals k)) in Hr.
+    destruct (probe cap (bucket k cap) tags keys vals k) as [idx v|idx]; simpl in *; subst r.
+    - iSplit; [by rewrite Hshape|].
+      iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), (LitV (LitObj ok)),
+        (LitV (LitObj ov)), tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
+    - destruct Hshape as (_ & _ & _ & Hnone).
+      iSplit; [by rewrite Hnone|].
+      iExists o, (Z.of_nat (count_occ tags)), (LitV (LitObj ot)), (LitV (LitObj ok)),
+        (LitV (LitObj ov)), tags, keys, vals. unfold is_hm_slots. iFrame. repeat iSplit; done.
+  Qed.
+
   Lemma is_hashmap_obj m cap a :
     is_hashmap m cap a -∗ ∃ o, ⌜ a = LitV (LitObj o) ⌝ ∗ is_hashmap m cap a.
   Proof.
@@ -2855,9 +2667,9 @@ Section hash_map.
     iApply (wp_bind [AppLCtx (Val (StructV [LitV (LitObj o); LitV (LitInt k)]))]).
     iApply wp_rec. iIntros "!> _". iApply wp_app. simpl. hm_admin.
     try hm_take. hm_admin. iApply (wp_wand with "[Hm]").
-    { iApply (probe_spec with "Hm"). }
-    iIntros (r) "(%found & %idx & %v & %Hr & %Hlookup & %Hzero & Hm)". subst r.
-    hm_pure. rewrite Hlookup. destruct found; simpl; iFrame; done.
+    { iApply (lookup_spec with "Hm"). }
+    iIntros (r) "[%Hr Hm]". subst r.
+    destruct (m !! k) as [v|]; hm_pure; iFrame; done.
   Qed.
 
   Lemma get_spec m cap (a : val_cjr) (k : Z) :
@@ -2873,11 +2685,8 @@ Section hash_map.
     iApply (wp_bind [AppLCtx (Val (StructV [LitV (LitObj o); LitV (LitInt k)]))]).
     iApply wp_rec. iIntros "!> _". iApply wp_app. simpl. hm_admin.
     try hm_take. hm_admin. iApply (wp_wand with "[Hm]").
-    { iApply (probe_spec with "Hm"). }
-    iIntros (r) "(%found & %idx & %v & %Hr & %Hlookup & %Hzero & Hm)". subst r.
-    hm_pure. rewrite Hlookup. destruct found; simpl; iFrame.
-    - done.
-    - rewrite (Hzero eq_refl). done.
+    { iApply (lookup_spec with "Hm"). }
+    iIntros (r) "[%Hr Hm]". iFrame. done.
   Qed.
 
   Lemma grow_spec m cap (a : val_cjr) (minCap : nat) :
