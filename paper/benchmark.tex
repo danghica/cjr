@@ -17,7 +17,7 @@ Each of the four generated source files was compiled with a
 Cangjie benchmark test containing both implementations.  The executable
 ran in three independent processes, sequentially, with seven samples of
 each implementation at each size in each process.  The 36 workload/size
-points therefore produced 1,512 timed samples. The only relevant generated-code change since the baseline was the explicit panic branch for invalid array-list indexes; benchmark inputs use only valid indexes.  Both implementations were
+points therefore produced 1,512 timed samples. The measured generated code included bounds-error branches for array-list accesses; those checks have since been removed. Benchmark inputs use only valid indexes, but the reported timings describe the measured revision.  Both implementations were
 warmed up, and their batch sizes were calibrated independently toward
 20 milliseconds.  Allocating workloads were capped at $262144/n$
 repetitions; other workloads at 65,536.  The shortest observed batch was

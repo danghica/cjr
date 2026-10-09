@@ -175,3 +175,19 @@ input requires the initialized array representation. The final result is
 exactly the checked functional sort-and-scan result. The representative
 assumption audit includes 73 theorems; the printer and native compiler
 remain outside the CJR semantic correctness theorem.
+
+## Unchecked array-list get — 9 October 2026
+
+Array-list `get` now reads the backing buffer directly. Its Iris specification still requires an existing element (`xs !! i = Some x`); the proof preserves the array-list representation. `set` and `remove` retain their range checks and explicit panic branches. The former invalid-get exception test was removed because unchecked `get` no longer promises that behavior.
+
+Both affected generated programs were regenerated from `cj_bundle` and compiled with Cangjie 1.0.5. All eight array-list cases and all six array-list sorting cases passed (14 total, no failures or errors). The SDK compatibility stubs used for linking were prepared in `/private/tmp/cjr-get-sdk`, outside the repository.
+
+`make -j2 all` completed successfully, including the dependent sorting and most-frequent proofs and `verify_assumptions.v`. The assumption checks printed “Closed under the global context”. `make check-no-cheats` and `git diff --check` also passed.
+
+## Removal of the panic operation — 9 October 2026
+
+The `Panic` constructor and its substitution and printing cases have been removed from CJR. Array-list `get`, `set`, and `remove` now access the backing buffer without bounds checks; their proved contracts retain valid-index preconditions. The unused range-check lemma and error alias were deleted, and the invalid-set and invalid-remove exception tests were removed. Earlier sections of this report describe historical versions.
+
+All 16 generated programs were regenerated from `cj_bundle` and compiled with Cangjie 1.0.5. Their 62 runtime tests passed with no failures or errors. No current Coq source or generated Cangjie file contains the panic operation. The language, array-list, and sorting proof modules also passed independent `coqchk` kernel checking. The source scan for admissions and declared axioms and `git diff --check` passed.
+
+The full `make -j2 all` build completed successfully, including every dependent proof and `verify_assumptions.v`; the assumption audit reported the checked theorems closed under the global context.

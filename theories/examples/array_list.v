@@ -6,10 +6,9 @@ length, and a version. The live prefix is the mathematical list; the tail is
 zero, which is what [Alloc] writes and what [remove] writes back.
 
 [Alloc] of zero words is stuck, so the only constructor is the default one,
-capacity 16. There is no shift, so [grow] doubles with addition. An index
-outside [0, size) executes [Panic], which is stuck in the CJR semantics and is
-printed as a Cangjie exception raise. Every proved specification takes the
-in-range arm.
+capacity 16. There is no shift, so [grow] doubles with addition. [get], [set],
+and [remove] access the backing buffer without range checks. Their proved
+specifications require an index in [0, size).
 [set] does not bump the version; [add] and [remove] do. The old block is
 dropped on [grow]: the source relies on collection, which this language does
 not have. *)
@@ -313,8 +312,6 @@ Section array_list.
       ObjId o ↦ₒ[2] LitV (LitInt ver) ∗
       is_buf (slots_of xs cap) buf.
 
-  Definition oob : expr := Panic.
-
   Definition sload (li : Z) : expr := StackLoad (Val (LitV (LitStack li))).
 
   Definition copy_vars : expr :=
@@ -371,25 +368,6 @@ Section array_list.
     iIntros "!> _". iApply "H".
   Qed.
 
-  Lemma wp_range_ok (n i : Z) (eok : expr) Φ :
-    (0 ≤ i)%Z → (i < n)%Z →
-    WP eok {{ Φ }} ⊢
-    WP If (Val (LitV (LitInt n)) ≤ Val (LitV (LitInt i))) oob
-         (If (Val (LitV (LitInt i)) ≤ Val (LitV (LitInt (Z.opp 1)))) oob eok) {{ Φ }}.
-  Proof.
-    iIntros (H0 Hi) "H".
-    iApply (wp_bind [IfCtx oob
-      (If (Val (LitV (LitInt i)) ≤ Val (LitV (LitInt (Z.opp 1)))) oob eok)]).
-    iApply wp_binop.
-    { simpl. rewrite bool_decide_eq_false_2; [reflexivity|lia]. }
-    iIntros "!> _".
-    iApply wp_if_false.
-    iApply (wp_bind [IfCtx oob eok]).
-    iApply wp_binop.
-    { simpl. rewrite bool_decide_eq_false_2; [reflexivity|lia]. }
-    iIntros "!> _".
-    iApply wp_if_false. iApply "H".
-  Qed.
 
   Lemma array_cells_cons base x xs :
     array_cells base (x :: xs) ⊣⊢
@@ -794,12 +772,9 @@ Section array_list.
   Definition al_get_body : expr :=
     Let (Some "a") (StructLoad (Var "args") 0)
       (Let (Some "i") (StructLoad (Var "args") 1)
-        (Let (Some "n") (FieldLoad (Var "a") 1)
-          (If (Var "n" ≤ Var "i") oob
-            (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-              (Let (Some "buf") (FieldLoad (Var "a") 0)
-                (Let (Some "p") (FieldLoad (Var "buf") 1)
-                  (Load (Offset (Var "p") (Var "i"))))))))).
+        (Let (Some "buf") (FieldLoad (Var "a") 0)
+          (Let (Some "p") (FieldLoad (Var "buf") 1)
+            (Load (Offset (Var "p") (Var "i")))))).
 
   Definition call_al_get (a : val_cjr) (i : Z) : expr :=
     App (Rec None (Some "args") al_get_body)
@@ -809,12 +784,9 @@ Section array_list.
     Let (Some "a") (StructLoad (Var "args") 0)
       (Let (Some "i") (StructLoad (Var "args") 1)
         (Let (Some "x") (StructLoad (Var "args") 2)
-          (Let (Some "n") (FieldLoad (Var "a") 1)
-            (If (Var "n" ≤ Var "i") oob
-              (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-                (Let (Some "buf") (FieldLoad (Var "a") 0)
-                  (Let (Some "p") (FieldLoad (Var "buf") 1)
-                    (Store (Offset (Var "p") (Var "i")) (Var "x"))))))))).
+          (Let (Some "buf") (FieldLoad (Var "a") 0)
+            (Let (Some "p") (FieldLoad (Var "buf") 1)
+              (Store (Offset (Var "p") (Var "i")) (Var "x")))))).
 
   Definition call_al_set (a : val_cjr) (i x : Z) : expr :=
     App (Rec None (Some "args") al_set_body)
@@ -957,37 +929,19 @@ Section array_list.
     iApply wp_app. simpl.
     iApply (wp_bind [LetCtx (Some "a")
       (Let (Some "i") (StructLoad (Val arg) 1)
-        (Let (Some "n") (FieldLoad (Var "a") 1)
-          (If (Var "n" ≤ Var "i") oob
-            (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-              (Let (Some "buf") (FieldLoad (Var "a") 0)
-                (Let (Some "p") (FieldLoad (Var "buf") 1)
-                  (Load (Offset (Var "p") (Var "i")))))))))]).
+        (Let (Some "buf") (FieldLoad (Var "a") 0)
+          (Let (Some "p") (FieldLoad (Var "buf") 1)
+            (Load (Offset (Var "p") (Var "i"))))))]).
     iApply (wp_struct_load _ 0 (LitV (LitObj o))); [done|].
     iIntros "!> _".
     iApply wp_let. simpl.
     iApply (wp_bind [LetCtx (Some "i")
-      (Let (Some "n") (FieldLoad (Val (LitV (LitObj o))) 1)
-        (If (Var "n" ≤ Var "i") oob
-          (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-            (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-              (Let (Some "p") (FieldLoad (Var "buf") 1)
-                (Load (Offset (Var "p") (Var "i"))))))))]).
+      (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
+        (Let (Some "p") (FieldLoad (Var "buf") 1)
+          (Load (Offset (Var "p") (Var "i")))))]).
     iApply (wp_struct_load _ 1 (LitV (LitInt (Z.of_nat i)))); [done|].
     iIntros "!> _".
     iApply wp_let. simpl.
-    iApply (wp_bind [LetCtx (Some "n")
-      (If (BinOp LeOp (Var "n") (Val (LitV (LitInt (Z.of_nat i))))) oob
-        (If (BinOp LeOp (Val (LitV (LitInt (Z.of_nat i)))) (Val (LitV (LitInt (Z.opp 1))))) oob
-          (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-            (Let (Some "p") (FieldLoad (Var "buf") 1)
-              (Load (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i))))))))))]).
-    iApply (wp_field_load with "Hsz").
-    iIntros "!> _ Hsz".
-    iApply wp_let. simpl.
-    iApply wp_range_ok.
-    { apply Nat2Z.is_nonneg. }
-    { apply Nat2Z.inj_lt. eapply lookup_lt_Some. exact Hi. }
     iApply (wp_bind [LetCtx (Some "buf")
       (Let (Some "p") (FieldLoad (Var "buf") 1)
         (Load (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i)))))))]).
@@ -1030,49 +984,27 @@ Section array_list.
     iApply (wp_bind [LetCtx (Some "a")
       (Let (Some "i") (StructLoad (Val arg) 1)
         (Let (Some "x") (StructLoad (Val arg) 2)
-          (Let (Some "n") (FieldLoad (Var "a") 1)
-            (If (Var "n" ≤ Var "i") oob
-              (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-                (Let (Some "buf") (FieldLoad (Var "a") 0)
-                  (Let (Some "p") (FieldLoad (Var "buf") 1)
-                    (Store (Offset (Var "p") (Var "i")) (Var "x")))))))))]).
+          (Let (Some "buf") (FieldLoad (Var "a") 0)
+            (Let (Some "p") (FieldLoad (Var "buf") 1)
+              (Store (Offset (Var "p") (Var "i")) (Var "x"))))))]).
     iApply (wp_struct_load _ 0 (LitV (LitObj o))); [done|].
     iIntros "!> _".
     iApply wp_let. simpl.
     iApply (wp_bind [LetCtx (Some "i")
       (Let (Some "x") (StructLoad (Val arg) 2)
-        (Let (Some "n") (FieldLoad (Val (LitV (LitObj o))) 1)
-          (If (Var "n" ≤ Var "i") oob
-            (If (Var "i" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-              (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-                (Let (Some "p") (FieldLoad (Var "buf") 1)
-                  (Store (Offset (Var "p") (Var "i")) (Var "x"))))))))]).
+        (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
+          (Let (Some "p") (FieldLoad (Var "buf") 1)
+            (Store (Offset (Var "p") (Var "i")) (Var "x")))))]).
     iApply (wp_struct_load _ 1 (LitV (LitInt (Z.of_nat i)))); [done|].
     iIntros "!> _".
     iApply wp_let. simpl.
     iApply (wp_bind [LetCtx (Some "x")
-      (Let (Some "n") (FieldLoad (Val (LitV (LitObj o))) 1)
-        (If (BinOp LeOp (Var "n") (Val (LitV (LitInt (Z.of_nat i))))) oob
-          (If (BinOp LeOp (Val (LitV (LitInt (Z.of_nat i)))) (Val (LitV (LitInt (Z.opp 1))))) oob
-            (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-              (Let (Some "p") (FieldLoad (Var "buf") 1)
-                (Store (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i))))) (Var "x")))))))]).
+      (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
+        (Let (Some "p") (FieldLoad (Var "buf") 1)
+          (Store (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i))))) (Var "x"))))]).
     iApply (wp_struct_load _ 2 (LitV (LitInt x))); [done|].
     iIntros "!> _".
     iApply wp_let. simpl.
-    iApply (wp_bind [LetCtx (Some "n")
-      (If (BinOp LeOp (Var "n") (Val (LitV (LitInt (Z.of_nat i))))) oob
-        (If (BinOp LeOp (Val (LitV (LitInt (Z.of_nat i)))) (Val (LitV (LitInt (Z.opp 1))))) oob
-          (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-            (Let (Some "p") (FieldLoad (Var "buf") 1)
-              (Store (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i)))))
-                (Val (LitV (LitInt x))))))))]).
-    iApply (wp_field_load with "Hsz").
-    iIntros "!> _ Hsz".
-    iApply wp_let. simpl.
-    iApply wp_range_ok.
-    { apply Nat2Z.is_nonneg. }
-    { apply Nat2Z.inj_lt. exact Hlt. }
     iApply (wp_bind [LetCtx (Some "buf")
       (Let (Some "p") (FieldLoad (Var "buf") 1)
         (Store (Offset (Var "p") (Val (LitV (LitInt (Z.of_nat i)))))
@@ -1877,34 +1809,30 @@ Lemma grow_open_eq (ao : loc) (newCap src len : Z) :
 
   Definition remove_core : expr :=
     Let (Some "n") (FieldLoad (Var "a") 1)
-      (If (Var "n" ≤ Var "at") oob
-        (If (Var "at" ≤ Val (LitV (LitInt (Z.opp 1)))) oob
-          (Let (Some "buf") (FieldLoad (Var "a") 0)
-            (Let (Some "p") (FieldLoad (Var "buf") 1)
-              (Let (Some "removed") (Load (Offset (Var "p") (Var "at")))
-                (Let (Some "src") (Var "p")
-                  (Let (Some "dst") (Var "p")
-                    (Let (Some "soff") ((Var "at") + (Val (LitV (LitInt 1))))
-                      (Let (Some "doff") (Var "at")
-                        (Let (Some "len") (((Var "n") - (Var "at")) - (Val (LitV (LitInt 1))))
-                          (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
-                            (remove_tail_var)))))))))))).
+      (Let (Some "buf") (FieldLoad (Var "a") 0)
+        (Let (Some "p") (FieldLoad (Var "buf") 1)
+          (Let (Some "removed") (Load (Offset (Var "p") (Var "at")))
+            (Let (Some "src") (Var "p")
+              (Let (Some "dst") (Var "p")
+                (Let (Some "soff") ((Var "at") + (Val (LitV (LitInt 1))))
+                  (Let (Some "doff") (Var "at")
+                    (Let (Some "len") (((Var "n") - (Var "at")) - (Val (LitV (LitInt 1))))
+                      (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
+                        (remove_tail_var)))))))))).
 
   Definition remove_open (ao : loc) (j : Z) : expr :=
     Let (Some "n") (FieldLoad (Val (LitV (LitObj ao))) 1)
-      (If ((Var "n") ≤ (Val (LitV (LitInt j)))) oob
-        (If ((Val (LitV (LitInt j))) ≤ (Val (LitV (LitInt (Z.opp 1))))) oob
-          (Let (Some "buf") (FieldLoad (Val (LitV (LitObj ao))) 0)
-            (Let (Some "p") (FieldLoad (Var "buf") 1)
-              (Let (Some "removed") (Load (Offset (Var "p") (Val (LitV (LitInt j)))))
-                (Let (Some "src") (Var "p")
-                  (Let (Some "dst") (Var "p")
-                    (Let (Some "soff") ((Val (LitV (LitInt j))) + (Val (LitV (LitInt 1))))
-                      (Let (Some "doff") (Val (LitV (LitInt j)))
-                        (Let (Some "len")
-                          (((Var "n") - (Val (LitV (LitInt j)))) - (Val (LitV (LitInt 1))))
-                          (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
-                            (remove_tail ao)))))))))))).
+      (Let (Some "buf") (FieldLoad (Val (LitV (LitObj ao))) 0)
+        (Let (Some "p") (FieldLoad (Var "buf") 1)
+          (Let (Some "removed") (Load (Offset (Var "p") (Val (LitV (LitInt j)))))
+            (Let (Some "src") (Var "p")
+              (Let (Some "dst") (Var "p")
+                (Let (Some "soff") ((Val (LitV (LitInt j))) + (Val (LitV (LitInt 1))))
+                  (Let (Some "doff") (Val (LitV (LitInt j)))
+                    (Let (Some "len")
+                      (((Var "n") - (Val (LitV (LitInt j)))) - (Val (LitV (LitInt 1))))
+                      (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
+                        (remove_tail ao)))))))))).
 
   Lemma remove_bridge (ao : loc) (j : Z) :
     subst "at" (LitV (LitInt j)) (subst "a" (LitV (LitObj ao)) remove_core) =
@@ -1940,26 +1868,21 @@ Lemma grow_open_eq (ao : loc) (newCap src len : Z) :
     iEval (rewrite (slots_length xs cap Hlen)) in "Hblk".
     rewrite /remove_open.
     iApply (wp_bind [LetCtx (Some "n")
-      (If (BinOp LeOp (Var "n") (Val (LitV (LitInt jZ)))) oob
-        (If (BinOp LeOp (Val (LitV (LitInt jZ))) (Val (LitV (LitInt (Z.opp 1))))) oob
-          (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
-            (Let (Some "p") (FieldLoad (Var "buf") 1)
-              (Let (Some "removed") (Load (Offset (Var "p") (Val (LitV (LitInt jZ)))))
-                (Let (Some "src") (Var "p")
-                  (Let (Some "dst") (Var "p")
-                    (Let (Some "soff") (BinOp PlusOp (Val (LitV (LitInt jZ))) (Val (LitV (LitInt 1))))
-                      (Let (Some "doff") (Val (LitV (LitInt jZ)))
-                        (Let (Some "len")
-                          (BinOp MinusOp
-                            (BinOp MinusOp (Var "n") (Val (LitV (LitInt jZ))))
-                            (Val (LitV (LitInt 1))))
-                          (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
-                            (remove_tail o))))))))))))]).
+      (Let (Some "buf") (FieldLoad (Val (LitV (LitObj o))) 0)
+        (Let (Some "p") (FieldLoad (Var "buf") 1)
+          (Let (Some "removed") (Load (Offset (Var "p") (Val (LitV (LitInt jZ)))))
+            (Let (Some "src") (Var "p")
+              (Let (Some "dst") (Var "p")
+                (Let (Some "soff") (BinOp PlusOp (Val (LitV (LitInt jZ))) (Val (LitV (LitInt 1))))
+                  (Let (Some "doff") (Val (LitV (LitInt jZ)))
+                    (Let (Some "len")
+                      (BinOp MinusOp
+                        (BinOp MinusOp (Var "n") (Val (LitV (LitInt jZ))))
+                        (Val (LitV (LitInt 1))))
+                      (Let None (VarBind "i" (Val (LitV (LitInt 0))) copy_vars)
+                        (remove_tail o))))))))))]).
     iApply (wp_field_load with "Hsz").
     iIntros "!> _ Hsz". Opaque remove_tail. iApply wp_let. simpl.
-    iApply wp_range_ok.
-    { apply Nat2Z.is_nonneg. }
-    { apply Nat2Z.inj_lt. exact Hj. }
     iApply (wp_bind [LetCtx (Some "buf")
       (Let (Some "p") (FieldLoad (Var "buf") 1)
         (Let (Some "removed") (Load (Offset (Var "p") (Val (LitV (LitInt jZ)))))

@@ -36,33 +36,15 @@ class ArrayList {
     }
 
     public func get(i: Int64): Int64 {
-        let n = this.mySize
-        if (n <= i) {
-            throw Exception("CJR panic")
-        } else {
-            if (i <= -1) {
-                throw Exception("CJR panic")
-            } else {
-                let buf = this.myData
-                let p = buf.data
-                unsafe { (p + i).read() }
-            }
-        }
+        let buf = this.myData
+        let p = buf.data
+        unsafe { (p + i).read() }
     }
 
     public func set(i: Int64, x: Int64): Unit {
-        let n = this.mySize
-        if (n <= i) {
-            throw Exception("CJR panic")
-        } else {
-            if (i <= -1) {
-                throw Exception("CJR panic")
-            } else {
-                let buf = this.myData
-                let p = buf.data
-                unsafe { (p + i).write(x) }
-            }
-        }
+        let buf = this.myData
+        let p = buf.data
+        unsafe { (p + i).write(x) }
     }
 
     public func grow(min: Int64): Unit {

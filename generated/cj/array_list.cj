@@ -41,33 +41,15 @@ class ArrayList {
     }
 
     public func get(i: Int64): Int64 {
-        let n = this.mySize
-        if (n <= i) {
-            throw Exception("CJR panic")
-        } else {
-            if (i <= -1) {
-                throw Exception("CJR panic")
-            } else {
-                let buf = this.myData
-                let p = buf.data
-                unsafe { (p + i).read() }
-            }
-        }
+        let buf = this.myData
+        let p = buf.data
+        unsafe { (p + i).read() }
     }
 
     public func set(i: Int64, x: Int64): Unit {
-        let n = this.mySize
-        if (n <= i) {
-            throw Exception("CJR panic")
-        } else {
-            if (i <= -1) {
-                throw Exception("CJR panic")
-            } else {
-                let buf = this.myData
-                let p = buf.data
-                unsafe { (p + i).write(x) }
-            }
-        }
+        let buf = this.myData
+        let p = buf.data
+        unsafe { (p + i).write(x) }
     }
 
     public func grow(min: Int64): Unit {
@@ -108,33 +90,25 @@ class ArrayList {
 
     public func remove(at: Int64): Int64 {
         let n = this.mySize
-        if (n <= at) {
-            throw Exception("CJR panic")
-        } else {
-            if (at <= -1) {
-                throw Exception("CJR panic")
-            } else {
-                let buf = this.myData
-                let p = buf.data
-                let removed = unsafe { (p + at).read() }
-                let src = p
-                let dst = p
-                let soff = at + 1
-                let doff = at
-                let len = (n - at) - 1
-                var i = 0
-                while ((i + 1) <= len) {
-                    unsafe { (dst + (i + doff)).write(unsafe { (src + (i + soff)).read() }) }
-                    i = i + 1
-                }
-                let last = n - 1
-                unsafe { (p + last).write(0) }
-                this.mySize = last
-                let ver = this.myVersion
-                this.myVersion = ver + 1
-                removed
-            }
+        let buf = this.myData
+        let p = buf.data
+        let removed = unsafe { (p + at).read() }
+        let src = p
+        let dst = p
+        let soff = at + 1
+        let doff = at
+        let len = (n - at) - 1
+        var i = 0
+        while ((i + 1) <= len) {
+            unsafe { (dst + (i + doff)).write(unsafe { (src + (i + soff)).read() }) }
+            i = i + 1
         }
+        let last = n - 1
+        unsafe { (p + last).write(0) }
+        this.mySize = last
+        let ver = this.myVersion
+        this.myVersion = ver + 1
+        removed
     }
 }
 

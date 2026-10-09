@@ -77,7 +77,6 @@ Definition lit_beq (a b : base_lit) : bool :=
 
 Fixpoint expr_beq (a b : expr) {struct a} : bool :=
   match a, b with
-  | Panic, Panic => true
   | Val v, Val w => val_beq v w
   | Var x, Var y => String.eqb x y
   | Rec f x e, Rec g y e' => binder_beq f g && binder_beq x y && expr_beq e e'
@@ -140,7 +139,6 @@ with val_beq (a b : val) {struct a} : bool :=
 
 Fixpoint rename_ptr (l : Z) (x : string) (e : expr) : expr :=
   match e with
-  | Panic => Panic
   | Val (LitV (LitPtr l')) => if Z.eqb l l' then Var x else e
   | Val _ | Var _ => e
   | Rec f y e1 => Rec f y (rename_ptr l x e1)
@@ -460,7 +458,6 @@ Fixpoint ex (env : penv) (ind : string) (e : expr) {struct e} : string :=
   | Some k => fn_name k +++ "()"
   | None =>
   match e with
-  | Panic => "throw Exception(""CJR panic"")"
   | Val v => exv env ind v
   | Var x => var_name env x
   | Rec None x body =>
