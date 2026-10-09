@@ -22,6 +22,17 @@ make verify    # optional: coqchk + Print Assumptions audit (see Makefile.local-
 
 Coq is invoked with `-w +admitted-proof` (and a few other promoted warnings in `_CoqProject`), and `make verify` additionally rejects `Admitted` and declared `Axiom` bypasses in the source. We do not use `-w +all` here: on Coq 8.20 it turns a benign Iris/stdlib `Fin.vo` notice into a build error. `make verify` runs `coqchk` on all `.vo` files (Coq 8.20 has no `--admit-opaque` switch; opaque `Qed` proofs are checked unless you pass `-admit`) and checks that representative adequacy theorems print **Closed under the global context** (`theories/verify_assumptions.v`).
 
+`make verify` streams its complete build and check output to the terminal and
+`build/verify.log`, with UTC start/end times and the exit status. The latest log
+is version controlled; include it in commits after verification. Logging does
+not change a failed check into a successful one. Override the destination with
+`make verify VERIFY_LOG=/path/to/verify.log` for temporary runs.
+
+User prompts are recorded in `logs/prompts.txt` with UTC recording timestamps.
+Repository agent guidance requests logging each new prompt using
+`python3 scripts/log_prompt.py` with its exact text on standard input. This is
+an agent workflow, not a desktop-wide prompt interception hook.
+
 ## Layout
 
 - `theories/lang.v` — syntax, three-region state, small-step semantics

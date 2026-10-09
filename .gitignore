@@ -3,6 +3,7 @@ Makefile.conf
 .coqdeps.d
 .Makefile.d
 *.log
+!build/verify.log
 *.out
 *.toc
 *.fls

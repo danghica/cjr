@@ -1,0 +1,6 @@
+[2026-10-09T07:44:05+00:00]
+lets add two small instrumentations: 1. the output of the make verify should be logged and committed to github.
+
+[2026-10-09T07:44:05+00:00]
+2. log my prompt in a text file with a time stamp.
+

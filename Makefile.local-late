@@ -4,10 +4,21 @@
 # make check-proofs / make check-axioms: run those steps alone.
 
 ASSUMPTIONS_LOG := build/assumptions.log
+VERIFY_LOG ?= build/verify.log
 VERIFY_THEOREMS := 88
 
-.PHONY: verify check-proofs check-axioms check-no-cheats
-verify: all check-no-cheats check-proofs check-axioms
+.PHONY: verify verify-checks check-proofs check-axioms check-no-cheats
+# A recursive make keeps all build/check output inside the log and preserves
+# the parallel jobserver. pipefail prevents tee from hiding a failed check.
+verify: SHELL := /bin/bash
+verify:
+	+@set -o pipefail; mkdir -p "$(dir $(VERIFY_LOG))" || exit $$?; \
+	{ printf 'make verify started: %s\n' "$$(date -u '+%Y-%m-%dT%H:%M:%SZ')"; \
+	  $(MAKE) --no-print-directory verify-checks; status=$$?; \
+	  printf 'make verify finished: %s (exit status %s)\n' "$$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$$status"; \
+	  exit $$status; } 2>&1 | tee "$(VERIFY_LOG)"
+
+verify-checks: all check-no-cheats check-proofs check-axioms
 
 check-no-cheats:
 	@echo "Checking for Admitted / Axiom / cheat in theories/*.v..."

@@ -1,0 +1,25 @@
+make verify started: 2026-10-09T07:44:05Z
+Checking for Admitted / Axiom / cheat in theories/*.v...
+make[2]: Nothing to be done for `real-all'.
+Print Assumptions audit (theories/verify_assumptions.v)...
+"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
+coqchk on 25 .vo files...
+"coqchk" -silent -o  -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo theories/examples/arith.vo theories/examples/struct_upd.vo theories/examples/cell.vo theories/examples/swap.vo theories/examples/sum_block.vo theories/examples/class_upd.vo theories/examples/frame_call.vo theories/examples/vtable.vo theories/examples/list.vo theories/examples/list_rev.vo theories/examples/array.vo theories/examples/array_list.vo theories/examples/qsort.vo theories/examples/hm_tactics.vo theories/examples/hash_map.vo theories/examples/mf_memory.vo theories/examples/most_frequent.vo theories/examples/cj_print.vo theories/examples/emit_cj.vo theories/verify_assumptions.vo
+Assumption audit OK (88/88 theorems closed).
+
+CONTEXT SUMMARY
+===============
+
+* Theory: Set is predicative
+  
+* Theory: Rewrite rules are not allowed
+  
+* Axioms: <none>
+  
+* Constants/Inductives relying on type-in-type: <none>
+  
+* Constants/Inductives relying on unsafe (co)fixpoints: <none>
+  
+* Inductives whose positivity is assumed: <none>
+  
+make verify finished: 2026-10-09T07:47:12Z (exit status 0)
