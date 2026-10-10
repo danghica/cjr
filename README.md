@@ -188,3 +188,9 @@ For each newly synthesized program or substantial iteration, manual auditing is 
 HashMap reads use a separately verified bounded while loop that returns an option directly; insertion and removal retain the slot-aware probe. The printer emits `calloc` for primitive allocation, matching the core's zero-filled memory on successful native allocations.
 
 ArrayList growth and suffix removal retain their proved CJR copy loops. The printer recognizes these exact method bodies and lowers their disjoint or left-overlapping copies to native `memmove`, with a positive-length guard. Other forward-copy loops are unchanged. Native tests cover repeated front-removal/append cycles, middle removal after growth, zeroed tails, and empty copies.
+
+## Quadtree example
+
+The self-contained integer-point example lives in [quadtree/](quadtree/README.md).
+Its offline report is [quadtree/index.html](quadtree/index.html); regenerate all
+artifacts with `make quadtree-report`.

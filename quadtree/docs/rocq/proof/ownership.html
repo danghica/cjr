@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>proof/ownership.v — Rocq Readable</title><link rel="stylesheet" href="../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<p><a href="../index.html">Project index</a></p>
+<h1>proof/ownership.v</h1><p class="meta">15 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><p class="notice">Incomplete rendering: 77 unsupported or unmapped constructs. Original syntax is retained where needed.</p><nav aria-label="Declarations"><ul><li><a href="#symbol-1c32a04a7f040504a09ddd6c">iv</a> <span class="count">definition</span></li><li><a href="#symbol-34f3b3718086e8a22e717e1e">bv</a> <span class="count">definition</span></li><li><a href="#symbol-84c6c228763456f9a52559f9">ov</a> <span class="count">definition</span></li><li><a href="#symbol-890ddcc7269dffe2cac84785">uv</a> <span class="count">definition</span></li><li><a href="#symbol-ae25a46dcebe29e8f68a071d">node_values</a> <span class="count">definition</span></li><li><a href="#symbol-2cfc3e78193e8c0cfd91e503">fields</a> <span class="count">definition</span></li><li><a href="#symbol-9ee68c7f7900c58141fb703b">node_rep</a> <span class="count">recursive function</span></li><li><a href="#symbol-6d0822c61fb5df78091b9cf4">point_list</a> <span class="count">recursive function</span></li><li><a href="#symbol-d5821e91008012f75b2bd5dc">tree_rep</a> <span class="count">definition</span></li><li><a href="#symbol-f2b317fea7fd19e7fc53ac23">is_quadtree</a> <span class="count">definition</span></li><li><a href="#symbol-95d93a5538af2a6bc3a78333">fields_lookup</a> <span class="count">lemma</span></li><li><a href="#symbol-edf7c0658d7629c292bd433f">fields_update</a> <span class="count">lemma</span></li><li><a href="#symbol-86bbfb3c5b6abd1174baeb85">tree_domain</a> <span class="count">lemma</span></li><li><a href="#symbol-89bf1b9ca2458b2af1acc47a">point_list_object</a> <span class="count">lemma</span></li><li><a href="#symbol-54eb8c5515663e53449f776c">node_rep_object</a> <span class="count">lemma</span></li></ul></nav><article id="symbol-1c32a04a7f040504a09ddd6c"><h2>iv</h2><p class="meta">cjr.quadtree.proof.ownership.iv</p><pre class="pseudocode">definition iv:
+    parameter(<span id="symbol-1c32a04a7f040504a09ddd6c-binder-373">z</span>, type(<span class="external" title="External or unresolved: Z">Z</span>))
+    body:
+        <span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitInt">LitInt</span>(<a href="#symbol-1c32a04a7f040504a09ddd6c-binder-373">z</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition iv (z : Z) := LitV (LitInt z).</pre></details></article><article id="symbol-34f3b3718086e8a22e717e1e"><h2>bv</h2><p class="meta">cjr.quadtree.proof.ownership.bv</p><pre class="pseudocode">definition bv:
+    parameter(<span id="symbol-34f3b3718086e8a22e717e1e-binder-415">b</span>, type(<span class="external" title="External or unresolved: bool">bool</span>))
+    body:
+        <span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitBool">LitBool</span>(<a href="#symbol-34f3b3718086e8a22e717e1e-binder-415">b</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition bv (b : bool) := LitV (LitBool b).</pre></details></article><article id="symbol-84c6c228763456f9a52559f9"><h2>ov</h2><p class="meta">cjr.quadtree.proof.ownership.ov</p><pre class="pseudocode">definition ov:
+    parameter(<span id="symbol-84c6c228763456f9a52559f9-binder-461">o</span>, type(<span class="external" title="External or unresolved: Z">Z</span>))
+    body:
+        <span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitObj">LitObj</span>(<a href="#symbol-84c6c228763456f9a52559f9-binder-461">o</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition ov (o : Z) := LitV (LitObj o).</pre></details></article><article id="symbol-890ddcc7269dffe2cac84785"><h2>uv</h2><p class="meta">cjr.quadtree.proof.ownership.uv</p><pre class="pseudocode">definition uv:
+    body:
+        <span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitUnit">LitUnit</span>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition uv := LitV LitUnit.</pre></details></article><article id="symbol-ae25a46dcebe29e8f68a071d"><h2>node_values</h2><p class="meta">cjr.quadtree.proof.ownership.node_values</p><pre class="pseudocode">definition node_values:
+    parameter(<span id="symbol-ae25a46dcebe29e8f68a071d-binder-543">b</span>, type(<span class="external" title="External or unresolved: rectangle">rectangle</span>))
+    parameter(<span id="symbol-ae25a46dcebe29e8f68a071d-binder-559">tag</span>, type(<span class="external" title="External or unresolved: Z">Z</span>))
+    parameter(<span id="symbol-ae25a46dcebe29e8f68a071d-binder-569">p</span>, type(<a href="../spec/model.html#symbol-6d9c3a6f06dfb982e7da9cb9" title="cjr.quadtree.spec.model.point">point</a>))
+    parameter(<span id="symbol-ae25a46dcebe29e8f68a071d-binder-581">mx</span>, <span id="symbol-ae25a46dcebe29e8f68a071d-binder-584">my</span>, type(<span class="external" title="External or unresolved: Z">Z</span>))
+    parameter(<span id="symbol-ae25a46dcebe29e8f68a071d-binder-593">ll</span>, <span id="symbol-ae25a46dcebe29e8f68a071d-binder-596">lr</span>, <span id="symbol-ae25a46dcebe29e8f68a071d-binder-599">ul</span>, <span id="symbol-ae25a46dcebe29e8f68a071d-binder-602">ur</span>, type(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>))
+    body:
+        notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+            <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-559">tag</a>)
+            items:
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: fst">fst</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-569">p</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: snd">snd</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-569">p</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: xmin">xmin</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-543">b</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: ymin">ymin</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-543">b</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: xmax">xmax</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-543">b</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: ymax">ymax</span>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-543">b</a>))
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-581">mx</a>)
+                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="#symbol-ae25a46dcebe29e8f68a071d-binder-584">my</a>)
+                <a href="#symbol-ae25a46dcebe29e8f68a071d-binder-593">ll</a>
+                <a href="#symbol-ae25a46dcebe29e8f68a071d-binder-596">lr</a>
+                <a href="#symbol-ae25a46dcebe29e8f68a071d-binder-599">ul</a>
+                <a href="#symbol-ae25a46dcebe29e8f68a071d-binder-602">ur</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition node_values (b : rectangle) (tag : Z) (p : point) (mx my : Z) (ll lr ul ur : val_cjr) :=
+  [iv tag;iv (fst p);iv (snd p);iv (xmin b);iv (ymin b);iv (xmax b);iv (ymax b);
+   iv mx;iv my;ll;lr;ul;ur].</pre></details></article><article id="symbol-2cfc3e78193e8c0cfd91e503"><h2>fields</h2><p class="meta">cjr.quadtree.proof.ownership.fields · ownership</p><pre class="pseudocode">definition fields:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-2cfc3e78193e8c0cfd91e503-binder-789">o</span>, type(<span class="external" title="External or unresolved: Z">Z</span>))
+    parameter(<span id="symbol-2cfc3e78193e8c0cfd91e503-binder-797">vs</span>, type(<span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>)))
+    type:
+        <span class="external" title="External or unresolved: iProp">iProp</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)
+    body:
+        notation &quot;[∗ list] _ ↦ _ ∈ _ , _&quot;:
+            <a href="#symbol-2cfc3e78193e8c0cfd91e503-binder-797">vs</a>
+            notation &quot;_ ↦ₒ[ _ ] _&quot;:
+                <span class="external" title="External or unresolved: ObjId">ObjId</span>(<a href="#symbol-2cfc3e78193e8c0cfd91e503-binder-789">o</a>)
+                <a href="#symbol-2cfc3e78193e8c0cfd91e503-binder-843">i</a>
+                <a href="#symbol-2cfc3e78193e8c0cfd91e503-binder-847">v</a>
+            <span id="symbol-2cfc3e78193e8c0cfd91e503-binder-843">i</span>
+            <span id="symbol-2cfc3e78193e8c0cfd91e503-binder-847">v</span></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition fields (o : Z) (vs : list val_cjr) : iProp Σ :=
+  [∗ list] i↦v ∈ vs, ObjId o ↦ₒ[i] v.</pre></details></article><article id="symbol-9ee68c7f7900c58141fb703b"><h2>node_rep</h2><p class="meta">cjr.quadtree.proof.ownership.node_rep · ownership</p><pre class="pseudocode">recursive function node_rep:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-897">d</span>, type(<span class="external" title="External or unresolved: nat">nat</span>))
+    parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-907">b</span>, type(<span class="external" title="External or unresolved: rectangle">rectangle</span>))
+    parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-923">t</span>, type(<span class="external" title="External or unresolved: qtree">qtree</span>))
+    parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-935">n</span>, type(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>))
+    type:
+        <span class="external" title="External or unresolved: iProp">iProp</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)
+    body:
+        match RegularStyle:
+            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-923">t</a>
+            case:
+                patterns(<span id="symbol-9ee68c7f7900c58141fb703b-binder-992">Empty</span>)
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ ∗ _&quot;:
+                        notation &quot;⌜ _ ⌝&quot;:
+                            notation &quot;_ = _&quot;:
+                                <a href="#symbol-9ee68c7f7900c58141fb703b-binder-935">n</a>
+                                <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1005">o</a>)
+                        <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1005">o</a>
+                            <a href="#symbol-ae25a46dcebe29e8f68a071d" title="cjr.quadtree.proof.ownership.node_values">node_values</a>:
+                                <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>
+                                0
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    0
+                                    items(0)
+                                0
+                                0
+                                <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>
+                                <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>
+                                <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>
+                                <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>
+                    binders:
+                        parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1005">o</span>, type(_ (inferred)))
+            case:
+                patterns(<span class="external" title="External or unresolved: Leaf">Leaf</span>(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1085">p</span>))
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ ∗ _&quot;:
+                        notation &quot;⌜ _ ⌝&quot;:
+                            notation &quot;_ = _&quot;:
+                                <a href="#symbol-9ee68c7f7900c58141fb703b-binder-935">n</a>
+                                <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1094">o</a>)
+                        <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1094">o</a>, <a href="#symbol-ae25a46dcebe29e8f68a071d" title="cjr.quadtree.proof.ownership.node_values">node_values</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>, 1, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1085">p</a>, 0, 0, <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>, <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>, <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>, <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>))
+                    binders:
+                        parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1094">o</span>, type(_ (inferred)))
+            case:
+                patterns(<span class="external" title="External or unresolved: Branch">Branch</span>(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1172">ll</span>, <span id="symbol-9ee68c7f7900c58141fb703b-binder-1175">lr</span>, <span id="symbol-9ee68c7f7900c58141fb703b-binder-1178">ul</span>, <span id="symbol-9ee68c7f7900c58141fb703b-binder-1181">ur</span>))
+                match RegularStyle:
+                    <a href="#symbol-9ee68c7f7900c58141fb703b-binder-897">d</a>
+                    case:
+                        patterns(scope nat(0))
+                        notation &quot;False&quot;
+                    case:
+                        patterns(<span class="external" title="External or unresolved: S">S</span>(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1233">h</span>))
+                        notation &quot;∃ _ .. _ , _&quot;:
+                            notation &quot;_ ∗ _&quot;:
+                                notation &quot;⌜ _ ⌝&quot;:
+                                    notation &quot;_ = _&quot;:
+                                        <a href="#symbol-9ee68c7f7900c58141fb703b-binder-935">n</a>
+                                        <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1242">o</a>)
+                                notation &quot;_ ∗ _&quot;:
+                                    <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                                        <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1242">o</a>
+                                        <a href="#symbol-ae25a46dcebe29e8f68a071d" title="cjr.quadtree.proof.ownership.node_values">node_values</a>:
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>
+                                            2
+                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                0
+                                                items(0)
+                                            <a href="../spec/model.html#symbol-b53e4676fdcb6f67ab738744" title="cjr.quadtree.spec.model.midx">midx</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>)
+                                            <a href="../spec/model.html#symbol-9dc1405af4f4633001e1c1c8" title="cjr.quadtree.spec.model.midy">midy</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>)
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1244">a</a>
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1246">c</a>
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1248">e</a>
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1250">f</a>
+                                    notation &quot;_ ∗ _&quot;:
+                                        <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="../spec/model.html#symbol-17184d14abe2ddc6bac15ec2" title="cjr.quadtree.spec.model.child_box">child_box</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>, <span class="external" title="External or unresolved: LL">LL</span>), <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1172">ll</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1244">a</a>)
+                                        notation &quot;_ ∗ _&quot;:
+                                            <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="../spec/model.html#symbol-17184d14abe2ddc6bac15ec2" title="cjr.quadtree.spec.model.child_box">child_box</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>, <span class="external" title="External or unresolved: LR">LR</span>), <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1175">lr</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1246">c</a>)
+                                            notation &quot;_ ∗ _&quot;:
+                                                <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="../spec/model.html#symbol-17184d14abe2ddc6bac15ec2" title="cjr.quadtree.spec.model.child_box">child_box</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>, <span class="external" title="External or unresolved: UL">UL</span>), <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1178">ul</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1248">e</a>)
+                                                <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="../spec/model.html#symbol-17184d14abe2ddc6bac15ec2" title="cjr.quadtree.spec.model.child_box">child_box</a>(<a href="#symbol-9ee68c7f7900c58141fb703b-binder-1233">h</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-907">b</a>, <span class="external" title="External or unresolved: UR">UR</span>), <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1181">ur</a>, <a href="#symbol-9ee68c7f7900c58141fb703b-binder-1250">f</a>)
+                            binders:
+                                parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1242">o</span>, type(_ (inferred)))
+                                parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1244">a</span>, type(_ (inferred)))
+                                parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1246">c</span>, type(_ (inferred)))
+                                parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1248">e</span>, type(_ (inferred)))
+                                parameter(<span id="symbol-9ee68c7f7900c58141fb703b-binder-1250">f</span>, type(_ (inferred)))
+    declaration metadata:
+        {struct t}</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint node_rep (d : nat) (b : rectangle) (t : qtree) (n : val_cjr) {struct t} : iProp Σ :=
+  match t with
+  | Empty =&gt; ∃ o, ⌜n = ov o⌝ ∗ fields o (node_values b 0 (0,0) 0 0 uv uv uv uv)
+  | Leaf p =&gt; ∃ o, ⌜n = ov o⌝ ∗ fields o (node_values b 1 p 0 0 uv uv uv uv)
+  | Branch ll lr ul ur =&gt; match d with
+      | 0%nat =&gt; False
+      | S h =&gt; ∃ o a c e f, ⌜n = ov o⌝ ∗
+          fields o (node_values b 2 (0,0) (midx h b) (midy h b) a c e f) ∗
+          node_rep h (child_box h b LL) ll a ∗ node_rep h (child_box h b LR) lr c ∗
+          node_rep h (child_box h b UL) ul e ∗ node_rep h (child_box h b UR) ur f
+      end
+  end.</pre></details></article><article id="symbol-6d0822c61fb5df78091b9cf4"><h2>point_list</h2><p class="meta">cjr.quadtree.proof.ownership.point_list · ownership</p><pre class="pseudocode">recursive function point_list:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1559">xs</span>, type(<span class="external" title="External or unresolved: list">list</span>(<a href="../spec/model.html#symbol-6d9c3a6f06dfb982e7da9cb9" title="cjr.quadtree.spec.model.point">point</a>)))
+    parameter(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1577">v</span>, type(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>))
+    type:
+        <span class="external" title="External or unresolved: iProp">iProp</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)
+    body:
+        match RegularStyle:
+            <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1559">xs</a>
+            case:
+                patterns:
+                    notation &quot;[ ]&quot;
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ ∗ _&quot;:
+                        notation &quot;⌜ _ ⌝&quot;:
+                            notation &quot;_ = _&quot;:
+                                <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1577">v</a>
+                                <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1634">o</a>)
+                        <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                            <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1634">o</a>
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                <a href="#symbol-34f3b3718086e8a22e717e1e" title="cjr.quadtree.proof.ownership.bv">bv</a>(<span class="external" title="External or unresolved: false">false</span>)
+                                items(<a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(0), <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(0), <a href="#symbol-890ddcc7269dffe2cac84785" title="cjr.quadtree.proof.ownership.uv">uv</a>)
+                    binders:
+                        parameter(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1634">o</span>, type(_ (inferred)))
+            case:
+                patterns:
+                    cons:
+                        notation &quot;( _ , _ , .. , _ )&quot;:
+                            <span id="symbol-6d0822c61fb5df78091b9cf4-binder-1694">x</span>
+                            items(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1696">y</span>)
+                        <span id="symbol-6d0822c61fb5df78091b9cf4-binder-1700">rest</span>
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ ∗ _&quot;:
+                        notation &quot;⌜ _ ⌝&quot;:
+                            notation &quot;_ = _&quot;:
+                                <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1577">v</a>
+                                <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1712">o</a>)
+                        notation &quot;_ ∗ _&quot;:
+                            <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                                <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1712">o</a>
+                                notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                    <a href="#symbol-34f3b3718086e8a22e717e1e" title="cjr.quadtree.proof.ownership.bv">bv</a>(<span class="external" title="External or unresolved: true">true</span>)
+                                    items(<a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1694">x</a>), <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1696">y</a>), <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1714">tail</a>)
+                            <a href="#symbol-6d0822c61fb5df78091b9cf4" title="cjr.quadtree.proof.ownership.point_list">point_list</a>(<a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1700">rest</a>, <a href="#symbol-6d0822c61fb5df78091b9cf4-binder-1714">tail</a>)
+                    binders:
+                        parameter(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1712">o</span>, type(_ (inferred)))
+                        parameter(<span id="symbol-6d0822c61fb5df78091b9cf4-binder-1714">tail</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint point_list (xs : list point) (v : val_cjr) : iProp Σ :=
+  match xs with
+  | [] =&gt; ∃ o, ⌜v = ov o⌝ ∗ fields o [bv false;iv 0;iv 0;uv]
+  | (x,y)::rest =&gt; ∃ o tail, ⌜v = ov o⌝ ∗ fields o [bv true;iv x;iv y;tail] ∗ point_list rest tail
+  end.</pre></details></article><article id="symbol-d5821e91008012f75b2bd5dc"><h2>tree_rep</h2><p class="meta">cjr.quadtree.proof.ownership.tree_rep · ownership</p><pre class="pseudocode">definition tree_rep:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-d5821e91008012f75b2bd5dc-binder-1826">d</span>, type(<span class="external" title="External or unresolved: nat">nat</span>))
+    parameter(<span id="symbol-d5821e91008012f75b2bd5dc-binder-1836">t</span>, type(<span class="external" title="External or unresolved: qtree">qtree</span>))
+    parameter(<span id="symbol-d5821e91008012f75b2bd5dc-binder-1848">v</span>, type(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>))
+    type:
+        <span class="external" title="External or unresolved: iProp">iProp</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)
+    body:
+        notation &quot;_ ∗ _&quot;:
+            notation &quot;⌜ _ ⌝&quot;:
+                notation &quot;_ /\\ _&quot;:
+                    in_scope nat:
+                        notation &quot;_ &lt;= _&quot;:
+                            <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>
+                            30
+                    <a href="../spec/model.html#symbol-cfc9990bed2d941d90174934" title="cjr.quadtree.spec.model.valid">valid</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>, <a href="../spec/model.html#symbol-16bb092dcd6c3b027dacc057" title="cjr.quadtree.spec.model.domain">domain</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>), <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1836">t</a>)
+            notation &quot;∃ _ .. _ , _&quot;:
+                notation &quot;_ ∗ _&quot;:
+                    notation &quot;⌜ _ ⌝&quot;:
+                        notation &quot;_ = _&quot;:
+                            <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1848">v</a>
+                            <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1931">o</a>)
+                    notation &quot;_ ∗ _&quot;:
+                        <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                            <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1931">o</a>
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                <a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<span class="external" title="External or unresolved: Z.of_nat">Z.of_nat</span>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>))
+                                items(<a href="#symbol-1c32a04a7f040504a09ddd6c" title="cjr.quadtree.proof.ownership.iv">iv</a>(<a href="../spec/model.html#symbol-bca113473d627aba25f893e2" title="cjr.quadtree.spec.model.width">width</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>)), <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1933">root</a>)
+                        <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>, <a href="../spec/model.html#symbol-16bb092dcd6c3b027dacc057" title="cjr.quadtree.spec.model.domain">domain</a>(<a href="#symbol-d5821e91008012f75b2bd5dc-binder-1826">d</a>), <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1836">t</a>, <a href="#symbol-d5821e91008012f75b2bd5dc-binder-1933">root</a>)
+                binders:
+                    parameter(<span id="symbol-d5821e91008012f75b2bd5dc-binder-1931">o</span>, type(_ (inferred)))
+                    parameter(<span id="symbol-d5821e91008012f75b2bd5dc-binder-1933">root</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition tree_rep (d : nat) (t : qtree) (v : val_cjr) : iProp Σ :=
+  ⌜(d &lt;= 30)%nat /\ valid d (domain d) t⌝ ∗
+  ∃ o root, ⌜v = ov o⌝ ∗ fields o [iv (Z.of_nat d);iv (width d);root] ∗ node_rep d (domain d) t root.</pre></details></article><article id="symbol-f2b317fea7fd19e7fc53ac23"><h2>is_quadtree</h2><p class="meta">cjr.quadtree.proof.ownership.is_quadtree · ownership</p><pre class="pseudocode">definition is_quadtree:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-f2b317fea7fd19e7fc53ac23-binder-2061">d</span>, type(<span class="external" title="External or unresolved: nat">nat</span>))
+    parameter(<span id="symbol-f2b317fea7fd19e7fc53ac23-binder-2071">S</span>, type(<a href="../spec/model.html#symbol-9f127bd2fae2afc0509b5f06" title="cjr.quadtree.spec.model.points">points</a>))
+    parameter(<span id="symbol-f2b317fea7fd19e7fc53ac23-binder-2084">v</span>, type(<span class="external" title="External or unresolved: val_cjr">val_cjr</span>))
+    type:
+        <span class="external" title="External or unresolved: iProp">iProp</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)
+    body:
+        notation &quot;∃ _ .. _ , _&quot;:
+            notation &quot;_ ∗ _&quot;:
+                notation &quot;⌜ _ ⌝&quot;:
+                    notation &quot;_ = _&quot;:
+                        <a href="../spec/model.html#symbol-fc3e8bd2ccacfd2b58716811" title="cjr.quadtree.spec.model.contents">contents</a>(<a href="#symbol-f2b317fea7fd19e7fc53ac23-binder-2117">t</a>)
+                        <a href="#symbol-f2b317fea7fd19e7fc53ac23-binder-2071">S</a>
+                <a href="#symbol-d5821e91008012f75b2bd5dc" title="cjr.quadtree.proof.ownership.tree_rep">tree_rep</a>(<a href="#symbol-f2b317fea7fd19e7fc53ac23-binder-2061">d</a>, <a href="#symbol-f2b317fea7fd19e7fc53ac23-binder-2117">t</a>, <a href="#symbol-f2b317fea7fd19e7fc53ac23-binder-2084">v</a>)
+            binders:
+                parameter(<span id="symbol-f2b317fea7fd19e7fc53ac23-binder-2117">t</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition is_quadtree (d : nat) (S : points) (v : val_cjr) : iProp Σ :=
+  ∃ t, ⌜contents t = S⌝ ∗ tree_rep d t v.</pre></details></article><article id="symbol-95d93a5538af2a6bc3a78333"><h2>fields_lookup</h2><p class="meta">cjr.quadtree.proof.ownership.fields_lookup · ownership</p><pre class="pseudocode">lemma fields_lookup:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-95d93a5538af2a6bc3a78333-binder-2181">o</span>, type(_ (inferred)))
+    parameter(<span id="symbol-95d93a5538af2a6bc3a78333-binder-2183">vs</span>, type(_ (inferred)))
+    parameter(<span id="symbol-95d93a5538af2a6bc3a78333-binder-2186">i</span>, type(_ (inferred)))
+    parameter(<span id="symbol-95d93a5538af2a6bc3a78333-binder-2188">v</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -&gt; _&quot;:
+            notation &quot;_ = _&quot;:
+                notation &quot;_ !! _&quot;:
+                    <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2183">vs</a>
+                    <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2186">i</a>
+                <span class="external" title="External or unresolved: Some">Some</span>(<a href="#symbol-95d93a5538af2a6bc3a78333-binder-2188">v</a>)
+            notation &quot;_ -∗ _&quot;:
+                <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>(<a href="#symbol-95d93a5538af2a6bc3a78333-binder-2181">o</a>, <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2183">vs</a>)
+                notation &quot;_ ∗ _&quot;:
+                    notation &quot;_ ↦ₒ[ _ ] _&quot;:
+                        <span class="external" title="External or unresolved: ObjId">ObjId</span>(<a href="#symbol-95d93a5538af2a6bc3a78333-binder-2181">o</a>)
+                        <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2186">i</a>
+                        <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2188">v</a>
+                    notation &quot;_ -∗ _&quot;:
+                        notation &quot;_ ↦ₒ[ _ ] _&quot;:
+                            <span class="external" title="External or unresolved: ObjId">ObjId</span>(<a href="#symbol-95d93a5538af2a6bc3a78333-binder-2181">o</a>)
+                            <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2186">i</a>
+                            <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2188">v</a>
+                        <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>(<a href="#symbol-95d93a5538af2a6bc3a78333-binder-2181">o</a>, <a href="#symbol-95d93a5538af2a6bc3a78333-binder-2183">vs</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma fields_lookup o vs i v : vs !! i = Some v -&gt;
+  fields o vs -∗ ObjId o ↦ₒ[i] v ∗ (ObjId o ↦ₒ[i] v -∗ fields o vs).</pre></details></article><article id="symbol-edf7c0658d7629c292bd433f"><h2>fields_update</h2><p class="meta">cjr.quadtree.proof.ownership.fields_update · ownership</p><pre class="pseudocode">lemma fields_update:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-edf7c0658d7629c292bd433f-binder-2400">o</span>, type(_ (inferred)))
+    parameter(<span id="symbol-edf7c0658d7629c292bd433f-binder-2402">vs</span>, type(_ (inferred)))
+    parameter(<span id="symbol-edf7c0658d7629c292bd433f-binder-2405">i</span>, type(_ (inferred)))
+    parameter(<span id="symbol-edf7c0658d7629c292bd433f-binder-2407">v</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -&gt; _&quot;:
+            notation &quot;_ = _&quot;:
+                notation &quot;_ !! _&quot;:
+                    <a href="#symbol-edf7c0658d7629c292bd433f-binder-2402">vs</a>
+                    <a href="#symbol-edf7c0658d7629c292bd433f-binder-2405">i</a>
+                <span class="external" title="External or unresolved: Some">Some</span>(<a href="#symbol-edf7c0658d7629c292bd433f-binder-2407">v</a>)
+            notation &quot;_ -∗ _&quot;:
+                <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>(<a href="#symbol-edf7c0658d7629c292bd433f-binder-2400">o</a>, <a href="#symbol-edf7c0658d7629c292bd433f-binder-2402">vs</a>)
+                notation &quot;_ ∗ _&quot;:
+                    notation &quot;_ ↦ₒ[ _ ] _&quot;:
+                        <span class="external" title="External or unresolved: ObjId">ObjId</span>(<a href="#symbol-edf7c0658d7629c292bd433f-binder-2400">o</a>)
+                        <a href="#symbol-edf7c0658d7629c292bd433f-binder-2405">i</a>
+                        <a href="#symbol-edf7c0658d7629c292bd433f-binder-2407">v</a>
+                    notation &quot;∀ _ .. _ , _&quot;:
+                        notation &quot;_ -∗ _&quot;:
+                            notation &quot;_ ↦ₒ[ _ ] _&quot;:
+                                <span class="external" title="External or unresolved: ObjId">ObjId</span>(<a href="#symbol-edf7c0658d7629c292bd433f-binder-2400">o</a>)
+                                <a href="#symbol-edf7c0658d7629c292bd433f-binder-2405">i</a>
+                                <a href="#symbol-edf7c0658d7629c292bd433f-binder-2479">w</a>
+                            <a href="#symbol-2cfc3e78193e8c0cfd91e503" title="cjr.quadtree.proof.ownership.fields">fields</a>:
+                                <a href="#symbol-edf7c0658d7629c292bd433f-binder-2400">o</a>
+                                apply:
+                                    notation &quot;&lt;[ _ := _ ]&gt;&quot;:
+                                        <a href="#symbol-edf7c0658d7629c292bd433f-binder-2405">i</a>
+                                        <a href="#symbol-edf7c0658d7629c292bd433f-binder-2479">w</a>
+                                    <a href="#symbol-edf7c0658d7629c292bd433f-binder-2402">vs</a>
+                        binders:
+                            parameter(<span id="symbol-edf7c0658d7629c292bd433f-binder-2479">w</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma fields_update o vs i v : vs !! i = Some v -&gt;
+  fields o vs -∗ ObjId o ↦ₒ[i] v ∗ (∀ w, ObjId o ↦ₒ[i] w -∗ fields o (&lt;[i:=w]&gt; vs)).</pre></details></article><article id="symbol-86bbfb3c5b6abd1174baeb85"><h2>tree_domain</h2><p class="meta">cjr.quadtree.proof.ownership.tree_domain · ownership</p><pre class="pseudocode">lemma tree_domain:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-86bbfb3c5b6abd1174baeb85-binder-2635">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-86bbfb3c5b6abd1174baeb85-binder-2637">S</span>, type(_ (inferred)))
+    parameter(<span id="symbol-86bbfb3c5b6abd1174baeb85-binder-2639">v</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -∗ _&quot;:
+            <a href="#symbol-f2b317fea7fd19e7fc53ac23" title="cjr.quadtree.proof.ownership.is_quadtree">is_quadtree</a>(<a href="#symbol-86bbfb3c5b6abd1174baeb85-binder-2635">d</a>, <a href="#symbol-86bbfb3c5b6abd1174baeb85-binder-2637">S</a>, <a href="#symbol-86bbfb3c5b6abd1174baeb85-binder-2639">v</a>)
+            notation &quot;⌜ _ ⌝&quot;:
+                <a href="../spec/model.html#symbol-de8578713ae41030232f5186" title="cjr.quadtree.spec.model.admissible">admissible</a>(<a href="#symbol-86bbfb3c5b6abd1174baeb85-binder-2635">d</a>, <a href="#symbol-86bbfb3c5b6abd1174baeb85-binder-2637">S</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma tree_domain d S v : is_quadtree d S v -∗ ⌜admissible d S⌝.</pre></details></article><article id="symbol-89bf1b9ca2458b2af1acc47a"><h2>point_list_object</h2><p class="meta">cjr.quadtree.proof.ownership.point_list_object · ownership</p><pre class="pseudocode">lemma point_list_object:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-89bf1b9ca2458b2af1acc47a-binder-2908">xs</span>, type(_ (inferred)))
+    parameter(<span id="symbol-89bf1b9ca2458b2af1acc47a-binder-2911">v</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -∗ _&quot;:
+            <a href="#symbol-6d0822c61fb5df78091b9cf4" title="cjr.quadtree.proof.ownership.point_list">point_list</a>(<a href="#symbol-89bf1b9ca2458b2af1acc47a-binder-2908">xs</a>, <a href="#symbol-89bf1b9ca2458b2af1acc47a-binder-2911">v</a>)
+            notation &quot;⌜ _ ⌝&quot;:
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ = _&quot;:
+                        <a href="#symbol-89bf1b9ca2458b2af1acc47a-binder-2911">v</a>
+                        <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-89bf1b9ca2458b2af1acc47a-binder-2943">o</a>)
+                    binders:
+                        parameter(<span id="symbol-89bf1b9ca2458b2af1acc47a-binder-2943">o</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma point_list_object xs v : point_list xs v -∗ ⌜∃ o, v = ov o⌝.</pre></details></article><article id="symbol-54eb8c5515663e53449f776c"><h2>node_rep_object</h2><p class="meta">cjr.quadtree.proof.ownership.node_rep_object · ownership</p><pre class="pseudocode">lemma node_rep_object:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-54eb8c5515663e53449f776c-binder-3128">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-54eb8c5515663e53449f776c-binder-3130">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-54eb8c5515663e53449f776c-binder-3132">t</span>, type(_ (inferred)))
+    parameter(<span id="symbol-54eb8c5515663e53449f776c-binder-3134">v</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -∗ _&quot;:
+            <a href="#symbol-9ee68c7f7900c58141fb703b" title="cjr.quadtree.proof.ownership.node_rep">node_rep</a>(<a href="#symbol-54eb8c5515663e53449f776c-binder-3128">d</a>, <a href="#symbol-54eb8c5515663e53449f776c-binder-3130">b</a>, <a href="#symbol-54eb8c5515663e53449f776c-binder-3132">t</a>, <a href="#symbol-54eb8c5515663e53449f776c-binder-3134">v</a>)
+            notation &quot;⌜ _ ⌝&quot;:
+                notation &quot;∃ _ .. _ , _&quot;:
+                    notation &quot;_ = _&quot;:
+                        <a href="#symbol-54eb8c5515663e53449f776c-binder-3134">v</a>
+                        <a href="#symbol-84c6c228763456f9a52559f9" title="cjr.quadtree.proof.ownership.ov">ov</a>(<a href="#symbol-54eb8c5515663e53449f776c-binder-3167">o</a>)
+                    binders:
+                        parameter(<span id="symbol-54eb8c5515663e53449f776c-binder-3167">o</span>, type(_ (inferred)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma node_rep_object d b t v : node_rep d b t v -∗ ⌜∃ o, v = ov o⌝.</pre></details></article></main></body></html>

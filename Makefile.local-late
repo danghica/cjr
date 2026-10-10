@@ -28,7 +28,7 @@ verify:
 	  printf 'make verify finished: %s (exit status %s)\n' "$$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$$status"; \
 	  exit $$status; } 2>&1 | tee "$(VERIFY_LOG)"
 
-verify-checks: all check-no-cheats check-proofs check-axioms
+verify-checks: all check-no-cheats check-proofs check-axioms quadtree-verify
 
 check-no-cheats:
 	@echo "Checking for Admitted / Axiom / cheat in theories/*.v..."
@@ -111,3 +111,12 @@ cj:
 	  done; } > $(CJ_DIR)/further.tex
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper $(CJ_TEX)
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper $(CJ_TEX)
+
+# Self-contained quadtree example and offline report.
+.PHONY: quadtree quadtree-verify quadtree-report
+quadtree:
+	$(MAKE) -C quadtree build
+quadtree-verify:
+	$(MAKE) -C quadtree verify
+quadtree-report:
+	$(MAKE) -C quadtree report

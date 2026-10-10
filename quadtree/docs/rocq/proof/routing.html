@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>proof/routing.v — Rocq Readable</title><link rel="stylesheet" href="../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<p><a href="../index.html">Project index</a></p>
+<h1>proof/routing.v</h1><p class="meta">5 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><p class="notice">Incomplete rendering: 18 unsupported or unmapped constructs. Original syntax is retained where needed.</p><nav aria-label="Declarations"><ul><li><a href="#symbol-423fabc45bb2e36869c0aefb">child_tree</a> <span class="count">definition</span></li><li><a href="#symbol-be190caeabd88c7b1a7fb926">routed_member</a> <span class="count">lemma</span></li><li><a href="#symbol-058ac9679131bf05bc3143b7">overlap</a> <span class="count">definition</span></li><li><a href="#symbol-4db88f42d6490a181a5faab7">overlap_dec</a> <span class="count">instance</span></li><li><a href="#symbol-7040a9a4d2303edb973b910e">query_pruned</a> <span class="count">lemma</span></li></ul></nav><article id="symbol-423fabc45bb2e36869c0aefb"><h2>child_tree</h2><p class="meta">cjr.quadtree.proof.routing.child_tree</p><pre class="pseudocode">definition child_tree:
+    implicit MaxImplicit(<span id="symbol-423fabc45bb2e36869c0aefb-binder-156">A</span>, type(Type))
+    parameter(<span id="symbol-423fabc45bb2e36869c0aefb-binder-167">k</span>, type(<span class="external" title="External or unresolved: quadrant">quadrant</span>))
+    parameter(<span id="symbol-423fabc45bb2e36869c0aefb-binder-182">ll</span>, <span id="symbol-423fabc45bb2e36869c0aefb-binder-185">lr</span>, <span id="symbol-423fabc45bb2e36869c0aefb-binder-188">ul</span>, <span id="symbol-423fabc45bb2e36869c0aefb-binder-191">ur</span>, type(<a href="#symbol-423fabc45bb2e36869c0aefb-binder-156">A</a>))
+    type:
+        <a href="#symbol-423fabc45bb2e36869c0aefb-binder-156">A</a>
+    body:
+        match RegularStyle:
+            <a href="#symbol-423fabc45bb2e36869c0aefb-binder-167">k</a>
+            case:
+                patterns(<span id="symbol-423fabc45bb2e36869c0aefb-binder-219">LL</span>)
+                <a href="#symbol-423fabc45bb2e36869c0aefb-binder-182">ll</a>
+            case:
+                patterns(<span id="symbol-423fabc45bb2e36869c0aefb-binder-228">LR</span>)
+                <a href="#symbol-423fabc45bb2e36869c0aefb-binder-185">lr</a>
+            case:
+                patterns(<span id="symbol-423fabc45bb2e36869c0aefb-binder-237">UL</span>)
+                <a href="#symbol-423fabc45bb2e36869c0aefb-binder-188">ul</a>
+            case:
+                patterns(<span id="symbol-423fabc45bb2e36869c0aefb-binder-246">UR</span>)
+                <a href="#symbol-423fabc45bb2e36869c0aefb-binder-191">ur</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition child_tree {A : Type} (k : quadrant) (ll lr ul ur : A) : A := match k with LL=&gt;ll | LR=&gt;lr | UL=&gt;ul | UR=&gt;ur end.</pre></details></article><article id="symbol-be190caeabd88c7b1a7fb926"><h2>routed_member</h2><p class="meta">cjr.quadtree.proof.routing.routed_member</p><pre class="pseudocode">lemma routed_member:
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-278">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-280">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-282">ll</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-285">lr</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-288">ul</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-291">ur</span>, type(_ (inferred)))
+    parameter(<span id="symbol-be190caeabd88c7b1a7fb926-binder-294">p</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -&gt; _&quot;:
+            <a href="../spec/model.html#symbol-5d12605fb6e9e8416e011fd8" title="cjr.quadtree.spec.model.square">square</a>(<span class="external" title="External or unresolved: S">S</span>(<a href="#symbol-be190caeabd88c7b1a7fb926-binder-278">d</a>), <a href="#symbol-be190caeabd88c7b1a7fb926-binder-280">b</a>)
+            notation &quot;_ -&gt; _&quot;:
+                <a href="../spec/model.html#symbol-cfc9990bed2d941d90174934" title="cjr.quadtree.spec.model.valid">valid</a>(<span class="external" title="External or unresolved: S">S</span>(<a href="#symbol-be190caeabd88c7b1a7fb926-binder-278">d</a>), <a href="#symbol-be190caeabd88c7b1a7fb926-binder-280">b</a>, <span class="external" title="External or unresolved: Branch">Branch</span>(<a href="#symbol-be190caeabd88c7b1a7fb926-binder-282">ll</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-285">lr</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-288">ul</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-291">ur</a>))
+                notation &quot;_ &lt;-&gt; _&quot;:
+                    notation &quot;_ ∈ _&quot;:
+                        <a href="#symbol-be190caeabd88c7b1a7fb926-binder-294">p</a>
+                        <a href="../spec/model.html#symbol-fc3e8bd2ccacfd2b58716811" title="cjr.quadtree.spec.model.contents">contents</a>(<span class="external" title="External or unresolved: Branch">Branch</span>(<a href="#symbol-be190caeabd88c7b1a7fb926-binder-282">ll</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-285">lr</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-288">ul</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-291">ur</a>))
+                    notation &quot;_ ∈ _&quot;:
+                        <a href="#symbol-be190caeabd88c7b1a7fb926-binder-294">p</a>
+                        <a href="../spec/model.html#symbol-fc3e8bd2ccacfd2b58716811" title="cjr.quadtree.spec.model.contents">contents</a>(<a href="#symbol-423fabc45bb2e36869c0aefb" title="cjr.quadtree.proof.routing.child_tree">child_tree</a>(<a href="../spec/model.html#symbol-bf66dc79654da90bf5b412c6" title="cjr.quadtree.spec.model.route">route</a>(<a href="#symbol-be190caeabd88c7b1a7fb926-binder-278">d</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-280">b</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-294">p</a>), <a href="#symbol-be190caeabd88c7b1a7fb926-binder-282">ll</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-285">lr</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-288">ul</a>, <a href="#symbol-be190caeabd88c7b1a7fb926-binder-291">ur</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma routed_member d b ll lr ul ur p : square (S d) b -&gt;
+  valid (S d) b (Branch ll lr ul ur) -&gt;
+  (p ∈ contents (Branch ll lr ul ur) &lt;-&gt; p ∈ contents (child_tree (route d b p) ll lr ul ur)).</pre></details></article><article id="symbol-058ac9679131bf05bc3143b7"><h2>overlap</h2><p class="meta">cjr.quadtree.proof.routing.overlap</p><pre class="pseudocode">definition overlap:
+    parameter(<span id="symbol-058ac9679131bf05bc3143b7-binder-1120">b</span>, <span id="symbol-058ac9679131bf05bc3143b7-binder-1122">r</span>, type(<span class="external" title="External or unresolved: rectangle">rectangle</span>))
+    body:
+        notation &quot;_ /\\ _&quot;:
+            notation &quot;_ &lt; _&quot;:
+                <span class="external" title="External or unresolved: xmin">xmin</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1120">b</a>)
+                <span class="external" title="External or unresolved: xmax">xmax</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1122">r</a>)
+            notation &quot;_ /\\ _&quot;:
+                notation &quot;_ &lt; _&quot;:
+                    <span class="external" title="External or unresolved: xmin">xmin</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1122">r</a>)
+                    <span class="external" title="External or unresolved: xmax">xmax</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1120">b</a>)
+                notation &quot;_ /\\ _&quot;:
+                    notation &quot;_ &lt; _&quot;:
+                        <span class="external" title="External or unresolved: ymin">ymin</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1120">b</a>)
+                        <span class="external" title="External or unresolved: ymax">ymax</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1122">r</a>)
+                    notation &quot;_ &lt; _&quot;:
+                        <span class="external" title="External or unresolved: ymin">ymin</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1122">r</a>)
+                        <span class="external" title="External or unresolved: ymax">ymax</span>(<a href="#symbol-058ac9679131bf05bc3143b7-binder-1120">b</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition overlap (b r : rectangle) := xmin b &lt; xmax r /\ xmin r &lt; xmax b /\ ymin b &lt; ymax r /\ ymin r &lt; ymax b.</pre></details></article><article id="symbol-4db88f42d6490a181a5faab7"><h2>overlap_dec</h2><p class="meta">cjr.quadtree.proof.routing.overlap_dec</p><pre class="pseudocode">instance overlap_dec:
+    parameter(<span id="symbol-4db88f42d6490a181a5faab7-binder-1242">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-4db88f42d6490a181a5faab7-binder-1244">r</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Decision">Decision</span>(<a href="#symbol-058ac9679131bf05bc3143b7" title="cjr.quadtree.proof.routing.overlap">overlap</a>(<a href="#symbol-4db88f42d6490a181a5faab7-binder-1242">b</a>, <a href="#symbol-4db88f42d6490a181a5faab7-binder-1244">r</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Global Instance overlap_dec b r : Decision (overlap b r).</pre></details></article><article id="symbol-7040a9a4d2303edb973b910e"><h2>query_pruned</h2><p class="meta">cjr.quadtree.proof.routing.query_pruned</p><pre class="pseudocode">lemma query_pruned:
+    parameter(<span id="symbol-7040a9a4d2303edb973b910e-binder-1339">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7040a9a4d2303edb973b910e-binder-1341">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7040a9a4d2303edb973b910e-binder-1343">t</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7040a9a4d2303edb973b910e-binder-1345">r</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ -&gt; _&quot;:
+            <a href="../spec/model.html#symbol-5d12605fb6e9e8416e011fd8" title="cjr.quadtree.spec.model.square">square</a>(<a href="#symbol-7040a9a4d2303edb973b910e-binder-1339">d</a>, <a href="#symbol-7040a9a4d2303edb973b910e-binder-1341">b</a>)
+            notation &quot;_ -&gt; _&quot;:
+                <a href="../spec/model.html#symbol-cfc9990bed2d941d90174934" title="cjr.quadtree.spec.model.valid">valid</a>(<a href="#symbol-7040a9a4d2303edb973b910e-binder-1339">d</a>, <a href="#symbol-7040a9a4d2303edb973b910e-binder-1341">b</a>, <a href="#symbol-7040a9a4d2303edb973b910e-binder-1343">t</a>)
+                notation &quot;_ -&gt; _&quot;:
+                    notation &quot;~ _&quot;:
+                        <a href="#symbol-058ac9679131bf05bc3143b7" title="cjr.quadtree.proof.routing.overlap">overlap</a>(<a href="#symbol-7040a9a4d2303edb973b910e-binder-1341">b</a>, <a href="#symbol-7040a9a4d2303edb973b910e-binder-1345">r</a>)
+                    notation &quot;_ = _&quot;:
+                        <a href="../spec/model.html#symbol-75b44084aecc36c7a4f3f5ab" title="cjr.quadtree.spec.model.query_model">query_model</a>(<a href="#symbol-7040a9a4d2303edb973b910e-binder-1345">r</a>, <a href="#symbol-7040a9a4d2303edb973b910e-binder-1343">t</a>)
+                        notation &quot;[ ]&quot;</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma query_pruned d b t r : square d b -&gt; valid d b t -&gt; ~overlap b r -&gt; query_model r t = [].</pre></details></article></main></body></html>

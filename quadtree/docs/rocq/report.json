@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "algorithm/extract.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation ( _ , _ , .. , _ )",
+        "unmapped notation [ ]",
+        "unmapped notation [ _ ; _ ; .. ; _ ]",
+        "unmapped notation [ _ ]"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "algorithm/program.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation ( _ , _ , .. , _ )",
+        "unmapped notation [ ]",
+        "unmapped notation [ _ ; _ ; .. ; _ ]",
+        "unmapped notation [ _ ]",
+        "unmapped notation _ * _"
+      ],
+      "declarations": 44
+    },
+    {
+      "file": "proof/algebra.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ∉ _"
+      ],
+      "declarations": 6
+    },
+    {
+      "file": "proof/audit.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 0
+    },
+    {
+      "file": "proof/correctness.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ∈ _"
+      ],
+      "declarations": 5
+    },
+    {
+      "file": "proof/helpers.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>"
+      ],
+      "declarations": 14
+    },
+    {
+      "file": "proof/insertion.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ∈ _",
+        "unmapped notation _ ∉ _"
+      ],
+      "declarations": 9
+    },
+    {
+      "file": "proof/insertion_helpers.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ∉ _",
+        "unmapped notation _ ∪ _",
+        "unmapped notation {[ _ ]}"
+      ],
+      "declarations": 8
+    },
+    {
+      "file": "proof/insertion_model.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ -> _",
+        "unmapped notation _ = _",
+        "unmapped notation {[ _ ]}"
+      ],
+      "declarations": 3
+    },
+    {
+      "file": "proof/ownership.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation ( _ , _ , .. , _ )",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation False",
+        "unmapped notation [ ]",
+        "unmapped notation [ _ ; _ ; .. ; _ ]",
+        "unmapped notation [∗ list] _ ↦ _ ∈ _ , _",
+        "unmapped notation _ !! _",
+        "unmapped notation _ -> _",
+        "unmapped notation _ -∗ _",
+        "unmapped notation _ /\\ _",
+        "unmapped notation _ <= _",
+        "unmapped notation _ = _",
+        "unmapped notation _ ↦ₒ[ _ ] _",
+        "unmapped notation _ ∗ _",
+        "unmapped notation ∀ _ .. _ , _",
+        "unmapped notation ∃ _ .. _ , _",
+        "unmapped notation ⌜ _ ⌝"
+      ],
+      "declarations": 15
+    },
+    {
+      "file": "proof/routing.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation [ ]",
+        "unmapped notation _ -> _",
+        "unmapped notation _ /\\ _",
+        "unmapped notation _ < _",
+        "unmapped notation _ <-> _",
+        "unmapped notation _ = _",
+        "unmapped notation _ ∈ _",
+        "unmapped notation ~ _"
+      ],
+      "declarations": 5
+    },
+    {
+      "file": "spec/bounds.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _",
+        "unmapped notation _ + _",
+        "unmapped notation _ - _",
+        "unmapped notation _ -> _",
+        "unmapped notation _ /\\ _",
+        "unmapped notation _ < _",
+        "unmapped notation _ <= _",
+        "unmapped notation _ <= _ <= _",
+        "unmapped notation _ = _"
+      ],
+      "declarations": 14
+    },
+    {
+      "file": "spec/model.v",
+      "errors": [],
+      "unsupported": [
+        "CGenarg",
+        "unmapped notation ( _ , _ , .. , _ )",
+        "unmapped notation - _",
+        "unmapped notation False",
+        "unmapped notation True",
+        "unmapped notation [ ]",
+        "unmapped notation [ _ ]",
+        "unmapped notation _ * _",
+        "unmapped notation _ + _",
+        "unmapped notation _ ++ _",
+        "unmapped notation _ -> _",
+        "unmapped notation _ /\\ _",
+        "unmapped notation _ < _",
+        "unmapped notation _ <-> _",
+        "unmapped notation _ <= _",
+        "unmapped notation _ <= _ < _",
+        "unmapped notation _ <= _ <= _",
+        "unmapped notation _ <> _",
+        "unmapped notation _ = _",
+        "unmapped notation _ \\/ _",
+        "unmapped notation _ ^ _",
+        "unmapped notation _ ∈ _",
+        "unmapped notation _ ∪ _",
+        "unmapped notation exists _ .. _ , _",
+        "unmapped notation forall _ .. _ , _",
+        "unmapped notation if _ then _ else _",
+        "unmapped notation {[ _ ]}",
+        "unmapped notation ~ _",
+        "unmapped notation ∅"
+      ],
+      "declarations": 71
+    }
+  ]
+}

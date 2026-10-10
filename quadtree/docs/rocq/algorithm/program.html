@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>algorithm/program.v — Rocq Readable</title><link rel="stylesheet" href="../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<p><a href="../index.html">Project index</a></p>
+<h1>algorithm/program.v</h1><p class="meta">44 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><p class="notice">Incomplete rendering: 109 unsupported or unmapped constructs. Original syntax is retained where needed.</p><nav aria-label="Declarations"><ul><li><a href="#symbol-ba790d51526b2089806a8fff">qi</a> <span class="count">definition</span></li><li><a href="#symbol-99d2242acc82ac9a8fd9152e">qb</a> <span class="count">definition</span></li><li><a href="#symbol-70bd3292eee3b840019004dd">qu</a> <span class="count">definition</span></li><li><a href="#symbol-18e645572a97e886adb2237c">qeq</a> <span class="count">definition</span></li><li><a href="#symbol-fdc56ca2fcfdf2a702473c9e">qle</a> <span class="count">definition</span></li><li><a href="#symbol-a9126e28b874c350d6abfd13">qand</a> <span class="count">definition</span></li><li><a href="#symbol-f8a466df497cf805eb002af9">qlt</a> <span class="count">definition</span></li><li><a href="#symbol-b69a651a088a2527b206ec71">qargs_from</a> <span class="count">recursive function</span></li><li><a href="#symbol-cae392501469e18b6c0fabd1">qargs</a> <span class="count">definition</span></li><li><a href="#symbol-c090c3326ad576e1ea9cc444">qinvoke</a> <span class="count">definition</span></li><li><a href="#symbol-56832604f804665f12307b07">qrecur</a> <span class="count">definition</span></li><li><a href="#symbol-6ad0f8f106aaefcab9fac897">qpoint_eq</a> <span class="count">definition</span></li><li><a href="#symbol-e3adcbb9da8ac5f3541bebeb">qinside</a> <span class="count">definition</span></li><li><a href="#symbol-240c1949dace6984770d2d43">qoverlap</a> <span class="count">definition</span></li><li><a href="#symbol-7af4e29d5cdcd83fe8620709">qchoose</a> <span class="count">definition</span></li><li><a href="#symbol-c10c8fffdc8c8e63cda60a3c">qloads</a> <span class="count">recursive function</span></li><li><a href="#symbol-6924d8b469981f9794775b5c">qstores</a> <span class="count">recursive function</span></li><li><a href="#symbol-cbb2b6f048b3a27a6377da57">qt_power_body</a> <span class="count">definition</span></li><li><a href="#symbol-709c5500c2370f37126300f9">qt_power</a> <span class="count">definition</span></li><li><a href="#symbol-1c6d8f52be2f53f8ec44a70b">qt_empty_body</a> <span class="count">definition</span></li><li><a href="#symbol-0c5428857937a543f9cff842">qt_empty</a> <span class="count">definition</span></li><li><a href="#symbol-a6c7aba4608b705e10ce16f9">qt_seed_body</a> <span class="count">definition</span></li><li><a href="#symbol-cd8bef2bc699d173a0b3d074">qt_seed</a> <span class="count">definition</span></li><li><a href="#symbol-8bd1fd1ddb1621fc9665ea18">qt_insert_branch</a> <span class="count">definition</span></li><li><a href="#symbol-8a8c8082cddadf4e22bd7e87">qt_split</a> <span class="count">definition</span></li><li><a href="#symbol-b63d7edf890bdc08af7a7633">qt_insert_node_body</a> <span class="count">definition</span></li><li><a href="#symbol-97de1ec573a8ed22c331529f">qt_insert_node</a> <span class="count">definition</span></li><li><a href="#symbol-430bf9f525e9872314240ead">qt_contains_node_body</a> <span class="count">definition</span></li><li><a href="#symbol-a1f5686cfc40fbd2e9e32a14">qt_contains_node</a> <span class="count">definition</span></li><li><a href="#symbol-1c4397ffce22fd898574a35c">qt_nil_body</a> <span class="count">definition</span></li><li><a href="#symbol-e8d1fb5b192a11aaf0c02c1e">qt_nil</a> <span class="count">definition</span></li><li><a href="#symbol-8f51d5f4f0a4c18d4965d034">qt_cons_body</a> <span class="count">definition</span></li><li><a href="#symbol-f5900ed6efda1dfd6021037c">qt_cons</a> <span class="count">definition</span></li><li><a href="#symbol-9e0e51d2d9060d98a4c032d1">qt_range_branch</a> <span class="count">definition</span></li><li><a href="#symbol-f9f848c43b10f0f78e60106d">qt_range_node_body</a> <span class="count">definition</span></li><li><a href="#symbol-789d39481f049f6343066370">qt_range_node</a> <span class="count">definition</span></li><li><a href="#symbol-a373c0dc39d90fd7e3c8bccd">qt_make_body</a> <span class="count">definition</span></li><li><a href="#symbol-c88e3def4af962f9085149d0">qt_make</a> <span class="count">definition</span></li><li><a href="#symbol-b45f8937df58dbdcb6035734">qt_insert_body</a> <span class="count">definition</span></li><li><a href="#symbol-a3c1e425204ac389942841c2">qt_insert</a> <span class="count">definition</span></li><li><a href="#symbol-c48543ac4a015073b81ae3b5">qt_contains_body</a> <span class="count">definition</span></li><li><a href="#symbol-dbd9f37ed0f4af079820211d">qt_contains</a> <span class="count">definition</span></li><li><a href="#symbol-34373344388a39ff24f3ffee">qt_range_body</a> <span class="count">definition</span></li><li><a href="#symbol-09e12ad1c69016038e55f389">qt_range</a> <span class="count">definition</span></li></ul></nav><article id="symbol-ba790d51526b2089806a8fff"><h2>qi</h2><p class="meta">cjr.quadtree.algorithm.program.qi</p><pre class="pseudocode">definition qi:
+    parameter(<span id="symbol-ba790d51526b2089806a8fff-binder-315">n</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Val">Val</span>(<span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitInt">LitInt</span>(<a href="#symbol-ba790d51526b2089806a8fff-binder-315">n</a>)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qi n := Val (LitV (LitInt n)).</pre></details></article><article id="symbol-99d2242acc82ac9a8fd9152e"><h2>qb</h2><p class="meta">cjr.quadtree.algorithm.program.qb</p><pre class="pseudocode">definition qb:
+    parameter(<span id="symbol-99d2242acc82ac9a8fd9152e-binder-357">b</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Val">Val</span>(<span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitBool">LitBool</span>(<a href="#symbol-99d2242acc82ac9a8fd9152e-binder-357">b</a>)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qb b := Val (LitV (LitBool b)).</pre></details></article><article id="symbol-70bd3292eee3b840019004dd"><h2>qu</h2><p class="meta">cjr.quadtree.algorithm.program.qu</p><pre class="pseudocode">definition qu:
+    body:
+        <span class="external" title="External or unresolved: Val">Val</span>(<span class="external" title="External or unresolved: LitV">LitV</span>(<span class="external" title="External or unresolved: LitUnit">LitUnit</span>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qu := Val (LitV LitUnit).</pre></details></article><article id="symbol-18e645572a97e886adb2237c"><h2>qeq</h2><p class="meta">cjr.quadtree.algorithm.program.qeq</p><pre class="pseudocode">definition qeq:
+    parameter(<span id="symbol-18e645572a97e886adb2237c-binder-438">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-18e645572a97e886adb2237c-binder-440">b</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: EqOp">EqOp</span>, <a href="#symbol-18e645572a97e886adb2237c-binder-438">a</a>, <a href="#symbol-18e645572a97e886adb2237c-binder-440">b</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qeq a b := BinOp EqOp a b.</pre></details></article><article id="symbol-fdc56ca2fcfdf2a702473c9e"><h2>qle</h2><p class="meta">cjr.quadtree.algorithm.program.qle</p><pre class="pseudocode">definition qle:
+    parameter(<span id="symbol-fdc56ca2fcfdf2a702473c9e-binder-476">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-fdc56ca2fcfdf2a702473c9e-binder-478">b</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: LeOp">LeOp</span>, <a href="#symbol-fdc56ca2fcfdf2a702473c9e-binder-476">a</a>, <a href="#symbol-fdc56ca2fcfdf2a702473c9e-binder-478">b</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qle a b := BinOp LeOp a b.</pre></details></article><article id="symbol-a9126e28b874c350d6abfd13"><h2>qand</h2><p class="meta">cjr.quadtree.algorithm.program.qand</p><pre class="pseudocode">definition qand:
+    parameter(<span id="symbol-a9126e28b874c350d6abfd13-binder-515">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a9126e28b874c350d6abfd13-binder-517">b</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: AndOp">AndOp</span>, <a href="#symbol-a9126e28b874c350d6abfd13-binder-515">a</a>, <a href="#symbol-a9126e28b874c350d6abfd13-binder-517">b</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qand a b := BinOp AndOp a b.</pre></details></article><article id="symbol-f8a466df497cf805eb002af9"><h2>qlt</h2><p class="meta">cjr.quadtree.algorithm.program.qlt</p><pre class="pseudocode">definition qlt:
+    parameter(<span id="symbol-f8a466df497cf805eb002af9-binder-633">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-f8a466df497cf805eb002af9-binder-635">b</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: If">If</span>(<a href="#symbol-fdc56ca2fcfdf2a702473c9e" title="cjr.quadtree.algorithm.program.qle">qle</a>(<a href="#symbol-f8a466df497cf805eb002af9-binder-633">a</a>, <a href="#symbol-f8a466df497cf805eb002af9-binder-635">b</a>), <span class="external" title="External or unresolved: If">If</span>(<a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<a href="#symbol-f8a466df497cf805eb002af9-binder-633">a</a>, <a href="#symbol-f8a466df497cf805eb002af9-binder-635">b</a>), <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>), <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: true">true</span>)), <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qlt a b := If (qle a b) (If (qeq a b) (qb false) (qb true)) (qb false).</pre></details></article><article id="symbol-b69a651a088a2527b206ec71"><h2>qargs_from</h2><p class="meta">cjr.quadtree.algorithm.program.qargs_from</p><pre class="pseudocode">recursive function qargs_from:
+    parameter(<span id="symbol-b69a651a088a2527b206ec71-binder-722">i</span>, type(<span class="external" title="External or unresolved: nat">nat</span>))
+    parameter(<span id="symbol-b69a651a088a2527b206ec71-binder-732">names</span>, type(<span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: string">string</span>)))
+    parameter(<span id="symbol-b69a651a088a2527b206ec71-binder-754">body</span>, type(<span class="external" title="External or unresolved: expr">expr</span>))
+    type:
+        <span class="external" title="External or unresolved: expr">expr</span>
+    body:
+        match RegularStyle:
+            <a href="#symbol-b69a651a088a2527b206ec71-binder-732">names</a>
+            case:
+                patterns:
+                    notation &quot;[ ]&quot;
+                <a href="#symbol-b69a651a088a2527b206ec71-binder-754">body</a>
+            case:
+                patterns(cons(<span id="symbol-b69a651a088a2527b206ec71-binder-809">n</span>, <span id="symbol-b69a651a088a2527b206ec71-binder-812">ns</span>))
+                <span class="external" title="External or unresolved: Let">Let</span>(<span class="external" title="External or unresolved: Some">Some</span>(<a href="#symbol-b69a651a088a2527b206ec71-binder-809">n</a>), <span class="external" title="External or unresolved: StructLoad">StructLoad</span>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;args&quot;), <a href="#symbol-b69a651a088a2527b206ec71-binder-722">i</a>), <a href="#symbol-b69a651a088a2527b206ec71" title="cjr.quadtree.algorithm.program.qargs_from">qargs_from</a>(<span class="external" title="External or unresolved: S">S</span>(<a href="#symbol-b69a651a088a2527b206ec71-binder-722">i</a>), <a href="#symbol-b69a651a088a2527b206ec71-binder-812">ns</a>, <a href="#symbol-b69a651a088a2527b206ec71-binder-754">body</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint qargs_from (i : nat) (names : list string) (body : expr) : expr :=
+  match names with [] =&gt; body | n::ns =&gt; Let (Some n) (StructLoad (Var &quot;args&quot;) i) (qargs_from (S i) ns body) end.</pre></details></article><article id="symbol-cae392501469e18b6c0fabd1"><h2>qargs</h2><p class="meta">cjr.quadtree.algorithm.program.qargs</p><pre class="pseudocode">definition qargs:
+    body:
+        <a href="#symbol-b69a651a088a2527b206ec71" title="cjr.quadtree.algorithm.program.qargs_from">qargs_from</a>(0)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qargs := qargs_from 0.</pre></details></article><article id="symbol-c090c3326ad576e1ea9cc444"><h2>qinvoke</h2><p class="meta">cjr.quadtree.algorithm.program.qinvoke</p><pre class="pseudocode">definition qinvoke:
+    parameter(<span id="symbol-c090c3326ad576e1ea9cc444-binder-945">name</span>, type(<span class="external" title="External or unresolved: string">string</span>))
+    parameter(<span id="symbol-c090c3326ad576e1ea9cc444-binder-961">body</span>, type(<span class="external" title="External or unresolved: expr">expr</span>))
+    parameter(<span id="symbol-c090c3326ad576e1ea9cc444-binder-975">args</span>, type(<span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: expr">expr</span>)))
+    body:
+        <span class="external" title="External or unresolved: App">App</span>:
+            <span class="external" title="External or unresolved: Rec">Rec</span>(<span class="external" title="External or unresolved: Some">Some</span>(<a href="#symbol-c090c3326ad576e1ea9cc444-binder-945">name</a>), <span class="external" title="External or unresolved: Some">Some</span>(&quot;args&quot;), <a href="#symbol-c090c3326ad576e1ea9cc444-binder-961">body</a>)
+            <span class="external" title="External or unresolved: Struct">Struct</span>:
+                notation &quot;[ ]&quot;
+                <a href="#symbol-c090c3326ad576e1ea9cc444-binder-975">args</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qinvoke (name : string) (body : expr) (args : list expr) :=
+  App (Rec (Some name) (Some &quot;args&quot;) body) (Struct [] args).</pre></details></article><article id="symbol-56832604f804665f12307b07"><h2>qrecur</h2><p class="meta">cjr.quadtree.algorithm.program.qrecur</p><pre class="pseudocode">definition qrecur:
+    parameter(<span id="symbol-56832604f804665f12307b07-binder-1076">name</span>, type(<span class="external" title="External or unresolved: string">string</span>))
+    parameter(<span id="symbol-56832604f804665f12307b07-binder-1092">args</span>, type(<span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: expr">expr</span>)))
+    body:
+        <span class="external" title="External or unresolved: App">App</span>:
+            <span class="external" title="External or unresolved: Var">Var</span>(<a href="#symbol-56832604f804665f12307b07-binder-1076">name</a>)
+            <span class="external" title="External or unresolved: Struct">Struct</span>:
+                notation &quot;[ ]&quot;
+                <a href="#symbol-56832604f804665f12307b07-binder-1092">args</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qrecur (name : string) (args : list expr) := App (Var name) (Struct [] args).</pre></details></article><article id="symbol-6ad0f8f106aaefcab9fac897"><h2>qpoint_eq</h2><p class="meta">cjr.quadtree.algorithm.program.qpoint_eq</p><pre class="pseudocode">definition qpoint_eq:
+    parameter(<span id="symbol-6ad0f8f106aaefcab9fac897-binder-1167">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6ad0f8f106aaefcab9fac897-binder-1169">y</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6ad0f8f106aaefcab9fac897-binder-1171">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6ad0f8f106aaefcab9fac897-binder-1173">b</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<a href="#symbol-6ad0f8f106aaefcab9fac897-binder-1167">x</a>, <a href="#symbol-6ad0f8f106aaefcab9fac897-binder-1171">a</a>), <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<a href="#symbol-6ad0f8f106aaefcab9fac897-binder-1169">y</a>, <a href="#symbol-6ad0f8f106aaefcab9fac897-binder-1173">b</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qpoint_eq x y a b := qand (qeq x a) (qeq y b).</pre></details></article><article id="symbol-e3adcbb9da8ac5f3541bebeb"><h2>qinside</h2><p class="meta">cjr.quadtree.algorithm.program.qinside</p><pre class="pseudocode">definition qinside:
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1223">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1225">y</span>, type(_ (inferred)))
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1227">x0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1230">y0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1233">x1</span>, type(_ (inferred)))
+    parameter(<span id="symbol-e3adcbb9da8ac5f3541bebeb-binder-1236">y1</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-fdc56ca2fcfdf2a702473c9e" title="cjr.quadtree.algorithm.program.qle">qle</a>(<a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1227">x0</a>, <a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1223">x</a>), <a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1223">x</a>, <a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1233">x1</a>)), <a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-fdc56ca2fcfdf2a702473c9e" title="cjr.quadtree.algorithm.program.qle">qle</a>(<a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1230">y0</a>, <a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1225">y</a>), <a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1225">y</a>, <a href="#symbol-e3adcbb9da8ac5f3541bebeb-binder-1236">y1</a>)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qinside x y x0 y0 x1 y1 :=
+  qand (qand (qle x0 x) (qlt x x1)) (qand (qle y0 y) (qlt y y1)).</pre></details></article><article id="symbol-240c1949dace6984770d2d43"><h2>qoverlap</h2><p class="meta">cjr.quadtree.algorithm.program.qoverlap</p><pre class="pseudocode">definition qoverlap:
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1328">x0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1331">y0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1334">x1</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1337">y1</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1340">a0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1343">b0</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1346">a1</span>, type(_ (inferred)))
+    parameter(<span id="symbol-240c1949dace6984770d2d43-binder-1349">b1</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-240c1949dace6984770d2d43-binder-1328">x0</a>, <a href="#symbol-240c1949dace6984770d2d43-binder-1346">a1</a>), <a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-240c1949dace6984770d2d43-binder-1340">a0</a>, <a href="#symbol-240c1949dace6984770d2d43-binder-1334">x1</a>)), <a href="#symbol-a9126e28b874c350d6abfd13" title="cjr.quadtree.algorithm.program.qand">qand</a>(<a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-240c1949dace6984770d2d43-binder-1331">y0</a>, <a href="#symbol-240c1949dace6984770d2d43-binder-1349">b1</a>), <a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-240c1949dace6984770d2d43-binder-1343">b0</a>, <a href="#symbol-240c1949dace6984770d2d43-binder-1337">y1</a>)))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qoverlap x0 y0 x1 y1 a0 b0 a1 b1 :=
+  qand (qand (qlt x0 a1) (qlt a0 x1)) (qand (qlt y0 b1) (qlt b0 y1)).</pre></details></article><article id="symbol-7af4e29d5cdcd83fe8620709"><h2>qchoose</h2><p class="meta">cjr.quadtree.algorithm.program.qchoose</p><pre class="pseudocode">definition qchoose:
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1444">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1446">y</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1448">mx</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1451">my</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1454">ll</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1457">lr</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1460">ul</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7af4e29d5cdcd83fe8620709-binder-1463">ur</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: If">If</span>(<a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1444">x</a>, <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1448">mx</a>), <span class="external" title="External or unresolved: If">If</span>(<a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1446">y</a>, <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1451">my</a>), <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1454">ll</a>, <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1460">ul</a>), <span class="external" title="External or unresolved: If">If</span>(<a href="#symbol-f8a466df497cf805eb002af9" title="cjr.quadtree.algorithm.program.qlt">qlt</a>(<a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1446">y</a>, <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1451">my</a>), <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1457">lr</a>, <a href="#symbol-7af4e29d5cdcd83fe8620709-binder-1463">ur</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qchoose x y mx my ll lr ul ur :=
+  If (qlt x mx) (If (qlt y my) ll ul) (If (qlt y my) lr ur).</pre></details></article><article id="symbol-c10c8fffdc8c8e63cda60a3c"><h2>qloads</h2><p class="meta">cjr.quadtree.algorithm.program.qloads</p><pre class="pseudocode">recursive function qloads:
+    parameter(<span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1547">object</span>, type(<span class="external" title="External or unresolved: string">string</span>))
+    parameter:
+        <span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1565">fields</span>
+        type:
+            <span class="external" title="External or unresolved: list">list</span>:
+                notation &quot;_ * _&quot;:
+                    <span class="external" title="External or unresolved: string">string</span>
+                    <span class="external" title="External or unresolved: nat">nat</span>
+    parameter(<span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1596">body</span>, type(<span class="external" title="External or unresolved: expr">expr</span>))
+    type:
+        _ (inferred)
+    body:
+        match RegularStyle:
+            <a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1565">fields</a>
+            case:
+                patterns:
+                    notation &quot;[ ]&quot;
+                <a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1596">body</a>
+            case:
+                patterns:
+                    cons:
+                        notation &quot;( _ , _ , .. , _ )&quot;:
+                            <span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1646">name</span>
+                            items(<span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1651">index</span>)
+                        <span id="symbol-c10c8fffdc8c8e63cda60a3c-binder-1659">rest</span>
+                <span class="external" title="External or unresolved: Let">Let</span>(<span class="external" title="External or unresolved: Some">Some</span>(<a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1646">name</a>), <span class="external" title="External or unresolved: FieldLoad">FieldLoad</span>(<span class="external" title="External or unresolved: Var">Var</span>(<a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1547">object</a>), <a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1651">index</a>), <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>(<a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1547">object</a>, <a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1659">rest</a>, <a href="#symbol-c10c8fffdc8c8e63cda60a3c-binder-1596">body</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint qloads (object : string) (fields : list (string * nat)) (body : expr) :=
+  match fields with [] =&gt; body | (name,index)::rest =&gt;
+    Let (Some name) (FieldLoad (Var object) index) (qloads object rest body) end.</pre></details></article><article id="symbol-6924d8b469981f9794775b5c"><h2>qstores</h2><p class="meta">cjr.quadtree.algorithm.program.qstores</p><pre class="pseudocode">recursive function qstores:
+    parameter(<span id="symbol-6924d8b469981f9794775b5c-binder-1767">object</span>, type(<span class="external" title="External or unresolved: string">string</span>))
+    parameter:
+        <span id="symbol-6924d8b469981f9794775b5c-binder-1785">fields</span>
+        type:
+            <span class="external" title="External or unresolved: list">list</span>:
+                notation &quot;_ * _&quot;:
+                    <span class="external" title="External or unresolved: nat">nat</span>
+                    <span class="external" title="External or unresolved: expr">expr</span>
+    parameter(<span id="symbol-6924d8b469981f9794775b5c-binder-1814">body</span>, type(<span class="external" title="External or unresolved: expr">expr</span>))
+    type:
+        _ (inferred)
+    body:
+        match RegularStyle:
+            <a href="#symbol-6924d8b469981f9794775b5c-binder-1785">fields</a>
+            case:
+                patterns:
+                    notation &quot;[ ]&quot;
+                <a href="#symbol-6924d8b469981f9794775b5c-binder-1814">body</a>
+            case:
+                patterns:
+                    cons:
+                        notation &quot;( _ , _ , .. , _ )&quot;:
+                            <span id="symbol-6924d8b469981f9794775b5c-binder-1864">index</span>
+                            items(<span id="symbol-6924d8b469981f9794775b5c-binder-1870">value</span>)
+                        <span id="symbol-6924d8b469981f9794775b5c-binder-1878">rest</span>
+                <span class="external" title="External or unresolved: Seq">Seq</span>(<span class="external" title="External or unresolved: FieldStore">FieldStore</span>(<span class="external" title="External or unresolved: Var">Var</span>(<a href="#symbol-6924d8b469981f9794775b5c-binder-1767">object</a>), <a href="#symbol-6924d8b469981f9794775b5c-binder-1864">index</a>, <a href="#symbol-6924d8b469981f9794775b5c-binder-1870">value</a>), <a href="#symbol-6924d8b469981f9794775b5c" title="cjr.quadtree.algorithm.program.qstores">qstores</a>(<a href="#symbol-6924d8b469981f9794775b5c-binder-1767">object</a>, <a href="#symbol-6924d8b469981f9794775b5c-binder-1878">rest</a>, <a href="#symbol-6924d8b469981f9794775b5c-binder-1814">body</a>))</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint qstores (object : string) (fields : list (nat * expr)) (body : expr) :=
+  match fields with [] =&gt; body | (index,value)::rest =&gt;
+    Seq (FieldStore (Var object) index value) (qstores object rest body) end.</pre></details></article><article id="symbol-cbb2b6f048b3a27a6377da57"><h2>qt_power_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_power_body</p><pre class="pseudocode">definition qt_power_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ]&quot;:
+                &quot;d&quot;
+            <span class="external" title="External or unresolved: If">If</span>:
+                <a href="#symbol-fdc56ca2fcfdf2a702473c9e" title="cjr.quadtree.algorithm.program.qle">qle</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;d&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1)
+                <span class="external" title="External or unresolved: Let">Let</span>:
+                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;n&quot;)
+                    <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                        &quot;qt_power&quot;
+                        notation &quot;[ _ ]&quot;:
+                            <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: MinusOp">MinusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;d&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1))
+                    <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: PlusOp">PlusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;n&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;n&quot;))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_power_body := qargs [&quot;d&quot;]
+  (If (qle (Var &quot;d&quot;) (qi 0)) (qi 1)
+    (Let (Some &quot;n&quot;) (qrecur &quot;qt_power&quot; [BinOp MinusOp (Var &quot;d&quot;) (qi 1)])
+      (BinOp PlusOp (Var &quot;n&quot;) (Var &quot;n&quot;)))).</pre></details></article><article id="symbol-709c5500c2370f37126300f9"><h2>qt_power</h2><p class="meta">cjr.quadtree.algorithm.program.qt_power</p><pre class="pseudocode">definition qt_power:
+    parameter(<span id="symbol-709c5500c2370f37126300f9-binder-2178">e</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_power&quot;
+            <a href="#symbol-cbb2b6f048b3a27a6377da57" title="cjr.quadtree.algorithm.program.qt_power_body">qt_power_body</a>
+            notation &quot;[ _ ]&quot;:
+                <a href="#symbol-709c5500c2370f37126300f9-binder-2178">e</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_power e := qinvoke &quot;qt_power&quot; qt_power_body [e].</pre></details></article><article id="symbol-1c6d8f52be2f53f8ec44a70b"><h2>qt_empty_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_empty_body</p><pre class="pseudocode">definition qt_empty_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;x0&quot;
+                items(&quot;y0&quot;, &quot;x1&quot;, &quot;y1&quot;)
+            <span class="external" title="External or unresolved: New">New</span>:
+                notation &quot;[ ]&quot;
+                notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                    <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0)
+                    items:
+                        <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0)
+                        <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;x0&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;y0&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;x1&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;y1&quot;)
+                        <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0)
+                        <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0)
+                        <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a>
+                        <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a>
+                        <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a>
+                        <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_empty_body := qargs [&quot;x0&quot;;&quot;y0&quot;;&quot;x1&quot;;&quot;y1&quot;]
+  (New [] [qi 0;qi 0;qi 0;Var &quot;x0&quot;;Var &quot;y0&quot;;Var &quot;x1&quot;;Var &quot;y1&quot;;
+           qi 0;qi 0;qu;qu;qu;qu]).</pre></details></article><article id="symbol-0c5428857937a543f9cff842"><h2>qt_empty</h2><p class="meta">cjr.quadtree.algorithm.program.qt_empty</p><pre class="pseudocode">definition qt_empty:
+    parameter(<span id="symbol-0c5428857937a543f9cff842-binder-2579">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0c5428857937a543f9cff842-binder-2581">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0c5428857937a543f9cff842-binder-2583">c</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0c5428857937a543f9cff842-binder-2585">d</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_empty&quot;
+            <a href="#symbol-1c6d8f52be2f53f8ec44a70b" title="cjr.quadtree.algorithm.program.qt_empty_body">qt_empty_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-0c5428857937a543f9cff842-binder-2579">a</a>
+                items(<a href="#symbol-0c5428857937a543f9cff842-binder-2581">b</a>, <a href="#symbol-0c5428857937a543f9cff842-binder-2583">c</a>, <a href="#symbol-0c5428857937a543f9cff842-binder-2585">d</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_empty a b c d := qinvoke &quot;qt_empty&quot; qt_empty_body [a;b;c;d].</pre></details></article><article id="symbol-a6c7aba4608b705e10ce16f9"><h2>qt_seed_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_seed_body</p><pre class="pseudocode">definition qt_seed_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;node&quot;
+                items(&quot;x&quot;, &quot;y&quot;)
+            <a href="#symbol-6924d8b469981f9794775b5c" title="cjr.quadtree.algorithm.program.qstores">qstores</a>:
+                &quot;node&quot;
+                notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        in_scope nat(0)
+                        items(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1))
+                    items:
+                        notation &quot;( _ , _ , .. , _ )&quot;:
+                            in_scope nat(1)
+                            items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;))
+                        notation &quot;( _ , _ , .. , _ )&quot;:
+                            in_scope nat(2)
+                            items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;))
+                <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_seed_body := qargs [&quot;node&quot;;&quot;x&quot;;&quot;y&quot;]
+  (qstores &quot;node&quot; [(0%nat,qi 1);(1%nat,Var &quot;x&quot;);(2%nat,Var &quot;y&quot;)] qu).</pre></details></article><article id="symbol-cd8bef2bc699d173a0b3d074"><h2>qt_seed</h2><p class="meta">cjr.quadtree.algorithm.program.qt_seed</p><pre class="pseudocode">definition qt_seed:
+    parameter(<span id="symbol-cd8bef2bc699d173a0b3d074-binder-2773">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cd8bef2bc699d173a0b3d074-binder-2775">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cd8bef2bc699d173a0b3d074-binder-2777">y</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_seed&quot;
+            <a href="#symbol-a6c7aba4608b705e10ce16f9" title="cjr.quadtree.algorithm.program.qt_seed_body">qt_seed_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-cd8bef2bc699d173a0b3d074-binder-2773">n</a>
+                items(<a href="#symbol-cd8bef2bc699d173a0b3d074-binder-2775">x</a>, <a href="#symbol-cd8bef2bc699d173a0b3d074-binder-2777">y</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_seed n x y := qinvoke &quot;qt_seed&quot; qt_seed_body [n;x;y].</pre></details></article><article id="symbol-8bd1fd1ddb1621fc9665ea18"><h2>qt_insert_branch</h2><p class="meta">cjr.quadtree.algorithm.program.qt_insert_branch</p><pre class="pseudocode">definition qt_insert_branch:
+    body:
+        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+            &quot;node&quot;
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                notation &quot;( _ , _ , .. , _ )&quot;:
+                    &quot;mx&quot;
+                    items(in_scope nat(7))
+                items:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;my&quot;
+                        items(in_scope nat(8))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;ll&quot;
+                        items(in_scope nat(9))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;lr&quot;
+                        items(in_scope nat(10))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;ul&quot;
+                        items(in_scope nat(11))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;ur&quot;
+                        items(in_scope nat(12))
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;child&quot;)
+                <a href="#symbol-7af4e29d5cdcd83fe8620709" title="cjr.quadtree.algorithm.program.qchoose">qchoose</a>:
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;mx&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;my&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ll&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;lr&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ul&quot;)
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ur&quot;)
+                <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                    &quot;qt_insert_node&quot;
+                    notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;child&quot;)
+                        items(<span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: MinusOp">MinusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;d&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1)), <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_insert_branch :=
+  qloads &quot;node&quot; [(&quot;mx&quot;,7%nat);(&quot;my&quot;,8%nat);(&quot;ll&quot;,9%nat);(&quot;lr&quot;,10%nat);(&quot;ul&quot;,11%nat);(&quot;ur&quot;,12%nat)]
+    (Let (Some &quot;child&quot;) (qchoose (Var &quot;x&quot;) (Var &quot;y&quot;) (Var &quot;mx&quot;) (Var &quot;my&quot;)
+                           (Var &quot;ll&quot;) (Var &quot;lr&quot;) (Var &quot;ul&quot;) (Var &quot;ur&quot;))
+      (qrecur &quot;qt_insert_node&quot; [Var &quot;child&quot;;BinOp MinusOp (Var &quot;d&quot;) (qi 1);Var &quot;x&quot;;Var &quot;y&quot;])).</pre></details></article><article id="symbol-8a8c8082cddadf4e22bd7e87"><h2>qt_split</h2><p class="meta">cjr.quadtree.algorithm.program.qt_split</p><pre class="pseudocode">definition qt_split:
+    body:
+        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+            &quot;node&quot;
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                notation &quot;( _ , _ , .. , _ )&quot;:
+                    &quot;x0&quot;
+                    items(in_scope nat(3))
+                items:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;y0&quot;
+                        items(in_scope nat(4))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;x1&quot;
+                        items(in_scope nat(5))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;y1&quot;
+                        items(in_scope nat(6))
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;half&quot;)
+                <a href="#symbol-709c5500c2370f37126300f9" title="cjr.quadtree.algorithm.program.qt_power">qt_power</a>(<span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: MinusOp">MinusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;d&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1)))
+                <span class="external" title="External or unresolved: Let">Let</span>:
+                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_mx&quot;)
+                    <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: PlusOp">PlusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;x0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;half&quot;))
+                    <span class="external" title="External or unresolved: Let">Let</span>:
+                        <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_my&quot;)
+                        <span class="external" title="External or unresolved: BinOp">BinOp</span>(<span class="external" title="External or unresolved: PlusOp">PlusOp</span>, <span class="external" title="External or unresolved: Var">Var</span>(&quot;y0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;half&quot;))
+                        <span class="external" title="External or unresolved: Let">Let</span>:
+                            <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_ll&quot;)
+                            <a href="#symbol-0c5428857937a543f9cff842" title="cjr.quadtree.algorithm.program.qt_empty">qt_empty</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;))
+                            <span class="external" title="External or unresolved: Let">Let</span>:
+                                <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_lr&quot;)
+                                <a href="#symbol-0c5428857937a543f9cff842" title="cjr.quadtree.algorithm.program.qt_empty">qt_empty</a>:
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;y0&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;x1&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;)
+                                <span class="external" title="External or unresolved: Let">Let</span>:
+                                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_ul&quot;)
+                                    <a href="#symbol-0c5428857937a543f9cff842" title="cjr.quadtree.algorithm.program.qt_empty">qt_empty</a>:
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;x0&quot;)
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;)
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;)
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;y1&quot;)
+                                    <span class="external" title="External or unresolved: Let">Let</span>:
+                                        <span class="external" title="External or unresolved: Some">Some</span>(&quot;split_ur&quot;)
+                                        <a href="#symbol-0c5428857937a543f9cff842" title="cjr.quadtree.algorithm.program.qt_empty">qt_empty</a>:
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;x1&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;y1&quot;)
+                                        <span class="external" title="External or unresolved: Let">Let</span>:
+                                            <span class="external" title="External or unresolved: Some">Some</span>(&quot;seed&quot;)
+                                            <a href="#symbol-7af4e29d5cdcd83fe8620709" title="cjr.quadtree.algorithm.program.qchoose">qchoose</a>:
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ll&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_lr&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ul&quot;)
+                                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ur&quot;)
+                                            <span class="external" title="External or unresolved: Seq">Seq</span>:
+                                                <a href="#symbol-cd8bef2bc699d173a0b3d074" title="cjr.quadtree.algorithm.program.qt_seed">qt_seed</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;seed&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;))
+                                                <a href="#symbol-6924d8b469981f9794775b5c" title="cjr.quadtree.algorithm.program.qstores">qstores</a>:
+                                                    &quot;node&quot;
+                                                    notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                                        notation &quot;( _ , _ , .. , _ )&quot;:
+                                                            in_scope nat(0)
+                                                            items(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(2))
+                                                        items:
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(1)
+                                                                items(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(2)
+                                                                items(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(7)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_mx&quot;))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(8)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_my&quot;))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(9)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ll&quot;))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(10)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_lr&quot;))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(11)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ul&quot;))
+                                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                                in_scope nat(12)
+                                                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;split_ur&quot;))
+                                                    <a href="#symbol-8bd1fd1ddb1621fc9665ea18" title="cjr.quadtree.algorithm.program.qt_insert_branch">qt_insert_branch</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_split :=
+  qloads &quot;node&quot; [(&quot;x0&quot;,3%nat);(&quot;y0&quot;,4%nat);(&quot;x1&quot;,5%nat);(&quot;y1&quot;,6%nat)]
+  (Let (Some &quot;half&quot;) (qt_power (BinOp MinusOp (Var &quot;d&quot;) (qi 1)))
+  (Let (Some &quot;split_mx&quot;) (BinOp PlusOp (Var &quot;x0&quot;) (Var &quot;half&quot;))
+  (Let (Some &quot;split_my&quot;) (BinOp PlusOp (Var &quot;y0&quot;) (Var &quot;half&quot;))
+  (Let (Some &quot;split_ll&quot;) (qt_empty (Var &quot;x0&quot;) (Var &quot;y0&quot;) (Var &quot;split_mx&quot;) (Var &quot;split_my&quot;))
+  (Let (Some &quot;split_lr&quot;) (qt_empty (Var &quot;split_mx&quot;) (Var &quot;y0&quot;) (Var &quot;x1&quot;) (Var &quot;split_my&quot;))
+  (Let (Some &quot;split_ul&quot;) (qt_empty (Var &quot;x0&quot;) (Var &quot;split_my&quot;) (Var &quot;split_mx&quot;) (Var &quot;y1&quot;))
+  (Let (Some &quot;split_ur&quot;) (qt_empty (Var &quot;split_mx&quot;) (Var &quot;split_my&quot;) (Var &quot;x1&quot;) (Var &quot;y1&quot;))
+  (Let (Some &quot;seed&quot;) (qchoose (Var &quot;px&quot;) (Var &quot;py&quot;) (Var &quot;split_mx&quot;) (Var &quot;split_my&quot;)
+                         (Var &quot;split_ll&quot;) (Var &quot;split_lr&quot;) (Var &quot;split_ul&quot;) (Var &quot;split_ur&quot;))
+  (Seq (qt_seed (Var &quot;seed&quot;) (Var &quot;px&quot;) (Var &quot;py&quot;))
+  (qstores &quot;node&quot; [(0%nat,qi 2);(1%nat,qi 0);(2%nat,qi 0);(7%nat,Var &quot;split_mx&quot;);(8%nat,Var &quot;split_my&quot;);
+                   (9%nat,Var &quot;split_ll&quot;);(10%nat,Var &quot;split_lr&quot;);(11%nat,Var &quot;split_ul&quot;);(12%nat,Var &quot;split_ur&quot;)]
+    qt_insert_branch)))))))))).</pre></details></article><article id="symbol-b63d7edf890bdc08af7a7633"><h2>qt_insert_node_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_insert_node_body</p><pre class="pseudocode">definition qt_insert_node_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;node&quot;
+                items(&quot;d&quot;, &quot;x&quot;, &quot;y&quot;)
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;tag&quot;)
+                <span class="external" title="External or unresolved: FieldLoad">FieldLoad</span>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;node&quot;), 0)
+                <span class="external" title="External or unresolved: If">If</span>:
+                    <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                    <span class="external" title="External or unresolved: Seq">Seq</span>(<a href="#symbol-cd8bef2bc699d173a0b3d074" title="cjr.quadtree.algorithm.program.qt_seed">qt_seed</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;node&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;)), <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: true">true</span>))
+                    <span class="external" title="External or unresolved: If">If</span>:
+                        <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1))
+                        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                            &quot;node&quot;
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;px&quot;
+                                    items(in_scope nat(1))
+                                items:
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;py&quot;
+                                        items(in_scope nat(2))
+                            <span class="external" title="External or unresolved: If">If</span>:
+                                <a href="#symbol-6ad0f8f106aaefcab9fac897" title="cjr.quadtree.algorithm.program.qpoint_eq">qpoint_eq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;))
+                                <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>)
+                                <a href="#symbol-8a8c8082cddadf4e22bd7e87" title="cjr.quadtree.algorithm.program.qt_split">qt_split</a>
+                        <a href="#symbol-8bd1fd1ddb1621fc9665ea18" title="cjr.quadtree.algorithm.program.qt_insert_branch">qt_insert_branch</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_insert_node_body := qargs [&quot;node&quot;;&quot;d&quot;;&quot;x&quot;;&quot;y&quot;]
+  (Let (Some &quot;tag&quot;) (FieldLoad (Var &quot;node&quot;) 0)
+  (If (qeq (Var &quot;tag&quot;) (qi 0))
+    (Seq (qt_seed (Var &quot;node&quot;) (Var &quot;x&quot;) (Var &quot;y&quot;)) (qb true))
+    (If (qeq (Var &quot;tag&quot;) (qi 1))
+      (qloads &quot;node&quot; [(&quot;px&quot;,1%nat);(&quot;py&quot;,2%nat)]
+        (If (qpoint_eq (Var &quot;x&quot;) (Var &quot;y&quot;) (Var &quot;px&quot;) (Var &quot;py&quot;)) (qb false) qt_split))
+      qt_insert_branch))).</pre></details></article><article id="symbol-97de1ec573a8ed22c331529f"><h2>qt_insert_node</h2><p class="meta">cjr.quadtree.algorithm.program.qt_insert_node</p><pre class="pseudocode">definition qt_insert_node:
+    parameter(<span id="symbol-97de1ec573a8ed22c331529f-binder-4758">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-97de1ec573a8ed22c331529f-binder-4760">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-97de1ec573a8ed22c331529f-binder-4762">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-97de1ec573a8ed22c331529f-binder-4764">y</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_insert_node&quot;
+            <a href="#symbol-b63d7edf890bdc08af7a7633" title="cjr.quadtree.algorithm.program.qt_insert_node_body">qt_insert_node_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-97de1ec573a8ed22c331529f-binder-4758">n</a>
+                items(<a href="#symbol-97de1ec573a8ed22c331529f-binder-4760">d</a>, <a href="#symbol-97de1ec573a8ed22c331529f-binder-4762">x</a>, <a href="#symbol-97de1ec573a8ed22c331529f-binder-4764">y</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_insert_node n d x y := qinvoke &quot;qt_insert_node&quot; qt_insert_node_body [n;d;x;y].</pre></details></article><article id="symbol-430bf9f525e9872314240ead"><h2>qt_contains_node_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_contains_node_body</p><pre class="pseudocode">definition qt_contains_node_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;node&quot;
+                items(&quot;x&quot;, &quot;y&quot;)
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;tag&quot;)
+                <span class="external" title="External or unresolved: FieldLoad">FieldLoad</span>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;node&quot;), 0)
+                <span class="external" title="External or unresolved: If">If</span>:
+                    <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                    <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>)
+                    <span class="external" title="External or unresolved: If">If</span>:
+                        <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1))
+                        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                            &quot;node&quot;
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;px&quot;
+                                    items(in_scope nat(1))
+                                items:
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;py&quot;
+                                        items(in_scope nat(2))
+                            <a href="#symbol-6ad0f8f106aaefcab9fac897" title="cjr.quadtree.algorithm.program.qpoint_eq">qpoint_eq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;))
+                        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                            &quot;node&quot;
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;mx&quot;
+                                    items(in_scope nat(7))
+                                items:
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;my&quot;
+                                        items(in_scope nat(8))
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;ll&quot;
+                                        items(in_scope nat(9))
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;lr&quot;
+                                        items(in_scope nat(10))
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;ul&quot;
+                                        items(in_scope nat(11))
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        &quot;ur&quot;
+                                        items(in_scope nat(12))
+                            <span class="external" title="External or unresolved: Let">Let</span>:
+                                <span class="external" title="External or unresolved: Some">Some</span>(&quot;child&quot;)
+                                <a href="#symbol-7af4e29d5cdcd83fe8620709" title="cjr.quadtree.algorithm.program.qchoose">qchoose</a>:
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;mx&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;my&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ll&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;lr&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ul&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;ur&quot;)
+                                <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                                    &quot;qt_contains_node&quot;
+                                    notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;child&quot;)
+                                        items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_contains_node_body := qargs [&quot;node&quot;;&quot;x&quot;;&quot;y&quot;]
+  (Let (Some &quot;tag&quot;) (FieldLoad (Var &quot;node&quot;) 0)
+  (If (qeq (Var &quot;tag&quot;) (qi 0)) (qb false)
+    (If (qeq (Var &quot;tag&quot;) (qi 1))
+      (qloads &quot;node&quot; [(&quot;px&quot;,1%nat);(&quot;py&quot;,2%nat)]
+        (qpoint_eq (Var &quot;x&quot;) (Var &quot;y&quot;) (Var &quot;px&quot;) (Var &quot;py&quot;)))
+      (qloads &quot;node&quot; [(&quot;mx&quot;,7%nat);(&quot;my&quot;,8%nat);(&quot;ll&quot;,9%nat);(&quot;lr&quot;,10%nat);(&quot;ul&quot;,11%nat);(&quot;ur&quot;,12%nat)]
+        (Let (Some &quot;child&quot;) (qchoose (Var &quot;x&quot;) (Var &quot;y&quot;) (Var &quot;mx&quot;) (Var &quot;my&quot;)
+                              (Var &quot;ll&quot;) (Var &quot;lr&quot;) (Var &quot;ul&quot;) (Var &quot;ur&quot;))
+          (qrecur &quot;qt_contains_node&quot; [Var &quot;child&quot;;Var &quot;x&quot;;Var &quot;y&quot;])))))).</pre></details></article><article id="symbol-a1f5686cfc40fbd2e9e32a14"><h2>qt_contains_node</h2><p class="meta">cjr.quadtree.algorithm.program.qt_contains_node</p><pre class="pseudocode">definition qt_contains_node:
+    parameter(<span id="symbol-a1f5686cfc40fbd2e9e32a14-binder-5479">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a1f5686cfc40fbd2e9e32a14-binder-5481">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a1f5686cfc40fbd2e9e32a14-binder-5483">y</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_contains_node&quot;
+            <a href="#symbol-430bf9f525e9872314240ead" title="cjr.quadtree.algorithm.program.qt_contains_node_body">qt_contains_node_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-a1f5686cfc40fbd2e9e32a14-binder-5479">n</a>
+                items(<a href="#symbol-a1f5686cfc40fbd2e9e32a14-binder-5481">x</a>, <a href="#symbol-a1f5686cfc40fbd2e9e32a14-binder-5483">y</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_contains_node n x y := qinvoke &quot;qt_contains_node&quot; qt_contains_node_body [n;x;y].</pre></details></article><article id="symbol-1c4397ffce22fd898574a35c"><h2>qt_nil_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_nil_body</p><pre class="pseudocode">definition qt_nil_body:
+    body:
+        <span class="external" title="External or unresolved: New">New</span>:
+            notation &quot;[ ]&quot;
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>)
+                items(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_nil_body := New [] [qb false;qi 0;qi 0;qu].</pre></details></article><article id="symbol-e8d1fb5b192a11aaf0c02c1e"><h2>qt_nil</h2><p class="meta">cjr.quadtree.algorithm.program.qt_nil</p><pre class="pseudocode">definition qt_nil:
+    body:
+        <span class="external" title="External or unresolved: App">App</span>(<span class="external" title="External or unresolved: Rec">Rec</span>(<span class="external" title="External or unresolved: None">None</span>, <span class="external" title="External or unresolved: None">None</span>, <a href="#symbol-1c4397ffce22fd898574a35c" title="cjr.quadtree.algorithm.program.qt_nil_body">qt_nil_body</a>), <a href="#symbol-70bd3292eee3b840019004dd" title="cjr.quadtree.algorithm.program.qu">qu</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_nil := App (Rec None None qt_nil_body) qu.</pre></details></article><article id="symbol-8f51d5f4f0a4c18d4965d034"><h2>qt_cons_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_cons_body</p><pre class="pseudocode">definition qt_cons_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;x&quot;
+                items(&quot;y&quot;, &quot;tail&quot;)
+            <span class="external" title="External or unresolved: New">New</span>:
+                notation &quot;[ ]&quot;
+                notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                    <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: true">true</span>)
+                    items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;tail&quot;))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_cons_body := qargs [&quot;x&quot;;&quot;y&quot;;&quot;tail&quot;] (New [] [qb true;Var &quot;x&quot;;Var &quot;y&quot;;Var &quot;tail&quot;]).</pre></details></article><article id="symbol-f5900ed6efda1dfd6021037c"><h2>qt_cons</h2><p class="meta">cjr.quadtree.algorithm.program.qt_cons</p><pre class="pseudocode">definition qt_cons:
+    parameter(<span id="symbol-f5900ed6efda1dfd6021037c-binder-5862">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-f5900ed6efda1dfd6021037c-binder-5864">y</span>, type(_ (inferred)))
+    parameter(<span id="symbol-f5900ed6efda1dfd6021037c-binder-5866">tail</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_cons&quot;
+            <a href="#symbol-8f51d5f4f0a4c18d4965d034" title="cjr.quadtree.algorithm.program.qt_cons_body">qt_cons_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-f5900ed6efda1dfd6021037c-binder-5862">x</a>
+                items(<a href="#symbol-f5900ed6efda1dfd6021037c-binder-5864">y</a>, <a href="#symbol-f5900ed6efda1dfd6021037c-binder-5866">tail</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_cons x y tail := qinvoke &quot;qt_cons&quot; qt_cons_body [x;y;tail].</pre></details></article><article id="symbol-9e0e51d2d9060d98a4c032d1"><h2>qt_range_branch</h2><p class="meta">cjr.quadtree.algorithm.program.qt_range_branch</p><pre class="pseudocode">definition qt_range_branch:
+    body:
+        <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+            &quot;node&quot;
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                notation &quot;( _ , _ , .. , _ )&quot;:
+                    &quot;ll&quot;
+                    items(in_scope nat(9))
+                items:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;lr&quot;
+                        items(in_scope nat(10))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;ul&quot;
+                        items(in_scope nat(11))
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;ur&quot;
+                        items(in_scope nat(12))
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;a3&quot;)
+                <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                    &quot;qt_range_node&quot;
+                    notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;ur&quot;)
+                        items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;))
+                <span class="external" title="External or unresolved: Let">Let</span>:
+                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;a2&quot;)
+                    <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                        &quot;qt_range_node&quot;
+                        notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;ul&quot;)
+                            items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;a3&quot;))
+                    <span class="external" title="External or unresolved: Let">Let</span>:
+                        <span class="external" title="External or unresolved: Some">Some</span>(&quot;a1out&quot;)
+                        <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                            &quot;qt_range_node&quot;
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;lr&quot;)
+                                items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;a2&quot;))
+                        <a href="#symbol-56832604f804665f12307b07" title="cjr.quadtree.algorithm.program.qrecur">qrecur</a>:
+                            &quot;qt_range_node&quot;
+                            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;ll&quot;)
+                                items:
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;)
+                                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1out&quot;)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_range_branch :=
+  qloads &quot;node&quot; [(&quot;ll&quot;,9%nat);(&quot;lr&quot;,10%nat);(&quot;ul&quot;,11%nat);(&quot;ur&quot;,12%nat)]
+    (Let (Some &quot;a3&quot;) (qrecur &quot;qt_range_node&quot; [Var &quot;ur&quot;;Var &quot;a0&quot;;Var &quot;b0&quot;;Var &quot;a1&quot;;Var &quot;b1&quot;;Var &quot;acc&quot;])
+    (Let (Some &quot;a2&quot;) (qrecur &quot;qt_range_node&quot; [Var &quot;ul&quot;;Var &quot;a0&quot;;Var &quot;b0&quot;;Var &quot;a1&quot;;Var &quot;b1&quot;;Var &quot;a3&quot;])
+    (Let (Some &quot;a1out&quot;) (qrecur &quot;qt_range_node&quot; [Var &quot;lr&quot;;Var &quot;a0&quot;;Var &quot;b0&quot;;Var &quot;a1&quot;;Var &quot;b1&quot;;Var &quot;a2&quot;])
+      (qrecur &quot;qt_range_node&quot; [Var &quot;ll&quot;;Var &quot;a0&quot;;Var &quot;b0&quot;;Var &quot;a1&quot;;Var &quot;b1&quot;;Var &quot;a1out&quot;])))).</pre></details></article><article id="symbol-f9f848c43b10f0f78e60106d"><h2>qt_range_node_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_range_node_body</p><pre class="pseudocode">definition qt_range_node_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;node&quot;
+                items(&quot;a0&quot;, &quot;b0&quot;, &quot;a1&quot;, &quot;b1&quot;, &quot;acc&quot;)
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;tag&quot;)
+                <span class="external" title="External or unresolved: FieldLoad">FieldLoad</span>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;node&quot;), 0)
+                <span class="external" title="External or unresolved: If">If</span>:
+                    <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0))
+                    <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;)
+                    <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                        &quot;node&quot;
+                        notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                &quot;x0&quot;
+                                items(in_scope nat(3))
+                            items:
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;y0&quot;
+                                    items(in_scope nat(4))
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;x1&quot;
+                                    items(in_scope nat(5))
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;y1&quot;
+                                    items(in_scope nat(6))
+                        <span class="external" title="External or unresolved: If">If</span>:
+                            <a href="#symbol-240c1949dace6984770d2d43" title="cjr.quadtree.algorithm.program.qoverlap">qoverlap</a>:
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;x0&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;y0&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;x1&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;y1&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;)
+                                <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;)
+                            <span class="external" title="External or unresolved: If">If</span>:
+                                <a href="#symbol-18e645572a97e886adb2237c" title="cjr.quadtree.algorithm.program.qeq">qeq</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;tag&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(1))
+                                <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                                    &quot;node&quot;
+                                    notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                                        notation &quot;( _ , _ , .. , _ )&quot;:
+                                            &quot;px&quot;
+                                            items(in_scope nat(1))
+                                        items:
+                                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                                &quot;py&quot;
+                                                items(in_scope nat(2))
+                                    <span class="external" title="External or unresolved: If">If</span>:
+                                        <a href="#symbol-e3adcbb9da8ac5f3541bebeb" title="cjr.quadtree.algorithm.program.qinside">qinside</a>:
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;)
+                                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;)
+                                        <a href="#symbol-f5900ed6efda1dfd6021037c" title="cjr.quadtree.algorithm.program.qt_cons">qt_cons</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;px&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;py&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;))
+                                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;)
+                                <a href="#symbol-9e0e51d2d9060d98a4c032d1" title="cjr.quadtree.algorithm.program.qt_range_branch">qt_range_branch</a>
+                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_range_node_body := qargs [&quot;node&quot;;&quot;a0&quot;;&quot;b0&quot;;&quot;a1&quot;;&quot;b1&quot;;&quot;acc&quot;]
+  (Let (Some &quot;tag&quot;) (FieldLoad (Var &quot;node&quot;) 0)
+  (If (qeq (Var &quot;tag&quot;) (qi 0)) (Var &quot;acc&quot;)
+    (qloads &quot;node&quot; [(&quot;x0&quot;,3%nat);(&quot;y0&quot;,4%nat);(&quot;x1&quot;,5%nat);(&quot;y1&quot;,6%nat)]
+    (If (qoverlap (Var &quot;x0&quot;) (Var &quot;y0&quot;) (Var &quot;x1&quot;) (Var &quot;y1&quot;)
+                 (Var &quot;a0&quot;) (Var &quot;b0&quot;) (Var &quot;a1&quot;) (Var &quot;b1&quot;))
+      (If (qeq (Var &quot;tag&quot;) (qi 1))
+        (qloads &quot;node&quot; [(&quot;px&quot;,1%nat);(&quot;py&quot;,2%nat)]
+          (If (qinside (Var &quot;px&quot;) (Var &quot;py&quot;) (Var &quot;a0&quot;) (Var &quot;b0&quot;) (Var &quot;a1&quot;) (Var &quot;b1&quot;))
+            (qt_cons (Var &quot;px&quot;) (Var &quot;py&quot;) (Var &quot;acc&quot;)) (Var &quot;acc&quot;)))
+        qt_range_branch)
+      (Var &quot;acc&quot;))))).</pre></details></article><article id="symbol-789d39481f049f6343066370"><h2>qt_range_node</h2><p class="meta">cjr.quadtree.algorithm.program.qt_range_node</p><pre class="pseudocode">definition qt_range_node:
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7104">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7106">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7108">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7110">c</span>, type(_ (inferred)))
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7112">d</span>, type(_ (inferred)))
+    parameter(<span id="symbol-789d39481f049f6343066370-binder-7114">acc</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_range_node&quot;
+            <a href="#symbol-f9f848c43b10f0f78e60106d" title="cjr.quadtree.algorithm.program.qt_range_node_body">qt_range_node_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-789d39481f049f6343066370-binder-7104">n</a>
+                items(<a href="#symbol-789d39481f049f6343066370-binder-7106">a</a>, <a href="#symbol-789d39481f049f6343066370-binder-7108">b</a>, <a href="#symbol-789d39481f049f6343066370-binder-7110">c</a>, <a href="#symbol-789d39481f049f6343066370-binder-7112">d</a>, <a href="#symbol-789d39481f049f6343066370-binder-7114">acc</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_range_node n a b c d acc := qinvoke &quot;qt_range_node&quot; qt_range_node_body [n;a;b;c;d;acc].</pre></details></article><article id="symbol-a373c0dc39d90fd7e3c8bccd"><h2>qt_make_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_make_body</p><pre class="pseudocode">definition qt_make_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ]&quot;:
+                &quot;depth&quot;
+            <span class="external" title="External or unresolved: Let">Let</span>:
+                <span class="external" title="External or unresolved: Some">Some</span>(&quot;side&quot;)
+                <a href="#symbol-709c5500c2370f37126300f9" title="cjr.quadtree.algorithm.program.qt_power">qt_power</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;depth&quot;))
+                <span class="external" title="External or unresolved: Let">Let</span>:
+                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;root&quot;)
+                    <a href="#symbol-0c5428857937a543f9cff842" title="cjr.quadtree.algorithm.program.qt_empty">qt_empty</a>(<a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;))
+                    <span class="external" title="External or unresolved: New">New</span>:
+                        notation &quot;[ ]&quot;
+                        notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                            <span class="external" title="External or unresolved: Var">Var</span>(&quot;depth&quot;)
+                            items(<span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;root&quot;))</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_make_body := qargs [&quot;depth&quot;]
+  (Let (Some &quot;side&quot;) (qt_power (Var &quot;depth&quot;))
+  (Let (Some &quot;root&quot;) (qt_empty (qi 0) (qi 0) (Var &quot;side&quot;) (Var &quot;side&quot;))
+    (New [] [Var &quot;depth&quot;;Var &quot;side&quot;;Var &quot;root&quot;]))).</pre></details></article><article id="symbol-c88e3def4af962f9085149d0"><h2>qt_make</h2><p class="meta">cjr.quadtree.algorithm.program.qt_make</p><pre class="pseudocode">definition qt_make:
+    parameter(<span id="symbol-c88e3def4af962f9085149d0-binder-7457">d</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_make&quot;
+            <a href="#symbol-a373c0dc39d90fd7e3c8bccd" title="cjr.quadtree.algorithm.program.qt_make_body">qt_make_body</a>
+            notation &quot;[ _ ]&quot;:
+                <a href="#symbol-c88e3def4af962f9085149d0-binder-7457">d</a></pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_make d := qinvoke &quot;qt_make&quot; qt_make_body [d].</pre></details></article><article id="symbol-b45f8937df58dbdcb6035734"><h2>qt_insert_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_insert_body</p><pre class="pseudocode">definition qt_insert_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;tree&quot;
+                items(&quot;x&quot;, &quot;y&quot;)
+            <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                &quot;tree&quot;
+                notation &quot;[ _ ]&quot;:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;side&quot;
+                        items(in_scope nat(1))
+                <span class="external" title="External or unresolved: If">If</span>:
+                    <a href="#symbol-e3adcbb9da8ac5f3541bebeb" title="cjr.quadtree.algorithm.program.qinside">qinside</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;))
+                    <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                        &quot;tree&quot;
+                        notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                &quot;depth&quot;
+                                items(in_scope nat(0))
+                            items:
+                                notation &quot;( _ , _ , .. , _ )&quot;:
+                                    &quot;root&quot;
+                                    items(in_scope nat(2))
+                        <a href="#symbol-97de1ec573a8ed22c331529f" title="cjr.quadtree.algorithm.program.qt_insert_node">qt_insert_node</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;root&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;depth&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;))
+                    <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_insert_body := qargs [&quot;tree&quot;;&quot;x&quot;;&quot;y&quot;]
+  (qloads &quot;tree&quot; [(&quot;side&quot;,1%nat)]
+  (If (qinside (Var &quot;x&quot;) (Var &quot;y&quot;) (qi 0) (qi 0) (Var &quot;side&quot;) (Var &quot;side&quot;))
+    (qloads &quot;tree&quot; [(&quot;depth&quot;,0%nat);(&quot;root&quot;,2%nat)]
+      (qt_insert_node (Var &quot;root&quot;) (Var &quot;depth&quot;) (Var &quot;x&quot;) (Var &quot;y&quot;))) (qb false))).</pre></details></article><article id="symbol-a3c1e425204ac389942841c2"><h2>qt_insert</h2><p class="meta">cjr.quadtree.algorithm.program.qt_insert</p><pre class="pseudocode">definition qt_insert:
+    parameter(<span id="symbol-a3c1e425204ac389942841c2-binder-7818">t</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a3c1e425204ac389942841c2-binder-7820">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a3c1e425204ac389942841c2-binder-7822">y</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_insert&quot;
+            <a href="#symbol-b45f8937df58dbdcb6035734" title="cjr.quadtree.algorithm.program.qt_insert_body">qt_insert_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-a3c1e425204ac389942841c2-binder-7818">t</a>
+                items(<a href="#symbol-a3c1e425204ac389942841c2-binder-7820">x</a>, <a href="#symbol-a3c1e425204ac389942841c2-binder-7822">y</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_insert t x y := qinvoke &quot;qt_insert&quot; qt_insert_body [t;x;y].</pre></details></article><article id="symbol-c48543ac4a015073b81ae3b5"><h2>qt_contains_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_contains_body</p><pre class="pseudocode">definition qt_contains_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;tree&quot;
+                items(&quot;x&quot;, &quot;y&quot;)
+            <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                &quot;tree&quot;
+                notation &quot;[ _ ]&quot;:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;side&quot;
+                        items(in_scope nat(1))
+                <span class="external" title="External or unresolved: If">If</span>:
+                    <a href="#symbol-e3adcbb9da8ac5f3541bebeb" title="cjr.quadtree.algorithm.program.qinside">qinside</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <a href="#symbol-ba790d51526b2089806a8fff" title="cjr.quadtree.algorithm.program.qi">qi</a>(0), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;side&quot;))
+                    <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                        &quot;tree&quot;
+                        notation &quot;[ _ ]&quot;:
+                            notation &quot;( _ , _ , .. , _ )&quot;:
+                                &quot;root&quot;
+                                items(in_scope nat(2))
+                        <a href="#symbol-a1f5686cfc40fbd2e9e32a14" title="cjr.quadtree.algorithm.program.qt_contains_node">qt_contains_node</a>(<span class="external" title="External or unresolved: Var">Var</span>(&quot;root&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;x&quot;), <span class="external" title="External or unresolved: Var">Var</span>(&quot;y&quot;))
+                    <a href="#symbol-99d2242acc82ac9a8fd9152e" title="cjr.quadtree.algorithm.program.qb">qb</a>(<span class="external" title="External or unresolved: false">false</span>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_contains_body := qargs [&quot;tree&quot;;&quot;x&quot;;&quot;y&quot;]
+  (qloads &quot;tree&quot; [(&quot;side&quot;,1%nat)]
+  (If (qinside (Var &quot;x&quot;) (Var &quot;y&quot;) (qi 0) (qi 0) (Var &quot;side&quot;) (Var &quot;side&quot;))
+    (qloads &quot;tree&quot; [(&quot;root&quot;,2%nat)]
+      (qt_contains_node (Var &quot;root&quot;) (Var &quot;x&quot;) (Var &quot;y&quot;))) (qb false))).</pre></details></article><article id="symbol-dbd9f37ed0f4af079820211d"><h2>qt_contains</h2><p class="meta">cjr.quadtree.algorithm.program.qt_contains</p><pre class="pseudocode">definition qt_contains:
+    parameter(<span id="symbol-dbd9f37ed0f4af079820211d-binder-8167">t</span>, type(_ (inferred)))
+    parameter(<span id="symbol-dbd9f37ed0f4af079820211d-binder-8169">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-dbd9f37ed0f4af079820211d-binder-8171">y</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_contains&quot;
+            <a href="#symbol-c48543ac4a015073b81ae3b5" title="cjr.quadtree.algorithm.program.qt_contains_body">qt_contains_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-dbd9f37ed0f4af079820211d-binder-8167">t</a>
+                items(<a href="#symbol-dbd9f37ed0f4af079820211d-binder-8169">x</a>, <a href="#symbol-dbd9f37ed0f4af079820211d-binder-8171">y</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_contains t x y := qinvoke &quot;qt_contains&quot; qt_contains_body [t;x;y].</pre></details></article><article id="symbol-34373344388a39ff24f3ffee"><h2>qt_range_body</h2><p class="meta">cjr.quadtree.algorithm.program.qt_range_body</p><pre class="pseudocode">definition qt_range_body:
+    body:
+        <a href="#symbol-cae392501469e18b6c0fabd1" title="cjr.quadtree.algorithm.program.qargs">qargs</a>:
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                &quot;tree&quot;
+                items(&quot;a0&quot;, &quot;b0&quot;, &quot;a1&quot;, &quot;b1&quot;)
+            <a href="#symbol-c10c8fffdc8c8e63cda60a3c" title="cjr.quadtree.algorithm.program.qloads">qloads</a>:
+                &quot;tree&quot;
+                notation &quot;[ _ ]&quot;:
+                    notation &quot;( _ , _ , .. , _ )&quot;:
+                        &quot;root&quot;
+                        items(in_scope nat(2))
+                <span class="external" title="External or unresolved: Let">Let</span>:
+                    <span class="external" title="External or unresolved: Some">Some</span>(&quot;acc&quot;)
+                    <a href="#symbol-e8d1fb5b192a11aaf0c02c1e" title="cjr.quadtree.algorithm.program.qt_nil">qt_nil</a>
+                    <a href="#symbol-789d39481f049f6343066370" title="cjr.quadtree.algorithm.program.qt_range_node">qt_range_node</a>:
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;root&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;a0&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;b0&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;a1&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;b1&quot;)
+                        <span class="external" title="External or unresolved: Var">Var</span>(&quot;acc&quot;)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_range_body := qargs [&quot;tree&quot;;&quot;a0&quot;;&quot;b0&quot;;&quot;a1&quot;;&quot;b1&quot;]
+  (qloads &quot;tree&quot; [(&quot;root&quot;,2%nat)]
+  (Let (Some &quot;acc&quot;) qt_nil
+    (qt_range_node (Var &quot;root&quot;) (Var &quot;a0&quot;) (Var &quot;b0&quot;) (Var &quot;a1&quot;) (Var &quot;b1&quot;) (Var &quot;acc&quot;)))).</pre></details></article><article id="symbol-09e12ad1c69016038e55f389"><h2>qt_range</h2><p class="meta">cjr.quadtree.algorithm.program.qt_range</p><pre class="pseudocode">definition qt_range:
+    parameter(<span id="symbol-09e12ad1c69016038e55f389-binder-8460">t</span>, type(_ (inferred)))
+    parameter(<span id="symbol-09e12ad1c69016038e55f389-binder-8462">a</span>, type(_ (inferred)))
+    parameter(<span id="symbol-09e12ad1c69016038e55f389-binder-8464">b</span>, type(_ (inferred)))
+    parameter(<span id="symbol-09e12ad1c69016038e55f389-binder-8466">c</span>, type(_ (inferred)))
+    parameter(<span id="symbol-09e12ad1c69016038e55f389-binder-8468">d</span>, type(_ (inferred)))
+    body:
+        <a href="#symbol-c090c3326ad576e1ea9cc444" title="cjr.quadtree.algorithm.program.qinvoke">qinvoke</a>:
+            &quot;qt_range&quot;
+            <a href="#symbol-34373344388a39ff24f3ffee" title="cjr.quadtree.algorithm.program.qt_range_body">qt_range_body</a>
+            notation &quot;[ _ ; _ ; .. ; _ ]&quot;:
+                <a href="#symbol-09e12ad1c69016038e55f389-binder-8460">t</a>
+                items(<a href="#symbol-09e12ad1c69016038e55f389-binder-8462">a</a>, <a href="#symbol-09e12ad1c69016038e55f389-binder-8464">b</a>, <a href="#symbol-09e12ad1c69016038e55f389-binder-8466">c</a>, <a href="#symbol-09e12ad1c69016038e55f389-binder-8468">d</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Definition qt_range t a b c d := qinvoke &quot;qt_range&quot; qt_range_body [t;a;b;c;d].</pre></details></article></main></body></html>

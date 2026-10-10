@@ -1,4 +1,5 @@
 -R theories cjr
+-Q quadtree cjr.quadtree
 -arg -w
 -arg +admitted-proof
 -arg -w
@@ -30,3 +31,16 @@ theories/examples/most_frequent.v
 theories/examples/cj_print.v
 theories/examples/emit_cj.v
 theories/verify_assumptions.v
+
+quadtree/spec/model.v
+quadtree/algorithm/program.v
+quadtree/proof/ownership.v
+quadtree/proof/routing.v
+quadtree/proof/helpers.v
+quadtree/proof/correctness.v
+quadtree/algorithm/extract.v
+quadtree/spec/bounds.v
+quadtree/proof/insertion_model.v
+quadtree/proof/insertion_helpers.v
+quadtree/proof/insertion.v
+quadtree/proof/algebra.v

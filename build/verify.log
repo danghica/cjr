@@ -1,8 +1,8 @@
-make verify started: 2026-10-10T07:00:07Z
+make verify started: 2026-10-10T09:32:34Z
 make[2]: Nothing to be done for `real-all'.
 Checking for Admitted / Axiom / cheat in theories/*.v...
-coqchk on 25 .vo files...
-"coqchk" -silent -o  -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo theories/examples/arith.vo theories/examples/struct_upd.vo theories/examples/cell.vo theories/examples/swap.vo theories/examples/sum_block.vo theories/examples/class_upd.vo theories/examples/frame_call.vo theories/examples/vtable.vo theories/examples/list.vo theories/examples/list_rev.vo theories/examples/array.vo theories/examples/array_list.vo theories/examples/qsort.vo theories/examples/hm_tactics.vo theories/examples/hash_map.vo theories/examples/mf_memory.vo theories/examples/most_frequent.vo theories/examples/cj_print.vo theories/examples/emit_cj.vo theories/verify_assumptions.vo
+coqchk on 37 .vo files...
+"coqchk" -silent -o  -Q quadtree cjr.quadtree -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo theories/examples/arith.vo theories/examples/struct_upd.vo theories/examples/cell.vo theories/examples/swap.vo theories/examples/sum_block.vo theories/examples/class_upd.vo theories/examples/frame_call.vo theories/examples/vtable.vo theories/examples/list.vo theories/examples/list_rev.vo theories/examples/array.vo theories/examples/array_list.vo theories/examples/qsort.vo theories/examples/hm_tactics.vo theories/examples/hash_map.vo theories/examples/mf_memory.vo theories/examples/most_frequent.vo theories/examples/cj_print.vo theories/examples/emit_cj.vo theories/verify_assumptions.vo quadtree/spec/model.vo quadtree/algorithm/program.vo quadtree/proof/ownership.vo quadtree/proof/routing.vo quadtree/proof/helpers.vo quadtree/proof/correctness.vo quadtree/algorithm/extract.vo quadtree/spec/bounds.vo quadtree/proof/insertion_model.vo quadtree/proof/insertion_helpers.vo quadtree/proof/insertion.vo quadtree/proof/algebra.vo
 
 CONTEXT SUMMARY
 ===============
@@ -20,6 +20,9 @@ CONTEXT SUMMARY
 * Inductives whose positivity is assumed: <none>
   
 Print Assumptions audit (theories/verify_assumptions.v)...
-"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
+"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -Q quadtree cjr.quadtree -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
 Assumption audit OK (88/88 theorems closed).
-make verify finished: 2026-10-10T07:05:45Z (exit status 0)
+/Library/Developer/CommandLineTools/usr/bin/make -C quadtree verify
+COQC=/Users/danghica/.opam/default/bin/coqc COQCHK=/Users/danghica/.opam/default/bin/coqchk python3 scripts/verify.py
+coqchk passed; 98 declarations closed under the global context
+make verify finished: 2026-10-10T09:47:10Z (exit status 0)
