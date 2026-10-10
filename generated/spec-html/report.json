@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "theories/adequacy.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation #[ _ ; .. ; _ ]"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "theories/examples/_prog.v",
+      "errors": [
+        "line 2: Scope expr_scope is not declared.",
+        "line 5: Unbound and ungeneralizable variable cjrGS.",
+        "line 7: The reference Z was not found in the current environment.",
+        "line 9: The reference Z was not found in the current environment.",
+        "line 13: Syntax Error: Lexer: Undefined token",
+        "line 17: Syntax Error: Lexer: Undefined token",
+        "line 21: Syntax Error: Lexer: Undefined token",
+        "line 26: Command not supported (No proof-editing in progress).",
+        "210 additional errors"
+      ],
+      "unsupported": [],
+      "declarations": 2
+    },
+    {
+      "file": "theories/examples/_upd.v",
+      "errors": [
+        "line 4: Syntax Error: Lexer: Undefined token",
+        "line 5: Command not supported (No proof-editing in progress).",
+        "line 5: Syntax error: illegal begin of vernac.",
+        "line 5: Syntax error: illegal begin of vernac.",
+        "line 5: Command not supported (No proof-editing in progress).",
+        "line 7: Syntax Error: Lexer: Undefined token",
+        "line 8: Command not supported (No proof-editing in progress).",
+        "line 8: Syntax error: illegal begin of vernac.",
+        "257 additional errors"
+      ],
+      "unsupported": [
+        "unmapped notation _ + _",
+        "unmapped notation _ = _",
+        "unmapped notation _ ^ _"
+      ],
+      "declarations": 1
+    },
+    {
+      "file": "theories/examples/_wf.v",
+      "errors": [
+        "line 3: Syntax Error: Lexer: Undefined token",
+        "line 6: Command not supported (No proof-editing in progress).",
+        "line 7: Syntax error: illegal begin of vernac.",
+        "line 8: Syntax error: illegal begin of vernac.",
+        "line 9: Syntax error: illegal begin of vernac.",
+        "line 10: Syntax error: illegal begin of vernac.",
+        "line 10: Syntax error: illegal begin of vernac.",
+        "line 10: Syntax error: illegal begin of vernac.",
+        "396 additional errors"
+      ],
+      "unsupported": [
+        "unmapped notation ( _ , _ , .. , _ )",
+        "unmapped notation _ * _",
+        "unmapped notation _ = _"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "theories/examples/arith.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _"
+      ],
+      "declarations": 6
+    },
+    {
+      "file": "theories/examples/array.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>"
+      ],
+      "declarations": 27
+    },
+    {
+      "file": "theories/examples/array_list.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ ⊣⊢ _",
+        "unmapped notation emp"
+      ],
+      "declarations": 174
+    },
+    {
+      "file": "theories/examples/cell.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 3
+    },
+    {
+      "file": "theories/examples/cj_print.v",
+      "errors": [],
+      "unsupported": [
+        "CFix",
+        "unmapped notation _ +++ _",
+        "unsupported declaration abbrev",
+        "unsupported declaration not"
+      ],
+      "declarations": 73
+    },
+    {
+      "file": "theories/examples/class_upd.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 3
+    },
+    {
+      "file": "theories/examples/emit_cj.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ++ _"
+      ],
+      "declarations": 47
+    },
+    {
+      "file": "theories/examples/frame_call.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 2
+    },
+    {
+      "file": "theories/examples/hash_map.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ ^ _",
+        "unmapped notation _ `mod` _",
+        "unmapped notation _ ∈ _",
+        "unmapped notation _ ∉ _",
+        "unmapped notation _ ≤ _ < _",
+        "unmapped notation ∅"
+      ],
+      "declarations": 217
+    },
+    {
+      "file": "theories/examples/hm_tactics.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 0
+    },
+    {
+      "file": "theories/examples/list.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 21
+    },
+    {
+      "file": "theories/examples/list_rev.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 28
+    },
+    {
+      "file": "theories/examples/mf_memory.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ==∗ _",
+        "unmapped notation _ ⊆ _",
+        "unmapped notation £ _"
+      ],
+      "declarations": 5
+    },
+    {
+      "file": "theories/examples/most_frequent.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ + _",
+        "unmapped notation _ <$> _",
+        "unmapped notation _ ∘ _",
+        "unmapped notation _ ≡ₚ _",
+        "unmapped notation { _ }"
+      ],
+      "declarations": 185
+    },
+    {
+      "file": "theories/examples/qsort.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ < _ < _",
+        "unmapped notation _ ≡ₚ _",
+        "unmapped notation _ ≤ _ < _",
+        "unmapped notation _ ≤ _ ≤ _",
+        "unmapped notation £ _"
+      ],
+      "declarations": 99
+    },
+    {
+      "file": "theories/examples/struct_upd.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 5
+    },
+    {
+      "file": "theories/examples/sum_block.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 2
+    },
+    {
+      "file": "theories/examples/swap.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 3
+    },
+    {
+      "file": "theories/examples/vtable.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 4
+    },
+    {
+      "file": "theories/lang.v",
+      "errors": [],
+      "unsupported": [
+        "CFix",
+        "unmapped notation (=)",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ ##ₘ _",
+        "unmapped notation _ ∈ _",
+        "unmapped notation _ ∪ _",
+        "unmapped notation _ ≤ _ < _",
+        "unmapped notation {[ _ := _ ]}",
+        "unmapped notation ∅",
+        "unsupported declaration abbrev"
+      ],
+      "declarations": 95
+    },
+    {
+      "file": "theories/lifting.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation £ _"
+      ],
+      "declarations": 1
+    },
+    {
+      "file": "theories/notation.v",
+      "errors": [],
+      "unsupported": [
+        "unsupported declaration not"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "theories/primitive_laws.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation True",
+        "unmapped notation £ _",
+        "unsupported declaration not"
+      ],
+      "declarations": 41
+    },
+    {
+      "file": "theories/verify_assumptions.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 0
+    }
+  ]
+}

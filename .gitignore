@@ -23,5 +23,4 @@ Makefile.conf
 .nia.cache
 __pycache__/
 *.egg-info/
-/generated/spec-html/
 /build/lib/

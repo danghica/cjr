@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>theories/examples/_wf.v — Rocq Readable</title><link rel="stylesheet" href="../../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<p><a href="../../index.html">Project index</a></p>
+<h1>theories/examples/_wf.v</h1><p class="meta">4 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><section class="panel error"><h2>Source errors</h2><ul><li>line 3: Syntax Error: Lexer: Undefined token</li><li>line 6: Command not supported (No proof-editing in progress).</li><li>line 7: Syntax error: illegal begin of vernac.</li><li>line 8: Syntax error: illegal begin of vernac.</li><li>line 9: Syntax error: illegal begin of vernac.</li><li>line 10: Syntax error: illegal begin of vernac.</li><li>line 10: Syntax error: illegal begin of vernac.</li><li>line 10: Syntax error: illegal begin of vernac.</li><li>396 additional errors</li></ul></section><p class="notice">Incomplete rendering: 6 unsupported or unmapped constructs. Original syntax is retained where needed.</p><nav aria-label="Declarations"><ul><li><a href="#symbol-1b1585b16ea21075346a7780">count_zeros</a> <span class="count">lemma</span></li><li><a href="#symbol-ce4e0fa2d9745a524fb5ee63">tags_ok_zeros</a> <span class="count">lemma</span></li><li><a href="#symbol-ee29afadeef2e32b0aa9503a">placed_zeros</a> <span class="count">lemma</span></li><li><a href="#symbol-fced72d50486e07d27e65006">rehash_acc</a> <span class="count">recursive function</span></li></ul></nav><article id="symbol-1b1585b16ea21075346a7780"><h2>count_zeros</h2><p class="meta">cjr.examples._wf.count_zeros</p><pre class="pseudocode">lemma count_zeros:
+    parameter(<span id="symbol-1b1585b16ea21075346a7780-binder-6448">n</span>, type(_ (inferred)))
+    statement:
+        notation &quot;_ = _&quot;:
+            <span class="external" title="External or unresolved: count_occ">count_occ</span>(<span class="external" title="External or unresolved: replicate">replicate</span>(<a href="#symbol-1b1585b16ea21075346a7780-binder-6448">n</a>, 0))
+            in_scope nat(0)</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma count_zeros n : count_occ (replicate n 0) = 0%nat.</pre></details></article><article id="symbol-ce4e0fa2d9745a524fb5ee63"><h2>tags_ok_zeros</h2><p class="meta">cjr.examples._wf.tags_ok_zeros</p><pre class="pseudocode">lemma tags_ok_zeros:
+    parameter(<span id="symbol-ce4e0fa2d9745a524fb5ee63-binder-6877">n</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: tags_ok">tags_ok</span>(<span class="external" title="External or unresolved: replicate">replicate</span>(<a href="#symbol-ce4e0fa2d9745a524fb5ee63-binder-6877">n</a>, 0))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma tags_ok_zeros n : tags_ok (replicate n 0).</pre></details></article><article id="symbol-ee29afadeef2e32b0aa9503a"><h2>placed_zeros</h2><p class="meta">cjr.examples._wf.placed_zeros</p><pre class="pseudocode">lemma placed_zeros:
+    parameter(<span id="symbol-ee29afadeef2e32b0aa9503a-binder-6999">cap</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: placed">placed</span>(<a href="#symbol-ee29afadeef2e32b0aa9503a-binder-6999">cap</a>, <span class="external" title="External or unresolved: replicate">replicate</span>(<a href="#symbol-ee29afadeef2e32b0aa9503a-binder-6999">cap</a>, 0), <span class="external" title="External or unresolved: replicate">replicate</span>(<a href="#symbol-ee29afadeef2e32b0aa9503a-binder-6999">cap</a>, 0))</pre><details><summary>Original declaration (proof-free)</summary><pre>Lemma placed_zeros cap : placed cap (replicate cap 0) (replicate cap 0).</pre></details></article><article id="symbol-fced72d50486e07d27e65006"><h2>rehash_acc</h2><p class="meta">cjr.examples._wf.rehash_acc</p><pre class="pseudocode">recursive function rehash_acc:
+    parameter(<span id="symbol-fced72d50486e07d27e65006-binder-10484">cap</span>, type(<span class="external" title="External or unresolved: nat">nat</span>))
+    parameter(<span id="symbol-fced72d50486e07d27e65006-binder-10496">tags</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10501">keys</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10506">vals</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10511">accT</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10516">accK</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10521">accV</span>, type(<span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: Z">Z</span>)))
+    type:
+        notation &quot;_ * _&quot;:
+            notation &quot;_ * _&quot;:
+                <span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: Z">Z</span>)
+                <span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: Z">Z</span>)
+            <span class="external" title="External or unresolved: list">list</span>(<span class="external" title="External or unresolved: Z">Z</span>)
+    body:
+        match RegularStyle:
+            <a href="#symbol-fced72d50486e07d27e65006-binder-10496">tags</a>
+            <a href="#symbol-fced72d50486e07d27e65006-binder-10501">keys</a>
+            <a href="#symbol-fced72d50486e07d27e65006-binder-10506">vals</a>
+            case:
+                patterns(cons(<span id="symbol-fced72d50486e07d27e65006-binder-10604">t</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10609">tags</span>), cons(<span id="symbol-fced72d50486e07d27e65006-binder-10615">k</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10620">keys</span>), cons(<span id="symbol-fced72d50486e07d27e65006-binder-10626">v</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10631">vals</span>))
+                if:
+                    <span class="external" title="External or unresolved: decide">decide</span>:
+                        notation &quot;_ = _&quot;:
+                            <a href="#symbol-fced72d50486e07d27e65006-binder-10604">t</a>
+                            <span class="external" title="External or unresolved: tag_occ">tag_occ</span>
+                    then:
+                        match LetPatternStyle:
+                            <span class="external" title="External or unresolved: write_fresh">write_fresh</span>(<a href="#symbol-fced72d50486e07d27e65006-binder-10484">cap</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10511">accT</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10516">accK</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10521">accV</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10615">k</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10626">v</a>)
+                            case:
+                                patterns:
+                                    notation &quot;( _ , _ , .. , _ )&quot;:
+                                        <span id="symbol-fced72d50486e07d27e65006-binder-10688">a</span>
+                                        items(<span id="symbol-fced72d50486e07d27e65006-binder-10691">b</span>, <span id="symbol-fced72d50486e07d27e65006-binder-10694">c</span>)
+                                <span class="external" title="External or unresolved: rehash_acc">rehash_acc</span>(<a href="#symbol-fced72d50486e07d27e65006-binder-10484">cap</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10609">tags</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10620">keys</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10631">vals</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10688">a</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10691">b</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10694">c</a>)
+                    else:
+                        <span class="external" title="External or unresolved: rehash_acc">rehash_acc</span>(<a href="#symbol-fced72d50486e07d27e65006-binder-10484">cap</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10609">tags</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10620">keys</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10631">vals</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10511">accT</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10516">accK</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10521">accV</a>)
+            case:
+                patterns(_, _, _)
+                notation &quot;( _ , _ , .. , _ )&quot;:
+                    <a href="#symbol-fced72d50486e07d27e65006-binder-10511">accT</a>
+                    items(<a href="#symbol-fced72d50486e07d27e65006-binder-10516">accK</a>, <a href="#symbol-fced72d50486e07d27e65006-binder-10521">accV</a>)</pre><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint rehash_acc (cap : nat) (tags keys vals accT accK accV : list Z)
+    : list Z * list Z * list Z :=
+  match tags, keys, vals with
+  | t :: tags, k :: keys, v :: vals =&gt;
+      if decide (t = tag_occ) then
+        let &#x27;(a, b, c) := write_fresh cap accT accK accV k v in
+        rehash_acc cap tags keys vals a b c
+      else rehash_acc cap tags keys vals accT accK accV
+  | _, _, _ =&gt; (accT, accK, accV)
+  end.</pre></details></article></main></body></html>

@@ -73,3 +73,6 @@ Use coq-lsp 0.2.5+8.20 with the repository’s Coq 8.20.1. [Backend compatibilit
 [2026-10-10T07:00:00+00:00]
 push everything to github
 
+[2026-10-10T07:06:58+00:00]
+did you push the generated html docs? 
+
