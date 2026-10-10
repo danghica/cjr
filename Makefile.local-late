@@ -4,6 +4,16 @@
 # make check-proofs / make check-axioms: run those steps alone.
 
 ASSUMPTIONS_LOG := build/assumptions.log
+PYTHON ?= python3
+
+# Optional documentation tooling; proof verification does not depend on it.
+.PHONY: readable readable-test
+readable:
+	$(PYTHON) -m tools.rocq_readable build --output generated/spec-html
+
+readable-test:
+	$(PYTHON) -m unittest discover -s tests -p 'test_rocq_readable.py' -v
+
 VERIFY_LOG ?= build/verify.log
 VERIFY_THEOREMS := 88
 

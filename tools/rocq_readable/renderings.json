@@ -1,0 +1,1383 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "kind": "notation",
+      "key": "_ -∗ _",
+      "arity": 2,
+      "label": "consuming_implies",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:x_'-∗'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ -∗ _",
+      "arity": 2,
+      "label": "consuming_implies",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "stdpp_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::stdpp_scope:x_'-∗'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ∗ _",
+      "arity": 2,
+      "label": "separately",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:x_'∗'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ⊢ _",
+      "arity": 2,
+      "label": "entails",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "stdpp_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::stdpp_scope:x_'⊢'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ∧ _",
+      "arity": 2,
+      "label": "both",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:x_'∧'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ∨ _",
+      "arity": 2,
+      "label": "either",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:x_'∨'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ∗-∗ _",
+      "arity": 2,
+      "label": "resource_equivalent",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "_ -> _",
+      "arity": 2,
+      "label": "arrow",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'->'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ → _",
+      "arity": 2,
+      "label": "arrow",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:x_'→'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ /\\ _",
+      "arity": 2,
+      "label": "and",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'/\\'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ \\/ _",
+      "arity": 2,
+      "label": "or",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'\\/'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <-> _",
+      "arity": 2,
+      "label": "equivalent",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'<->'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ↔ _",
+      "arity": 2,
+      "label": "equivalent",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:x_'↔'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ = _",
+      "arity": 2,
+      "label": "equals",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'='_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <> _",
+      "arity": 2,
+      "label": "not_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:x_'<>'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≠ _",
+      "arity": 2,
+      "label": "not_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:x_'≠'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "⊢ _",
+      "arity": 1,
+      "label": "valid_resource_assertion",
+      "layout": "call",
+      "slots": [
+        0
+      ],
+      "scope": "stdpp_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::stdpp_scope:'⊢'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "⌜ _ ⌝",
+      "arity": 1,
+      "label": "pure",
+      "layout": "call",
+      "slots": [
+        0
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:'⌜'_x_'⌝'"
+    },
+    {
+      "kind": "notation",
+      "key": "□ _",
+      "arity": 1,
+      "label": "persistent",
+      "layout": "call",
+      "slots": [
+        0
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "▷ _",
+      "arity": 1,
+      "label": "later",
+      "layout": "call",
+      "slots": [
+        0
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "¬ _",
+      "arity": 1,
+      "label": "not",
+      "layout": "call",
+      "slots": [
+        0
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "~ _",
+      "arity": 1,
+      "label": "not",
+      "layout": "call",
+      "slots": [
+        0
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:'~'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "True",
+      "arity": 0,
+      "label": "true_proposition",
+      "layout": "call",
+      "slots": [],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "stdpp.base.::type_scope:'True'"
+    },
+    {
+      "kind": "notation",
+      "key": "False",
+      "arity": 0,
+      "label": "false_proposition",
+      "layout": "call",
+      "slots": [],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:'False'"
+    },
+    {
+      "kind": "notation",
+      "key": "False",
+      "arity": 0,
+      "label": "false_proposition",
+      "layout": "call",
+      "slots": [],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "stdpp.base.::type_scope:'False'"
+    },
+    {
+      "kind": "notation",
+      "key": "[ ]",
+      "arity": 0,
+      "label": "empty_list",
+      "layout": "call",
+      "slots": [],
+      "scope": "list_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Lists.List.ListNotations.::list_scope:'['_']'"
+    },
+    {
+      "kind": "notation",
+      "key": "∃ _ .. _ , _",
+      "arity": 2,
+      "label": "exists",
+      "layout": "block",
+      "slots": [
+        1,
+        0
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:'∃'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "∃ _ .. _ , _",
+      "arity": 2,
+      "label": "exists",
+      "layout": "block",
+      "slots": [
+        1,
+        0
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:'∃'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "∀ _ .. _ , _",
+      "arity": 2,
+      "label": "forall",
+      "layout": "block",
+      "slots": [
+        1,
+        0
+      ],
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Unicode.Utf8_core.::type_scope:'∀'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "[∗ list] _ ↦ _ ∈ _ , _",
+      "arity": 4,
+      "label": "separately_for_each_index_and_item",
+      "layout": "block",
+      "slots": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.big_op.::bi_scope:'[∗'_'list]'_x_'↦'_x_'∈'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "[∗ list] _ ∈ _ , _",
+      "arity": 3,
+      "label": "separately_for_each_item",
+      "layout": "block",
+      "slots": [
+        2,
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.big_op.::bi_scope:'[∗'_'list]'_x_'∈'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ↦ₛ _",
+      "arity": 2,
+      "label": "owns_stack",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.primitive_laws.::bi_scope:x_'↦ₛ'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ↦ᵣ _",
+      "arity": 2,
+      "label": "owns_raw",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.primitive_laws.::bi_scope:x_'↦ᵣ'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ↦ᵦ _",
+      "arity": 2,
+      "label": "owns_block",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.primitive_laws.::bi_scope:x_'↦ᵦ'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ↦ₒ[ _ ] _",
+      "arity": 3,
+      "label": "owns_object_field",
+      "layout": "call",
+      "slots": [
+        0,
+        1,
+        2
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.primitive_laws.::bi_scope:x_'↦ₒ['_x_']'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ {{ _ } }",
+      "arity": 2,
+      "label": "wp_partial_with_postcondition_function",
+      "layout": "block",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.weakestpre.::bi_scope:'WP'_x_'{{'_x_'}'_'}'"
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ {{ _ , _ } }",
+      "arity": 3,
+      "label": "wp_partial",
+      "layout": "block",
+      "slots": [
+        0,
+        1,
+        2
+      ],
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.weakestpre.::bi_scope:'WP'_x_'{{'_x_','_x_'}'_'}'"
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ @ _ {{ _ } }",
+      "arity": 3,
+      "label": "wp_partial_with_mask",
+      "layout": "block",
+      "slots": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ @ _ {{ _ , _ } }",
+      "arity": 4,
+      "label": "wp_partial_with_mask",
+      "layout": "block",
+      "slots": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ @ _ ; _ {{ _ } }",
+      "arity": 4,
+      "label": "wp_partial_with_stuckness_and_mask",
+      "layout": "block",
+      "slots": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "WP _ @ _ ; _ {{ _ , _ } }",
+      "arity": 5,
+      "label": "wp_partial_with_stuckness_and_mask",
+      "layout": "block",
+      "slots": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "_ + _",
+      "arity": 2,
+      "label": "add",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.ZArith.BinInt.::Z_scope:x_'+'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ - _",
+      "arity": 2,
+      "label": "subtract",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ * _",
+      "arity": 2,
+      "label": "multiply",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.ZArith.BinInt.::Z_scope:x_'*'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ < _",
+      "arity": 2,
+      "label": "less_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.ZArith.BinInt.::Z_scope:x_'<'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.ZArith.BinInt.::Z_scope:x_'<='_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≤ _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ > _",
+      "arity": 2,
+      "label": "greater_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ >= _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≥ _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ + _",
+      "arity": 2,
+      "label": "add",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'+'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ - _",
+      "arity": 2,
+      "label": "subtract",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'-'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ * _",
+      "arity": 2,
+      "label": "multiply",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'*'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ < _",
+      "arity": 2,
+      "label": "less_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'<'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'<='_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≤ _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "stdpp.numbers.::nat_scope:x_'≤'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ > _",
+      "arity": 2,
+      "label": "greater_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'>'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ >= _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≥ _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "nat_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ + _",
+      "arity": 2,
+      "label": "add",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ - _",
+      "arity": 2,
+      "label": "subtract",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ * _",
+      "arity": 2,
+      "label": "multiply",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ < _",
+      "arity": 2,
+      "label": "less_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≤ _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ > _",
+      "arity": 2,
+      "label": "greater_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ >= _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≥ _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "N_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ + _",
+      "arity": 2,
+      "label": "add",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.notation.::expr_scope:x_'+'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ - _",
+      "arity": 2,
+      "label": "subtract",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.notation.::expr_scope:x_'-'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ * _",
+      "arity": 2,
+      "label": "multiply",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ < _",
+      "arity": 2,
+      "label": "less_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≤ _",
+      "arity": 2,
+      "label": "less_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.notation.::expr_scope:x_'≤'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ > _",
+      "arity": 2,
+      "label": "greater_than",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ >= _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ ≥ _",
+      "arity": 2,
+      "label": "greater_or_equal",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "expr_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "_ :: _",
+      "arity": 2,
+      "label": "cons",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "_ ++ _",
+      "arity": 2,
+      "label": "append",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "list_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Datatypes.::list_scope:x_'++'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "[ _ ]",
+      "arity": 1,
+      "label": "list",
+      "layout": "call",
+      "slots": [
+        0
+      ],
+      "scope": "list_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Lists.List.ListNotations.::list_scope:'['_x_']'"
+    },
+    {
+      "kind": "notation",
+      "key": "[ _ ; _ ; .. ; _ ]",
+      "arity": 2,
+      "label": "list_with_tail_items",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "list_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Lists.List.ListNotations.::list_scope:'['_x_';'_x_';'_'..'_';'_x_']'"
+    },
+    {
+      "kind": "notation",
+      "key": "_ !! _",
+      "arity": 2,
+      "label": "lookup",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ],
+      "scope": "stdpp_scope",
+      "entry": "InConstrEntry",
+      "identity": "stdpp.base.::stdpp_scope:x_'!!'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "(_ , _)",
+      "arity": 2,
+      "label": "tuple",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.primitive_laws.raw_mapsto",
+      "arity": 2,
+      "label": "owns_raw",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.primitive_laws.stack_mapsto",
+      "arity": 2,
+      "label": "owns_stack",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.primitive_laws.block_mapsto",
+      "arity": 2,
+      "label": "owns_block",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.primitive_laws.obj_mapsto",
+      "arity": 3,
+      "label": "owns_object_field",
+      "layout": "call",
+      "slots": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.Load",
+      "arity": 1,
+      "label": "load",
+      "layout": "call",
+      "slots": [
+        0
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.Store",
+      "arity": 2,
+      "label": "store",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.Let",
+      "arity": 3,
+      "label": "let_binding",
+      "layout": "call",
+      "slots": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.Seq",
+      "arity": 2,
+      "label": "sequence",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.If",
+      "arity": 3,
+      "label": "conditional",
+      "layout": "call",
+      "slots": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.While",
+      "arity": 2,
+      "label": "while_loop",
+      "layout": "call",
+      "slots": [
+        0,
+        1
+      ]
+    },
+    {
+      "kind": "notation",
+      "key": "forall _ .. _ , _",
+      "arity": 2,
+      "label": "forall",
+      "slots": [
+        1,
+        0
+      ],
+      "layout": "block",
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "stdpp.base.::type_scope:'forall'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "exists _ .. _ , _",
+      "arity": 2,
+      "label": "exists",
+      "slots": [
+        1,
+        0
+      ],
+      "layout": "block",
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Logic.::type_scope:'exists'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "( _ , _ , .. , _ )",
+      "arity": 2,
+      "label": "tuple_with_tail_items",
+      "slots": [
+        0,
+        1
+      ],
+      "layout": "call",
+      "scope": "core_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Datatypes.::core_scope:'('_x_','_x_','_'..'_','_x_')'"
+    },
+    {
+      "kind": "notation",
+      "key": "_ * _",
+      "arity": 2,
+      "label": "product_type",
+      "slots": [
+        0,
+        1
+      ],
+      "layout": "call",
+      "scope": "type_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Datatypes.::type_scope:x_'*'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "if _ then _ else _",
+      "arity": 3,
+      "label": "if_then_else",
+      "slots": [
+        0,
+        1,
+        2
+      ],
+      "layout": "block",
+      "scope": "general_if_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.ssr.ssreflect.::general_if_scope:'if'_x_'then'_x_'else'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ && _",
+      "arity": 2,
+      "label": "boolean_and",
+      "slots": [
+        0,
+        1
+      ],
+      "layout": "call",
+      "scope": "bool_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Datatypes.::bool_scope:x_'&&'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ || _",
+      "arity": 2,
+      "label": "boolean_or",
+      "slots": [
+        0,
+        1
+      ],
+      "layout": "call",
+      "scope": "bool_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Datatypes.::bool_scope:x_'||'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _ <= _",
+      "arity": 3,
+      "label": "ordered_inclusive",
+      "slots": [
+        0,
+        1,
+        2
+      ],
+      "layout": "call",
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'<='_x_'<='_x"
+    },
+    {
+      "kind": "notation",
+      "key": "_ <= _ < _",
+      "arity": 3,
+      "label": "ordered_upper_exclusive",
+      "slots": [
+        0,
+        1,
+        2
+      ],
+      "layout": "call",
+      "scope": "nat_scope",
+      "entry": "InConstrEntry",
+      "identity": "Coq.Init.Peano.::nat_scope:x_'<='_x_'<'_x"
+    },
+    {
+      "kind": "notation",
+      "key": "- _",
+      "arity": 1,
+      "label": "negate",
+      "slots": [
+        0
+      ],
+      "layout": "call",
+      "scope": "Z_scope"
+    },
+    {
+      "kind": "notation",
+      "key": "∀ _ .. _ , _",
+      "arity": 2,
+      "label": "forall",
+      "slots": [
+        1,
+        0
+      ],
+      "layout": "block",
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.interface.::bi_scope:'∀'_x_'..'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "[∗ map] _ ↦ _ ∈ _ , _",
+      "arity": 4,
+      "label": "separately_for_each_key_and_value",
+      "slots": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "layout": "block",
+      "scope": "bi_scope",
+      "entry": "InConstrEntry",
+      "identity": "iris.bi.big_op.::bi_scope:'[∗'_'map]'_x_'↦'_x_'∈'_x_','_x"
+    },
+    {
+      "kind": "notation",
+      "key": "λ _ .. _ , _",
+      "arity": 2,
+      "label": "lambda",
+      "slots": [
+        1,
+        0
+      ],
+      "layout": "block",
+      "scope": null,
+      "entry": "InConstrEntry",
+      "identity": null
+    }
+  ]
+}

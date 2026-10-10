@@ -21,3 +21,7 @@ Makefile.conf
 *.timing
 .DS_Store
 .nia.cache
+__pycache__/
+*.egg-info/
+/generated/spec-html/
+/build/lib/

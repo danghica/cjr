@@ -7,3 +7,69 @@ lets add two small instrumentations: 1. the output of the make verify should be 
 [2026-10-09T07:48:59+00:00]
 push everything to github
 
+[2026-10-09T07:53:08+00:00]
+in what directory is the galina printer that extracts cangjie?
+
+[2026-10-10T05:56:27+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Deterministic Rocq-to-HTML specification renderer
+
+## Summary
+
+Build a local Python CLI that renders Rocq declarations as programmer-readable pseudocode in static HTML, without proofs or generative methods.
+
+**The project boundary is the current working directory and its subdirectories.** Discover Rocq source files recursively within that boundary. All generated symbol links stay within the generated project documentation; external dependencies and libraries receive no links.
+
+Use coq-lsp 0.2.5+8.20 with the repository’s Coq 8.20.1. [Backend compatibility](https://opam.ocaml.org/packages/coq-lsp/coq-lsp.0.2.5%2B8.20/).
+
+## Discovery, parsing, and linking
+
+- Provide `rocq-readable build --output generated/spec-html`, with optional `--dictionary FILE`, `--learn`, and `--strict`.
+- Retain `rocq-readable render FILE --name DECLARATION --output FILE.html` for individual declarations.
+- Discover all `.v` files recursively, including files absent from `_CoqProject`. Exclude Git metadata and the output directory; do not follow directory symlinks outside the project root.
+- Use `_CoqProject` and `_RocqProject` for parsing configuration and load paths, rather than as source inventories. Apply the nearest ancestor configuration within the project boundary.
+- Use Rocq’s AST and document state for declaration boundaries, imports, scopes, notation, and local context. Earlier proofs may be checked to establish context; proof bodies never appear in output.
+- Render definition bodies, proposition statements, and named type declarations, including constructors and record fields.
+- Generate an index and one HTML page per source file, preserving relative directory structure and declaration order.
+- Build a symbol index before rendering. Assign stable anchors from qualified Rocq identities and link resolved occurrences to their generated declarations, including forward and recursive references.
+- Preserve symbol links through dictionary renaming. Link local variables to their binders without confusing them with global symbols.
+- External symbols remain readable, unlinked text. Do not generate pages for external libraries, dependency URLs, or external source links.
+- Unsupported declarations retain anchors and marked source representations. Report parsing failures per file and continue generating other pages; any failed file makes the build exit unsuccessfully.
+
+## Pseudocode and HTML
+
+- Render applications as calls; definitions as functions or predicates; and matches, conditionals, lambdas, quantifiers, and recursion as structured pseudocode.
+- Multiline scope uses four-space indentation and a colon, with **no enclosing scope brackets**. Dedentation closes the scope.
+- Use scope brackets only when the entire scoped expression occupies one line. Multiline calls use indented arguments without enclosing parentheses.
+- Retain brackets serving a data purpose, such as list literals, indexing, and tuples.
+- Preserve whitespace without automatic line wrapping; use horizontal scrolling on narrow screens.
+- Preserve binder order, explicit types, implicit markers, typeclass assumptions, and surrounding context.
+- Distinguish implication, resource-consuming implication, entailment, conjunction, separating conjunction, pure assertions, persistence, and later modalities.
+- Seed CJR/Iris rendering rules for ownership, block ownership, object fields, weakest preconditions, and big separating conjunctions. Preserve explicit WP options and postcondition binders; explain partial correctness.
+- Preserve unknown calls and mark unsupported syntax using original source. Do not automatically unfold predicates, simplify statements, or remove premises.
+- Produce escaped static HTML with local CSS, relative links, declaration navigation, and expandable proof-free source excerpts. Viewing requires no network connection.
+
+## Dictionary and interaction
+
+- Store a versioned JSON dictionary containing user-authored names and structured rendering templates.
+- Match parsed applications and notation nodes using available identity, scope, and argument-shape information; never perform global textual substitution.
+- Templates specify layout and placeholders rather than raw HTML. The renderer controls indentation, brackets, escaping, and links.
+- Preserve every matched argument and binder. Templates cannot execute code.
+- With `--learn`, show unfamiliar constructs and numbered placeholders, accept a rule, validate it, generate an HTML preview, and save after user acceptance.
+- Support skipping, replacing, and removing rules. Ordinary rendering never changes the dictionary.
+- Structural preservation is tested; arbitrary user wording remains a human-reviewed presentation choice.
+
+## Validation and defaults
+
+- Test representative CJR definitions and contracts, including swap, list, array, and most-frequent.
+- Verify recursive discovery includes unlisted `.v` files and excludes sources outside the directory boundary.
+- Check every generated internal link has a destination. Test cross-file references, recursion, renamed symbols, constructors, fields, and shadowed variables.
+- Confirm external-library occurrences are unlinked and no generated link leaves the documentation.
+- Test indentation-only multiline scopes, bracketed inline scopes, nested layouts, HTML escaping, and narrow-screen presentation.
+- Cover notation scopes, logical distinctions, unknown syntax, malformed dictionaries, backend failures, and dictionary save/reload.
+- Require deterministic output for identical sources, backend, and dictionary. Add a dedicated test target, usage documentation, and visual inspection of representative pages.
+- Initial delivery is CLI-driven static HTML with CJR/Iris vocabulary. Editor integration, browser rule editing, executable transformations, and formally verified rendering equivalence are deferred.
+
+[2026-10-10T07:00:00+00:00]
+push everything to github
+

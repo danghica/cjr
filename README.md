@@ -33,6 +33,28 @@ Repository agent guidance requests logging each new prompt using
 `python3 scripts/log_prompt.py` with its exact text on standard input. This is
 an agent workflow, not a desktop-wide prompt interception hook.
 
+## Readable Rocq specifications
+
+`rocq-readable` generates deterministic, linked HTML from Rocq declarations,
+without rendering their proofs or using an LLM. Its project boundary is the
+current directory and its subdirectories: it discovers all `.v` files, including
+ones absent from `_CoqProject`. Library names stay unlinked. See
+[the renderer documentation](tools/rocq_readable/README.md) for dictionary editing,
+scope formatting, and coverage limitations.
+
+```sh
+opam install coq-lsp.0.2.5+8.20
+eval $(opam env)
+make                         # refresh dependencies and symbol information
+make readable                # generated/spec-html/index.html
+make readable-test            # includes real-backend integration tests
+./rocq-readable render theories/examples/swap.v --name swap_wp --output /tmp/swap.html
+```
+
+The backend is optional for the proof build. Installation can rebuild Coq's
+dependencies; if existing `.vo` files subsequently report inconsistent
+assumptions, rebuild this development with `make -B`.
+
 ## Layout
 
 - `theories/lang.v` — syntax, three-region state, small-step semantics
