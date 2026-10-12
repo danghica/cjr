@@ -1,0 +1,53 @@
+{
+  "compiler": "cjc",
+  "group_by": [
+    "case",
+    "n",
+    "implementation"
+  ],
+  "jobs": [
+    {
+      "compile": [
+        "{cjc}",
+        "{root}/example/most_frequent/extracted/most_frequent.cj",
+        "{root}/example/most_frequent/benchmark/most_frequent_bench.cj",
+        "--test",
+        "-O2",
+        "-o",
+        "{binary}"
+      ],
+      "expected_rows_per_process": 231,
+      "harness_sources": [
+        "example/most_frequent/benchmark/most_frequent_bench.cj"
+      ],
+      "name": "most_frequent",
+      "pattern": "BENCH,(?P<case>[a-z_]+),(?P<n>\\d+),(?P<trial>\\d+),(?P<implementation>CJR|StdSort|StdHash),(?P<elapsed_ns>\\d+),(?P<repetitions>\\d+),(?P<checksum>-?\\d+)",
+      "run": [
+        "{binary}"
+      ],
+      "sources": [
+        "example/most_frequent/extracted/most_frequent.cj",
+        "example/most_frequent/benchmark/most_frequent_bench.cj"
+      ]
+    }
+  ],
+  "output": "example/most_frequent/benchmark/results",
+  "plots": {
+    "facet": "case",
+    "filename": "{facet}.svg"
+  },
+  "processes": 3,
+  "project_root": "../../..",
+  "protocol": {
+    "flags": [
+      "--test",
+      "-O2"
+    ],
+    "processes": 3,
+    "samples_per_process": 7
+  },
+  "report_css": "../../docs/report.css",
+  "report_index": "../../index.html",
+  "required_compiler_version": "1.0.5",
+  "timeout_seconds": 900
+}

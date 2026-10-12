@@ -35,8 +35,10 @@ an agent workflow, not a desktop-wide prompt interception hook.
 
 ## Readable Rocq specifications
 
-`rocq-readable` generates deterministic, linked HTML from Rocq declarations,
-without rendering their proofs or using an LLM. Its project boundary is the
+`rocq-readable` generates linked, proof-free HTML from Rocq declarations, with
+a dependency hierarchy, a flat Index, and cached English explanations through
+the user's Codex CLI (`--explanations offline` disables model requests). Formal
+rendering remains deterministic. Its project boundary is the
 current directory and its subdirectories: it discovers all `.v` files, including
 ones absent from `_CoqProject`. Library names stay unlinked. See
 [the renderer documentation](tools/rocq_readable/README.md) for dictionary editing,
@@ -46,9 +48,9 @@ scope formatting, and coverage limitations.
 opam install coq-lsp.0.2.5+8.20
 eval $(opam env)
 make                         # refresh dependencies and symbol information
-make readable                # generated/spec-html/index.html
+make readable                # example/*/docs/rocq/ and shared generated/spec-html/
 make readable-test            # includes real-backend integration tests
-./rocq-readable render theories/examples/swap.v --name swap_wp --output /tmp/swap.html
+./rocq-readable render example/misc/rocq/swap.v --name swap_wp --output /tmp/swap.html
 ```
 
 The backend is optional for the proof build. Installation can rebuild Coq's
@@ -60,30 +62,33 @@ assumptions, rebuild this development with `make -B`.
 - `theories/lang.v` — syntax, three-region state, small-step semantics
 - `theories/primitive_laws.v` — points-to facts and weakest-precondition rules
 - `theories/adequacy.v` — a proved specification does not get stuck
-- `theories/examples/` — local arithmetic, stack structs, raw blocks, classes, framing, and a hand-written vtable
+- `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
+- `tools/extraction/rocq/` — shared printer and aggregate extraction driver
+
+Open [all example reports](example/index.html). `make readable EXPLANATIONS=offline` regenerates the example and shared-library pages using existing explanation caches; `make project-report EXPLANATIONS=offline` also assembles reports. `make test` runs the runtime suites; `make benchmark` explicitly runs timed benchmarks.
 
 Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a translation from full Cangjie are out of scope.
 
 ## Extracted Cangjie
 
-`make cj` prints each file in `theories/examples/` to `generated/cj/`. Counts are `wc -l` of the whole file. A `.v` file includes the program, the specification, and the proofs.
+`make cj` prints each file in `example/*/rocq/` to `example/*/extracted/`. Counts are `wc -l` of the whole file. A `.v` file includes the program, the specification, and the proofs.
 
 | Spec | Lines | Extracted | Lines | Spec / extracted |
 |---|---:|---|---:|---:|
-| `theories/examples/arith.v` | 94 | `generated/cj/arith.cj` | 18 | 5.2 |
-| `theories/examples/struct_upd.v` | 57 | `generated/cj/struct_upd.cj` | 27 | 2.1 |
-| `theories/examples/cell.v` | 35 | `generated/cj/cell.cj` | 15 | 2.3 |
-| `theories/examples/swap.v` | 40 | `generated/cj/swap.cj` | 18 | 2.2 |
-| `theories/examples/sum_block.v` | 90 | `generated/cj/sum_block.cj` | 20 | 4.5 |
-| `theories/examples/class_upd.v` | 45 | `generated/cj/class_upd.cj` | 23 | 2.0 |
-| `theories/examples/frame_call.v` | 37 | `generated/cj/frame_call.cj` | 20 | 1.9 |
-| `theories/examples/vtable.v` | 70 | `generated/cj/vtable.cj` | 33 | 2.1 |
-| `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
-| `theories/examples/list_rev.v` | 287 | `generated/cj/list_rev.cj` | 65 | 4.4 |
-| `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
-| `theories/examples/array_list.v` | 2340 | `generated/cj/array_list.cj` | 127 | 18.4 |
-| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (135) | 211 | 8.3 |
-| `theories/examples/hash_map.v` | 2684 | `generated/cj/hash_map.cj` | 245 | 11.0 |
+| `example/misc/rocq/arith.v` | 94 | `example/misc/extracted/arith.cj` | 18 | 5.2 |
+| `example/misc/rocq/struct_upd.v` | 57 | `example/misc/extracted/struct_upd.cj` | 27 | 2.1 |
+| `example/misc/rocq/cell.v` | 35 | `example/misc/extracted/cell.cj` | 15 | 2.3 |
+| `example/misc/rocq/swap.v` | 40 | `example/misc/extracted/swap.cj` | 18 | 2.2 |
+| `example/misc/rocq/sum_block.v` | 90 | `example/misc/extracted/sum_block.cj` | 20 | 4.5 |
+| `example/misc/rocq/class_upd.v` | 45 | `example/misc/extracted/class_upd.cj` | 23 | 2.0 |
+| `example/misc/rocq/frame_call.v` | 37 | `example/misc/extracted/frame_call.cj` | 20 | 1.9 |
+| `example/misc/rocq/vtable.v` | 70 | `example/misc/extracted/vtable.cj` | 33 | 2.1 |
+| `example/list/rocq/list.v` | 227 | `example/list/extracted/list.cj` | 54 | 4.2 |
+| `example/list_rev/rocq/list_rev.v` | 287 | `example/list_rev/extracted/list_rev.cj` | 65 | 4.4 |
+| `example/array/rocq/array.v` | 354 | `example/array/extracted/array.cj` | 39 | 9.1 |
+| `example/array_list/rocq/array_list.v` | 2340 | `example/array_list/extracted/array_list.cj` | 127 | 18.4 |
+| `example/qsort/rocq/qsort.v` | 1749 | `example/qsort/extracted/qsort_array.cj` (76), `example/qsort/extracted/qsort_array_list.cj` (135) | 211 | 8.3 |
+| `example/hash_map/rocq/hash_map.v` | 2684 | `example/hash_map/extracted/hash_map.cj` | 245 | 11.0 |
 | **Total** | **8109** | | **915** | **8.9** |
 
 
@@ -91,15 +96,15 @@ The shared `hm_tactics.v` evaluation-context automation adds 110 supporting line
 
 ## In-place list reversal
 
-`theories/examples/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
+`example/list_rev/rocq/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
 
-The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `generated/cj/list_rev.cj`; `test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See `test/report.md` for the dated results.
+The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `example/list_rev/extracted/list_rev.cj`; `example/list_rev/test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See `paper/test-history.md` for the dated results.
 
 ## Verified hash map
 
-`theories/examples/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
+`example/hash_map/rocq/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
 
-The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `test/hash_map_test.cj` contains 17 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `example/hash_map/test/hash_map_test.cj` contains 17 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
 
 Primitive signed remainder (`RemOp`, printed as `%`) follows division truncated toward zero. Its WP rule requires a nonzero divisor. HashMap bucket normalization now uses one remainder and at most one addition, with a proof that the result equals mathematical modulo for positive capacity; it no longer iterates in proportion to the key magnitude. Collision chains still use linear probing without hash mixing.
 
@@ -191,6 +196,12 @@ ArrayList growth and suffix removal retain their proved CJR copy loops. The prin
 
 ## Quadtree example
 
-The self-contained integer-point example lives in [quadtree/](quadtree/README.md).
-Its offline report is [quadtree/index.html](quadtree/index.html); regenerate all
+The self-contained integer-point example lives in [example/quadtree/](example/quadtree/README.md).
+Its offline report is [example/quadtree/index.html](example/quadtree/index.html); regenerate all
 artifacts with `make quadtree-report`.
+
+Project-wide offline report generation and benchmark execution, normalization,
+charts, metadata, and link validation live under `tools/project_tools/`. Each
+example keeps only its formal development, extracted program, harnesses, and
+configuration. Use `make benchmark` for the root CJR benchmark suites and
+`make project-report` to rebuild the root specification index.

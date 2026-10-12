@@ -1,0 +1,56 @@
+{
+  "compiler": "cjc",
+  "group_by": [
+    "case",
+    "n",
+    "implementation"
+  ],
+  "jobs": [
+    {
+      "compile": [
+        "{cjc}",
+        "{root}/example/array_list/extracted/array_list.cj",
+        "{root}/tools/project_tools/benchmark_common.cj",
+        "{root}/example/array_list/benchmark/array_list_bench.cj",
+        "--test",
+        "-O2",
+        "-o",
+        "{binary}"
+      ],
+      "expected_rows_per_process": 126,
+      "harness_sources": [
+        "tools/project_tools/benchmark_common.cj",
+        "example/array_list/benchmark/array_list_bench.cj"
+      ],
+      "name": "array_list",
+      "pattern": "BENCH,(?P<case>[a-z_]+),(?P<implementation>CJR|Std),(?P<n>\\d+),(?P<trial>\\d+),(?P<elapsed_ns>\\d+),(?P<operations>\\d+),(?P<checksum>-?\\d+)",
+      "run": [
+        "{binary}"
+      ],
+      "sources": [
+        "example/array_list/extracted/array_list.cj",
+        "tools/project_tools/benchmark_common.cj",
+        "example/array_list/benchmark/array_list_bench.cj"
+      ]
+    }
+  ],
+  "output": "example/array_list/benchmark/results",
+  "plots": {
+    "facet": "case",
+    "filename": "{facet}.svg"
+  },
+  "processes": 3,
+  "project_root": "../../..",
+  "protocol": {
+    "flags": [
+      "--test",
+      "-O2"
+    ],
+    "processes": 3,
+    "samples_per_process": 7
+  },
+  "report_css": "../../docs/report.css",
+  "report_index": "../../index.html",
+  "required_compiler_version": "1.0.5",
+  "timeout_seconds": 600
+}

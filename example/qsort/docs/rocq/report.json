@@ -1,0 +1,1356 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/qsort.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ < _ < _",
+        "unmapped notation _ ≡ₚ _",
+        "unmapped notation _ ≤ _ < _",
+        "unmapped notation _ ≤ _ ≤ _",
+        "unmapped notation £ _"
+      ],
+      "declarations": 99
+    }
+  ],
+  "dependencies": {
+    "complete": false,
+    "roots": [
+      "cjr.examples.qsort.array_qsort_spec",
+      "cjr.examples.qsort.arraylist_qsort_spec",
+      "cjr.examples.qsort.exchange",
+      "cjr.examples.qsort.part_tail_eq",
+      "cjr.examples.qsort.qsort_example",
+      "cjr.examples.qsort.qsort_perm",
+      "cjr.examples.qsort.qsort_sorted",
+      "cjr.examples.qsort.scan_open_eq",
+      "cjr.examples.qsort.swap_closed_i",
+      "cjr.examples.qsort.swap_closed_j",
+      "cjr.examples.qsort.swap_closed_p"
+    ],
+    "source_issues": {
+      "rocq/qsort.v": []
+    },
+    "declarations": {
+      "cjr.examples.qsort.array_qsort_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.call_sort",
+          "cjr.examples.qsort.lit_rigid",
+          "cjr.examples.qsort.qsort",
+          "cjr.examples.qsort.sort_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.arraylist_qsort_at": {
+        "depends_on": [
+          "cjr.examples.qsort.call_sort",
+          "cjr.examples.qsort.lit_rigid",
+          "cjr.examples.qsort.qsort",
+          "cjr.examples.qsort.sort_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.arraylist_qsort_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.arraylist_qsort_at",
+          "cjr.examples.qsort.call_sort",
+          "cjr.examples.qsort.qsort"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.call2": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.call3": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.call3_seq": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.call_partition": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.partition_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.call_qsort": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.qsort_v"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.call_sort": {
+        "depends_on": [
+          "cjr.examples.qsort.sort_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.call_swap": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_if": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_if_app": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_if_perm": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_if_take_drop": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if",
+          "cjr.examples.qsort.count_if_app"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_insert": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.count_zero_lookup": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.drop_lookup_eq": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.exchange": {
+        "depends_on": [
+          "cjr.examples.qsort.move_cons"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.lit_rigid": {
+        "depends_on": [
+          "cjr.examples.qsort.rigid"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.lomuto": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto",
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.lomuto_go": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto",
+          "cjr.examples.qsort.lomuto_inv",
+          "cjr.examples.qsort.lomuto_step",
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.lomuto_inv": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.lomuto_inv_start": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto_inv"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.lomuto_step": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto_inv",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_list_length",
+          "cjr.examples.qsort.swap_list_perm",
+          "cjr.examples.qsort.swap_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.minus1": {
+        "depends_on": [
+          "cjr.examples.qsort.one"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.move_cons": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.nval": {
+        "depends_on": [
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.one": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.part_closed_n": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.scan",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_closed_n",
+          "cjr.examples.qsort.unitv"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.examples.qsort.get_body",
+          "Project reference has no rendered declaration: cjr.examples.qsort.set_body"
+        ]
+      },
+      "cjr.examples.qsort.part_closed_pack": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.scan",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_closed_pack",
+          "cjr.examples.qsort.unitv"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.examples.qsort.get_body",
+          "Project reference has no rendered declaration: cjr.examples.qsort.set_body"
+        ]
+      },
+      "cjr.examples.qsort.part_ok": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.part_tail": {
+        "depends_on": [
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.part_tail_eq": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.part_tail",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.scan",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot",
+          "cjr.examples.qsort.sset",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_var_i",
+          "cjr.examples.qsort.swap_var_j",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.examples.qsort.get_body",
+          "Project reference has no rendered declaration: cjr.examples.qsort.set_body"
+        ]
+      },
+      "cjr.examples.qsort.partition_body": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.scan",
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.partition_list": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto",
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.partition_list_ok": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto",
+          "cjr.examples.qsort.lomuto_go",
+          "cjr.examples.qsort.lomuto_inv",
+          "cjr.examples.qsort.part_ok",
+          "cjr.examples.qsort.partition_list",
+          "cjr.examples.qsort.swap_list_length",
+          "cjr.examples.qsort.swap_list_perm",
+          "cjr.examples.qsort.swap_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.partition_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.call_partition",
+          "cjr.examples.qsort.lomuto_go",
+          "cjr.examples.qsort.lomuto_inv",
+          "cjr.examples.qsort.lomuto_inv_start",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.part_tail",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.partition_list",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_closed_a",
+          "cjr.examples.qsort.swap_closed_hi",
+          "cjr.examples.qsort.swap_closed_lo",
+          "cjr.examples.qsort.swap_closed_pack",
+          "cjr.examples.qsort.swap_closed_pivot",
+          "cjr.examples.qsort.swap_closed_v",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_spec",
+          "cjr.examples.qsort.swap_var_i",
+          "cjr.examples.qsort.swap_var_j",
+          "cjr.examples.qsort.wp_scan",
+          "cjr.examples.qsort.wp_struct_step",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.plus1": {
+        "depends_on": [
+          "cjr.examples.qsort.one"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort_slice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_body": {
+        "depends_on": [
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.unitv"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_example": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_perm": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort",
+          "cjr.examples.qsort.qsort_slice_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_slice": {
+        "depends_on": [
+          "cjr.examples.qsort.partition_list",
+          "cjr.examples.qsort.qsort_slice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_slice_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.partition_list",
+          "cjr.examples.qsort.partition_list_ok",
+          "cjr.examples.qsort.qsort_slice",
+          "cjr.examples.qsort.region_preserved",
+          "cjr.examples.qsort.slice_sorted",
+          "cjr.examples.qsort.slice_sorted_join",
+          "cjr.examples.qsort.slice_sorted_same",
+          "cjr.examples.qsort.slice_sorted_short"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_sorted": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort",
+          "cjr.examples.qsort.qsort_slice_spec",
+          "cjr.examples.qsort.slice_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.qsort_v": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.region_count": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if",
+          "cjr.examples.qsort.count_if_take_drop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.region_preserved": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if",
+          "cjr.examples.qsort.count_if_perm",
+          "cjr.examples.qsort.count_zero_lookup",
+          "cjr.examples.qsort.drop_lookup_eq",
+          "cjr.examples.qsort.region_count",
+          "cjr.examples.qsort.take_lookup_eq",
+          "cjr.examples.qsort.take_region_zero"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.rigid": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.scan": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.unitv"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.scan_body": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.sset",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.unitv",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.scan_body_eq": {
+        "depends_on": [
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.scan_body",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.scan_open": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.sset",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.unitv",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.scan_open_eq": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.scan",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot",
+          "cjr.examples.qsort.sset",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_var_i",
+          "cjr.examples.qsort.swap_var_j",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.examples.qsort.get_body",
+          "Project reference has no rendered declaration: cjr.examples.qsort.set_body"
+        ]
+      },
+      "cjr.examples.qsort.slice_sorted": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.slice_sorted_join": {
+        "depends_on": [
+          "cjr.examples.qsort.slice_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.slice_sorted_same": {
+        "depends_on": [
+          "cjr.examples.qsort.slice_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.slice_sorted_short": {
+        "depends_on": [
+          "cjr.examples.qsort.slice_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.sload": {
+        "depends_on": [
+          "cjr.examples.qsort.slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.slot": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.sort_body": {
+        "depends_on": [
+          "cjr.examples.qsort.qsort_body",
+          "cjr.examples.qsort.zero"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.sort_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.call_qsort",
+          "cjr.examples.qsort.call_sort",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.part_closed_n",
+          "cjr.examples.qsort.part_closed_pack",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.qsort",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.sort_body",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_closed_n",
+          "cjr.examples.qsort.swap_closed_pack",
+          "cjr.examples.qsort.wp_pack3",
+          "cjr.examples.qsort.wp_qslice",
+          "cjr.examples.qsort.zero",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.sset": {
+        "depends_on": [
+          "cjr.examples.qsort.slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_body": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.call3_seq"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_a": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_hi": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_i": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_j": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_lo": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_n": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_p": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_pack": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_pivot": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_qsort": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_closed_v": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_list": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_list_code": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_list_id": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_list_length": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_list_perm": {
+        "depends_on": [
+          "cjr.examples.qsort.count_insert",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_list_id"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_lookup": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_spec": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.call3_seq",
+          "cjr.examples.qsort.call_swap",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_list_code",
+          "cjr.examples.qsort.wp_pack2",
+          "cjr.examples.qsort.wp_pack3",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_var_i": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.swap_var_j": {
+        "depends_on": [
+          "cjr.examples.qsort.swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.take_lookup_eq": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.take_region_zero": {
+        "depends_on": [
+          "cjr.examples.qsort.count_if"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.unitv": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_cons2": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot",
+          "cjr.examples.qsort.wp_struct_step",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_cons3": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot",
+          "cjr.examples.qsort.wp_struct_step",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_inc": {
+        "depends_on": [
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot",
+          "cjr.examples.qsort.sset",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_pack2": {
+        "depends_on": [
+          "cjr.examples.qsort.wp_struct_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_pack3": {
+        "depends_on": [
+          "cjr.examples.qsort.wp_struct_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_qslice": {
+        "depends_on": [
+          "cjr.examples.qsort.call_partition",
+          "cjr.examples.qsort.call_qsort",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.partition_body",
+          "cjr.examples.qsort.partition_list_ok",
+          "cjr.examples.qsort.partition_spec",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.qsort_body",
+          "cjr.examples.qsort.qsort_slice",
+          "cjr.examples.qsort.qsort_slice_spec",
+          "cjr.examples.qsort.qsort_v",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_closed_qsort",
+          "cjr.examples.qsort.wp_pack3",
+          "cjr.examples.qsort.wp_struct_step",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_scan": {
+        "depends_on": [
+          "cjr.examples.qsort.lomuto",
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.scan_body",
+          "cjr.examples.qsort.scan_body_eq",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_list_length",
+          "cjr.examples.qsort.wp_scan_body",
+          "cjr.examples.qsort.wp_scan_stop",
+          "cjr.examples.qsort.zval"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_scan_body": {
+        "depends_on": [
+          "cjr.examples.qsort.call2",
+          "cjr.examples.qsort.call3",
+          "cjr.examples.qsort.nval",
+          "cjr.examples.qsort.rigid",
+          "cjr.examples.qsort.scan_body",
+          "cjr.examples.qsort.swap_body",
+          "cjr.examples.qsort.swap_list",
+          "cjr.examples.qsort.swap_spec",
+          "cjr.examples.qsort.wp_cons2",
+          "cjr.examples.qsort.wp_cons3",
+          "cjr.examples.qsort.wp_inc"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_scan_stop": {
+        "depends_on": [
+          "cjr.examples.qsort.minus1",
+          "cjr.examples.qsort.one",
+          "cjr.examples.qsort.plus1",
+          "cjr.examples.qsort.scan_open",
+          "cjr.examples.qsort.sload",
+          "cjr.examples.qsort.slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.qsort.wp_struct_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.zero": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.qsort.zval": {
+        "depends_on": [],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.qsort.array_qsort_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.arraylist_qsort_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.arraylist_qsort_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call2": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call3": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call3_seq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call_partition": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call_qsort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call_sort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.call_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_if": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_if_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_if_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_if_take_drop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.count_zero_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.drop_lookup_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.exchange": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lit_rigid": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lomuto": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lomuto_go": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lomuto_inv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lomuto_inv_start": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.lomuto_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.minus1": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.move_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.nval": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.one": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.part_closed_n": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.part_closed_pack": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.part_ok": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.part_tail": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.part_tail_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.partition_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.partition_list": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.partition_list_ok": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.partition_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.plus1": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_example": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_slice": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_slice_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_sorted": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.qsort_v": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.region_count": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.region_preserved": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.rigid": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.scan_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.scan_body_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.scan_open": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.scan_open_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.slice_sorted": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.slice_sorted_join": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.slice_sorted_same": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.slice_sorted_short": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.sload": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.sort_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.sort_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.sset": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_a": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_hi": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_i": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_j": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_lo": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_n": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_p": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_pack": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_pivot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_qsort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_closed_v": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_list": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_list_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_list_id": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_list_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_list_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_var_i": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.swap_var_j": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.take_lookup_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.take_region_zero": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.unitv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_cons2": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_cons3": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_inc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_pack2": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_pack3": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_qslice": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_scan_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_scan_stop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.wp_struct_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.zero": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.qsort.zval": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

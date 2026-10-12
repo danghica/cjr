@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/list.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 21
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.list.cons_then_tail_spec",
+      "cjr.examples.list.empty_cons",
+      "cjr.examples.list.empty_nil",
+      "cjr.examples.list.head_spec",
+      "cjr.examples.list.nil_spec",
+      "cjr.examples.list.tail_spec"
+    ],
+    "source_issues": {
+      "rocq/list.v": []
+    },
+    "declarations": {
+      "cjr.examples.list.call_cons": {
+        "depends_on": [
+          "cjr.examples.list.cons_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.call_empty": {
+        "depends_on": [
+          "cjr.examples.list.empty_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.call_head": {
+        "depends_on": [
+          "cjr.examples.list.head_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.call_nil": {
+        "depends_on": [
+          "cjr.examples.list.nil_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.call_tail": {
+        "depends_on": [
+          "cjr.examples.list.tail_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.cons_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list.cons_spec": {
+        "depends_on": [
+          "cjr.examples.list.call_cons",
+          "cjr.examples.list.is_list",
+          "cjr.examples.list.is_list_obj",
+          "cjr.examples.list.wp_new_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.cons_then_tail": {
+        "depends_on": [
+          "cjr.examples.list.call_cons",
+          "cjr.examples.list.tail_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.cons_then_tail_spec": {
+        "depends_on": [
+          "cjr.examples.list.cons_spec",
+          "cjr.examples.list.cons_then_tail",
+          "cjr.examples.list.is_list",
+          "cjr.examples.list.tail_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.empty_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list.empty_cons": {
+        "depends_on": [
+          "cjr.examples.list.call_empty",
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.empty_nil": {
+        "depends_on": [
+          "cjr.examples.list.call_empty",
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.head_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list.head_spec": {
+        "depends_on": [
+          "cjr.examples.list.call_head",
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.is_list": {
+        "depends_on": [
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.is_list_obj": {
+        "depends_on": [
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.nil_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list.nil_spec": {
+        "depends_on": [
+          "cjr.examples.list.call_nil",
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.tail_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list.tail_spec": {
+        "depends_on": [
+          "cjr.examples.list.call_tail",
+          "cjr.examples.list.is_list"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list.wp_new_step": {
+        "depends_on": [],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.list.call_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.call_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.call_head": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.call_nil": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.call_tail": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.cons_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.cons_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.cons_then_tail": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.cons_then_tail_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.empty_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.empty_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.empty_nil": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.head_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.head_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.is_list": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.is_list_obj": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.nil_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.nil_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.tail_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.tail_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list.wp_new_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

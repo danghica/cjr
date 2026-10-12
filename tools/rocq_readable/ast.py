@@ -53,11 +53,15 @@ class Declaration:
     section: str = ""
     metadata: list = field(default_factory=list)
     unsupported: bool = False
+    reference_ast: dict | None = None
+    proof_spans: list = field(default_factory=list)
+    proof_complete: bool | None = None
 
 
 def declarations(source, document):
     modules, segments, context = [], [], []
     proof = False
+    proof_owners = []
 
     def declaration(name_node, kind, ast, **kwargs):
         name = identifier(name_node)
@@ -65,7 +69,8 @@ def declarations(source, document):
         identity = source.glob.definitions.get(start, (".".join([source.module, *modules, name]), ""))[0]
         return Declaration(name, identity, kind, name_node, source.fragment(ast),
                            source_start=(ast.get("loc") or {}).get("bp", 0),
-                           context=list(context), section=" / ".join(s[0] for s in segments), **kwargs)
+                           context=list(context), section=" / ".join(s[0] for s in segments),
+                           reference_ast=ast, **kwargs)
 
     for span in document.get("spans", []):
         ast = span.get("ast")
@@ -74,10 +79,17 @@ def declarations(source, document):
         expression = ast["v"]["expr"][1]
         tag, *args = expression
         if tag in ("VernacEndProof", "VernacAbort", "VernacAbortAll"):
+            for owner in proof_owners:
+                owner.proof_spans.append(ast)
+                owner.proof_complete = tag == "VernacEndProof"
+            proof_owners = []
             proof = False
             continue
         if proof:
+            for owner in proof_owners:
+                owner.proof_spans.append(ast)
             continue
+        previous_count = len(source.declarations)
         if tag in ("VernacBeginSection", "VernacDefineModule", "VernacDeclareModule"):
             name_node = args[0] if tag == "VernacBeginSection" else args[1]
             name = identifier(name_node)
@@ -176,6 +188,24 @@ def declarations(source, document):
                     child = {"v": ["Id", identity.split(".")[-1]], "loc": {"bp": offset, "ep": offset + len(identity.split(".")[-1].encode())}}
                     decl.children.append(declaration(child, kind, ast, unsupported=True))
                 source.declarations.append(decl)
+        if proof:
+            proof_owners = source.declarations[previous_count:]
+            for owner in proof_owners:
+                owner.proof_complete = False
+    # A top-level fixpoint's recursive references use Rocq's lexical suffix
+    # (e.g. Module.count:3), although its definition is Module.count. Associate
+    # these exact qualified identities within the defining mutual block.
+    # Nested local fixpoints are unsupported; do not guess their shadowing.
+    recursive = [d for d in source.declarations if d.kind in ("recursive function", "corecursive function")]
+    for decl in recursive:
+        if any(isinstance(value(n), list) and value(n) and value(n)[0] in ("CFix", "CCoFix") for n in walk(decl.body)):
+            continue
+        peers = {d.identity for d in recursive if d.source_start == decl.source_start}
+        stop = decl.source_start + len(decl.source.encode())
+        for offset, (end, identity, kind) in list(source.glob.references.items()):
+            base, separator, ordinal = identity.rpartition(":")
+            if kind == "def" and separator and ordinal.isdecimal() and base in peers and decl.source_start <= offset < stop:
+                source.glob.references[offset] = (end, base, kind)
     return source.declarations
 
 

@@ -1,0 +1,20 @@
+-R ../../theories cjr
+-Q . cjr.quadtree -Q ../../tools/extraction/rocq cjr.examples -Q ../array_list/rocq cjr.examples -Q ../array/rocq cjr.examples -Q ../hash_map/rocq cjr.examples
+-arg -w
+-arg +admitted-proof
+-arg -w
+-arg +deprecated-syntactic-definition
+-arg -w
+-arg +fragile-hint-constr
+spec/model.v
+algorithm/program.v
+proof/ownership.v
+proof/routing.v
+proof/helpers.v
+proof/correctness.v
+algorithm/extract.v
+spec/bounds.v
+proof/insertion_model.v
+proof/insertion_helpers.v
+proof/insertion.v
+proof/algebra.v

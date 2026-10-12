@@ -227,3 +227,141 @@ Initial scope defers deletion, root expansion, and an executable union API.
 [2026-10-10T13:18:56+00:00]
 push eerything including fnal report
 
+[2026-10-12T02:25:23+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Make documentation and benchmark tooling project-wide
+
+## Summary
+
+Move quadtree’s documentation and benchmark *tooling* into reusable project-level tools. Keep quadtree-specific proofs, extracted code, benchmark workloads and baselines, test cases, and report content in `quadtree/`. Migrate the existing root CJR benchmarks onto the same benchmark pipeline.
+
+## Implementation changes
+
+- Reuse `rocq-readable` as the shared Rocq renderer. Move report assembly, metadata generation, HTML source views, chart generation, and local-link checking into shared tools under `tools/`; remove the quadtree-specific scripts that perform these jobs.
+- Add project-level configuration for each example’s source files, artifact locations, report sections, and benchmark workloads. Shared tools read this configuration and write each example’s outputs within its directory.
+- Generalize the benchmark runner and reporting pipeline around a common measurement and results format. Adapt the existing CJR benchmarks and quadtree benchmark harnesses to it; keep benchmark implementations and workload descriptions with their respective examples.
+- Update root and example Make targets and documentation to invoke the shared tools. Preserve `quadtree/index.html` and its linked reports as the generated deliverable.
+
+## Test plan
+
+- Run both benchmark suites through the shared runner and check that each produces complete results and reports.
+- Build documentation and reports for both examples; verify declaration links, local assets, and generated source links resolve and stay within their project directories.
+- Run the existing renderer, verification, extraction, and runtime checks to catch regressions.
+
+## Assumptions
+
+- Benchmark protocols may differ by example when declared in project configuration, while the runner, result format, chart/report generation, and validation tools remain shared.
+- Quadtree’s report content and benchmark workloads remain example-specific; their generation mechanisms do not.
+
+[2026-10-12T03:16:54+00:00]
+we are going to work just on rock_readable now. the rendered definitions should be presented not only as a simple bullet list but as an indented bullet list with each list having a sublist of the definitions or lemmas it depends on. one definition or lemma can be a dependent of several other definitions or lemmas. the simple list should be on a separate page called Index reachable from the main page. additionally: each rendered definition or lemma should also include a plain english explanatory description obtain by querying an LLM model. 
+
+[2026-10-12T03:16:54+00:00]
+execute the plan then
+
+[2026-10-12T03:16:55+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Rocq Readable dependency navigation and English explanations
+
+## Summary
+
+Work only on `rocq-readable` and its documentation/tests. Add a nested dependency homepage, a separate flat **Index** page, and cached English explanations generated through the installed Codex CLI using each user’s own login.
+
+## Navigation and dependencies
+
+- Keep `index.html` as the homepage; move the flat declaration inventory to `declarations.html`, titled **Index**, with navigation between both pages and source pages.
+- Show expandable indented bullets on the homepage. Each entry links to its existing rendered declaration; its children are the declarations it depends on.
+- Include references from declaration types, bodies, binders, context, and proofs. Preserve proof omission in rendered pages.
+- Track declaration and proof ranges using Rocq AST spans. Resolve references using fresh `.glob` data and the existing LSP fallback, extended to proof references. Never infer dependencies from name spelling alone.
+- Normalize constructor/field dependencies to their containing rendered declaration. Deduplicate edges within a parent, while allowing shared dependencies under multiple parents.
+- Start with declarations having no dependents; include isolated entries and otherwise unreachable cyclic groups. Sort by qualified identity, stop expansion when a node repeats along the current path, and mark recursive references.
+- Expand branches lazily using an embedded graph and local JavaScript to avoid exponentially large HTML. Provide direct dependency links on declaration articles for access without JavaScript.
+- Record unresolved or incomplete dependency information in `report.json` and show a coverage notice.
+
+## English explanations
+
+- Add `--explanations auto|offline`, defaulting to `auto`, plus `--llm-model`, `--llm-timeout` (default 120 seconds), and `--explanation-cache`.
+- In automatic mode, reuse valid cached explanations and invoke `codex exec` for missing or changed entries when available. Offline mode uses only the cache.
+- Use saved CLI authentication and its configured model unless explicitly overridden. Do not read, copy, or store authentication credentials.
+- Run explanation requests sequentially, in an isolated temporary directory, with a read-only sandbox, no approval requests, and ephemeral sessions. Pass input through stdin using subprocess argument arrays.
+- Supply the proof-free declaration, rendered text, context, and direct dependency declarations. Request a short plain-English paragraph explaining meaning and important premises, including partial-correctness distinctions where relevant.
+- Validate structured responses and render descriptions as escaped plain text beneath each declaration heading, labelled **AI-generated explanation**.
+- Store a versioned JSON cache under the output directory by default. Key entries by declaration identity and a hash of supplied context, prompt version, and model selection; write cache updates atomically.
+- On unavailable explanations, render an explicit notice and record the reason. Failed attempted generation returns a nonzero status after producing the pages. Offline misses and an absent CLI remain reported omissions.
+- Keep credentials and raw CLI diagnostics out of generated artifacts. Document that model requests send declaration text and committed caches publish their explanation content.
+
+## Tests and acceptance
+
+- Test cross-file and proof-only dependencies, shared children, local shadowing, constructor/field ownership, disconnected entries, cycles, and incomplete resolution.
+- Audit all relative links and unique anchors; verify the homepage hierarchy and Index inventory cover every rendered declaration.
+- Mock Codex calls to test cache reuse/invalidation, offline operation, timeouts, malformed responses, HTML escaping, and partial failures without network access.
+- Preserve standalone rendering: include an explanation without modifying unrelated project pages; report unavailable proof dependency coverage when parsing stops before the proof.
+- Run `make readable-test` and inspect representative desktop/mobile output. Verify regeneration with unchanged cached inputs is deterministic.
+
+## Assumptions
+
+- “rock_readable” refers to the existing `rocq-readable` tool.
+- Codex CLI access replaces the initially discussed direct API backend.
+- Existing unrelated workspace changes remain untouched.
+- Prompt logging resumes when implementation is permitted, using exact unrecorded prompts and actual recording times.
+
+[2026-10-12T03:40:25+00:00]
+run the rocq_readable tool on the quad treee example
+
+[2026-10-12T05:40:37+00:00]
+the dependency hierarchy should also have a nicely rendered graph diagram of the dependencies
+
+[2026-10-12T05:56:02+00:00]
+run it on quad tree
+
+[2026-10-12T06:12:20+00:00]
+each file e.g. spec/model.v should also have a graph diagram at the top of the dependencies between included declarations and lemmas
+
+[2026-10-12T06:37:26+00:00]
+i want to change the directory structure. at the top there should be an example directory that should contain the following subdirectories: quadtree, array_list, list, list_rev, qsort, most_frequent, and misc (containing the small examples). each such directory should include all related files (definitions, spec, proofs, generated code, tests, benchmarks, report, rendered rocq files etc)
+
+[2026-10-12T06:37:26+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Organize all examples under `example/`
+
+## Summary
+
+Create nine directories under the singular top-level `example/`: `quadtree`, `array`, `array_list`, `list`, `list_rev`, `qsort`, `hash_map`, `most_frequent`, and `misc`. Move each example’s related assets together while preserving existing Rocq files, import names, and program behavior.
+
+## Directory organization
+
+- Move quadtree wholesale into `example/quadtree/`, preserving its existing internal structure.
+- For other examples, use `rocq/` for existing formal sources, `extracted/` for generated Cangjie and source views, `test/` for runtime tests/results, `benchmark/` for existing benchmarks/results, and `docs/` for rendered Rocq, diagrams, explanation caches, and example-specific documents.
+- Put arithmetic, structs, cells, swap, sum-block, class updates, framing, and vtables in `misc`, grouped within those same folders.
+- Place `hm_tactics.v` and hash-map scratch sources with `hash_map`; place `mf_memory.v` with `most_frequent`. Keep both quicksort implementations and their tests under `qsort`.
+- Give each example a README and local report entry point. Add an `example/index.html` linking all example reports. Do not invent benchmarks or results for examples that lack them.
+
+## Build, tooling, and documentation
+
+- Preserve `cjr.examples.*` and `cjr.quadtree.*` logical names through updated load-path mappings. Update root/local build configurations, installation paths, verification scans, scripts, and test fixtures.
+- Keep shared CJR libraries, tooling, tool tests, logs, and repository-wide documents at the root. Keep the shared printer and aggregate extraction driver with shared extraction tooling; route generated outputs into their owning example directories.
+- Preserve root commands such as `make cj`, `make readable`, `make benchmark`, and quadtree targets, making them dispatch to the relocated assets. Local example commands must resolve sibling dependencies through shared configuration.
+- Generate rendered Rocq pages inside each example, retaining dependency navigation, project and file graphs, declaration links, and cached English explanations. Update shared documentation hashing so it finds dependencies at their new locations.
+- Move example-specific papers and figures into the owning example’s documentation. Update the cross-example tutorial, aggregate reports, README links, and LaTeX inputs.
+- Partition existing combined benchmark measurements by example and rebuild their summaries/reports. Preserve original measurement dates and provenance; record relocation separately. Split historical test reporting similarly without presenting it as newly executed results.
+- Remove obsolete asset locations once references are migrated. Preserve unrelated workspace changes.
+
+## Verification
+
+- Check that every existing example asset has an owner, every configured source exists, and no active configuration references obsolete locations.
+- Run the Rocq build, `make verify`, extraction checks, existing runtime tests, `make readable-test`, and project-tool tests.
+- Compare generated Cangjie against pre-move output; relocation should preserve its contents.
+- Rebuild reports from retained measurements without rerunning timed benchmarks. Audit relative links, anchors, declaration coverage, and graph links.
+- Inspect representative desktop/mobile reports, including quadtree and a relocated example. Confirm unchanged explanation inputs reuse caches and regeneration is deterministic.
+- Rebuild affected papers where the required compiler is available.
+
+## Defaults
+
+- Existing combined definition/specification/proof files remain intact.
+- Shared dependencies are referenced rather than copied between examples.
+- Physical paths change; existing public Rocq import names remain compatible.
+- Prompt logging resumes when implementation is permitted, using exact unrecorded prompts and actual recording times.
+
+[2026-10-12T07:35:22+00:00]
+push to github
+

@@ -80,7 +80,7 @@ Five closed programs are instantiated at this theorem: the arithmetic loop, the 
 
 ## Programs and the facts they establish
 
-The files in `theories/examples/` add one feature at a time. Each Coq definition is the core term, and the tutorial's Cangjie is printed from that term.
+The files in `example/*/rocq/` add one feature at a time. Each Coq definition is the core term, and the tutorial's Cangjie is printed from that term.
 
 `sum_one` binds `n` to 1 and `s` to 0, loops while `1 <= n`, and returns `s`. The body runs once and the result is 1. Nothing is allocated on the raw heap or the object heap. `struct_upd.v` updates a struct field in a stack slot. A second program allocates one raw word, runs that update, and reads the word back as 0, because the raw points-to fact is framed across a stack operation. `cell.v` allocates a word, stores 7, loads 7, and frees it. The postcondition has no points-to fact, so a further load is not provable.
 
@@ -102,30 +102,30 @@ Client theorems compose these calls with `let` and framing. A fresh list has siz
 
 ## The printed programs, and their size
 
-Each `.v` file holds the expression, the specification, and the proof. The Cangjie a reader compares with a library is a rendering of the expression alone. `theories/examples/cj_print.v` defines that rendering. It imports the language and Coq's string library. Class and field names are arguments, so one file can print an array as `len` and `data`, an array list as `myData`, `mySize`, and `myVersion`, and a list node as `isCons`, `value`, and `next`.
+Each `.v` file holds the expression, the specification, and the proof. The Cangjie a reader compares with a library is a rendering of the expression alone. `tools/extraction/rocq/cj_print.v` defines that rendering. It imports the language and Coq's string library. Class and field names are arguments, so one file can print an array as `len` and `data`, an array list as `myData`, `mySize`, and `myVersion`, and a list node as `isCons`, `value`, and `next`.
 
 The printer inverts the tutorial's table: `let`, `var`, `while`, `malloc` of eight bytes times the word count followed by a `CPointer<Int64>` cast, `unsafe` read, write, and `+`, and constructor calls for `New`. The receiver is omitted from the parameter list. A body structurally equal to a known method prints as a call, so `add` calls `grow`. The copy loop prints as its `while`. Array-list access operations use valid-index preconditions and perform no runtime bounds checks; exception propagation and recovery are not part of the current semantics. An administrative stack form prints a marker containing `unsupported`, and the build rejects any file that contains it. None of the fifteen generated files does.
 
-`theories/examples/emit_cj.v` builds one string per example. The `cj` target in `Makefile.local-late` compiles that file, evaluates the strings, writes `generated/cj/`, writes `generated/cj/further.tex` for any generated file the tutorial does not yet name, and runs `pdflatex` twice. The tutorial includes those files with `\lstinputlisting`. The Coq listings of the core terms remain. Each generated file declares `malloc` and `free`, the types and functions, and a `main` that runs a closed program or calls a library's operations. The array-list factory is named `initArrayList`, leaving `init` for constructors. The parameter called `this` in the method-table term is printed as `self`. No Cangjie compiler is run.
+`tools/extraction/rocq/emit_cj.v` builds one string per example. The `cj` target in `Makefile.local-late` compiles that file, evaluates the strings, writes `example/*/extracted/`, writes `paper/further.tex` for any generated file the tutorial does not yet name, and runs `pdflatex` twice. The tutorial includes those files with `\lstinputlisting`. The Coq listings of the core terms remain. Each generated file declares `malloc` and `free`, the types and functions, and a `main` that runs a closed program or calls a library's operations. The array-list factory is named `initArrayList`, leaving `init` for constructors. The parameter called `this` in the method-table term is printed as `self`. No Cangjie compiler is run.
 
 The counts below are `wc -l` of the whole file. A `.v` file includes the program, the specification, the proofs, and blank lines.
 
 | Spec | Lines | Extracted | Lines | Spec / extracted |
 |---|---:|---|---:|---:|
-| `theories/examples/arith.v` | 78 | `generated/cj/arith.cj` | 18 | 4.3 |
-| `theories/examples/struct_upd.v` | 57 | `generated/cj/struct_upd.cj` | 27 | 2.1 |
-| `theories/examples/cell.v` | 35 | `generated/cj/cell.cj` | 15 | 2.3 |
-| `theories/examples/swap.v` | 40 | `generated/cj/swap.cj` | 18 | 2.2 |
-| `theories/examples/sum_block.v` | 90 | `generated/cj/sum_block.cj` | 20 | 4.5 |
-| `theories/examples/class_upd.v` | 45 | `generated/cj/class_upd.cj` | 23 | 2.0 |
-| `theories/examples/frame_call.v` | 37 | `generated/cj/frame_call.cj` | 20 | 1.9 |
-| `theories/examples/vtable.v` | 70 | `generated/cj/vtable.cj` | 33 | 2.1 |
-| `theories/examples/list.v` | 227 | `generated/cj/list.cj` | 54 | 4.2 |
-| `theories/examples/list_rev.v` | 287 | `generated/cj/list_rev.cj` | 65 | 4.4 |
-| `theories/examples/array.v` | 354 | `generated/cj/array.cj` | 39 | 9.1 |
-| `theories/examples/array_list.v` | 2416 | `generated/cj/array_list.cj` | 153 | 15.8 |
-| `theories/examples/qsort.v` | 1749 | `generated/cj/qsort_array.cj` (76), `generated/cj/qsort_array_list.cj` (153) | 229 | 7.6 |
-| `theories/examples/hash_map.v` | 3116 | `generated/cj/hash_map.cj` | 251 | 12.4 |
+| `example/misc/rocq/arith.v` | 78 | `example/misc/extracted/arith.cj` | 18 | 4.3 |
+| `example/misc/rocq/struct_upd.v` | 57 | `example/misc/extracted/struct_upd.cj` | 27 | 2.1 |
+| `example/misc/rocq/cell.v` | 35 | `example/misc/extracted/cell.cj` | 15 | 2.3 |
+| `example/misc/rocq/swap.v` | 40 | `example/misc/extracted/swap.cj` | 18 | 2.2 |
+| `example/misc/rocq/sum_block.v` | 90 | `example/misc/extracted/sum_block.cj` | 20 | 4.5 |
+| `example/misc/rocq/class_upd.v` | 45 | `example/misc/extracted/class_upd.cj` | 23 | 2.0 |
+| `example/misc/rocq/frame_call.v` | 37 | `example/misc/extracted/frame_call.cj` | 20 | 1.9 |
+| `example/misc/rocq/vtable.v` | 70 | `example/misc/extracted/vtable.cj` | 33 | 2.1 |
+| `example/list/rocq/list.v` | 227 | `example/list/extracted/list.cj` | 54 | 4.2 |
+| `example/list_rev/rocq/list_rev.v` | 287 | `example/list_rev/extracted/list_rev.cj` | 65 | 4.4 |
+| `example/array/rocq/array.v` | 354 | `example/array/extracted/array.cj` | 39 | 9.1 |
+| `example/array_list/rocq/array_list.v` | 2416 | `example/array_list/extracted/array_list.cj` | 153 | 15.8 |
+| `example/qsort/rocq/qsort.v` | 1749 | `example/qsort/extracted/qsort_array.cj` (76), `example/qsort/extracted/qsort_array_list.cj` (153) | 229 | 7.6 |
+| `example/hash_map/rocq/hash_map.v` | 3116 | `example/hash_map/extracted/hash_map.cj` | 251 | 12.4 |
 | **Total** | **8601** | | **965** | **8.9** |
 
 Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap, the field update, and the framed call. Loops are longer relative to the printed `while` because they need invariants. The data-structure examples add representation predicates and equations. `array_list.v` is 2416 of the 8601 specification lines; its generated program has 153 lines. `list_rev.v` has 287 lines for the program, algebra, representation helpers, iteration and loop proofs, and client theorems, compared with 65 generated lines. Quicksort is counted once in the specifications and printed twice. Across the fifteen generated files the specifications are 8.9 times as long as the printed Cangjie.
@@ -134,7 +134,7 @@ Ratios near 2 are proofs of about one lemma per instruction: the cell, the swap,
 
 Concurrency is absent, so there is no shared invariant and no fork. Objects are not collected. The named free rule is the one-word rule, while the array library uses allocation of a positive word count. Pointer arithmetic is by words. Null, a freed address, and an address with no points-to fact are stuck. Types are not enforced. Adequacy applies to the programs whose specifications have been proved.
 
-The tutorial's bibliography is the set of sources used here: the Cangjie 1.0 documentation; Reynolds's 2002 paper and the 2001 paper of O'Hearn, Reynolds, and Yang; the Iris papers named above, the Iris lecture notes, and the Iris 4.4.0 development; and the manuals for Coq 8.20.1 and std++ 1.12.0. In the repository, `theories/lang.v` is the syntax and the machine, `theories/primitive_laws.v` is the points-to facts and the rules, `theories/adequacy.v` is the link to execution, and `theories/examples/` holds the programs. The generated Cangjie is in `generated/cj/`.
+The tutorial's bibliography is the set of sources used here: the Cangjie 1.0 documentation; Reynolds's 2002 paper and the 2001 paper of O'Hearn, Reynolds, and Yang; the Iris papers named above, the Iris lecture notes, and the Iris 4.4.0 development; and the manuals for Coq 8.20.1 and std++ 1.12.0. In the repository, `theories/lang.v` is the syntax and the machine, `theories/primitive_laws.v` is the points-to facts and the rules, `theories/adequacy.v` is the link to execution, and `example/*/rocq/` holds the programs. The generated Cangjie is in `example/*/extracted/`.
 
 ## Completing the hash map
 

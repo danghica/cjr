@@ -1,0 +1,348 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/array.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation <[ _ := _ ]>"
+      ],
+      "declarations": 27
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.array.make_then_get_spec",
+      "cjr.examples.array.make_then_length_spec",
+      "cjr.examples.array.set_then_get_other",
+      "cjr.examples.array.set_then_get_same",
+      "cjr.examples.array.set_then_length_spec"
+    ],
+    "source_issues": {
+      "rocq/array.v": []
+    },
+    "declarations": {
+      "cjr.examples.array.array_cells": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.call_get": {
+        "depends_on": [
+          "cjr.examples.array.get_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.call_length": {
+        "depends_on": [
+          "cjr.examples.array.length_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.call_make": {
+        "depends_on": [
+          "cjr.examples.array.make_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.call_set": {
+        "depends_on": [
+          "cjr.examples.array.set_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.get_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.get_spec": {
+        "depends_on": [
+          "cjr.examples.array.call_get",
+          "cjr.examples.array.is_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.is_array": {
+        "depends_on": [
+          "cjr.examples.array.array_cells"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.length_at": {
+        "depends_on": [
+          "cjr.examples.array.length_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.length_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.length_spec": {
+        "depends_on": [
+          "cjr.examples.array.call_length",
+          "cjr.examples.array.is_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.make_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.make_spec": {
+        "depends_on": [
+          "cjr.examples.array.call_make",
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.seq_zero_cells",
+          "cjr.examples.array.wp_new_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.make_then_get": {
+        "depends_on": [
+          "cjr.examples.array.call_make",
+          "cjr.examples.array.get_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.make_then_get_spec": {
+        "depends_on": [
+          "cjr.examples.array.get_body",
+          "cjr.examples.array.get_spec",
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.make_spec",
+          "cjr.examples.array.make_then_get",
+          "cjr.examples.array.wp_struct_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.make_then_length": {
+        "depends_on": [
+          "cjr.examples.array.call_make",
+          "cjr.examples.array.length_at"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.make_then_length_spec": {
+        "depends_on": [
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.length_at",
+          "cjr.examples.array.length_spec",
+          "cjr.examples.array.make_spec",
+          "cjr.examples.array.make_then_length"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.seq_zero_cells": {
+        "depends_on": [
+          "cjr.examples.array.array_cells"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.set_spec": {
+        "depends_on": [
+          "cjr.examples.array.call_set",
+          "cjr.examples.array.is_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_then_get": {
+        "depends_on": [
+          "cjr.examples.array.call_get",
+          "cjr.examples.array.call_set"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_then_get_other": {
+        "depends_on": [
+          "cjr.examples.array.call_get",
+          "cjr.examples.array.get_spec",
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.set_spec",
+          "cjr.examples.array.set_then_get"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_then_get_same": {
+        "depends_on": [
+          "cjr.examples.array.call_get",
+          "cjr.examples.array.get_spec",
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.set_spec",
+          "cjr.examples.array.set_then_get"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_then_length": {
+        "depends_on": [
+          "cjr.examples.array.call_length",
+          "cjr.examples.array.call_set"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.set_then_length_spec": {
+        "depends_on": [
+          "cjr.examples.array.call_length",
+          "cjr.examples.array.is_array",
+          "cjr.examples.array.length_spec",
+          "cjr.examples.array.set_spec",
+          "cjr.examples.array.set_then_length"
+        ],
+        "issues": []
+      },
+      "cjr.examples.array.wp_new_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.array.wp_struct_step": {
+        "depends_on": [],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.array.array_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.call_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.call_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.call_make": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.call_set": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.get_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.is_array": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.length_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.length_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.length_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_then_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_then_get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_then_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.make_then_length_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.seq_zero_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_then_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_then_get_other": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_then_get_same": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_then_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.set_then_length_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.wp_new_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.array.wp_struct_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

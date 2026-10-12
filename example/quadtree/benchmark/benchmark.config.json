@@ -1,0 +1,78 @@
+{
+  "compiler": "cjc",
+  "group_by": [
+    "distribution",
+    "n",
+    "workload",
+    "implementation"
+  ],
+  "jobs": [
+    {
+      "compile": [
+        "{cjc}",
+        "--test",
+        "-O2",
+        "{root}/extracted/quadtree.cj",
+        "{root}/test/quadtree_test.cj",
+        "{root}/benchmark/native.cj",
+        "{root}/benchmark/bench.cj",
+        "-o",
+        "{binary}"
+      ],
+      "expected_rows_per_process": 1323,
+      "harness_sources": [
+        "benchmark/native.cj",
+        "benchmark/bench.cj"
+      ],
+      "name": "quadtree",
+      "pattern": "BENCH,(?P<distribution>[^,]+),(?P<n>\\d+),(?P<workload>[^,]+),(?P<implementation>[^,]+),(?P<trial>\\d+),(?P<repetitions>\\d+),(?P<elapsed_ns>\\d+),(?P<operations>\\d+),(?P<checksum>-?\\d+)",
+      "run": [
+        "{binary}",
+        "--filter=QuadtreeBenchmark.*",
+        "--no-progress",
+        "--no-color"
+      ],
+      "run_env": {
+        "QT_PROCESS": "{process}"
+      },
+      "sources": [
+        "extracted/quadtree.cj",
+        "test/quadtree_test.cj",
+        "benchmark/native.cj",
+        "benchmark/bench.cj"
+      ]
+    }
+  ],
+  "output": "benchmark/results",
+  "plots": {
+    "facet": "distribution",
+    "filename": "{facet}.svg"
+  },
+  "processes": 3,
+  "project_root": "..",
+  "protocol": {
+    "allocation_budget": 262144,
+    "calibration_target_ns": 20000000,
+    "order": "(implementation + trial + process) modulo 3",
+    "trials_per_process": 7,
+    "validation": "Complete flat-oracle result checks outside timing; checksums consumed inside timed batches",
+    "warmups": 2
+  },
+  "report_columns": [
+    "distribution",
+    "n",
+    "workload",
+    "implementation"
+  ],
+  "required_compiler_version": "1.0.5",
+  "timeout_seconds": 900,
+  "workloads": {
+    "broad": "Range queries returning a substantial subset of stored points.",
+    "build": "Construct a tree from the selected unique points.",
+    "empty": "Range queries for a rectangle disjoint from all stored points.",
+    "hits": "Membership queries for points present in the tree.",
+    "misses": "Membership queries for in-domain points absent from the tree.",
+    "selective": "Range queries returning a small subset of stored points.",
+    "whole": "Range queries covering the complete tree domain."
+  }
+}

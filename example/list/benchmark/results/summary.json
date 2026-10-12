@@ -1,0 +1,122 @@
+[
+  {
+    "case": "list_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 1.10626220703125,
+    "median_ns": 4.78363037109375,
+    "n": 16384,
+    "q1_ns": 3.940582275390625,
+    "q3_ns": 5.046844482421875,
+    "samples": 21
+  },
+  {
+    "case": "list_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 2.056121826171875,
+    "median_ns": 15.789031982421875,
+    "n": 16384,
+    "q1_ns": 14.2669677734375,
+    "q3_ns": 16.323089599609375,
+    "samples": 21
+  },
+  {
+    "case": "list_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 0.1983642578125,
+    "median_ns": 4.5166015625,
+    "n": 256,
+    "q1_ns": 4.4403076171875,
+    "q3_ns": 4.638671875,
+    "samples": 21
+  },
+  {
+    "case": "list_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 0.522613525390625,
+    "median_ns": 15.70892333984375,
+    "n": 256,
+    "q1_ns": 15.476226806640625,
+    "q3_ns": 15.99884033203125,
+    "samples": 21
+  },
+  {
+    "case": "list_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 0.194549560546875,
+    "median_ns": 4.680633544921875,
+    "n": 4096,
+    "q1_ns": 4.596710205078125,
+    "q3_ns": 4.791259765625,
+    "samples": 21
+  },
+  {
+    "case": "list_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 0.3814697265625,
+    "median_ns": 16.048431396484375,
+    "n": 4096,
+    "q1_ns": 15.811920166015625,
+    "q3_ns": 16.193389892578125,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "CJR",
+    "iqr_ns": 0.09429454803466797,
+    "median_ns": 1.888871192932129,
+    "n": 16384,
+    "q1_ns": 1.8524527549743652,
+    "q3_ns": 1.9467473030090332,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "Std",
+    "iqr_ns": 0.03814697265625,
+    "median_ns": 2.2565722465515137,
+    "n": 16384,
+    "q1_ns": 2.2330880165100098,
+    "q3_ns": 2.2712349891662598,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "CJR",
+    "iqr_ns": 0.04172325134277344,
+    "median_ns": 1.8571019172668457,
+    "n": 256,
+    "q1_ns": 1.8291473388671875,
+    "q3_ns": 1.870870590209961,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "Std",
+    "iqr_ns": 0.049948692321777344,
+    "median_ns": 2.268493175506592,
+    "n": 256,
+    "q1_ns": 2.228975296020508,
+    "q3_ns": 2.278923988342285,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "CJR",
+    "iqr_ns": 0.06508827209472656,
+    "median_ns": 1.8981099128723145,
+    "n": 4096,
+    "q1_ns": 1.8655657768249512,
+    "q3_ns": 1.9306540489196777,
+    "samples": 21
+  },
+  {
+    "case": "list_traverse",
+    "implementation": "Std",
+    "iqr_ns": 0.06496906280517578,
+    "median_ns": 2.2777318954467773,
+    "n": 4096,
+    "q1_ns": 2.2231340408325195,
+    "q3_ns": 2.2881031036376953,
+    "samples": 21
+  }
+]

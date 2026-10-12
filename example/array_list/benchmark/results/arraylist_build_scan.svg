@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 320" role="img">
+<title>arraylist_build_scan benchmark medians and IQR</title>
+<style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="24" font-size="17">arraylist_build_scan · median and IQR</text>
+<circle cx="250" cy="20" r="5" fill="#176f76"/><text x="260" y="24">CJR</text>
+<circle cx="400" cy="20" r="5" fill="#de8b37"/><text x="410" y="24">Std</text>
+<text x="18" y="69">arraylist_build_scan</text><path d="M 205 65 H 990" class="grid"/>
+<path d="M 902.5 81 H 1037.5" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 125.7 81 H 334.3" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 540.7 81 H 659.3" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 846.2 87 H 1093.8" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="87" r="4" fill="#de8b37"/>
+<path d="M -8.3 87 H 468.3" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="87" r="4" fill="#de8b37"/>
+<path d="M 568.3 87 H 631.7" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="87" r="4" fill="#de8b37"/>
+<text x="230.0" y="109" text-anchor="middle">256</text>
+<text x="600.0" y="109" text-anchor="middle">4,096</text>
+<text x="970.0" y="109" text-anchor="middle">16,384</text>
+</svg>

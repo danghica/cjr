@@ -1,0 +1,122 @@
+[
+  {
+    "case": "array_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.012814998626708984,
+    "median_ns": 1.0238289833068848,
+    "n": 256,
+    "q1_ns": 1.0175704956054688,
+    "q3_ns": 1.0303854942321777,
+    "samples": 21
+  },
+  {
+    "case": "array_read",
+    "implementation": "Std",
+    "iqr_ns": 0.010907649993896484,
+    "median_ns": 0.6830692291259766,
+    "n": 256,
+    "q1_ns": 0.6787776947021484,
+    "q3_ns": 0.6896853446960449,
+    "samples": 21
+  },
+  {
+    "case": "array_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.00622868537902832,
+    "median_ns": 0.9972453117370605,
+    "n": 4096,
+    "q1_ns": 0.9936392307281494,
+    "q3_ns": 0.9998679161071777,
+    "samples": 21
+  },
+  {
+    "case": "array_read",
+    "implementation": "Std",
+    "iqr_ns": 0.005692243576049805,
+    "median_ns": 0.6628632545471191,
+    "n": 4096,
+    "q1_ns": 0.6601214408874512,
+    "q3_ns": 0.665813684463501,
+    "samples": 21
+  },
+  {
+    "case": "array_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.0171661376953125,
+    "median_ns": 1.0100007057189941,
+    "n": 65536,
+    "q1_ns": 1.0027289390563965,
+    "q3_ns": 1.019895076751709,
+    "samples": 21
+  },
+  {
+    "case": "array_read",
+    "implementation": "Std",
+    "iqr_ns": 0.08079409599304199,
+    "median_ns": 0.8335709571838379,
+    "n": 65536,
+    "q1_ns": 0.7570087909698486,
+    "q3_ns": 0.8378028869628906,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.09393692016601562,
+    "median_ns": 0.7973611354827881,
+    "n": 256,
+    "q1_ns": 0.79345703125,
+    "q3_ns": 0.8873939514160156,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "Std",
+    "iqr_ns": 0.0068247318267822266,
+    "median_ns": 0.5567371845245361,
+    "n": 256,
+    "q1_ns": 0.552058219909668,
+    "q3_ns": 0.5588829517364502,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.09357929229736328,
+    "median_ns": 0.8209049701690674,
+    "n": 4096,
+    "q1_ns": 0.780940055847168,
+    "q3_ns": 0.8745193481445312,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "Std",
+    "iqr_ns": 0.005334615707397461,
+    "median_ns": 0.5408376455307007,
+    "n": 4096,
+    "q1_ns": 0.537872314453125,
+    "q3_ns": 0.5432069301605225,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "CJR",
+    "iqr_ns": 0.06467103958129883,
+    "median_ns": 1.0719001293182373,
+    "n": 65536,
+    "q1_ns": 1.0181963443756104,
+    "q3_ns": 1.0828673839569092,
+    "samples": 21
+  },
+  {
+    "case": "array_write_read",
+    "implementation": "Std",
+    "iqr_ns": 0.007316470146179199,
+    "median_ns": 0.5910545587539673,
+    "n": 65536,
+    "q1_ns": 0.5874931812286377,
+    "q3_ns": 0.5948096513748169,
+    "samples": 21
+  }
+]

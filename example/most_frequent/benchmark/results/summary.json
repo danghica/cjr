@@ -1,0 +1,332 @@
+[
+  {
+    "case": "dense",
+    "implementation": "CJR",
+    "iqr_ns": 77562.5,
+    "median_ns": 1734375.0,
+    "n": 16384,
+    "q1_ns": 1718437.5,
+    "q3_ns": 1796000.0,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdHash",
+    "iqr_ns": 4500.0,
+    "median_ns": 106187.5,
+    "n": 16384,
+    "q1_ns": 105437.5,
+    "q3_ns": 109937.5,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdSort",
+    "iqr_ns": 713062.5,
+    "median_ns": 6679562.5,
+    "n": 16384,
+    "q1_ns": 6422125.0,
+    "q3_ns": 7135187.5,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "CJR",
+    "iqr_ns": 562.5,
+    "median_ns": 10862.3046875,
+    "n": 256,
+    "q1_ns": 10725.5859375,
+    "q3_ns": 11288.0859375,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdHash",
+    "iqr_ns": 137.6953125,
+    "median_ns": 2865.234375,
+    "n": 256,
+    "q1_ns": 2831.0546875,
+    "q3_ns": 2968.75,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdSort",
+    "iqr_ns": 10379.8828125,
+    "median_ns": 55005.859375,
+    "n": 256,
+    "q1_ns": 48748.046875,
+    "q3_ns": 59127.9296875,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "CJR",
+    "iqr_ns": 8531.25,
+    "median_ns": 334609.375,
+    "n": 4096,
+    "q1_ns": 331546.875,
+    "q3_ns": 340078.125,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdHash",
+    "iqr_ns": 1046.875,
+    "median_ns": 27656.25,
+    "n": 4096,
+    "q1_ns": 27015.625,
+    "q3_ns": 28062.5,
+    "samples": 21
+  },
+  {
+    "case": "dense",
+    "implementation": "StdSort",
+    "iqr_ns": 141453.125,
+    "median_ns": 1406843.75,
+    "n": 4096,
+    "q1_ns": 1394921.875,
+    "q3_ns": 1536375.0,
+    "samples": 21
+  },
+  {
+    "case": "reverse_sorted",
+    "implementation": "CJR",
+    "iqr_ns": 3041.015625,
+    "median_ns": 112845.703125,
+    "n": 256,
+    "q1_ns": 110640.625,
+    "q3_ns": 113681.640625,
+    "samples": 21
+  },
+  {
+    "case": "reverse_sorted",
+    "implementation": "StdHash",
+    "iqr_ns": 472.65625,
+    "median_ns": 4238.28125,
+    "n": 256,
+    "q1_ns": 3904.296875,
+    "q3_ns": 4376.953125,
+    "samples": 21
+  },
+  {
+    "case": "reverse_sorted",
+    "implementation": "StdSort",
+    "iqr_ns": 1095.703125,
+    "median_ns": 24658.203125,
+    "n": 256,
+    "q1_ns": 24156.25,
+    "q3_ns": 25251.953125,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "CJR",
+    "iqr_ns": 252500.0,
+    "median_ns": 17035000.0,
+    "n": 16384,
+    "q1_ns": 16904437.5,
+    "q3_ns": 17156937.5,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdHash",
+    "iqr_ns": 5937.5,
+    "median_ns": 100562.5,
+    "n": 16384,
+    "q1_ns": 99500.0,
+    "q3_ns": 105437.5,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdSort",
+    "iqr_ns": 421812.5,
+    "median_ns": 6121125.0,
+    "n": 16384,
+    "q1_ns": 5983562.5,
+    "q3_ns": 6405375.0,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "CJR",
+    "iqr_ns": 301.7578125,
+    "median_ns": 13492.1875,
+    "n": 256,
+    "q1_ns": 13299.8046875,
+    "q3_ns": 13601.5625,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdHash",
+    "iqr_ns": 98.6328125,
+    "median_ns": 1663.0859375,
+    "n": 256,
+    "q1_ns": 1625.9765625,
+    "q3_ns": 1724.609375,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdSort",
+    "iqr_ns": 2564.453125,
+    "median_ns": 60859.375,
+    "n": 256,
+    "q1_ns": 60103.515625,
+    "q3_ns": 62667.96875,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "CJR",
+    "iqr_ns": 26531.25,
+    "median_ns": 1305000.0,
+    "n": 4096,
+    "q1_ns": 1287796.875,
+    "q3_ns": 1314328.125,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdHash",
+    "iqr_ns": 1328.125,
+    "median_ns": 24953.125,
+    "n": 4096,
+    "q1_ns": 24093.75,
+    "q3_ns": 25421.875,
+    "samples": 21
+  },
+  {
+    "case": "small_domain",
+    "implementation": "StdSort",
+    "iqr_ns": 206859.375,
+    "median_ns": 1265484.375,
+    "n": 4096,
+    "q1_ns": 1206671.875,
+    "q3_ns": 1413531.25,
+    "samples": 21
+  },
+  {
+    "case": "sorted",
+    "implementation": "CJR",
+    "iqr_ns": 1360.3515625,
+    "median_ns": 182222.65625,
+    "n": 256,
+    "q1_ns": 181925.78125,
+    "q3_ns": 183286.1328125,
+    "samples": 21
+  },
+  {
+    "case": "sorted",
+    "implementation": "StdHash",
+    "iqr_ns": 186.5234375,
+    "median_ns": 4200.1953125,
+    "n": 256,
+    "q1_ns": 4090.8203125,
+    "q3_ns": 4277.34375,
+    "samples": 21
+  },
+  {
+    "case": "sorted",
+    "implementation": "StdSort",
+    "iqr_ns": 2663.0859375,
+    "median_ns": 21379.8828125,
+    "n": 256,
+    "q1_ns": 20579.1015625,
+    "q3_ns": 23242.1875,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "CJR",
+    "iqr_ns": 40000.0,
+    "median_ns": 1507437.5,
+    "n": 16384,
+    "q1_ns": 1477437.5,
+    "q3_ns": 1517437.5,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdHash",
+    "iqr_ns": 23687.5,
+    "median_ns": 305562.5,
+    "n": 16384,
+    "q1_ns": 298812.5,
+    "q3_ns": 322500.0,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdSort",
+    "iqr_ns": 550125.0,
+    "median_ns": 6526937.5,
+    "n": 16384,
+    "q1_ns": 6075875.0,
+    "q3_ns": 6626000.0,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "CJR",
+    "iqr_ns": 246.09375,
+    "median_ns": 12164.0625,
+    "n": 256,
+    "q1_ns": 12004.8828125,
+    "q3_ns": 12250.9765625,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdHash",
+    "iqr_ns": 213.8671875,
+    "median_ns": 4223.6328125,
+    "n": 256,
+    "q1_ns": 4139.6484375,
+    "q3_ns": 4353.515625,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdSort",
+    "iqr_ns": 2693.359375,
+    "median_ns": 58508.7890625,
+    "n": 256,
+    "q1_ns": 57377.9296875,
+    "q3_ns": 60071.2890625,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "CJR",
+    "iqr_ns": 11000.0,
+    "median_ns": 292828.125,
+    "n": 4096,
+    "q1_ns": 291390.625,
+    "q3_ns": 302390.625,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdHash",
+    "iqr_ns": 6265.625,
+    "median_ns": 69843.75,
+    "n": 4096,
+    "q1_ns": 68281.25,
+    "q3_ns": 74546.875,
+    "samples": 21
+  },
+  {
+    "case": "wide",
+    "implementation": "StdSort",
+    "iqr_ns": 112781.25,
+    "median_ns": 1316500.0,
+    "n": 4096,
+    "q1_ns": 1303296.875,
+    "q3_ns": 1416078.125,
+    "samples": 21
+  }
+]

@@ -1,0 +1,2984 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/hash_map.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ ^ _",
+        "unmapped notation _ `mod` _",
+        "unmapped notation _ ∈ _",
+        "unmapped notation _ ∉ _",
+        "unmapped notation _ ≤ _ < _",
+        "unmapped notation ∅"
+      ],
+      "declarations": 217
+    },
+    {
+      "file": "rocq/hm_tactics.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 0
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.hash_map.add_then_contains_spec",
+      "cjr.examples.hash_map.add_then_get_spec",
+      "cjr.examples.hash_map.count_occ_len",
+      "cjr.examples.hash_map.init_then_capacity_spec",
+      "cjr.examples.hash_map.init_then_empty_spec",
+      "cjr.examples.hash_map.init_then_size_spec",
+      "cjr.examples.hash_map.prefix_pred",
+      "cjr.examples.hash_map.remove_spec"
+    ],
+    "source_issues": {
+      "rocq/hash_map.v": [],
+      "rocq/hm_tactics.v": []
+    },
+    "declarations": {
+      "cjr.examples.hash_map.add_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_room_e",
+          "cjr.examples.hash_map.call_probe_e",
+          "cjr.examples.hash_map.capacity_body",
+          "cjr.examples.hash_map.grow_e",
+          "cjr.examples.hash_map.size_body",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_room_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_len",
+          "cjr.examples.hash_map.put_e",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_room_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_room_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_room_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_room_body",
+          "cjr.examples.hash_map.call_add_room",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.put_spec",
+          "cjr.examples.hash_map.size_contents",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh",
+          "cjr.examples.hash_map.write_fresh_effect"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_body",
+          "cjr.examples.hash_map.add_room_spec",
+          "cjr.examples.hash_map.call_add",
+          "cjr.examples.hash_map.capacity_spec",
+          "cjr.examples.hash_map.doubled_cap",
+          "cjr.examples.hash_map.grow_spec",
+          "cjr.examples.hash_map.hashmap_bounds",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hashmap_obj",
+          "cjr.examples.hash_map.probe_spec",
+          "cjr.examples.hash_map.size_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_then_contains": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_add",
+          "cjr.examples.hash_map.call_contains"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_then_contains_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_spec",
+          "cjr.examples.hash_map.add_then_contains",
+          "cjr.examples.hash_map.call_contains",
+          "cjr.examples.hash_map.contains_spec",
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_then_get": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_add",
+          "cjr.examples.hash_map.call_get"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.add_then_get_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_spec",
+          "cjr.examples.hash_map.add_then_get",
+          "cjr.examples.hash_map.call_get",
+          "cjr.examples.hash_map.get_spec",
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.arr_get": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.arr_get_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get",
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.arr_len": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.arr_set": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.arr_set_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_set",
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.bucket": {
+        "depends_on": [
+          "cjr.examples.hash_map.residue"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.bucket_lt": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.residue_nat_lt"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.buffer_probe_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.lit_m1",
+          "cjr.examples.hash_map.residue_body",
+          "cjr.examples.hash_map.scan_v",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.buffer_probe_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.buffer_probe_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.buffer_probe_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.buffer_probe_body",
+          "cjr.examples.hash_map.call_buffer_probe",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_val",
+          "cjr.examples.hash_map.residue",
+          "cjr.examples.hash_map.residue_spec",
+          "cjr.examples.hash_map.residue_wp",
+          "cjr.examples.hash_map.scan_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_add": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_add_room": {
+        "depends_on": [
+          "cjr.examples.hash_map.add_room_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_buffer_probe": {
+        "depends_on": [
+          "cjr.examples.hash_map.buffer_probe_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_capacity": {
+        "depends_on": [
+          "cjr.examples.hash_map.capacity_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_contains": {
+        "depends_on": [
+          "cjr.examples.hash_map.contains_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_get": {
+        "depends_on": [
+          "cjr.examples.hash_map.get_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_grow": {
+        "depends_on": [
+          "cjr.examples.hash_map.grow_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_init": {
+        "depends_on": [
+          "cjr.examples.hash_map.init_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_is_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.is_empty_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_lookup": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_for_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_lookup_buffer": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_buffer_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_lookup_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_for_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_probe": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_for_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_probe_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_for_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_put": {
+        "depends_on": [
+          "cjr.examples.hash_map.put_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_rehash": {
+        "depends_on": [
+          "cjr.examples.hash_map.rehash_v"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_remove": {
+        "depends_on": [
+          "cjr.examples.hash_map.remove_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_residue": {
+        "depends_on": [
+          "cjr.examples.hash_map.residue_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_scan": {
+        "depends_on": [
+          "cjr.examples.hash_map.hole_z",
+          "cjr.examples.hash_map.scan_v"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.call_size": {
+        "depends_on": [
+          "cjr.examples.hash_map.size_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.cap_pos": {
+        "depends_on": [
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.capacity_at": {
+        "depends_on": [
+          "cjr.examples.hash_map.capacity_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.capacity_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.capacity_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_capacity",
+          "cjr.examples.hash_map.capacity_body",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.cell_clear": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contains_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_lookup_e"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contains_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_contains",
+          "cjr.examples.hash_map.contains_body",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hashmap_obj",
+          "cjr.examples.hash_map.lookup_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_at": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.occ_in",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_bury": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.occ_in",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tag_tomb_ne_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_none_iff": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_of": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_overwrite": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.occ_in",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_place": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.contents_zeros": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_bury": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_insert_fresh": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_lt_exists": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_occ": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_occ_len": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.count_zeros": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.default_cap_pow": {
+        "depends_on": [
+          "cjr.examples.hash_map.default_capacity"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.default_capacity": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.double_pow": {
+        "depends_on": [
+          "cjr.examples.hash_map.even_pow",
+          "cjr.examples.hash_map.twice_add"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.doubled_cap": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.doubled_cap_pow": {
+        "depends_on": [
+          "cjr.examples.hash_map.double_pow",
+          "cjr.examples.hash_map.doubled_cap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.even_pow": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.first_tomb": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.first_tomb_S": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.first_tomb_none_clear": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.first_tomb_some": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.full_scan_hole": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_lt_exists",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.first_tomb_none_clear",
+          "cjr.examples.hash_map.first_tomb_some",
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.probe_slot_steps",
+          "cjr.examples.hash_map.segment_no_empty",
+          "cjr.examples.hash_map.segment_short",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.steps_between_lt",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.tags_ok_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.get_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_lookup_e"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.get_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_get",
+          "cjr.examples.hash_map.get_body",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hashmap_obj",
+          "cjr.examples.hash_map.lookup_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.grow_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_len",
+          "cjr.examples.hash_map.rehash_v",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.grow_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.grow_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.grow_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_grow",
+          "cjr.examples.hash_map.contents_zeros",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.count_zeros",
+          "cjr.examples.hash_map.doubled_cap",
+          "cjr.examples.hash_map.doubled_cap_pow",
+          "cjr.examples.hash_map.grow_body",
+          "cjr.examples.hash_map.grow_table",
+          "cjr.examples.hash_map.grow_table_spec",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.rehash_acc",
+          "cjr.examples.hash_map.rehash_spec",
+          "cjr.examples.hash_map.size_contents",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.zeros_wf"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.grow_table": {
+        "depends_on": [
+          "cjr.examples.hash_map.doubled_cap",
+          "cjr.examples.hash_map.rehash_acc"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.grow_table_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.contents_zeros",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.count_zeros",
+          "cjr.examples.hash_map.doubled_cap",
+          "cjr.examples.hash_map.doubled_cap_pow",
+          "cjr.examples.hash_map.grow_table",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.rehash_acc_sound",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.zeros_wf"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.hashmap_bounds": {
+        "depends_on": [
+          "cjr.examples.hash_map.cap_pos",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.size_contents",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.head_drop_hm": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.hole_or": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.hole_or_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.lit_m1"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.hole_or_e_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.hole_or",
+          "cjr.examples.hash_map.hole_or_e",
+          "cjr.examples.hash_map.hole_z",
+          "cjr.examples.hash_map.lit_m1",
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.hole_z": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.make_zero_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_init",
+          "cjr.examples.hash_map.contents_zeros",
+          "cjr.examples.hash_map.count_zeros",
+          "cjr.examples.hash_map.default_cap_pow",
+          "cjr.examples.hash_map.default_capacity",
+          "cjr.examples.hash_map.init_body",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.make_zero_spec",
+          "cjr.examples.hash_map.zeros_wf"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_capacity": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_init",
+          "cjr.examples.hash_map.capacity_at"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_capacity_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.capacity_at",
+          "cjr.examples.hash_map.capacity_spec",
+          "cjr.examples.hash_map.default_capacity",
+          "cjr.examples.hash_map.init_spec",
+          "cjr.examples.hash_map.init_then_capacity",
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_init",
+          "cjr.examples.hash_map.is_empty_at"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_empty_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.default_capacity",
+          "cjr.examples.hash_map.init_spec",
+          "cjr.examples.hash_map.init_then_empty",
+          "cjr.examples.hash_map.is_empty_at",
+          "cjr.examples.hash_map.is_empty_spec",
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_size": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_init",
+          "cjr.examples.hash_map.size_at"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.init_then_size_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.default_capacity",
+          "cjr.examples.hash_map.init_spec",
+          "cjr.examples.hash_map.init_then_size",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.size_at",
+          "cjr.examples.hash_map.size_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.insert_length_eq": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_array_obj_hm": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_empty_at": {
+        "depends_on": [
+          "cjr.examples.hash_map.is_empty_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_empty_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_empty_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_is_empty",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_empty_body",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.size_contents",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_hashmap": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_hm_slots"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_hashmap_obj": {
+        "depends_on": [
+          "cjr.examples.hash_map.is_hashmap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.is_hm_slots": {
+        "depends_on": [
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lit_m1": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lit_tag_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_empty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lit_tag_occ": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lit_tag_tomb": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.load_bury": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_bury",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_buffer_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_inner",
+          "cjr.examples.hash_map.lookup_val",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_buffer_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_lookup_buffer",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.lookup_buffer_body",
+          "cjr.examples.hash_map.lookup_loop_spec",
+          "cjr.examples.hash_map.lookup_val",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.sld"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_for_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_open"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_inner": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_loop_e"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_loop_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get",
+          "cjr.examples.hash_map.lit_tag_empty",
+          "cjr.examples.hash_map.lit_tag_occ",
+          "cjr.examples.hash_map.probe_slot_e",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_loop_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get_spec",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.lookup_loop_e",
+          "cjr.examples.hash_map.lookup_stopped",
+          "cjr.examples.hash_map.lookup_val",
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_e_spec",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.sas",
+          "cjr.examples.hash_map.sld",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_open": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_len",
+          "cjr.examples.hash_map.lookup_buffer_body",
+          "cjr.examples.hash_map.residue_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.call_lookup",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.lookup_buffer_spec",
+          "cjr.examples.hash_map.lookup_for_body",
+          "cjr.examples.hash_map.lookup_open",
+          "cjr.examples.hash_map.lookup_val",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_shape",
+          "cjr.examples.hash_map.residue",
+          "cjr.examples.hash_map.residue_spec",
+          "cjr.examples.hash_map.residue_wp",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_stopped": {
+        "depends_on": [
+          "cjr.examples.hash_map.lookup_loop_e",
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.sas",
+          "cjr.examples.hash_map.sld",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.lookup_val": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_out"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.make_zero_array": {
+        "depends_on": [
+          "cjr.examples.hash_map.default_capacity"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.make_zero_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.default_capacity",
+          "cjr.examples.hash_map.make_zero_array",
+          "cjr.examples.hash_map.wp_new_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.nlit": {
+        "depends_on": [
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.no_empty_before": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.tag_empty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.no_empty_before_fill": {
+        "depends_on": [
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_empty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.nodup_bury": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_bury_sub",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tag_tomb_ne_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.nodup_place": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.occ_place_iff",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_bury_sub": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tag_tomb_ne_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_in": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_index": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_keys": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_place_iff": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_unique": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_in",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.occ_zeros": {
+        "depends_on": [
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.path_ne": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_inj",
+          "cjr.examples.hash_map.probe_slot_steps",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.steps_between_lt"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.place_slot": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.placed": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.placed_bury": {
+        "depends_on": [
+          "cjr.examples.hash_map.no_empty_before_fill",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tag_tomb_ne_empty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.placed_clear": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.occ_unique",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_inj",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.probe_slot_steps",
+          "cjr.examples.hash_map.segment_clear",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.steps_between_lt",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.placed_place": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.no_empty_before_fill",
+          "cjr.examples.hash_map.path_ne",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_occ_ne_empty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.placed_zeros": {
+        "depends_on": [
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.pow_positive": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.prefix_pred": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_prefix"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.prefix_zero": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_prefix"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_out"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_done": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_for_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_open"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_found": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.placed_clear",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_hit_now",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_steps",
+          "cjr.examples.hash_map.scan_skip",
+          "cjr.examples.hash_map.segment_clear",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.steps_between_lt",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_from": {
+        "depends_on": [
+          "cjr.examples.hash_map.hole_or",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_from_inv": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.first_tomb_S",
+          "cjr.examples.hash_map.first_tomb_some",
+          "cjr.examples.hash_map.full_scan_hole",
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.segment_no_empty",
+          "cjr.examples.hash_map.segment_short",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.tags_ok_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_hit_now": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_open": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_len",
+          "cjr.examples.hash_map.lit_m1",
+          "cjr.examples.hash_map.residue_body",
+          "cjr.examples.hash_map.scan_body",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_out": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_prefix": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.segment_clear"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_shape": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.contents_at",
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.occ_index",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.prefix_zero",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_found",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_from_inv",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_e": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_e_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.nlit",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_e",
+          "cjr.examples.hash_map.probe_slot_sub",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_inj": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_sub"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_lt": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_steps": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.steps_between"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slot_sub": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_slots": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.cap_pos",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.prefix_zero",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_from_inv",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.call_probe",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_for_body",
+          "cjr.examples.hash_map.probe_open",
+          "cjr.examples.hash_map.probe_shape",
+          "cjr.examples.hash_map.probe_val",
+          "cjr.examples.hash_map.residue",
+          "cjr.examples.hash_map.residue_spec",
+          "cjr.examples.hash_map.residue_wp",
+          "cjr.examples.hash_map.scan_spec",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.probe_val": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_out"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.put_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_set",
+          "cjr.examples.hash_map.buffer_probe_e",
+          "cjr.examples.hash_map.lit_tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.put_e": {
+        "depends_on": [
+          "cjr.examples.hash_map.put_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.put_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_set_spec",
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.buffer_probe_spec",
+          "cjr.examples.hash_map.call_put",
+          "cjr.examples.hash_map.cap_pos",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.place_slot",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_slots",
+          "cjr.examples.hash_map.put_body",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_acc": {
+        "depends_on": [
+          "cjr.examples.hash_map.rehash_acc",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.write_fresh"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_acc_lookup": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.rehash_acc",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh_new"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_acc_sound": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.rehash_acc",
+          "cjr.examples.hash_map.rehash_acc_lookup",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get",
+          "cjr.examples.hash_map.lit_tag_occ",
+          "cjr.examples.hash_map.put_e",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get_spec",
+          "cjr.examples.hash_map.call_rehash",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.head_drop_hm",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.put_spec",
+          "cjr.examples.hash_map.rehash_acc",
+          "cjr.examples.hash_map.rehash_body",
+          "cjr.examples.hash_map.rehash_v",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh_new"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.rehash_v": {
+        "depends_on": [
+          "cjr.examples.hash_map.rehash_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.remove_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_len",
+          "cjr.examples.hash_map.arr_set",
+          "cjr.examples.hash_map.buffer_probe_e",
+          "cjr.examples.hash_map.lit_tag_tomb",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.remove_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_set_spec",
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.buffer_probe_spec",
+          "cjr.examples.hash_map.call_remove",
+          "cjr.examples.hash_map.cap_pos",
+          "cjr.examples.hash_map.count_bury",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.is_hm_slots",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_shape",
+          "cjr.examples.hash_map.probe_slots",
+          "cjr.examples.hash_map.remove_body",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_remove",
+          "cjr.examples.hash_map.write_remove_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.residue": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.residue_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.residue_nat_lt": {
+        "depends_on": [
+          "cjr.examples.hash_map.residue",
+          "cjr.examples.hash_map.residue_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.residue_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.residue"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.residue_wp": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_residue",
+          "cjr.examples.hash_map.residue",
+          "cjr.examples.hash_map.residue_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.room_for_one": {
+        "depends_on": [
+          "cjr.examples.hash_map.even_pow"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.sas": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_body": {
+        "depends_on": [
+          "cjr.examples.hash_map.scan_loop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_call_e": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_loop": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get",
+          "cjr.examples.hash_map.hole_or_e",
+          "cjr.examples.hash_map.lit_tag_empty",
+          "cjr.examples.hash_map.lit_tag_occ",
+          "cjr.examples.hash_map.probe_done",
+          "cjr.examples.hash_map.probe_slot_e",
+          "cjr.examples.hash_map.scan_call_e"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_skip": {
+        "depends_on": [
+          "cjr.examples.hash_map.first_tomb",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.seen_here",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tags_ok",
+          "cjr.examples.hash_map.tags_ok_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.arr_get_spec",
+          "cjr.examples.hash_map.call_scan",
+          "cjr.examples.hash_map.hole_or_e_spec",
+          "cjr.examples.hash_map.is_array_obj_hm",
+          "cjr.examples.hash_map.probe_done",
+          "cjr.examples.hash_map.probe_from",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_e_spec",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.probe_val",
+          "cjr.examples.hash_map.scan_body",
+          "cjr.examples.hash_map.scan_call_e",
+          "cjr.examples.hash_map.scan_loop",
+          "cjr.examples.hash_map.scan_v",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.zlit"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.scan_v": {
+        "depends_on": [
+          "cjr.examples.hash_map.scan_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.seen_here": {
+        "depends_on": [
+          "cjr.examples.hash_map.cell_clear",
+          "cjr.examples.hash_map.segment_clear"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.segment_clear": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.segment_no_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.no_empty_before",
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.segment_clear",
+          "cjr.examples.hash_map.steps_of_slot"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.segment_short": {
+        "depends_on": [
+          "cjr.examples.hash_map.segment_clear"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.size_at": {
+        "depends_on": [
+          "cjr.examples.hash_map.size_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.size_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.size_contents": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.size_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.call_size",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.is_hashmap",
+          "cjr.examples.hash_map.size_body",
+          "cjr.examples.hash_map.size_contents",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.sld": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.steps_between": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.steps_between_lt": {
+        "depends_on": [
+          "cjr.examples.hash_map.steps_between"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.steps_of_slot": {
+        "depends_on": [
+          "cjr.examples.hash_map.probe_slot",
+          "cjr.examples.hash_map.probe_slot_inj",
+          "cjr.examples.hash_map.probe_slot_lt",
+          "cjr.examples.hash_map.probe_slot_steps",
+          "cjr.examples.hash_map.steps_between",
+          "cjr.examples.hash_map.steps_between_lt"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_empty": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_occ": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_occ_ne_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_ok": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_tomb": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_tomb_ne_empty": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tag_tomb_ne_occ": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tags_ok": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tags_ok_insert": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_ok",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tags_ok_lookup": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_ok",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.tags_ok_zeros": {
+        "depends_on": [
+          "cjr.examples.hash_map.tag_empty",
+          "cjr.examples.hash_map.tag_ok",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.twice_add": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.wf_table": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.placed",
+          "cjr.examples.hash_map.tags_ok"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.wp_new_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_fresh": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.place_slot",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_out"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_fresh_effect": {
+        "depends_on": [
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh",
+          "cjr.examples.hash_map.write_fresh_found",
+          "cjr.examples.hash_map.write_fresh_new"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_fresh_found": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.contents_overwrite",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.insert_length_eq",
+          "cjr.examples.hash_map.occ_index",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_found",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_fresh_new": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.contents_none_iff",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.contents_place",
+          "cjr.examples.hash_map.count_insert_fresh",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.insert_length_eq",
+          "cjr.examples.hash_map.nodup_place",
+          "cjr.examples.hash_map.occ_keys",
+          "cjr.examples.hash_map.placed_place",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_shape",
+          "cjr.examples.hash_map.room_for_one",
+          "cjr.examples.hash_map.tag_occ",
+          "cjr.examples.hash_map.tag_ok",
+          "cjr.examples.hash_map.tags_ok_insert",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_fresh"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_remove": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_out",
+          "cjr.examples.hash_map.tag_tomb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.write_remove_spec": {
+        "depends_on": [
+          "cjr.examples.hash_map.bucket",
+          "cjr.examples.hash_map.bucket_lt",
+          "cjr.examples.hash_map.contents_bury",
+          "cjr.examples.hash_map.contents_of",
+          "cjr.examples.hash_map.count_occ",
+          "cjr.examples.hash_map.insert_length_eq",
+          "cjr.examples.hash_map.load_bury",
+          "cjr.examples.hash_map.nodup_bury",
+          "cjr.examples.hash_map.placed_bury",
+          "cjr.examples.hash_map.pow_positive",
+          "cjr.examples.hash_map.prefix_zero",
+          "cjr.examples.hash_map.probe",
+          "cjr.examples.hash_map.probe_from_inv",
+          "cjr.examples.hash_map.probe_prefix",
+          "cjr.examples.hash_map.probe_shape",
+          "cjr.examples.hash_map.tag_ok",
+          "cjr.examples.hash_map.tag_tomb",
+          "cjr.examples.hash_map.tags_ok_insert",
+          "cjr.examples.hash_map.wf_table",
+          "cjr.examples.hash_map.write_remove"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.zeros_wf": {
+        "depends_on": [
+          "cjr.examples.hash_map.count_zeros",
+          "cjr.examples.hash_map.occ_zeros",
+          "cjr.examples.hash_map.placed_zeros",
+          "cjr.examples.hash_map.tags_ok_zeros",
+          "cjr.examples.hash_map.wf_table"
+        ],
+        "issues": []
+      },
+      "cjr.examples.hash_map.zlit": {
+        "depends_on": [],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.hash_map.add_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_room_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_room_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_room_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_then_contains": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_then_contains_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_then_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.add_then_get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.arr_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.arr_get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.arr_len": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.arr_set": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.arr_set_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.bucket": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.bucket_lt": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.buffer_probe_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.buffer_probe_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.buffer_probe_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_add": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_add_room": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_buffer_probe": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_capacity": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_contains": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_grow": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_init": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_is_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_lookup_buffer": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_lookup_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_probe": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_probe_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_put": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_rehash": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_remove": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_residue": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.call_size": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.cap_pos": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.capacity_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.capacity_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.capacity_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.cell_clear": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contains_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contains_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_bury": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_none_iff": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_of": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_overwrite": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_place": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.contents_zeros": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_bury": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_insert_fresh": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_lt_exists": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_occ": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_occ_len": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.count_zeros": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.default_cap_pow": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.default_capacity": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.double_pow": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.doubled_cap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.doubled_cap_pow": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.even_pow": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.first_tomb": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.first_tomb_S": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.first_tomb_none_clear": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.first_tomb_some": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.full_scan_hole": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.get_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.grow_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.grow_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.grow_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.grow_table": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.grow_table_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.hashmap_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.head_drop_hm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.hole_or": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.hole_or_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.hole_or_e_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.hole_z": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_capacity": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_capacity_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_empty_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_size": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.init_then_size_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.insert_length_eq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_array_obj_hm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_empty_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_empty_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_empty_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_hashmap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_hashmap_obj": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.is_hm_slots": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lit_m1": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lit_tag_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lit_tag_occ": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lit_tag_tomb": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.load_bury": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_buffer_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_buffer_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_for_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_inner": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_loop_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_loop_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_open": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_stopped": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.lookup_val": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.make_zero_array": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.make_zero_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.nlit": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.no_empty_before": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.no_empty_before_fill": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.nodup_bury": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.nodup_place": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_bury_sub": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_in": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_index": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_keys": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_place_iff": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_unique": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.occ_zeros": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.path_ne": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.place_slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.placed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.placed_bury": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.placed_clear": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.placed_place": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.placed_zeros": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.pow_positive": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.prefix_pred": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.prefix_zero": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_done": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_for_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_found": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_from": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_from_inv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_hit_now": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_open": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_out": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_prefix": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_shape": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_e_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_inj": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_lt": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_steps": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slot_sub": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_slots": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.probe_val": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.put_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.put_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.put_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_acc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_acc_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_acc_sound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.rehash_v": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.remove_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.remove_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.residue": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.residue_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.residue_nat_lt": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.residue_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.residue_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.room_for_one": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.sas": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_call_e": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_skip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.scan_v": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.seen_here": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.segment_clear": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.segment_no_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.segment_short": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.size_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.size_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.size_contents": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.size_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.sld": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.steps_between": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.steps_between_lt": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.steps_of_slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_occ": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_occ_ne_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_ok": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_tomb": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_tomb_ne_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tag_tomb_ne_occ": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tags_ok": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tags_ok_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tags_ok_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.tags_ok_zeros": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.twice_add": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.wf_table": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.wp_new_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_fresh": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_fresh_effect": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_fresh_found": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_fresh_new": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_remove": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.write_remove_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.zeros_wf": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.hash_map.zlit": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

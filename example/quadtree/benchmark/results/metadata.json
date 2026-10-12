@@ -1,0 +1,69 @@
+{
+  "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
+  "date_utc": "2026-10-12T02:48:50.088968+00:00",
+  "group_by": [
+    "distribution",
+    "n",
+    "workload",
+    "implementation"
+  ],
+  "historical": true,
+  "machine": {
+    "machine": "arm64",
+    "node": "Dans-Mac-mini.local",
+    "processor": "arm",
+    "release": "25.6.0",
+    "system": "Darwin",
+    "version": "Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132"
+  },
+  "processes": 3,
+  "protocol": {
+    "allocation_budget": 262144,
+    "calibration_target_ns": 20000000,
+    "order": "(implementation + trial + process) modulo 3",
+    "trials_per_process": 7,
+    "validation": "Complete flat-oracle result checks outside timing; checksums consumed inside timed batches",
+    "warmups": 2
+  },
+  "relocation": {
+    "note": "Original measurement provenance retained; directory migration is not a benchmark rerun.",
+    "original_artifact": "quadtree/benchmark/results/metadata.json"
+  },
+  "samples": 3969,
+  "sdk": "/var/folders/mq/rtbdtgcd44b6bxl9gmby_9xm0000gn/T/cjr-project-sdk",
+  "sources": {
+    "../theories/examples/cj_print.v": "6805ceb299a9c4ed5bf6552d8567098f001056699f9f5b65830d67ac9dc06fbc",
+    "../theories/lang.v": "de1a4d7574c765f5e1a20ff496bc3c3148cff6785f8fdd4c508728a4eb5af4cc",
+    "../tools/project_tools/__init__.py": "04d110961bb22b4708e6bad7a951277ac0c507e28d372129f9ea4a60d06b06d2",
+    "../tools/project_tools/benchmark.py": "bb1fbc18cfa3410bef2718c82aad29b69daede13a5e597c2386d3934ecb40e00",
+    "../tools/project_tools/docs.py": "849770a101340712f7e7f2bc908bb35a7515adf62d3ba52ea3a85988a8cfd1d2",
+    "../tools/project_tools/support.py": "fc85ad211ff807cbc42e4d4606ccd5a9c3d6ea844d229f28ddb9c0b95f03c47b",
+    "README.md": "f2d04017667594a1996cace08052991b53f87f41e99eda1159b23846ccfa883a",
+    "algorithm/extract.v": "2b870edfbc19bb879aa4d262bc889312311f1181589dc269e2d27ba5d9316704",
+    "algorithm/program.v": "d53eda34eec012e37e864aa738a98f4a3a3ac83a72811bc845b4e584a817f6b8",
+    "benchmark/bench.cj": "f44566f9bcdb3e86d02ba936cfd8f0932c1d7edeb80d73453f12c906f226e20e",
+    "benchmark/benchmark.config.json": "364b2cb93f5db526bf2752a67c463560d9f4f83bd291d9cdd13802615d131eae",
+    "benchmark/native.cj": "ab5be9151ff294b48d59d9a2de15775673c429dd59f9adae440fd7fc8cfab71b",
+    "docs/report.css": "2c1fdfecac393c30f1d54380b686044753d24cd15d7fdfd1c08846d42d0529e1",
+    "docs/rocq/style.css": "50b2e74c74c600b416d6dd68ccb0f25797b92ecc4f99203dd4de9f777217a4ba",
+    "extracted/quadtree.cj": "daaabdf96e0c8392858da6586452780c77da6e6d3fdd81e017bdf2a9e284b67c",
+    "project.config.json": "65b247c9cd497a5283be0659605f255dda428ae396d25afdf9a91f9fe573862b",
+    "proof/algebra.v": "e245cd23134c597ae15c4db4f1d7add952e5eea4bb32a3e6f03f45003359501e",
+    "proof/audit.v": "79e1f1cdd62d2c977f0bbb7d45935e7ea9904816b6b6486f24d7ee85721c8396",
+    "proof/correctness.v": "37f1363f3c8e8007d1b729fec2bb6d6aa3369969a0d2e2002f6fb28f6b3d1315",
+    "proof/helpers.v": "07d5da1724c6f82b1c7837b86504351eb7daf24901e2828210117557c5054fcf",
+    "proof/insertion.v": "dfe6f987f788c7303b093641d8b54853d3183fdb33482bc66a6f95bdda6b5143",
+    "proof/insertion_helpers.v": "b2bf8afe2a4e1c8a22a0bccb75993907e45fbbef73fca92d0d064a18223f4010",
+    "proof/insertion_model.v": "cd6247d7d00c09be7bfeab951792806ba86e38d5dee4456f5b480bee44264788",
+    "proof/ownership.v": "7f8473ab6de622e7c85078302d71c689e422fb2eef65f43983b48b9f393f7a87",
+    "proof/routing.v": "cdd3034865dc74b58955a4999936896e1f09427a44592d327d4f001a66c59173",
+    "scripts/extract.py": "f347deb859fcda066d2e429368021f6dd46d56ded3933da82b4b76877b88a3c3",
+    "scripts/test.py": "ef6b89cb51f73d372b65519b870703bfbb33b060a156019c4ae5e42676b03823",
+    "scripts/verify.py": "bbde1118a95a943241c9a982451dfd18035b9c3f36d6042f28d67d31deba2d8a",
+    "scripts/visual.cjs": "8e7de69dfe8fe670ec5a580b0bd86ecc529c4a36b99d24376f4e78da952f8e72",
+    "spec/bounds.v": "fa22af79f61f5b292bf73f9896bf6861e7597dfa35f1a2784a327ccf7eb64aec",
+    "spec/model.v": "a4aabdb0a1b4c46a20f4202f8e97c17523d1e666be3692478e1decf956d5e629",
+    "test/quadtree_test.cj": "55093da9039c6c7325b0bc04f9180702a0711687165dd158438a5bc4a7b7c4b0"
+  },
+  "status": "passed"
+}

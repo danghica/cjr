@@ -1,5 +1,14 @@
 -R theories cjr
--Q quadtree cjr.quadtree
+-Q example/array/rocq cjr.examples
+-Q example/array_list/rocq cjr.examples
+-Q example/list/rocq cjr.examples
+-Q example/list_rev/rocq cjr.examples
+-Q example/qsort/rocq cjr.examples
+-Q example/hash_map/rocq cjr.examples
+-Q example/most_frequent/rocq cjr.examples
+-Q example/misc/rocq cjr.examples
+-Q tools/extraction/rocq cjr.examples
+-Q example/quadtree cjr.quadtree
 -arg -w
 -arg +admitted-proof
 -arg -w
@@ -11,36 +20,36 @@ theories/lifting.v
 theories/primitive_laws.v
 theories/notation.v
 theories/adequacy.v
-theories/examples/arith.v
-theories/examples/struct_upd.v
-theories/examples/cell.v
-theories/examples/swap.v
-theories/examples/sum_block.v
-theories/examples/class_upd.v
-theories/examples/frame_call.v
-theories/examples/vtable.v
-theories/examples/list.v
-theories/examples/list_rev.v
-theories/examples/array.v
-theories/examples/array_list.v
-theories/examples/qsort.v
-theories/examples/hm_tactics.v
-theories/examples/hash_map.v
-theories/examples/mf_memory.v
-theories/examples/most_frequent.v
-theories/examples/cj_print.v
-theories/examples/emit_cj.v
+example/misc/rocq/arith.v
+example/misc/rocq/struct_upd.v
+example/misc/rocq/cell.v
+example/misc/rocq/swap.v
+example/misc/rocq/sum_block.v
+example/misc/rocq/class_upd.v
+example/misc/rocq/frame_call.v
+example/misc/rocq/vtable.v
+example/list/rocq/list.v
+example/list_rev/rocq/list_rev.v
+example/array/rocq/array.v
+example/array_list/rocq/array_list.v
+example/qsort/rocq/qsort.v
+example/hash_map/rocq/hm_tactics.v
+example/hash_map/rocq/hash_map.v
+example/most_frequent/rocq/mf_memory.v
+example/most_frequent/rocq/most_frequent.v
+tools/extraction/rocq/cj_print.v
+tools/extraction/rocq/emit_cj.v
 theories/verify_assumptions.v
 
-quadtree/spec/model.v
-quadtree/algorithm/program.v
-quadtree/proof/ownership.v
-quadtree/proof/routing.v
-quadtree/proof/helpers.v
-quadtree/proof/correctness.v
-quadtree/algorithm/extract.v
-quadtree/spec/bounds.v
-quadtree/proof/insertion_model.v
-quadtree/proof/insertion_helpers.v
-quadtree/proof/insertion.v
-quadtree/proof/algebra.v
+example/quadtree/spec/model.v
+example/quadtree/algorithm/program.v
+example/quadtree/proof/ownership.v
+example/quadtree/proof/routing.v
+example/quadtree/proof/helpers.v
+example/quadtree/proof/correctness.v
+example/quadtree/algorithm/extract.v
+example/quadtree/spec/bounds.v
+example/quadtree/proof/insertion_model.v
+example/quadtree/proof/insertion_helpers.v
+example/quadtree/proof/insertion.v
+example/quadtree/proof/algebra.v

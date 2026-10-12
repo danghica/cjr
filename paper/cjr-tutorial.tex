@@ -143,9 +143,9 @@ In this repository the development is built with Coq 8.20.1 and Iris 4.4.0.
 The language is called Gallina (two l's); Rocq is the prover, and Iris is the
 program logic and library used for the heap reasoning.
 
-Once the CJR definitions are available, \texttt{theories/examples/emit\_cj.v}
+Once the CJR definitions are available, \texttt{tools/extraction/rocq/emit\_cj.v}
 uses a custom Gallina printer to turn the selected CJR syntax trees into
-Cangjie source files under \texttt{generated/cj/}.  This is not Rocq's
+Cangjie source files under \texttt{example/*/extracted/}.  This is not Rocq's
 standard extraction mechanism, and it does not extract proof terms: it
 serializes the program definitions.  A disciplined build runs
 \texttt{make verify} to check proofs and assumptions, then \texttt{make cj}
@@ -191,7 +191,7 @@ at that boundary.
   standalone Cangjie source};
 \node[box, below=8mm of printer, xshift=-32mm] (generated) {
   \textbf{Generated Cangjie}\\
-  \texttt{generated/cj/*.cj}};
+  \texttt{example/*/extracted/*.cj}};
 \node[box, right=8mm of generated] (tests) {
   \textbf{Cangjie compile and unit tests}\\
   Execute selected cases as runtime sanity checks};
@@ -1264,7 +1264,7 @@ The Coq definitions are the core \texttt{expr} terms those files actually prove.
 \subsection{Arithmetic: \texttt{arith.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/arith.cj}
+\lstinputlisting{example/misc/extracted/arith.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1287,7 +1287,7 @@ That is the scope rule from the previous section, exercised on a loop that reall
 \subsection{Stack structs: \texttt{struct\_upd.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/struct_upd.cj}
+\lstinputlisting{example/misc/extracted/struct_upd.cj}
 
 \paragraph{Theorems.}
 \[
@@ -1313,7 +1313,7 @@ The field update's result \(1\) is established on the way and then discarded by 
 \subsection{One raw cell: \texttt{cell.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/cell.cj}
+\lstinputlisting{example/misc/extracted/cell.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1336,7 +1336,7 @@ After \texttt{free}, no points-to fact remains, so a further load could not be v
 \subsection{Swap and aliasing: \texttt{swap.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/swap.cj}
+\lstinputlisting{example/misc/extracted/swap.cj}
 
 \paragraph{Theorems.}
 \[
@@ -1362,7 +1362,7 @@ An overlapping specification would be a different theorem---for example a single
 \subsection{Indexed blocks: \texttt{sum\_block.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/sum_block.cj}
+\lstinputlisting{example/misc/extracted/sum_block.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1394,7 +1394,7 @@ For a one-iteration loop the prefix is either empty or the single element \(4\).
 \subsection{Final classes: \texttt{class\_upd.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/class_upd.cj}
+\lstinputlisting{example/misc/extracted/class_upd.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1417,7 +1417,7 @@ The final \texttt{wp\_load} is what consumes it.
 \subsection{Framing across a call: \texttt{frame\_call.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/frame_call.cj}
+\lstinputlisting{example/misc/extracted/frame_call.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1444,7 +1444,7 @@ The guarantee that \(q\) is unchanged is simply the guarantee that the store's p
 \subsection{A hand-written vtable: \texttt{vtable.v}}
 
 \paragraph{Program.}\mbox{}\par
-\lstinputlisting{generated/cj/vtable.cj}
+\lstinputlisting{example/misc/extracted/vtable.cj}
 
 \paragraph{Theorem.}
 \[
@@ -1472,7 +1472,7 @@ The earlier examples already showed that leaving it unused is safe.
 
 \section{A linked list}
 
-The file \texttt{theories/examples/list.v} is a self-contained implementation of a singly linked list, together with the equations that say the implementation really is a list.
+The file \texttt{example/list/rocq/list.v} is a self-contained implementation of a singly linked list, together with the equations that say the implementation really is a list.
 It is larger than the earlier examples because the specification is not a single pure result: it is a predicate on the object heap, and the programs are functions that allocate and read nodes.
 
 \subsection{Why a node is an object with a boolean tag}
@@ -1511,7 +1511,7 @@ In Cangjie the operations are ordinary functions.
 Core application takes one argument, so \texttt{cons(x, xs)} lowers to a call on the struct of those two arguments.
 The other functions take the node.
 
-\lstinputlisting{generated/cj/list.cj}
+\lstinputlisting{example/list/extracted/list.cj}
 
 A Cangjie constructor cannot receive the object it is building, so the printed class takes an optional tail and stores it in a raw field.
 Unit, the placeholder written by the allocation, is printed as \texttt{None}.
@@ -1720,7 +1720,7 @@ Append remains outside this development.
 \section{In-place list reversal}
 \label{sec:list-reversal}
 
-The file \texttt{theories/examples/list\_rev.v} proves the classic iterative
+The file \texttt{example/list\_rev/rocq/list\_rev.v} proves the classic iterative
 reversal of a singly linked list. This example changes the links of existing
 cons cells. It does not allocate replacement cons cells, copy the integers, or
 change the tag and head fields. It does allocate one fresh empty sentinel at
@@ -1790,7 +1790,7 @@ resources in \(R\); a disjoint second list is a concrete example.
 \subsection{The iteration definition: \texttt{rev\_step}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=61,lastline=65]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=61,lastline=65]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 The immutable \texttt{let nxt} reads field \(2\) before the program overwrites
@@ -1808,7 +1808,7 @@ list with contents \(x::u\). The saved tail describes the remaining suffix
 \subsection{The loop definition: \texttt{rev\_loop}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=67,lastline=68]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=67,lastline=68]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 The condition loads the current node's tag. True means a cons node and permits
@@ -1819,7 +1819,7 @@ empty node, so its self-link does not cause an extra iteration.
 \subsection{The function body: \texttt{rev\_body}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=70,lastline=74]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=70,lastline=74]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{call\_nil} allocates and initializes the fresh empty accumulator.
@@ -1830,7 +1830,7 @@ reads the accumulator after the loop.
 \subsection{The call wrapper: \texttt{call\_reverse}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=76,lastline=77]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=76,lastline=77]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{call\_reverse} packages the body as a closure with one immutable
@@ -1846,7 +1846,7 @@ algorithm; no resource-cost theorem is asserted by \texttt{reverse\_spec}.
 \subsection{Loading a local: \texttt{sld}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=57,lastline=57]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=57,lastline=57]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 A \texttt{VarBind} replaces reads of a mutable variable with loads from a fresh
@@ -1858,7 +1858,7 @@ and then separately uses object-field ownership to access the node.
 \subsection{Assigning a local: \texttt{sas}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=58,lastline=59]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=58,lastline=59]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{sas z e} evaluates the expression \(e\) and writes the resulting value
@@ -1869,7 +1869,7 @@ iteration: one object-link write and two local-reference writes.
 \subsection{The iteration after substitution: \texttt{rev\_step\_at}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=79,lastline=82]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=79,lastline=82]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 After allocating the accumulator and current bindings at locations
@@ -1882,7 +1882,7 @@ It is a proof-facing form of \texttt{rev\_step}, not a second algorithm.
 \subsection{The loop after substitution: \texttt{rev\_loop\_at}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=84,lastline=85]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=84,lastline=85]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 The guard loads field \(0\) of the object referenced by the current stack
@@ -1894,7 +1894,7 @@ are used to connect that source expression to primitive proof rules.
 \subsection{Iteration substitution: statement and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=87,lastline=91]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=87,lastline=91]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 This equality connects the named iteration with code operating on two stack
@@ -1907,7 +1907,7 @@ no ownership and executes no command.
 \subsection{Loop substitution: statement and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=93,lastline=98]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=93,lastline=98]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 This proof unfolds the loop, reduces substitution in the condition, and uses
@@ -1919,7 +1919,7 @@ for these two distinct variable names.
 \subsection{The loop invariant: \texttt{rev\_inv}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=100,lastline=106]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=100,lastline=106]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 The witnesses \(u,v\) are respectively the contents of the accumulator and
@@ -1953,7 +1953,7 @@ owned by \(\mathsf{isList}([],c)\), while the new sentinel terminates the result
 \subsection{Append right identity: statement and induction proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=13,lastline=14]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=13,lastline=14]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{app\_nil\_r'} proves \(xs\mathbin{+\mkern-6mu+}[]=xs\).
@@ -1964,7 +1964,7 @@ hypothesis completes the equality. This identity is needed when the loop exits.
 \subsection{Append associativity: statement and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=16,lastline=17]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=16,lastline=17]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{app\_assoc'} proves that append associates. Again, induction on the
@@ -1976,7 +1976,7 @@ prefix and suffix descriptions.
 \subsection{Reversing append: statement and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=19,lastline=24]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=19,lastline=24]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{rev\_app} proves
@@ -1990,7 +1990,7 @@ then reconciles the two groupings of the three appended lists.
 \subsection{Reversing cons: statement and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=26,lastline=27]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=26,lastline=27]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{rev\_cons} is the defining cons equation of Coq's \texttt{rev}.
@@ -2001,7 +2001,7 @@ the processed prefix at its right end.
 \subsection{The invariant equation after one step}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=29,lastline=33]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=29,lastline=33]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 Suppose \(v=x::v'\). Replacing the accumulator \(u\) by \(x::u\) and
@@ -2021,7 +2021,7 @@ proof can delegate its pure equality to this lemma.
 \subsection{The invariant equation at an empty suffix}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=35,lastline=37]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=35,lastline=37]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{rev\_prefix\_nil} records the exit identity as a direct application of
@@ -2031,7 +2031,7 @@ right identity. It is an explanatory corollary; the loop proof can use
 \subsection{Double reversal of mathematical lists: proof by induction}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=39,lastline=43]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=39,lastline=43]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{rev\_rev} proves involution:
@@ -2043,7 +2043,7 @@ and the induction hypothesis produce \(x::xs\).
 \subsection{Recovering the accumulator contents from the exit equation}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=45,lastline=50]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=45,lastline=50]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 \texttt{rev\_eq\_rev} derives
@@ -2056,7 +2056,7 @@ predicate for the result.
 \subsection{Opening a cons cell: definition and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=108,lastline=118]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=108,lastline=118]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 This lemma exposes exactly the resources in the cons clause of
@@ -2071,7 +2071,7 @@ and no ownership is duplicated by this lemma.
 \subsection{Closing the new accumulator: definition and proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=120,lastline=128]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=120,lastline=128]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 Despite its historical name, this lemma constructs a cons at the front of the
@@ -2084,7 +2084,7 @@ it is not allocation and it does not copy a node.
 
 \subsection{One iteration: the full ownership proof}
 
-\lstinputlisting[firstline=131,lastline=176]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=131,lastline=176]{example/list_rev/rocq/list_rev.v}
 
 The pure premise supplies the invariant equation with a nonempty remaining
 list. The four spatial premises supply the two stack slots and both lists.
@@ -2129,7 +2129,7 @@ continuation; it does not itself execute that sequencing step.
 \subsection{The exit assertion: \texttt{rev\_done}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=179,lastline=181]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=179,lastline=181]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 An invariant alone does not imply that the loop has finished. For example, the
@@ -2142,7 +2142,7 @@ merely re-establishing the invariant, and avoids an invalid inference that
 
 \subsection{The loop theorem: induction and both branches}
 
-\lstinputlisting[firstline=183,lastline=225]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=183,lastline=225]{example/list_rev/rocq/list_rev.v}
 
 The induction is on the mathematical remaining list \(v\). The statement
 quantifies over \(u,a,c\) after fixing \(v\), so the induction hypothesis is
@@ -2179,7 +2179,7 @@ original invariant equation alone.
 \subsection{Packaging the invariant: \texttt{wp\_rev\_loop}}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=227,lastline=234]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=227,lastline=234]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 This wrapper opens the four existential witnesses of \texttt{rev\_inv} and
@@ -2190,7 +2190,7 @@ invariant without exposing its witnesses at the call site.
 
 \subsection{The complete function proof}
 
-\lstinputlisting[firstline=236,lastline=266]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=236,lastline=266]{example/list_rev/rocq/list_rev.v}
 
 First \texttt{is\_list\_obj} identifies the input value as an object reference
 while retaining its list ownership. This matters because the language's value
@@ -2225,14 +2225,14 @@ affine; this is not a deallocation step in the machine.
 \subsection{A client equation: reversing twice}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=268,lastline=270]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=268,lastline=270]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 This client composes two calls using an immutable intermediate reference.
 \subsection{The double-reversal client theorem and its proof}
 
 \begin{minipage}{\linewidth}
-\lstinputlisting[firstline=273,lastline=285]{theories/examples/list_rev.v}
+\lstinputlisting[firstline=273,lastline=285]{example/list_rev/rocq/list_rev.v}
 \end{minipage}
 
 The proof focuses on the first call with \texttt{LetCtx}, applies
@@ -2245,7 +2245,7 @@ heap field or the terminal sentinel's identity is restored.
 
 \subsection{The printed Cangjie program}
 
-\lstinputlisting{generated/cj/list_rev.cj}
+\lstinputlisting{example/list_rev/extracted/list_rev.cj}
 
 \texttt{p\_list\_rev} in \texttt{emit\_cj.v} declares the same \texttt{Node}
 layout, reuses the five list constructors and observers, and adds
@@ -2259,7 +2259,7 @@ handwritten reversal implementation.
 
 \subsection{Executable tests and what they check}
 
-\lstinputlisting{test/list_rev_test.cj}
+\lstinputlisting{example/list_rev/test/list_rev_test.cj}
 
 The six test cases cover empty input, a singleton, four distinct elements,
 duplicates and negative values, double reversal, and mutation through saved
@@ -2275,7 +2275,7 @@ compiler. They do not replace the general theorem over arbitrary mathematical
 lists. Conversely the Coq proof checks the CJR term and does not prove the
 compiler correct. The test command is
 \begin{lstlisting}
-cjc generated/cj/list_rev.cj test/list_rev_test.cj \
+cjc example/list_rev/extracted/list_rev.cj example/list_rev/test/list_rev_test.cj \
     --test -o test/bin/list_rev_test
 test/bin/list_rev_test
 \end{lstlisting}
@@ -2287,7 +2287,7 @@ closed using an admitted obligation or an added axiom.
 \section{Arrays}
 \label{sec:arrays}
 
-The file \texttt{theories/examples/array.v} is a library, in the same sense as the list: the language has no array type, and the library builds one from a final class and a raw block.
+The file \texttt{example/array/rocq/array.v} is a library, in the same sense as the list: the language has no array type, and the library builds one from a final class and a raw block.
 An array of \(n\) integers is an object with two fields and a contiguous block of \(n\) words.
 Field \(0\) holds \(n\).
 Field \(1\) holds the base pointer of the block.
@@ -2304,7 +2304,7 @@ Allocation of \(n\) words is \texttt{malloc} of \(n\) times the size of \texttt{
 \texttt{get} and \texttt{set} take the array and the index, and \texttt{set} also takes the new element.
 Core application is unary, so those calls lower to one struct argument, as \texttt{cons} did.
 
-\lstinputlisting{generated/cj/array.cj}
+\lstinputlisting{example/array/extracted/array.cj}
 
 The core terms are the same operations with the struct lowering made explicit.
 
@@ -2493,7 +2493,7 @@ The equations above are the base: read and write agree with list update, and the
 \section{Array lists}
 \label{sec:array-lists}
 
-The file \texttt{theories/examples/array\_list.v} lowers the resizable-buffer core of Cangjie's \texttt{ArrayList}: a default constructor, the live length, the capacity, emptiness, reading and writing an index, append, removal at an index, growth, and the version counter.
+The file \texttt{example/array\_list/rocq/array\_list.v} lowers the resizable-buffer core of Cangjie's \texttt{ArrayList}: a default constructor, the live length, the capacity, emptiness, reading and writing an index, append, removal at an index, growth, and the version counter.
 The source class continues past that core, with an iterator, the \texttt{Collection} interface, ranges, higher-order methods, and an embedded sort.
 Those stay out.
 The core is monomorphic in \texttt{Int64}, and it uses the array library already proved: a final object, a raw block, and a word-by-word copy.
@@ -2521,7 +2521,7 @@ The buffer's own field \(0\) is the capacity, and its field \(1\) is the base po
 The live prefix of the block is the mathematical list.
 The tail is zero, which is what \texttt{Alloc} writes and what removal writes back.
 
-\lstinputlisting{generated/cj/array_list.cj}
+\lstinputlisting{example/array_list/extracted/array_list.cj}
 
 Core application is unary, so each method lowers to a closure applied to one struct of arguments, as \texttt{get} and \texttt{set} did for arrays.
 The pure model of the three mutating operations is ordinary list algebra.
@@ -2785,12 +2785,12 @@ What this development does not prove is the iterator, equality of two lists, or 
 The predicate already owns the live prefix and the zero tail as one separating conjunction, which is the induction hypothesis a further loop would use.
 The equations above are the base: length, lookup, update, append, and removal agree with the list algebra, growth only changes the capacity, and the version moves only on append and removal.
 
-\input{generated/cj/further.tex}
+\input{paper/further.tex}
 
 \section{Quicksort}
 \label{sec:qsort}
 
-\texttt{theories/examples/qsort.v} is an in-place Lomuto quicksort of \texttt{Int64}.
+\texttt{example/qsort/rocq/qsort.v} is an in-place Lomuto quicksort of \texttt{Int64}.
 One Gallina function is the functional specification.
 One core-language program, parameterised by length, read, and write, is proved to compute that function.
 The fixed array and the array list each supply those three operations.
@@ -3415,14 +3415,14 @@ A client fills the list with \texttt{add}, and \texttt{add} calls \texttt{grow}.
 On the array those calls are \texttt{length(a)}, \texttt{get(a, i)}, and \texttt{set(a, i, x)}.
 On the array list they are \texttt{a.size()}, \texttt{a.get(i)}, and \texttt{a.set(i, x)}.
 
-\lstinputlisting{generated/cj/qsort_array.cj}
+\lstinputlisting{example/qsort/extracted/qsort_array.cj}
 
-\lstinputlisting{generated/cj/qsort_array_list.cj}
+\lstinputlisting{example/qsort/extracted/qsort_array_list.cj}
 
 \section{Hash maps}
 \label{sec:hashmap}
 
-\texttt{theories/examples/hash\_map.v} implements a monomorphic map from integer
+\texttt{example/hash\_map/rocq/hash\_map.v} implements a monomorphic map from integer
 keys to integer values. The example uses open addressing: each key belongs in
 one of three parallel arrays, and collisions are resolved by scanning subsequent
 slots. The verified executable includes lookup, overwrite, insertion, removal,
@@ -3766,131 +3766,131 @@ administrative reductions while leaving function calls for their specifications;
 \texttt{hm\_pure} also unfolds applications. \texttt{hm\_read} and
 \texttt{hm\_write} focus owned object fields, and \texttt{hm\_take} focuses the
 right-hand side of a let. Their evaluation-context definitions are in
-\texttt{theories/examples/hm\_tactics.v}. None supplies an assumption or
+\texttt{example/hash\_map/rocq/hm\_tactics.v}. None supplies an assumption or
 changes the postcondition: each application constructs a proof from the
 language rules.\par
 \paragraph{The normalized remainder contract.} The signed remainder is corrected once, and the quotient/remainder identity establishes the same mathematical bucket as before.
 
-\lstinputlisting[firstline=48,lastline=65]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=48,lastline=65]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The executable remainder proof.} The wrapper uses immutable bindings, applies the primitive remainder rule under positive capacity, and selects the correction branch.
 
-\lstinputlisting[firstline=1600,lastline=1615]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1600,lastline=1615]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization.} Each array allocation is verified before the object is constructed. The final pure obligations are the zero-table invariant and the equality between zero occupied count and the stored size.
 
-\lstinputlisting[firstline=1928,lastline=1957]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1928,lastline=1957]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The pure search result.} This proof combines the prefix invariant with placement and uniqueness. The found branch identifies the finite-map entry; the absent branch rules out every occupied location for the key.
 
-\lstinputlisting[firstline=800,lastline=850]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=800,lastline=850]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The executable bounded scan.} The induction follows the fuel parameter. Array reads preserve ownership, and each recursive call consumes one step while preserving the bound on the complete scan.
 
-\lstinputlisting[firstline=2063,lastline=2133]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2063,lastline=2133]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{From a remainder to a buffer search.} The range theorem permits converting the remainder to a natural bucket index. The scan is then instantiated with the full capacity as fuel.
 
-\lstinputlisting[firstline=2271,lastline=2290]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2271,lastline=2290]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The iterative lookup kernel.} The induction advances one slot for a mismatch or tombstone, and verifies termination directly after an empty tag or matching key.
 
-\lstinputlisting[firstline=2167,lastline=2245]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2167,lastline=2245]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The lookup local-state wrapper.} Two owned stack cells hold the step and result; both are returned to their lexical scopes after reading the final option.
 
-\lstinputlisting[firstline=2246,lastline=2269]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2246,lastline=2269]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The dedicated abstract lookup.} The unchanged table invariant connects the loop result to the mathematical map lookup.
 
-\lstinputlisting[firstline=2604,lastline=2650]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2604,lastline=2650]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Physical insertion and overwrite.} The proof first obtains the exact probe result. It writes one value cell for a hit and three corresponding cells for an absent key; its postcondition is the exact pure update triple.
 
-\lstinputlisting[firstline=2310,lastline=2345]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2310,lastline=2345]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Preserving the invariant for a new key.} The pure proof checks the tag, key, value, uniqueness, load, and placement obligations. Strict room is used to preserve the half-full bound after increasing the live count.
 
-\lstinputlisting[firstline=1288,lastline=1333]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1288,lastline=1333]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Preserving the invariant for overwrite.} A present key determines an occupied slot. Updating its value changes neither the occupied key list nor any placement path.
 
-\lstinputlisting[firstline=1431,lastline=1470]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1431,lastline=1470]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The pure rehash induction.} Disjointness and the combined occupied-count bound are strengthened for the recursive call. The lookup equation then establishes preservation of every source key and accumulator key.
 
-\lstinputlisting[firstline=1346,lastline=1416]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1346,lastline=1416]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The executable rehash induction.} The source index is related to remaining suffixes with drop. Source arrays are framed through insertion into the destination, and the postcondition tracks the exact pure fold.
 
-\lstinputlisting[firstline=2426,lastline=2495]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2426,lastline=2495]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Updating the object and its stored size.} The buffer update is combined with the pure occupied-count equation. The size field is incremented in the absent-key case and retained in the overwrite case.
 
-\lstinputlisting[firstline=2513,lastline=2553]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2513,lastline=2553]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public search contract.} The object fields are opened, the buffer search is verified, and the complete representation is reconstructed. The semantic lookup equation and canonical absent value are exposed to clients.
 
-\lstinputlisting[firstline=2555,lastline=2602]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2555,lastline=2602]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Presence queries.} The dedicated lookup contract supplies the abstract lookup meaning. Projecting its flag yields exactly the presence boolean.
 
-\lstinputlisting[firstline=2660,lastline=2673]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2660,lastline=2673]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Value queries.} The dedicated lookup contract already supplies the option result, including the canonical zero for an absent key.
 
-\lstinputlisting[firstline=2675,lastline=2690]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2675,lastline=2690]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Replacing the buffers after rehashing.} New array ownership is established first, then the rehash theorem is applied, and only afterward are the three object fields replaced. Equality of map contents proves equality of occupied counts.
 
-\lstinputlisting[firstline=2692,lastline=2750]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2692,lastline=2750]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public insertion proof.} The initial presence check separates overwrite from insertion. Only the missing-key branch checks the load threshold. Either strict room already holds or one verified doubling establishes it.
 
-\lstinputlisting[firstline=2765,lastline=2797]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2765,lastline=2797]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public removal proof.} The found branch marks the slot as a tombstone and uses the occupied-count decrement equation to update the size. The missing branch proves deletion of an absent map key.
 
-\lstinputlisting[firstline=2799,lastline=2842]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2799,lastline=2842]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The stored size query.} The representation equation and size-contents lemma identify the field value with the finite map size.
 
-\lstinputlisting[firstline=1959,lastline=1973]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1959,lastline=1973]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The capacity query.} The owned tag array length equals the abstract capacity, so reading its length field returns that capacity.
 
-\lstinputlisting[firstline=1975,lastline=1988]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1975,lastline=1988]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The emptiness query.} The field equality and occupied-count theorem connect the zero comparison to emptiness of the mathematical map.
 
-\lstinputlisting[firstline=1990,lastline=2006]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=1990,lastline=2006]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by size.} The allocation result is bound to the next call, whose contract returns zero for the empty map.
 
-\lstinputlisting[firstline=2858,lastline=2867]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2858,lastline=2867]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by capacity.} The initialized representation supplies the default capacity to the query contract.
 
-\lstinputlisting[firstline=2869,lastline=2879]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2869,lastline=2879]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by emptiness.} The empty finite map supplies the true result to the emptiness query.
 
-\lstinputlisting[firstline=2881,lastline=2890]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2881,lastline=2890]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Insertion followed by lookup.} The new capacity is unpacked from the insertion result and passed to the query contract. The finite-map insertion law determines the returned value.
 
-\lstinputlisting[firstline=2897,lastline=2909]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2897,lastline=2909]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Insertion followed by presence.} The same composition uses the insertion lookup law to establish a true presence result.
 
-\lstinputlisting[firstline=2911,lastline=2923]{theories/examples/hash_map.v}
+\lstinputlisting[firstline=2911,lastline=2923]{example/hash_map/rocq/hash_map.v}
 
-\lstinputlisting{generated/cj/hash_map.cj}
+\lstinputlisting{example/hash_map/extracted/hash_map.cj}
 
 \input{paper/benchmark.tex}
 
-% generated/cj/most_frequent.cj is listed in the included section below.
-\input{paper/most-frequent.tex}
+% example/most_frequent/extracted/most_frequent.cj is listed in the included section below.
+\input{example/most_frequent/docs/most-frequent.tex}
 
 \section{What is deliberately missing}
 

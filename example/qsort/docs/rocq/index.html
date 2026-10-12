@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project specifications — Rocq Readable</title><link rel="stylesheet" href="style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable</div><h1>Project specifications</h1>
+<nav aria-label="Project"><a href="index.html">Home</a> · <a href="declarations.html">Index</a></nav>
+<p class="meta">1 source files · 99 declarations · proofs omitted</p>
+<p class="notice">Sources are discovered beneath the invocation directory. Symbol links remain within these generated files; library references are unlinked.</p></header>
+<section class="panel dependency-diagram" data-scope="project" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Arrows point toward dependencies. The overview groups files containing declarations and shows cross-file links. Choose a declaration to see its direct dependencies and dependents. Click a node to open its documentation.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="files">Source files</option><option value="all">All declarations</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#bed8ee">Specifications</span><span style="--swatch:#b6dfd4">Algorithms</span><span style="--swatch:#d7c8ec">Proofs</span><span style="--swatch:#d7dfe5">Other sources</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Coverage limits are the same as in the hierarchy.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><section class="panel"><h2>Dependency hierarchy</h2><p class="notice">Expand an entry to see what it depends on. Shared dependencies appear under each parent. The <a href="declarations.html">Index</a> lists every declaration.</p><p class="notice">Dependency coverage is incomplete for some declarations. See their notices and report.json.</p><ul class="dependency-tree"><li><details data-identity="cjr.examples.qsort.array_qsort_spec" data-path="[&quot;cjr.examples.qsort.array_qsort_spec&quot;]"><summary><a href="rocq/qsort.html#symbol-2b1e76640d4d45e75380bccb">cjr.examples.qsort.array_qsort_spec</a></summary></details></li><li><details data-identity="cjr.examples.qsort.arraylist_qsort_spec" data-path="[&quot;cjr.examples.qsort.arraylist_qsort_spec&quot;]"><summary><a href="rocq/qsort.html#symbol-53874739056b68c2589d958b">cjr.examples.qsort.arraylist_qsort_spec</a></summary></details></li><li><details data-identity="cjr.examples.qsort.exchange" data-path="[&quot;cjr.examples.qsort.exchange&quot;]"><summary><a href="rocq/qsort.html#symbol-ec3e957d4e8a48a7af088f50">cjr.examples.qsort.exchange</a></summary></details></li><li><details data-identity="cjr.examples.qsort.part_tail_eq" data-path="[&quot;cjr.examples.qsort.part_tail_eq&quot;]"><summary><a href="rocq/qsort.html#symbol-8aa22e7b3c8285d5941f18b8">cjr.examples.qsort.part_tail_eq</a></summary></details></li><li><details data-identity="cjr.examples.qsort.qsort_example" data-path="[&quot;cjr.examples.qsort.qsort_example&quot;]"><summary><a href="rocq/qsort.html#symbol-bbbfe218c07915f07d9d6425">cjr.examples.qsort.qsort_example</a></summary></details></li><li><details data-identity="cjr.examples.qsort.qsort_perm" data-path="[&quot;cjr.examples.qsort.qsort_perm&quot;]"><summary><a href="rocq/qsort.html#symbol-c3559b48d0bd73c25a70b844">cjr.examples.qsort.qsort_perm</a></summary></details></li><li><details data-identity="cjr.examples.qsort.qsort_sorted" data-path="[&quot;cjr.examples.qsort.qsort_sorted&quot;]"><summary><a href="rocq/qsort.html#symbol-9e07f625b5529a762b471ba3">cjr.examples.qsort.qsort_sorted</a></summary></details></li><li><details data-identity="cjr.examples.qsort.scan_open_eq" data-path="[&quot;cjr.examples.qsort.scan_open_eq&quot;]"><summary><a href="rocq/qsort.html#symbol-d7d79d36674fba0a79eef301">cjr.examples.qsort.scan_open_eq</a></summary></details></li><li><details data-identity="cjr.examples.qsort.swap_closed_i" data-path="[&quot;cjr.examples.qsort.swap_closed_i&quot;]"><summary><a href="rocq/qsort.html#symbol-d90cc5c8a444ba4472e84a79">cjr.examples.qsort.swap_closed_i</a></summary></details></li><li><details data-identity="cjr.examples.qsort.swap_closed_j" data-path="[&quot;cjr.examples.qsort.swap_closed_j&quot;]"><summary><a href="rocq/qsort.html#symbol-9a5ddb2b589bf38d0e5f8262">cjr.examples.qsort.swap_closed_j</a></summary></details></li><li><details data-identity="cjr.examples.qsort.swap_closed_p" data-path="[&quot;cjr.examples.qsort.swap_closed_p&quot;]"><summary><a href="rocq/qsort.html#symbol-d0d680275b7b2b917ff38280">cjr.examples.qsort.swap_closed_p</a></summary></details></li></ul><noscript><p>Enable JavaScript to expand the hierarchy. Every declaration page also lists direct dependencies.</p></noscript></section><script id="dependency-data" type="application/json">{"cjr.examples.qsort.array_qsort_spec": {"dependencies": ["cjr.examples.qsort.call_sort", "cjr.examples.qsort.lit_rigid", "cjr.examples.qsort.qsort", "cjr.examples.qsort.sort_spec"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2b1e76640d4d45e75380bccb", "kind": "lemma", "label": "cjr.examples.qsort.array_qsort_spec", "name": "array_qsort_spec"}, "cjr.examples.qsort.arraylist_qsort_at": {"dependencies": ["cjr.examples.qsort.call_sort", "cjr.examples.qsort.lit_rigid", "cjr.examples.qsort.qsort", "cjr.examples.qsort.sort_spec"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-4de40e5ea1fc5188535ee60c", "kind": "lemma", "label": "cjr.examples.qsort.arraylist_qsort_at", "name": "arraylist_qsort_at"}, "cjr.examples.qsort.arraylist_qsort_spec": {"dependencies": ["cjr.examples.qsort.arraylist_qsort_at", "cjr.examples.qsort.call_sort", "cjr.examples.qsort.qsort"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-53874739056b68c2589d958b", "kind": "lemma", "label": "cjr.examples.qsort.arraylist_qsort_spec", "name": "arraylist_qsort_spec"}, "cjr.examples.qsort.call2": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-a92304f526b3b9c25e7639c5", "kind": "definition", "label": "cjr.examples.qsort.call2", "name": "call2"}, "cjr.examples.qsort.call3": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-302dc9979b8f1e7b3892ce35", "kind": "definition", "label": "cjr.examples.qsort.call3", "name": "call3"}, "cjr.examples.qsort.call3_seq": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5ada3631990e60c7573c9f43", "kind": "definition", "label": "cjr.examples.qsort.call3_seq", "name": "call3_seq"}, "cjr.examples.qsort.call_partition": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.partition_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-df20d1632deba440a5eb11a0", "kind": "definition", "label": "cjr.examples.qsort.call_partition", "name": "call_partition"}, "cjr.examples.qsort.call_qsort": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.qsort_v"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-cb2eb645754379bc9f8243d0", "kind": "definition", "label": "cjr.examples.qsort.call_qsort", "name": "call_qsort"}, "cjr.examples.qsort.call_sort": {"dependencies": ["cjr.examples.qsort.sort_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-c215437dafdd185affc86f90", "kind": "definition", "label": "cjr.examples.qsort.call_sort", "name": "call_sort"}, "cjr.examples.qsort.call_swap": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-33f7fb5d4dc7f6593d186ad7", "kind": "definition", "label": "cjr.examples.qsort.call_swap", "name": "call_swap"}, "cjr.examples.qsort.count_if": {"dependencies": ["cjr.examples.qsort.count_if"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-6b3d06fbb18f43fb1510d2a7", "kind": "recursive function", "label": "cjr.examples.qsort.count_if", "name": "count_if"}, "cjr.examples.qsort.count_if_app": {"dependencies": ["cjr.examples.qsort.count_if"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-0d33d274143262d3fc5993df", "kind": "lemma", "label": "cjr.examples.qsort.count_if_app", "name": "count_if_app"}, "cjr.examples.qsort.count_if_perm": {"dependencies": ["cjr.examples.qsort.count_if"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-6f650f8d61d78975b58baf9c", "kind": "lemma", "label": "cjr.examples.qsort.count_if_perm", "name": "count_if_perm"}, "cjr.examples.qsort.count_if_take_drop": {"dependencies": ["cjr.examples.qsort.count_if", "cjr.examples.qsort.count_if_app"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-9d4ef624c81942fbef4a664b", "kind": "lemma", "label": "cjr.examples.qsort.count_if_take_drop", "name": "count_if_take_drop"}, "cjr.examples.qsort.count_insert": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-77b3594c5fe21c13934b6d4d", "kind": "lemma", "label": "cjr.examples.qsort.count_insert", "name": "count_insert"}, "cjr.examples.qsort.count_zero_lookup": {"dependencies": ["cjr.examples.qsort.count_if"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-1198037f1737efa69eae03aa", "kind": "lemma", "label": "cjr.examples.qsort.count_zero_lookup", "name": "count_zero_lookup"}, "cjr.examples.qsort.drop_lookup_eq": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-cdd059dc7930aad4be2a79bd", "kind": "lemma", "label": "cjr.examples.qsort.drop_lookup_eq", "name": "drop_lookup_eq"}, "cjr.examples.qsort.exchange": {"dependencies": ["cjr.examples.qsort.move_cons"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-ec3e957d4e8a48a7af088f50", "kind": "lemma", "label": "cjr.examples.qsort.exchange", "name": "exchange"}, "cjr.examples.qsort.lit_rigid": {"dependencies": ["cjr.examples.qsort.rigid"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-650c47675ab2dde5ba96b94c", "kind": "lemma", "label": "cjr.examples.qsort.lit_rigid", "name": "lit_rigid"}, "cjr.examples.qsort.lomuto": {"dependencies": ["cjr.examples.qsort.lomuto", "cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-6817beeb58890569aeed4cf4", "kind": "recursive function", "label": "cjr.examples.qsort.lomuto", "name": "lomuto"}, "cjr.examples.qsort.lomuto_go": {"dependencies": ["cjr.examples.qsort.lomuto", "cjr.examples.qsort.lomuto_inv", "cjr.examples.qsort.lomuto_step", "cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-c3c90a5265cdf6d207ba61f8", "kind": "lemma", "label": "cjr.examples.qsort.lomuto_go", "name": "lomuto_go"}, "cjr.examples.qsort.lomuto_inv": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-fb647b64330b41692a45c31f", "kind": "record", "label": "cjr.examples.qsort.lomuto_inv", "name": "lomuto_inv"}, "cjr.examples.qsort.lomuto_inv_start": {"dependencies": ["cjr.examples.qsort.lomuto_inv"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-8d6446464a74109c69e67655", "kind": "lemma", "label": "cjr.examples.qsort.lomuto_inv_start", "name": "lomuto_inv_start"}, "cjr.examples.qsort.lomuto_step": {"dependencies": ["cjr.examples.qsort.lomuto_inv", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_list_length", "cjr.examples.qsort.swap_list_perm", "cjr.examples.qsort.swap_lookup"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-0901ac4efecaf4f9b8a2b64e", "kind": "lemma", "label": "cjr.examples.qsort.lomuto_step", "name": "lomuto_step"}, "cjr.examples.qsort.minus1": {"dependencies": ["cjr.examples.qsort.one"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-a6c1f415d1ce68d3800f30f6", "kind": "definition", "label": "cjr.examples.qsort.minus1", "name": "minus1"}, "cjr.examples.qsort.move_cons": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-53ef483dccc5d18461bbf0c2", "kind": "lemma", "label": "cjr.examples.qsort.move_cons", "name": "move_cons"}, "cjr.examples.qsort.nval": {"dependencies": ["cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5cd8c6d83a1c3bf7fd9a9244", "kind": "definition", "label": "cjr.examples.qsort.nval", "name": "nval"}, "cjr.examples.qsort.one": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-71cf447887a6be67e0c4808a", "kind": "definition", "label": "cjr.examples.qsort.one", "name": "one"}, "cjr.examples.qsort.part_closed_n": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.one", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.plus1", "cjr.examples.qsort.scan", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_closed_n", "cjr.examples.qsort.unitv"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-66f4ac4e81a19767bfaaaf74", "kind": "lemma", "label": "cjr.examples.qsort.part_closed_n", "name": "part_closed_n"}, "cjr.examples.qsort.part_closed_pack": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.one", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.plus1", "cjr.examples.qsort.scan", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_closed_pack", "cjr.examples.qsort.unitv"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-8411dfbf3057c06d7f930a90", "kind": "lemma", "label": "cjr.examples.qsort.part_closed_pack", "name": "part_closed_pack"}, "cjr.examples.qsort.part_ok": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-0fbb6fe1932d4c427174b816", "kind": "definition", "label": "cjr.examples.qsort.part_ok", "name": "part_ok"}, "cjr.examples.qsort.part_tail": {"dependencies": ["cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.sload", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5e68c1ae3e68d829e8b5c0a8", "kind": "definition", "label": "cjr.examples.qsort.part_tail", "name": "part_tail"}, "cjr.examples.qsort.part_tail_eq": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.part_tail", "cjr.examples.qsort.plus1", "cjr.examples.qsort.rigid", "cjr.examples.qsort.scan", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot", "cjr.examples.qsort.sset", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_var_i", "cjr.examples.qsort.swap_var_j", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-8aa22e7b3c8285d5941f18b8", "kind": "lemma", "label": "cjr.examples.qsort.part_tail_eq", "name": "part_tail_eq"}, "cjr.examples.qsort.partition_body": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.scan", "cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-15bed6a153474bcc0bae7fe9", "kind": "definition", "label": "cjr.examples.qsort.partition_body", "name": "partition_body"}, "cjr.examples.qsort.partition_list": {"dependencies": ["cjr.examples.qsort.lomuto", "cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-1e29b5a5ad9d8137469204ac", "kind": "definition", "label": "cjr.examples.qsort.partition_list", "name": "partition_list"}, "cjr.examples.qsort.partition_list_ok": {"dependencies": ["cjr.examples.qsort.lomuto", "cjr.examples.qsort.lomuto_go", "cjr.examples.qsort.lomuto_inv", "cjr.examples.qsort.part_ok", "cjr.examples.qsort.partition_list", "cjr.examples.qsort.swap_list_length", "cjr.examples.qsort.swap_list_perm", "cjr.examples.qsort.swap_lookup"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2efd49d0037e7e11ec6503e8", "kind": "lemma", "label": "cjr.examples.qsort.partition_list_ok", "name": "partition_list_ok"}, "cjr.examples.qsort.partition_spec": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.call_partition", "cjr.examples.qsort.lomuto_go", "cjr.examples.qsort.lomuto_inv", "cjr.examples.qsort.lomuto_inv_start", "cjr.examples.qsort.minus1", "cjr.examples.qsort.nval", "cjr.examples.qsort.one", "cjr.examples.qsort.part_tail", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.partition_list", "cjr.examples.qsort.rigid", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_closed_a", "cjr.examples.qsort.swap_closed_hi", "cjr.examples.qsort.swap_closed_lo", "cjr.examples.qsort.swap_closed_pack", "cjr.examples.qsort.swap_closed_pivot", "cjr.examples.qsort.swap_closed_v", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_spec", "cjr.examples.qsort.swap_var_i", "cjr.examples.qsort.swap_var_j", "cjr.examples.qsort.wp_scan", "cjr.examples.qsort.wp_struct_step", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-9d3a37e1ff9ddd5eb350cecc", "kind": "lemma", "label": "cjr.examples.qsort.partition_spec", "name": "partition_spec"}, "cjr.examples.qsort.plus1": {"dependencies": ["cjr.examples.qsort.one"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-cfb0691ad5ea115cee61451f", "kind": "definition", "label": "cjr.examples.qsort.plus1", "name": "plus1"}, "cjr.examples.qsort.qsort": {"dependencies": ["cjr.examples.qsort.qsort_slice"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2bd88f3df07279e55ed16efc", "kind": "definition", "label": "cjr.examples.qsort.qsort", "name": "qsort"}, "cjr.examples.qsort.qsort_body": {"dependencies": ["cjr.examples.qsort.minus1", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.plus1", "cjr.examples.qsort.unitv"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-7048ce7a3aea99c1963df577", "kind": "definition", "label": "cjr.examples.qsort.qsort_body", "name": "qsort_body"}, "cjr.examples.qsort.qsort_example": {"dependencies": ["cjr.examples.qsort.qsort"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-bbbfe218c07915f07d9d6425", "kind": "lemma", "label": "cjr.examples.qsort.qsort_example", "name": "qsort_example"}, "cjr.examples.qsort.qsort_perm": {"dependencies": ["cjr.examples.qsort.qsort", "cjr.examples.qsort.qsort_slice_spec"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-c3559b48d0bd73c25a70b844", "kind": "lemma", "label": "cjr.examples.qsort.qsort_perm", "name": "qsort_perm"}, "cjr.examples.qsort.qsort_slice": {"dependencies": ["cjr.examples.qsort.partition_list", "cjr.examples.qsort.qsort_slice"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5bdc0422c1943fbad4c3ba64", "kind": "recursive function", "label": "cjr.examples.qsort.qsort_slice", "name": "qsort_slice"}, "cjr.examples.qsort.qsort_slice_spec": {"dependencies": ["cjr.examples.qsort.partition_list", "cjr.examples.qsort.partition_list_ok", "cjr.examples.qsort.qsort_slice", "cjr.examples.qsort.region_preserved", "cjr.examples.qsort.slice_sorted", "cjr.examples.qsort.slice_sorted_join", "cjr.examples.qsort.slice_sorted_same", "cjr.examples.qsort.slice_sorted_short"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-116c69c56174ec09293f0a24", "kind": "lemma", "label": "cjr.examples.qsort.qsort_slice_spec", "name": "qsort_slice_spec"}, "cjr.examples.qsort.qsort_sorted": {"dependencies": ["cjr.examples.qsort.qsort", "cjr.examples.qsort.qsort_slice_spec", "cjr.examples.qsort.slice_sorted"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-9e07f625b5529a762b471ba3", "kind": "lemma", "label": "cjr.examples.qsort.qsort_sorted", "name": "qsort_sorted"}, "cjr.examples.qsort.qsort_v": {"dependencies": ["cjr.examples.qsort.qsort_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-05c86706bce7a9cae1bb1d52", "kind": "definition", "label": "cjr.examples.qsort.qsort_v", "name": "qsort_v"}, "cjr.examples.qsort.region_count": {"dependencies": ["cjr.examples.qsort.count_if", "cjr.examples.qsort.count_if_take_drop"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-18ca735a42186479449d60c9", "kind": "lemma", "label": "cjr.examples.qsort.region_count", "name": "region_count"}, "cjr.examples.qsort.region_preserved": {"dependencies": ["cjr.examples.qsort.count_if", "cjr.examples.qsort.count_if_perm", "cjr.examples.qsort.count_zero_lookup", "cjr.examples.qsort.drop_lookup_eq", "cjr.examples.qsort.region_count", "cjr.examples.qsort.take_lookup_eq", "cjr.examples.qsort.take_region_zero"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-008c994f46db73bef7a38ab0", "kind": "lemma", "label": "cjr.examples.qsort.region_preserved", "name": "region_preserved"}, "cjr.examples.qsort.rigid": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-3dc14a674d64cb93a401bf0d", "kind": "definition", "label": "cjr.examples.qsort.rigid", "name": "rigid"}, "cjr.examples.qsort.scan": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.plus1", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.unitv"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-06ff4e935ddd64b98d314e7c", "kind": "definition", "label": "cjr.examples.qsort.scan", "name": "scan"}, "cjr.examples.qsort.scan_body": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.plus1", "cjr.examples.qsort.sload", "cjr.examples.qsort.sset", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.unitv", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-13c330ea78c26ee014756c8a", "kind": "definition", "label": "cjr.examples.qsort.scan_body", "name": "scan_body"}, "cjr.examples.qsort.scan_body_eq": {"dependencies": ["cjr.examples.qsort.minus1", "cjr.examples.qsort.plus1", "cjr.examples.qsort.scan_body", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.sload", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-462881081c37e2377a0983d8", "kind": "lemma", "label": "cjr.examples.qsort.scan_body_eq", "name": "scan_body_eq"}, "cjr.examples.qsort.scan_open": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.plus1", "cjr.examples.qsort.sload", "cjr.examples.qsort.sset", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.unitv", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5cee720a97959b216f2793e2", "kind": "definition", "label": "cjr.examples.qsort.scan_open", "name": "scan_open"}, "cjr.examples.qsort.scan_open_eq": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.minus1", "cjr.examples.qsort.plus1", "cjr.examples.qsort.rigid", "cjr.examples.qsort.scan", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot", "cjr.examples.qsort.sset", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_var_i", "cjr.examples.qsort.swap_var_j", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d7d79d36674fba0a79eef301", "kind": "lemma", "label": "cjr.examples.qsort.scan_open_eq", "name": "scan_open_eq"}, "cjr.examples.qsort.slice_sorted": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-29cb04eec30ba8fcba3c1e6e", "kind": "definition", "label": "cjr.examples.qsort.slice_sorted", "name": "slice_sorted"}, "cjr.examples.qsort.slice_sorted_join": {"dependencies": ["cjr.examples.qsort.slice_sorted"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-46e9b805381160ebe818b04b", "kind": "lemma", "label": "cjr.examples.qsort.slice_sorted_join", "name": "slice_sorted_join"}, "cjr.examples.qsort.slice_sorted_same": {"dependencies": ["cjr.examples.qsort.slice_sorted"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-e0f81d9e27cc27231da1d0f1", "kind": "lemma", "label": "cjr.examples.qsort.slice_sorted_same", "name": "slice_sorted_same"}, "cjr.examples.qsort.slice_sorted_short": {"dependencies": ["cjr.examples.qsort.slice_sorted"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-541e524945ca4c14d0a9e5ba", "kind": "lemma", "label": "cjr.examples.qsort.slice_sorted_short", "name": "slice_sorted_short"}, "cjr.examples.qsort.sload": {"dependencies": ["cjr.examples.qsort.slot"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-c799c72d68e333af1097f6aa", "kind": "definition", "label": "cjr.examples.qsort.sload", "name": "sload"}, "cjr.examples.qsort.slot": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2c66010416e6d6246c93570b", "kind": "definition", "label": "cjr.examples.qsort.slot", "name": "slot"}, "cjr.examples.qsort.sort_body": {"dependencies": ["cjr.examples.qsort.qsort_body", "cjr.examples.qsort.zero"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-73bad6ed1540328d3c4ea8f9", "kind": "definition", "label": "cjr.examples.qsort.sort_body", "name": "sort_body"}, "cjr.examples.qsort.sort_spec": {"dependencies": ["cjr.examples.qsort.call_qsort", "cjr.examples.qsort.call_sort", "cjr.examples.qsort.nval", "cjr.examples.qsort.part_closed_n", "cjr.examples.qsort.part_closed_pack", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.qsort", "cjr.examples.qsort.rigid", "cjr.examples.qsort.sort_body", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_closed_n", "cjr.examples.qsort.swap_closed_pack", "cjr.examples.qsort.wp_pack3", "cjr.examples.qsort.wp_qslice", "cjr.examples.qsort.zero", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-e0ac278be09a6c524b93ad59", "kind": "lemma", "label": "cjr.examples.qsort.sort_spec", "name": "sort_spec"}, "cjr.examples.qsort.sset": {"dependencies": ["cjr.examples.qsort.slot"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-a877ba2553f73e962c32e43b", "kind": "definition", "label": "cjr.examples.qsort.sset", "name": "sset"}, "cjr.examples.qsort.swap_body": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.call3_seq"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-59310cbe9dc176a9c9aa4394", "kind": "definition", "label": "cjr.examples.qsort.swap_body", "name": "swap_body"}, "cjr.examples.qsort.swap_closed_a": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-b79add7548531202b6aec8e8", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_a", "name": "swap_closed_a"}, "cjr.examples.qsort.swap_closed_hi": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-90484b55fd1f17a06a21e00c", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_hi", "name": "swap_closed_hi"}, "cjr.examples.qsort.swap_closed_i": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d90cc5c8a444ba4472e84a79", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_i", "name": "swap_closed_i"}, "cjr.examples.qsort.swap_closed_j": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-9a5ddb2b589bf38d0e5f8262", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_j", "name": "swap_closed_j"}, "cjr.examples.qsort.swap_closed_lo": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-a74a1f80286218d51a632cf7", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_lo", "name": "swap_closed_lo"}, "cjr.examples.qsort.swap_closed_n": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-9eff9faf8fbfd7f53174c87c", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_n", "name": "swap_closed_n"}, "cjr.examples.qsort.swap_closed_p": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d0d680275b7b2b917ff38280", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_p", "name": "swap_closed_p"}, "cjr.examples.qsort.swap_closed_pack": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-3f4625e86925443cb3df1c19", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_pack", "name": "swap_closed_pack"}, "cjr.examples.qsort.swap_closed_pivot": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-b004f96d7f9a17b5290d8fc2", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_pivot", "name": "swap_closed_pivot"}, "cjr.examples.qsort.swap_closed_qsort": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-42c740880128795e287277d0", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_qsort", "name": "swap_closed_qsort"}, "cjr.examples.qsort.swap_closed_v": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2346b7c751f612187f0afdc3", "kind": "lemma", "label": "cjr.examples.qsort.swap_closed_v", "name": "swap_closed_v"}, "cjr.examples.qsort.swap_list": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-aa8fa9b7b434b724a9f19589", "kind": "definition", "label": "cjr.examples.qsort.swap_list", "name": "swap_list"}, "cjr.examples.qsort.swap_list_code": {"dependencies": ["cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5f168936ab1c92c36da2ba5c", "kind": "lemma", "label": "cjr.examples.qsort.swap_list_code", "name": "swap_list_code"}, "cjr.examples.qsort.swap_list_id": {"dependencies": ["cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-935f03ccec5b2dee2684fb49", "kind": "lemma", "label": "cjr.examples.qsort.swap_list_id", "name": "swap_list_id"}, "cjr.examples.qsort.swap_list_length": {"dependencies": ["cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-4a06fcd0c98378e0bc2c7cc1", "kind": "lemma", "label": "cjr.examples.qsort.swap_list_length", "name": "swap_list_length"}, "cjr.examples.qsort.swap_list_perm": {"dependencies": ["cjr.examples.qsort.count_insert", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_list_id"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-b6c59d188f21f5271082693a", "kind": "lemma", "label": "cjr.examples.qsort.swap_list_perm", "name": "swap_list_perm"}, "cjr.examples.qsort.swap_lookup": {"dependencies": ["cjr.examples.qsort.swap_list"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-fa321deeda39ba142b6a12b8", "kind": "lemma", "label": "cjr.examples.qsort.swap_lookup", "name": "swap_lookup"}, "cjr.examples.qsort.swap_spec": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.call3_seq", "cjr.examples.qsort.call_swap", "cjr.examples.qsort.nval", "cjr.examples.qsort.rigid", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_list_code", "cjr.examples.qsort.wp_pack2", "cjr.examples.qsort.wp_pack3", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-6e497ba86bf214e707b48cd0", "kind": "lemma", "label": "cjr.examples.qsort.swap_spec", "name": "swap_spec"}, "cjr.examples.qsort.swap_var_i": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-41a96f101c540165caab6515", "kind": "lemma", "label": "cjr.examples.qsort.swap_var_i", "name": "swap_var_i"}, "cjr.examples.qsort.swap_var_j": {"dependencies": ["cjr.examples.qsort.swap_body"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-7b3cb33c6a48205d6af7def9", "kind": "lemma", "label": "cjr.examples.qsort.swap_var_j", "name": "swap_var_j"}, "cjr.examples.qsort.take_lookup_eq": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-e28564bb5c2b70aaae51f09f", "kind": "lemma", "label": "cjr.examples.qsort.take_lookup_eq", "name": "take_lookup_eq"}, "cjr.examples.qsort.take_region_zero": {"dependencies": ["cjr.examples.qsort.count_if"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d13ed0b9649e83185677c6c0", "kind": "lemma", "label": "cjr.examples.qsort.take_region_zero", "name": "take_region_zero"}, "cjr.examples.qsort.unitv": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-b40fe2d3f5ff7028e413f61e", "kind": "definition", "label": "cjr.examples.qsort.unitv", "name": "unitv"}, "cjr.examples.qsort.wp_cons2": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot", "cjr.examples.qsort.wp_struct_step", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d122dfc6774931e2ccd9637e", "kind": "lemma", "label": "cjr.examples.qsort.wp_cons2", "name": "wp_cons2"}, "cjr.examples.qsort.wp_cons3": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot", "cjr.examples.qsort.wp_struct_step", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-fa2fa53c7ebb0ec333f411f4", "kind": "lemma", "label": "cjr.examples.qsort.wp_cons3", "name": "wp_cons3"}, "cjr.examples.qsort.wp_inc": {"dependencies": ["cjr.examples.qsort.nval", "cjr.examples.qsort.one", "cjr.examples.qsort.plus1", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot", "cjr.examples.qsort.sset", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5c53a6925c96094af2b83770", "kind": "lemma", "label": "cjr.examples.qsort.wp_inc", "name": "wp_inc"}, "cjr.examples.qsort.wp_pack2": {"dependencies": ["cjr.examples.qsort.wp_struct_step"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5418dd4b9bf2b82515f753ce", "kind": "lemma", "label": "cjr.examples.qsort.wp_pack2", "name": "wp_pack2"}, "cjr.examples.qsort.wp_pack3": {"dependencies": ["cjr.examples.qsort.wp_struct_step"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-2a946b089af427fd00e47c51", "kind": "lemma", "label": "cjr.examples.qsort.wp_pack3", "name": "wp_pack3"}, "cjr.examples.qsort.wp_qslice": {"dependencies": ["cjr.examples.qsort.call_partition", "cjr.examples.qsort.call_qsort", "cjr.examples.qsort.minus1", "cjr.examples.qsort.nval", "cjr.examples.qsort.one", "cjr.examples.qsort.partition_body", "cjr.examples.qsort.partition_list_ok", "cjr.examples.qsort.partition_spec", "cjr.examples.qsort.plus1", "cjr.examples.qsort.qsort_body", "cjr.examples.qsort.qsort_slice", "cjr.examples.qsort.qsort_slice_spec", "cjr.examples.qsort.qsort_v", "cjr.examples.qsort.rigid", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_closed_qsort", "cjr.examples.qsort.wp_pack3", "cjr.examples.qsort.wp_struct_step", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-d8aedaea4f42774383b22d35", "kind": "lemma", "label": "cjr.examples.qsort.wp_qslice", "name": "wp_qslice"}, "cjr.examples.qsort.wp_scan": {"dependencies": ["cjr.examples.qsort.lomuto", "cjr.examples.qsort.minus1", "cjr.examples.qsort.nval", "cjr.examples.qsort.one", "cjr.examples.qsort.plus1", "cjr.examples.qsort.rigid", "cjr.examples.qsort.scan_body", "cjr.examples.qsort.scan_body_eq", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.sload", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_list_length", "cjr.examples.qsort.wp_scan_body", "cjr.examples.qsort.wp_scan_stop", "cjr.examples.qsort.zval"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-b56f5606729b7ef82bc63366", "kind": "lemma", "label": "cjr.examples.qsort.wp_scan", "name": "wp_scan"}, "cjr.examples.qsort.wp_scan_body": {"dependencies": ["cjr.examples.qsort.call2", "cjr.examples.qsort.call3", "cjr.examples.qsort.nval", "cjr.examples.qsort.rigid", "cjr.examples.qsort.scan_body", "cjr.examples.qsort.swap_body", "cjr.examples.qsort.swap_list", "cjr.examples.qsort.swap_spec", "cjr.examples.qsort.wp_cons2", "cjr.examples.qsort.wp_cons3", "cjr.examples.qsort.wp_inc"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-5fa61ef58fe957d5e2ca0129", "kind": "lemma", "label": "cjr.examples.qsort.wp_scan_body", "name": "wp_scan_body"}, "cjr.examples.qsort.wp_scan_stop": {"dependencies": ["cjr.examples.qsort.minus1", "cjr.examples.qsort.one", "cjr.examples.qsort.plus1", "cjr.examples.qsort.scan_open", "cjr.examples.qsort.sload", "cjr.examples.qsort.slot"], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-c6ed0c04a8af8edc7c5a86eb", "kind": "lemma", "label": "cjr.examples.qsort.wp_scan_stop", "name": "wp_scan_stop"}, "cjr.examples.qsort.wp_struct_step": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-da11479e45f78d8ff43afe41", "kind": "lemma", "label": "cjr.examples.qsort.wp_struct_step", "name": "wp_struct_step"}, "cjr.examples.qsort.zero": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-62758691ebfc1a790e6f6c7c", "kind": "definition", "label": "cjr.examples.qsort.zero", "name": "zero"}, "cjr.examples.qsort.zval": {"dependencies": [], "file": "rocq/qsort.v", "href": "rocq/qsort.html#symbol-3a0afababdcc7e5e4014f7c0", "kind": "definition", "label": "cjr.examples.qsort.zval", "name": "zval"}}</script><script>
+(() => {
+  const graph = JSON.parse(document.getElementById('dependency-data').textContent);
+  const tree = document.querySelector('.dependency-tree');
+  function entry(identity, path) {
+    const node = graph[identity];
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = node.href;
+    link.textContent = node.label;
+    const recursive = path.includes(identity);
+    if (node.dependencies.length && !recursive) {
+      const details = document.createElement('details');
+      details.dataset.identity = identity;
+      details.dataset.path = JSON.stringify([...path, identity]);
+      const summary = document.createElement('summary');
+      summary.append(link);
+      details.append(summary);
+      li.append(details);
+    } else {
+      li.append(link);
+      if (recursive) li.append(document.createTextNode(' (recursive reference)'));
+    }
+    return li;
+  }
+  tree.addEventListener('toggle', event => {
+    const details = event.target;
+    if (details.tagName !== 'DETAILS' || !details.open || details.dataset.loaded) return;
+    const children = document.createElement('ul');
+    const path = JSON.parse(details.dataset.path);
+    for (const child of graph[details.dataset.identity].dependencies) children.append(entry(child, path));
+    details.append(children);
+    details.dataset.loaded = 'true';
+  }, true);
+})();
+</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><section class="panel"><h2>Source files</h2><ul class="files"><li><a href="rocq/qsort.html">rocq/qsort.v</a> <span class="count">99 declarations</span></li></ul></section></main></body></html>

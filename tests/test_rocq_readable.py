@@ -15,10 +15,12 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import unquote, urlparse
 
-from tools.rocq_readable.ast import Adapter, declarations
+from tools.rocq_readable.ast import Adapter, Declaration, declarations
 from tools.rocq_readable.backend import Backend, BackendError, executable
 from tools.rocq_readable.cli import DEFAULT_DICTIONARY, generate, learning, main, prepare
 from tools.rocq_readable.dictionary import Dictionary, DictionaryError, validate
+from tools.rocq_readable.dependencies import Graph, build_graph, root_entries
+from tools.rocq_readable.explanations import Options, explain, query
 from tools.rocq_readable.layout import Doc, Token, anchor, leaf
 from tools.rocq_readable.project import Glob, Source, configuration, discover
 
@@ -30,14 +32,25 @@ class HTMLInventory(HTMLParser):
     def __init__(self, text):
         super().__init__()
         self.ids, self.links = [], []
+        self.dependency_data, self.in_dependency_data = "", False
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == "script":
+            self.in_dependency_data = attrs.get("id") == "dependency-data"
         if "id" in attrs:
             self.ids.append(attrs["id"])
         if "href" in attrs:
             self.links.append(attrs["href"])
+
+    def handle_data(self, text):
+        if self.in_dependency_data:
+            self.dependency_data += text
+
+    def handle_endtag(self, tag):
+        if tag == "script":
+            self.in_dependency_data = False
 
 
 def audit_links(output):
@@ -190,6 +203,237 @@ def backend_available():
         return False
 
 
+class DependencyAndExplanationTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.source = Source(self.root / "A.v", self.root, "Definition a := 0.", "P.A", Glob())
+        self.source.declarations = [Declaration("a", "P.A.a", "definition", {}, "Definition a := 0.")]
+        self.sources = [self.source]
+        self.documents = {self.source.path: [leaf("definition a: 0")]}
+        self.graph = Graph({"P.A.a": []}, {"P.A.a": []}, ["P.A.a"])
+        self.cache = self.root / "cache.json"
+
+    def test_roots_cover_shared_cycles_and_disconnected_components(self):
+        edges = {"a": ["b"], "b": ["a", "c"], "c": ["d"], "d": ["c"],
+                 "isolated": [], "consumer1": ["shared"], "consumer2": ["shared"], "shared": [], "self": ["self"]}
+        self.assertEqual(root_entries(edges), ["a", "consumer1", "consumer2", "isolated", "self"])
+        # Large chains must not depend on Python's recursive call limit.
+        chain = {str(i): [str(i + 1)] for i in range(2000)}
+        chain["2000"] = []
+        self.assertEqual(root_entries(chain), ["0"])
+
+    def test_diagram_data_preserves_shared_nodes_cycles_and_destinations(self):
+        from tools.rocq_readable.html import index
+        self.source.declarations.extend([Declaration("b", "P.A.b", "lemma", {}, ""), Declaration("shared", "P.A.shared", "definition", {}, "")])
+        graph = Graph({"P.A.a": ["P.A.shared"], "P.A.b": ["P.A.shared"], "P.A.shared": ["P.A.shared"]},
+                      {i: [] for i in ("P.A.a", "P.A.b", "P.A.shared")}, ["P.A.a", "P.A.b"])
+        output = self.root / "html"
+        body = index(self.sources, {self.source.path: output / "A.html"}, output, graph)
+        data = json.loads(HTMLInventory(body).dependency_data)
+        self.assertEqual(len(data), 3)
+        for identity, dependencies in graph.edges.items():
+            self.assertEqual(data[identity]["dependencies"], dependencies)
+            self.assertEqual(data[identity]["href"], "A.html#" + anchor(identity))
+            self.assertEqual(data[identity]["file"], "A.v")
+        self.assertEqual(data["P.A.b"]["name"], "b")
+        self.assertEqual(data["P.A.b"]["kind"], "lemma")
+
+    def test_diagram_labels_cannot_break_out_of_embedded_json(self):
+        from tools.rocq_readable.html import index
+        label = '</script><img src=x onerror="alert(1)">'
+        self.source.declarations[0].name = label
+        output = self.root / "html"
+        body = index(self.sources, {self.source.path: output / "A.html"}, output, self.graph)
+        data = json.loads(HTMLInventory(body).dependency_data)
+        self.assertEqual(data["P.A.a"]["name"], label)
+        self.assertNotIn(label, body)
+        self.assertNotIn("<img", body)
+
+    def test_file_graph_contains_only_included_entries_and_local_links(self):
+        from tools.rocq_readable.html import page
+        other = Declaration("shared", "P.A.shared", "lemma", {}, "")
+        self.source.declarations.append(other)
+        external = "P.B.external"
+        graph = Graph({"P.A.a": [other.identity, external], other.identity: ["P.A.a"], external: []},
+                      {"P.A.a": [], other.identity: [], external: []}, ["P.A.a"])
+        current = self.root / "html/A.html"
+        symbols = {"P.A.a": (current, anchor("P.A.a")), other.identity: (current, anchor(other.identity)),
+                   external: (current.parent / "B.html", anchor(external))}
+        body = page(self.source, [leaf("a"), leaf("shared")], current, current.parent, symbols, [], graph=graph)
+        parsed = HTMLInventory(body)
+        data = json.loads(parsed.dependency_data)
+        self.assertEqual(set(data), {"P.A.a", other.identity})
+        self.assertEqual(data["P.A.a"]["dependencies"], [other.identity])
+        self.assertEqual(data[other.identity]["dependencies"], ["P.A.a"])
+        self.assertEqual(data["P.A.a"]["href"], "#" + anchor("P.A.a"))
+        self.assertIn('B.html#' + anchor(external), body)
+        self.assertLess(body.index('id="dependency-svg"'), body.index('<article '))
+        self.assertEqual(len(parsed.ids), len(set(parsed.ids)))
+        self.assertNotIn('value="files"', body)
+
+    def test_glob_includes_context_proofs_and_normalizes_fields(self):
+        decl = self.source.declarations[0]
+        child = Declaration("field", "P.A.a.field", "field", {}, "")
+        decl.children = [child]
+        decl.context = [{"loc": {"bp": 40, "ep": 50}}]
+        decl.proof_spans = [{"loc": {"bp": 60, "ep": 90}}]
+        decl.proof_complete = True
+        other = Source(self.root / "B.v", self.root, "", "P.B", Glob())
+        other.declarations = [Declaration("b", "P.B.b", "lemma", {}, ""), Declaration("c", "P.B.c", "definition", {}, "")]
+        self.source.glob = Glob(valid=True, references={
+            3: (4, "P.A.a.field", "proj"), 42: (43, "P.B.c", "def"),
+            62: (63, "P.B.b", "thm"), 70: (71, "P.B.b", "thm"),
+            75: (76, "P.B.c", "var"), 92: (93, "P.B.missing", "thm")})
+        graph = build_graph([self.source, other], {self.source.path: [leaf("a")], other.path: [leaf("b"), leaf("c")]}, {})
+        self.assertEqual(graph.edges[decl.identity], ["P.A.a", "P.B.b", "P.B.c"])
+        self.assertEqual(graph.roots, ["P.A.a"])
+
+    def test_cache_reuse_context_and_model_invalidation(self):
+        options = Options("auto", "model-a", cache=self.cache)
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", return_value="Defines zero.") as model:
+            first = explain(self.sources, self.documents, self.graph, options)
+            cached = explain(self.sources, self.documents, self.graph, options)
+            self.assertEqual(first, cached)
+            self.assertEqual(model.call_count, 1)
+            options.model = "model-b"
+            explain(self.sources, self.documents, self.graph, options)
+            self.source.declarations[0].source = "Definition a := 1."
+            explain(self.sources, self.documents, self.graph, options)
+            self.assertEqual(model.call_count, 3)
+        options.mode = "offline"
+        with patch("tools.rocq_readable.explanations.query") as model:
+            self.assertEqual(explain(self.sources, self.documents, self.graph, options)["P.A.a"]["description"], "Defines zero.")
+            model.assert_not_called()
+        self.assertFalse(list(self.root.glob(".explanations-*")))
+
+    def test_dependency_context_invalidates_cache(self):
+        second = Declaration("b", "P.A.b", "definition", {}, "Definition b := 0.")
+        self.source.declarations.append(second)
+        self.documents[self.source.path].append(leaf("b"))
+        self.graph = Graph({"P.A.a": ["P.A.b"], "P.A.b": []}, {"P.A.a": [], "P.A.b": []}, ["P.A.a"])
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", return_value="Text.") as model:
+            options = Options("auto", cache=self.cache)
+            explain(self.sources, self.documents, self.graph, options)
+            second.source = "Definition b := 1."
+            explain(self.sources, self.documents, self.graph, options)
+            self.assertEqual(model.call_count, 4)
+            self.assertIn("dependencies", model.call_args.args[1])
+
+    def test_offline_missing_cli_and_failed_requests(self):
+        result = explain(self.sources, self.documents, self.graph, Options(cache=self.cache))
+        self.assertEqual(result["P.A.a"]["status"], "unavailable")
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value=None):
+            self.assertEqual(explain(self.sources, self.documents, self.graph, Options("auto", cache=self.cache))["P.A.a"]["status"], "unavailable")
+        for failure in [subprocess.TimeoutExpired("codex", 1), subprocess.CalledProcessError(1, "codex", stderr="SECRET"), ValueError("SECRET")]:
+            with self.subTest(failure=type(failure)), patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+                 patch("tools.rocq_readable.explanations.query", side_effect=failure):
+                result = explain(self.sources, self.documents, self.graph, Options("auto", cache=self.cache))
+                self.assertEqual(result["P.A.a"]["status"], "failed")
+                self.assertNotIn("SECRET", json.dumps(result))
+        self.cache.write_text('{"version":99,"entries":{}}')
+        result = explain(self.sources, self.documents, self.graph, Options(cache=self.cache))
+        self.assertEqual(result["P.A.a"]["status"], "failed")
+        self.assertEqual(json.loads(self.cache.read_text())["version"], 99)
+
+    def test_query_uses_stdin_isolation_and_validated_plain_text(self):
+        def run(command, **kwargs):
+            self.assertIsInstance(command, list)
+            self.assertEqual(command[-1], "-")
+            self.assertNotEqual(kwargs["cwd"], self.root)
+            self.assertEqual(command[command.index("--sandbox") + 1], "read-only")
+            self.assertEqual(command[command.index("--ask-for-approval") + 1], "never")
+            self.assertIn("--ephemeral", command)
+            self.assertIn("shell_tool", command)
+            self.assertEqual(command[command.index("--model") + 1], "model")
+            self.assertIn("$(malicious)", kwargs["input"])
+            self.assertEqual(kwargs["stderr"], subprocess.DEVNULL)
+            result = Path(command[command.index("--output-last-message") + 1])
+            result.write_text('{"description":"<script>text</script>"}')
+            return subprocess.CompletedProcess(command, 0)
+        with patch("tools.rocq_readable.explanations.subprocess.run", side_effect=run):
+            self.assertEqual(query("codex", {"declaration": "$(malicious)"}, Options(model="model")), "<script>text</script>")
+        def malformed(command, **kwargs):
+            Path(command[command.index("--output-last-message") + 1]).write_text('{"description":"", "extra":"bad"}')
+        with patch("tools.rocq_readable.explanations.subprocess.run", side_effect=malformed):
+            with self.assertRaises(ValueError):
+                query("codex", {}, Options())
+
+    def test_generation_failure_still_writes_pages_and_reports(self):
+        output = self.root / "html"
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", side_effect=ValueError("SECRET")):
+            result = generate(self.sources, {}, Dictionary(DEFAULT_DICTIONARY), output, explanation_options=Options("auto"))
+        self.assertEqual(result.explanation_failures, 1)
+        report = json.loads((output / "report.json").read_text())
+        self.assertFalse(report["dependencies"]["complete"])
+        self.assertEqual(report["explanations"]["failures"], 1)
+        self.assertNotIn("SECRET", (output / "report.json").read_text())
+        self.assertIn("Explanation unavailable", (output / "A.html").read_text())
+        self.assertIn("<h1>Index</h1>", (output / "declarations.html").read_text())
+        audit_links(output)
+
+    def test_cached_generation_is_deterministic_and_escapes_explanations(self):
+        output = self.root / "html"
+        options = Options("auto", "model")
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", return_value="<script>alert('x')</script> & text") as model:
+            generate(self.sources, {}, Dictionary(DEFAULT_DICTIONARY), output, explanation_options=options)
+            first = {p.name: p.read_bytes() for p in output.iterdir()}
+            generate(self.sources, {}, Dictionary(DEFAULT_DICTIONARY), output, explanation_options=options)
+            self.assertEqual(first, {p.name: p.read_bytes() for p in output.iterdir()})
+            self.assertEqual(model.call_count, 1)
+        self.assertIn("&lt;script&gt;", (output / "A.html").read_text())
+        audit_links(output)
+
+    def test_cli_returns_failure_after_rendering_failed_explanations(self):
+        self.source.path.write_text(self.source.text)
+        previous = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch("tools.rocq_readable.cli.prepare", return_value=(self.sources, {})), \
+                 patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+                 patch("tools.rocq_readable.explanations.query", side_effect=ValueError("SECRET")), \
+                 redirect_stderr(io.StringIO()), redirect_stdout(io.StringIO()):
+                self.assertEqual(main(["build", "--output", "html"]), 1)
+            self.assertTrue((self.root / "html/index.html").is_file())
+            self.assertEqual(json.loads((self.root / "html/report.json").read_text())["explanations"]["failures"], 1)
+        finally:
+            os.chdir(previous)
+
+    def test_standalone_explanation_preserves_other_artifacts(self):
+        output = self.root / "html"
+        output.mkdir()
+        for name in ("index.html", "declarations.html", "style.css", "explanations.json"):
+            (output / name).write_text("existing content")
+        target = output / "a.html"
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", return_value="Defines zero."):
+            generate(self.sources, {}, Dictionary(DEFAULT_DICTIONARY), output, single=target, explanation_options=Options("auto"))
+        for name in ("index.html", "declarations.html", "style.css", "explanations.json"):
+            self.assertEqual((output / name).read_text(), "existing content")
+        self.assertIn("Defines zero.", target.read_text())
+        self.assertTrue(target.with_suffix(".explanations.json").is_file())
+        self.assertNotIn('href="declarations.html"', target.read_text())
+
+    def test_reserved_source_filenames_do_not_overwrite_navigation(self):
+        self.source.path = self.root / "index.v"
+        output = self.root / "html"
+        generate(self.sources, {}, Dictionary(DEFAULT_DICTIONARY), output)
+        self.assertTrue((output / "index.source.html").is_file())
+        self.assertIn("Dependency hierarchy", (output / "index.html").read_text())
+        audit_links(output)
+
+    def test_generated_schemes_preserve_inductive_identity(self):
+        path = self.root / "A.v"
+        data = b"Inductive color := Red.\n"
+        path.with_suffix(".glob").write_text("DIGEST " + hashlib.md5(data).hexdigest() + "\nFP.A\nind 10:14 <> color\nconstr 19:21 <> Red\nscheme 10:14 <> color_ind\nscheme 10:14 <> color_sind\n")
+        self.assertEqual(Glob.load(path, data).definitions[10], ("P.A.color", "ind"))
+
+
 @unittest.skipUnless(backend_available(), "install the pinned coq-lsp backend for integration tests")
 class RocqIntegration(unittest.TestCase):
     @classmethod
@@ -213,6 +457,8 @@ Definition shadow (value : nat) : nat := value.
 Definition lambda_shadow (x : nat) := fun x : nat => x.
 Lemma law (x : nat) : forall y : nat, x = y -> id x = y.
 Proof. intros y H. exact H. Qed.
+Lemma based_on_law (x : nat) : id x = x.
+Proof. apply law. reflexivity. Qed.
 End Example.
 ''')
         (cls.root / "B.v").write_text('''From readable_test Require Import A.
@@ -256,6 +502,40 @@ Definition field (b : A.box) := A.item b.
         generate(self.sources, self.resolutions, dictionary, output)
         self.assertEqual(first, {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()})
 
+    def test_proof_dependencies_links_and_local_shadowing(self):
+        output = self.root / "dependencies-html"
+        generate(self.sources, self.resolutions, Dictionary(DEFAULT_DICTIONARY), output)
+        graph = json.loads((output / "report.json").read_text())["dependencies"]["declarations"]
+        self.assertIn("readable_test.A.law", graph["readable_test.A.based_on_law"]["depends_on"])
+        self.assertNotIn("readable_test.A.value", graph["readable_test.A.shadow"]["depends_on"])
+        self.assertEqual(graph["readable_test.B.red"]["depends_on"], ["readable_test.A.color"])
+        self.assertEqual(graph["readable_test.B.field"]["depends_on"], ["readable_test.A.box"])
+        self.assertIn("readable_test.A.count", graph["readable_test.A.count"]["depends_on"])
+        inventory = (output / "declarations.html").read_text()
+        for source in self.sources:
+            for decl in source.declarations:
+                self.assertIn(anchor(decl.identity), inventory)
+        homepage = (output / "index.html").read_text()
+        self.assertIn('type="application/json"', homepage)
+        self.assertIn('class="dependency-tree"', homepage)
+        self.assertNotIn("Proof.", (output / "A.html").read_text())
+        audit_links(output)
+
+    def test_lsp_resolves_proof_references_without_glob(self):
+        path = self.root / "ProofDeps.v"
+        path.write_text('Definition n := 0.\nLemma first : n = 0. Proof. reflexivity. Qed.\nLemma second : n = 0. Proof. exact first. Qed.\nDefinition shadow (n : nat) := n.\nLemma H : True. Proof. exact I. Qed.\nLemma local_proof : True -> True. Proof. intros H. exact H. Qed.\nLemma local_parameter (H : True) : True. Proof. exact H. Qed.\n')
+        with redirect_stderr(io.StringIO()):
+            sources, resolutions = prepare([path], self.root, 30)
+        output = self.root / "fallback-html"
+        generate(sources, resolutions, Dictionary(DEFAULT_DICTIONARY), output)
+        graph = json.loads((output / "report.json").read_text())["dependencies"]
+        self.assertIn("readable_test.ProofDeps.first", graph["declarations"]["readable_test.ProofDeps.second"]["depends_on"])
+        self.assertNotIn("readable_test.ProofDeps.n", graph["declarations"]["readable_test.ProofDeps.shadow"]["depends_on"])
+        for name in ("local_proof", "local_parameter"):
+            self.assertNotIn("readable_test.ProofDeps.H", graph["declarations"]["readable_test.ProofDeps." + name]["depends_on"])
+        self.assertFalse(graph["complete"])
+        audit_links(output)
+
     def test_selected_statement_does_not_require_proof(self):
         path = self.root / "Unfinished.v"
         path.write_text("(* A leading comment: Σ *)\nDefinition id (x : nat) := x.\nLemma unfinished : id 0 = 0.\nProof. THIS_IS_NOT_A_TACTIC.\n")
@@ -264,7 +544,29 @@ Definition field (b : A.box) := A.item b.
         self.assertEqual(sources[0].errors, [])
         self.assertEqual(sources[0].declarations[-1].name, "unfinished")
         self.assertNotIn("THIS_IS_NOT_A_TACTIC", sources[0].declarations[-1].source)
+        sources[0].declarations = [sources[0].declarations[-1]]
+        output = self.root / "selected.html"
+        generate(sources, resolutions, Dictionary(DEFAULT_DICTIONARY), self.root, single=output)
+        report = json.loads(output.with_suffix(".report.json").read_text())
+        self.assertTrue(any("Proof dependency coverage" in issue for issue in report["dependencies"]["declarations"]["readable_test.Unfinished.unfinished"]["issues"]))
 
+    def test_selected_source_build_omits_unrelated_scratch_file(self):
+        scratch = self.root / "Scratch.v"
+        scratch.write_text("This is an incomplete proof fragment.\n")
+        previous = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with redirect_stderr(io.StringIO()), redirect_stdout(io.StringIO()):
+                status = main(["build", "--sources", "A.v", "B.v", "--output", "selected-html",
+                               "--explanations", "offline"])
+            self.assertEqual(status, 0)
+            report = json.loads((self.root / "selected-html/report.json").read_text())
+            self.assertEqual({f["file"] for f in report["files"]}, {"A.v", "B.v"})
+            self.assertFalse((self.root / "selected-html/Scratch.html").exists())
+            audit_links(self.root / "selected-html")
+        finally:
+            os.chdir(previous)
+            scratch.unlink()
     def test_single_cli_strict_unknown_rules_and_ambiguous_names(self):
         rules = self.root / "empty-rules.json"
         rules.write_text('{"version":1,"rules":[]}')
@@ -277,8 +579,8 @@ Definition field (b : A.box) := A.item b.
             os.chdir(self.root)
             with redirect_stderr(io.StringIO()), redirect_stdout(io.StringIO()):
                 status = main(["render", "A.v", "--name", "law", "--output", "standalone/law.html",
-                               "--dictionary", str(rules), "--strict"])
-                ambiguous = main(["render", "A.v", "--name", "value", "--output", "standalone/ambiguous.html"])
+                               "--dictionary", str(rules), "--strict", "--explanations", "offline"])
+                ambiguous = main(["render", "A.v", "--name", "value", "--output", "standalone/ambiguous.html", "--explanations", "offline"])
             self.assertEqual(status, 1)
             self.assertEqual(ambiguous, 1)
             self.assertFalse((output / "ambiguous.html").exists())
@@ -301,7 +603,7 @@ Definition field (b : A.box) := A.item b.
         try:
             os.chdir(self.root)
             with redirect_stderr(io.StringIO()), redirect_stdout(io.StringIO()):
-                status = main(["build", "--output", "partial-html"])
+                status = main(["build", "--output", "partial-html", "--explanations", "offline"])
             self.assertEqual(status, 1)
             self.assertTrue((self.root / "partial-html/A.html").exists())
             report = json.loads((self.root / "partial-html/report.json").read_text())
@@ -320,7 +622,8 @@ Definition field (b : A.box) := A.item b.
                                           ("list", "is_list", "exists"),
                                           ("array", "array_cells", "separately_for_each_index_and_item"),
                                           ("most_frequent", "most_frequent_spec", "forall")]:
-            path = ROOT / f"theories/examples/{file}.v"
+            group = "misc" if file == "swap" else file
+            path = ROOT / f"example/{group}/rocq/{file}.v"
             with redirect_stderr(io.StringIO()):
                 sources, resolutions = prepare([path], ROOT, 60, selected=selected)
             self.assertEqual(sources[0].errors, [], file)

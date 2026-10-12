@@ -84,7 +84,9 @@ class Glob:
                 if match:
                     kind, start, end, section, name = match.groups()
                     qualified = ".".join(x for x in (result.module, section, name) if x != "<>")
-                    result.definitions[int(start)] = (qualified, kind)
+                    # Rocq records generated induction schemes at their parent
+                    # inductive's offset. Preserve the actual declaration there.
+                    result.definitions.setdefault(int(start), (qualified, kind))
         return result
 
 
@@ -97,6 +99,7 @@ class Source:
     glob: Glob
     declarations: list = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    resolution_status: dict[int, str] = field(default_factory=dict)
 
     @classmethod
     def load(cls, path, root):

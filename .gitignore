@@ -1,4 +1,5 @@
 Makefile
+!/example/*/Makefile
 Makefile.conf
 .coqdeps.d
 .Makefile.d
@@ -24,3 +25,6 @@ Makefile.conf
 __pycache__/
 *.egg-info/
 /build/lib/
+# Native executables and intermediate objects stay local to each example.
+/example/*/test/results/*-tests
+*.cjo

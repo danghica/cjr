@@ -1,9 +1,9 @@
 # Rocq Readable
 
-A local, deterministic specification renderer for Coq 8.20.1 and CJR/Iris.
-Rocq parses the source; the tool turns the concrete AST into a linked document
-tree. No generative model, model credentials, network request, or remote asset
-is involved in rendering or learning rules.
+A specification renderer for Coq 8.20.1 and CJR/Iris. Rocq parses the source;
+the tool turns the concrete AST into linked, proof-free HTML. Formal rendering
+and dictionary rules remain deterministic. Optional English explanations are
+generated through the user's authenticated Codex CLI and cached locally.
 
 ## Installation and commands
 
@@ -19,17 +19,93 @@ as the project root.
 ```sh
 rocq-readable build --output generated/spec-html
 rocq-readable build --output generated/spec-html --strict
-rocq-readable render theories/examples/swap.v --name swap_wp --output /tmp/swap.html
+rocq-readable render example/misc/rocq/swap.v --name swap_wp --output /tmp/swap.html
 rocq-readable build --dictionary ./my-renderings.json --learn
+rocq-readable build --explanations offline
+rocq-readable build --llm-model YOUR_MODEL --llm-timeout 120
 ```
 
 `make readable` and `make readable-test` provide repository shortcuts.
 Integration tests require the backend; tests report a skip when it is missing.
 
-Whole-project output contains `index.html`, one page per `.v` file, `style.css`,
-and `report.json`. The directory structure mirrors the source tree. Individual
+Whole-project output contains a dependency homepage (`index.html`), a flat
+declaration **Index** (`declarations.html`), one page per `.v` file, `style.css`,
+and `report.json`. Source pages link to Home and Index. The directory structure
+mirrors the source tree; source filenames colliding with navigation pages get
+a `.source.html` suffix. Individual
 rendering produces a standalone HTML file with embedded CSS and a sibling
 `.report.json`; it does not overwrite an unrelated index or stylesheet.
+
+## Dependencies and English explanations
+
+The homepage presents expandable, indented bullets: each entry links to its
+rendered declaration, and its children are declarations it depends on. Shared
+dependencies appear under every parent. Roots are declarations with no
+dependents, isolated declarations, and representatives of otherwise unreachable
+cycles. Recursive references stop expansion along that path. Branches expand
+lazily using embedded data and local JavaScript; no remote assets are needed.
+Each declaration also lists direct dependencies for navigation without JavaScript.
+
+The homepage also includes an offline SVG dependency graph. The source-file
+overview groups declarations by file and shows cross-file dependencies. Select
+**All declarations** for the complete graph, or search for a declaration to see
+its direct dependencies and dependents. Shared declarations appear once in the
+diagram; arrowheads point toward dependencies, including recursive links.
+Node colors distinguish specifications, algorithms, proofs, and other sources.
+Click nodes to open documentation. Drag the background to pan and use the
+zoom buttons, mouse wheel, or keyboard controls to explore larger graphs.
+Diagram coverage matches the hierarchy, including its resolution notices.
+
+Each source page also begins with a graph of dependencies among its own
+declarations and lemmas. Nodes jump to the entries below; search, focused
+neighborhoods, pan, and zoom work as on the homepage. Colors distinguish
+definitions, lemmas, types, and other declarations. Cross-file dependencies
+remain accessible in each entry's dependency list and the project graph.
+
+Dependencies include references in types, bodies, binders, section context, and
+hidden proofs. Constructor and field references lead to their containing
+declaration. Fresh `.glob` data supplies resolved lexical references; otherwise
+the tool resolves explicit references, including tactic references, through LSP.
+It never guesses dependencies from short names. Without fresh `.glob` data,
+notation and implicit tactic references can be incomplete. Tactics that discover
+lemmas implicitly are not a complete proof-term dependency analysis, even with
+`.glob` data. Notices and `report.json` describe resolution limits and truncated
+or aborted proofs. Standalone rendering still stops before the selected proof
+and reports its proof dependencies as incomplete.
+
+Every rendered entry includes an **AI-generated explanation** or an explicit
+unavailable notice. `--explanations auto` (the CLI default) uses matching cached
+text first, then invokes `codex exec` for missing entries when the CLI is on PATH.
+`--explanations offline` uses only the cache and makes no model requests.
+The Python `generate()` function defaults to offline operation; pass explanation
+options explicitly to enable requests when embedding the renderer.
+
+Codex reuses its saved login and configured model. Each user authenticates on
+their own machine; no credentials are read or copied into source, HTML, reports,
+or caches. Requests run sequentially in temporary directories with a read-only
+sandbox, ephemeral sessions, shell/browser tools, plugins, apps, and hooks disabled,
+and approvals disabled. CLI diagnostics are discarded. The prompts contain the
+proof-free declaration, rendered text, section context, and direct dependency
+declarations. These texts are sent to the model provider under the user's Codex
+account. Generated explanations are explanatory prose, not verified translations.
+
+Use `--llm-model MODEL` to select a model explicitly, and `--llm-timeout SECONDS`
+to bound each request (default 120). Cache keys include the supplied content,
+prompt version, and model selection. Pin the model explicitly if switching CLI
+defaults should invalidate existing explanations. Cached output can be reused
+offline and unchanged cached builds are deterministic.
+
+The versioned JSON cache defaults to `explanations.json` in the build directory,
+or a sibling `.explanations.json` for standalone output. `--explanation-cache PATH`
+selects a separate JSON file. Writes are atomic. If you commit a cache, its
+explanation text becomes public along with your repository. The cache stores
+qualified identities, input hashes, and descriptions, without credentials or
+raw CLI diagnostics.
+
+Failed requests, invalid responses, or cache errors are recorded and return
+status 1 after pages are generated. Offline cache misses and an absent Codex CLI
+are reported omissions rather than failed generation attempts. See the
+`dependencies` and `explanations` sections of `report.json` for per-entry status.
 
 `--name` accepts a short or qualified name. Ambiguous short names are rejected.
 Single-declaration rendering stops after the declaration, so its proof can be
@@ -164,3 +240,5 @@ scope layout, rule learning/reloading, HTML escaping, local shadowing, cross-fil
 and constructor/field links, proof omission, deterministic generation, and
 representative CJR contracts. The renderer is optional and does not change the
 existing proof verification targets.
+
+To render a selected source set while retaining project load paths, use `build --sources FILE_OR_DIRECTORY ... --output OUTPUT`. Example Makefiles use this to render compiled declarations while keeping scratch proof fragments as source assets. Repository examples now live under `example/<name>/`; each owns its rendered output in `docs/rocq/`.

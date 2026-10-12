@@ -1,0 +1,2535 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/mf_memory.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation _ ==∗ _",
+        "unmapped notation _ ⊆ _",
+        "unmapped notation £ _"
+      ],
+      "declarations": 5
+    },
+    {
+      "file": "rocq/most_frequent.v",
+      "errors": [],
+      "unsupported": [
+        "unmapped notation - _",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ + _",
+        "unmapped notation _ <$> _",
+        "unmapped notation _ ∘ _",
+        "unmapped notation _ ≡ₚ _",
+        "unmapped notation { _ }"
+      ],
+      "declarations": 185
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.most_frequent.mf_best_update_wp",
+      "cjr.examples.most_frequent.mf_choose_correct",
+      "cjr.examples.most_frequent.mf_cleanup_wp",
+      "cjr.examples.most_frequent.mf_copy_indices_length",
+      "cjr.examples.most_frequent.mf_copy_loop_is_code",
+      "cjr.examples.most_frequent.mf_copy_values_length",
+      "cjr.examples.most_frequent.mf_group_inner_is_code",
+      "cjr.examples.most_frequent.mf_group_outer_is_code",
+      "cjr.examples.most_frequent.mf_partition_scan_is_code",
+      "cjr.examples.most_frequent.mf_partition_step_is_code",
+      "cjr.examples.most_frequent.mf_run_summaries_nil",
+      "cjr.examples.most_frequent.mf_sort_scan_empty",
+      "cjr.examples.most_frequent.mf_sort_scan_interleaved_tie",
+      "cjr.examples.most_frequent.mf_sort_scan_three_way_tie",
+      "cjr.examples.most_frequent.mf_spec_wp"
+    ],
+    "source_issues": {
+      "rocq/mf_memory.v": [],
+      "rocq/most_frequent.v": []
+    },
+    "declarations": {
+      "cjr.examples.mf_memory.mf_free_dom_subset": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.mf_memory.mf_free_lookup_outside": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.mf_memory.mf_ghost_free_cells": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.mf_memory.mf_wf_free_block": {
+        "depends_on": [
+          "cjr.examples.mf_memory.mf_free_dom_subset",
+          "cjr.examples.mf_memory.mf_free_lookup_outside"
+        ],
+        "issues": []
+      },
+      "cjr.examples.mf_memory.mf_wp_free_block": {
+        "depends_on": [
+          "cjr.examples.mf_memory.mf_ghost_free_cells",
+          "cjr.examples.mf_memory.mf_wf_free_block"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_array_object": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_cells": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_decision": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_decision_slot": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary_count"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_decision_slot_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_decision_slot",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_strict_better_case",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_decision_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_decision",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_strict_better_case",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_summary": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_summary",
+          "cjr.examples.most_frequent.mf_score_leb",
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_summary_none": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_summary",
+          "cjr.examples.most_frequent.mf_score_leb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_summary_sound": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_summary",
+          "cjr.examples.most_frequent.mf_best_summary_none",
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_score_leb",
+          "cjr.examples.most_frequent.mf_score_leb_spec",
+          "cjr.examples.most_frequent.mf_score_refl",
+          "cjr.examples.most_frequent.mf_score_total",
+          "cjr.examples.most_frequent.mf_score_trans"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_update": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_decision",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_update_slot": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_decision_slot",
+          "cjr.examples.most_frequent.mf_summary_count"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_update_slot_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_cells",
+          "cjr.examples.most_frequent.mf_best_decision_slot_wp",
+          "cjr.examples.most_frequent.mf_best_update_slot",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_summary_first",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_best_update_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_cells",
+          "cjr.examples.most_frequent.mf_best_decision_wp",
+          "cjr.examples.most_frequent.mf_best_update",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_body": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_qsort_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_bounded": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_bounded_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_call_partition": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_call_qsort": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_qsort_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_call_swap": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_choose": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_choose",
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_choose_correct": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_choose",
+          "cjr.examples.most_frequent.mf_choose_none",
+          "cjr.examples.most_frequent.mf_choose_sound",
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_not_mem",
+          "cjr.examples.most_frequent.mf_frequency_pos_mem",
+          "cjr.examples.most_frequent.most_frequent_empty",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_choose_none": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_choose",
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_choose_sound": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_choose",
+          "cjr.examples.most_frequent.mf_choose_none",
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_first_index_or_len_head",
+          "cjr.examples.most_frequent.mf_first_index_or_len_skip",
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_cleanup": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_cleanup_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_cleanup",
+          "cjr.examples.most_frequent.mf_release_array_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_complete": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_indices",
+          "cjr.examples.most_frequent.mf_copy_values",
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_indices",
+          "cjr.examples.most_frequent.mf_pairs_values"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_indices": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_insert": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_indices"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_length": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_indices"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_lookup": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_indices"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_loop": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_loop_is_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_copy_code",
+          "cjr.examples.most_frequent.mf_copy_loop",
+          "cjr.examples.most_frequent.mf_copy_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_loop_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_complete",
+          "cjr.examples.most_frequent.mf_copy_indices",
+          "cjr.examples.most_frequent.mf_copy_loop",
+          "cjr.examples.most_frequent.mf_copy_step_wp",
+          "cjr.examples.most_frequent.mf_copy_values",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_step_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_indices",
+          "cjr.examples.most_frequent.mf_copy_indices_insert",
+          "cjr.examples.most_frequent.mf_copy_indices_lookup",
+          "cjr.examples.most_frequent.mf_copy_step",
+          "cjr.examples.most_frequent.mf_copy_values",
+          "cjr.examples.most_frequent.mf_copy_values_insert",
+          "cjr.examples.most_frequent.mf_copy_values_lookup",
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_increment_wp",
+          "cjr.examples.most_frequent.mf_set_value_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_values": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_values_insert": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_values"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_values_length": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_values"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_copy_values_lookup": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_copy_values"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_count_insert": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_eq_dec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_empty_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_extend_summary": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_find_group_loop": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_find_group_loop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_attained": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_first_index_or_len_head",
+          "cjr.examples.most_frequent.mf_first_index_or_len_skip"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_head": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_minimum": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_first_index_or_len_head",
+          "cjr.examples.most_frequent.mf_first_index_or_len_skip"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len_head": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_head",
+          "cjr.examples.most_frequent.mf_first_index_or_len"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len_skip": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index",
+          "cjr.examples.most_frequent.mf_first_index_or_len"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_fold_best": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_fold_best",
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_fold_best_sound": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_fold_best",
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_score_refl",
+          "cjr.examples.most_frequent.mf_score_trans",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_update_best",
+          "cjr.examples.most_frequent.mf_update_best_scores"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_forward_scan": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_forward_scan",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_scan_run",
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_forward_scan_correct": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_fold_best",
+          "cjr.examples.most_frequent.mf_fold_best_sound",
+          "cjr.examples.most_frequent.mf_forward_scan",
+          "cjr.examples.most_frequent.mf_forward_scan_groups",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_not_mem",
+          "cjr.examples.most_frequent.mf_frequency_pos_mem",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_run_summaries_complete",
+          "cjr.examples.most_frequent.mf_sorted_pairs",
+          "cjr.examples.most_frequent.mf_sorted_pairs_length",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_forward_scan_groups": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_fold_best",
+          "cjr.examples.most_frequent.mf_forward_scan",
+          "cjr.examples.most_frequent.mf_group_summary_decomposition",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_scan_run"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_frequency": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_frequency_cons_other": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_frequency_head": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_frequency_not_mem": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_frequency_pos_mem": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_get_value_wp": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_inner": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_inner_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_find_group_loop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_inner_is_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_group_inner",
+          "cjr.examples.most_frequent.mf_group_inner_code"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_inner_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_group_inner",
+          "cjr.examples.most_frequent.mf_increment_wp",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_scan_run"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_outer": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_group_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_outer_is_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_find_group_loop",
+          "cjr.examples.most_frequent.mf_group_outer",
+          "cjr.examples.most_frequent.mf_group_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_outer_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_cells",
+          "cjr.examples.most_frequent.mf_forward_scan",
+          "cjr.examples.most_frequent.mf_group_outer",
+          "cjr.examples.most_frequent.mf_group_step_wp",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_scan_run",
+          "cjr.examples.most_frequent.mf_scan_run_bound",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_step_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_cells",
+          "cjr.examples.most_frequent.mf_best_update_slot_wp",
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_group_inner_wp",
+          "cjr.examples.most_frequent.mf_group_step",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_scan_run",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_group_summary_decomposition": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_run_summaries_cons",
+          "cjr.examples.most_frequent.mf_scan_run",
+          "cjr.examples.most_frequent.mf_scan_run_summaries",
+          "cjr.examples.most_frequent.mf_single_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_increment_wp": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_input": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_join_summary": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_merge_summary",
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_join_summary_same": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_join_summary",
+          "cjr.examples.most_frequent.mf_merge_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_le_bool": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lex_compare": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lex_compare_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_le_bool",
+          "cjr.examples.most_frequent.mf_lex_compare",
+          "cjr.examples.most_frequent.mf_nat_le_bool",
+          "cjr.examples.most_frequent.mf_pair_leb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lomuto": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lomuto_bounds": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lomuto_map": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded",
+          "cjr.examples.most_frequent.mf_bounded_perm",
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap_perm",
+          "cjr.examples.most_frequent.mf_rank",
+          "cjr.examples.most_frequent.mf_rank_compare",
+          "cjr.examples.most_frequent.mf_swap_map"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_lomuto_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap_perm"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_merge_summary": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_nat_le_bool": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_nonempty_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_array_object",
+          "cjr.examples.most_frequent.mf_best_cells",
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_copy_indices",
+          "cjr.examples.most_frequent.mf_copy_loop_wp",
+          "cjr.examples.most_frequent.mf_copy_values",
+          "cjr.examples.most_frequent.mf_forward_scan",
+          "cjr.examples.most_frequent.mf_forward_scan_correct",
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_group_outer_wp",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_values",
+          "cjr.examples.most_frequent.mf_qsort_wp",
+          "cjr.examples.most_frequent.mf_release_array_wp",
+          "cjr.examples.most_frequent.mf_sort_scan",
+          "cjr.examples.most_frequent.mf_sort_scan_correct",
+          "cjr.examples.most_frequent.mf_sorted_pairs",
+          "cjr.examples.most_frequent.mf_sorted_pairs_length",
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first",
+          "cjr.examples.most_frequent.most_frequent_spec",
+          "cjr.examples.most_frequent.most_frequent_spec_unique"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_option_value": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_arrays": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_eq_dec": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_leb": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_leb_spec": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.pair_before"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_extend": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_extend_summary",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_head",
+          "cjr.examples.most_frequent.mf_pair_summary_valid",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_skip": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_cons_other",
+          "cjr.examples.most_frequent.mf_pair_summary_valid",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_valid": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_swap": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pair_swap_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_count_insert",
+          "cjr.examples.most_frequent.mf_pair_eq_dec",
+          "cjr.examples.most_frequent.mf_pair_swap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pairs": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pairs_bounded": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded",
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_lookup"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pairs_indices": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pairs_lookup": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_pairs_values": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_swap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_body": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_bounds": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_lomuto_bounds",
+          "cjr.examples.most_frequent.mf_partition"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_loop": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_loop_body": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_map": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded",
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_lomuto_map",
+          "cjr.examples.most_frequent.mf_partition",
+          "cjr.examples.most_frequent.mf_rank",
+          "cjr.examples.most_frequent.mf_swap_map"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_lomuto_perm",
+          "cjr.examples.most_frequent.mf_pair_swap_perm",
+          "cjr.examples.most_frequent.mf_partition"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_scan": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_scan_is_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lex_compare",
+          "cjr.examples.most_frequent.mf_partition_body",
+          "cjr.examples.most_frequent.mf_partition_loop",
+          "cjr.examples.most_frequent.mf_partition_scan",
+          "cjr.examples.most_frequent.mf_partition_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_scan_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lomuto",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap",
+          "cjr.examples.most_frequent.mf_pair_swap_perm",
+          "cjr.examples.most_frequent.mf_partition_scan",
+          "cjr.examples.most_frequent.mf_partition_step_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_step": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lex_compare",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_step_is_code": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_lex_compare",
+          "cjr.examples.most_frequent.mf_partition_body",
+          "cjr.examples.most_frequent.mf_partition_loop_body",
+          "cjr.examples.most_frequent.mf_partition_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_step_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_increment_wp",
+          "cjr.examples.most_frequent.mf_lex_compare_wp",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_swap",
+          "cjr.examples.most_frequent.mf_partition_step",
+          "cjr.examples.most_frequent.mf_swap_pairs_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_partition_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_call_partition",
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_lomuto_bounds",
+          "cjr.examples.most_frequent.mf_lomuto_perm",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pair_swap",
+          "cjr.examples.most_frequent.mf_partition",
+          "cjr.examples.most_frequent.mf_partition_body",
+          "cjr.examples.most_frequent.mf_partition_scan",
+          "cjr.examples.most_frequent.mf_partition_scan_wp",
+          "cjr.examples.most_frequent.mf_swap_body",
+          "cjr.examples.most_frequent.mf_swap_pairs_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_qsort_slice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_body": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_qsort",
+          "cjr.examples.most_frequent.mf_qsort_slice_perm"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_partition",
+          "cjr.examples.most_frequent.mf_qsort_slice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_map": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded",
+          "cjr.examples.most_frequent.mf_bounded_perm",
+          "cjr.examples.most_frequent.mf_partition",
+          "cjr.examples.most_frequent.mf_partition_map",
+          "cjr.examples.most_frequent.mf_partition_perm",
+          "cjr.examples.most_frequent.mf_qsort_slice",
+          "cjr.examples.most_frequent.mf_qsort_slice_perm",
+          "cjr.examples.most_frequent.mf_rank"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_perm": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_partition",
+          "cjr.examples.most_frequent.mf_partition_perm",
+          "cjr.examples.most_frequent.mf_qsort_slice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_call_qsort",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_partition_bounds",
+          "cjr.examples.most_frequent.mf_partition_perm",
+          "cjr.examples.most_frequent.mf_partition_wp",
+          "cjr.examples.most_frequent.mf_qsort_body",
+          "cjr.examples.most_frequent.mf_qsort_slice",
+          "cjr.examples.most_frequent.mf_qsort_slice_perm"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_sorted": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_bounded",
+          "cjr.examples.most_frequent.mf_bounded_perm",
+          "cjr.examples.most_frequent.mf_qsort",
+          "cjr.examples.most_frequent.mf_qsort_perm",
+          "cjr.examples.most_frequent.mf_qsort_slice_map",
+          "cjr.examples.most_frequent.mf_rank",
+          "cjr.examples.most_frequent.mf_rank_order",
+          "cjr.examples.most_frequent.pair_before"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_qsort_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_call_qsort",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_qsort",
+          "cjr.examples.most_frequent.mf_qsort_slice_wp"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_rank": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_rank_compare": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair_leb",
+          "cjr.examples.most_frequent.mf_pair_leb_spec",
+          "cjr.examples.most_frequent.mf_rank",
+          "cjr.examples.most_frequent.mf_rank_order"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_rank_order": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_rank",
+          "cjr.examples.most_frequent.pair_before"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_release_array_wp": {
+        "depends_on": [
+          "cjr.examples.mf_memory.mf_wp_free_block"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_result": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_summary_valid",
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_extend_summary",
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_single_summary",
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_complete": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_attained",
+          "cjr.examples.most_frequent.mf_first_index_minimum",
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency_pos_mem",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_run_summaries_sound",
+          "cjr.examples.most_frequent.mf_sorted_pairs",
+          "cjr.examples.most_frequent.mf_sorted_pairs_contains",
+          "cjr.examples.most_frequent.mf_sorted_pairs_frequency",
+          "cjr.examples.most_frequent.mf_sorted_pairs_origin",
+          "cjr.examples.most_frequent.mf_sorted_pairs_values_sorted",
+          "cjr.examples.most_frequent.mf_summaries_complete",
+          "cjr.examples.most_frequent.mf_summary_first",
+          "cjr.examples.most_frequent.mf_summary_valid"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_cons": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_extend_summary",
+          "cjr.examples.most_frequent.mf_join_summary",
+          "cjr.examples.most_frequent.mf_merge_summary",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_single_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_head": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_extend_summary",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_single_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_nil": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_run_summaries"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_sound": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_extend_summary",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_head",
+          "cjr.examples.most_frequent.mf_frequency_not_mem",
+          "cjr.examples.most_frequent.mf_pair_summary_extend",
+          "cjr.examples.most_frequent.mf_pair_summary_skip",
+          "cjr.examples.most_frequent.mf_pair_summary_valid",
+          "cjr.examples.most_frequent.mf_run_result",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_run_summaries_head",
+          "cjr.examples.most_frequent.mf_single_summary",
+          "cjr.examples.most_frequent.mf_single_summary_valid",
+          "cjr.examples.most_frequent.mf_sorted_head_absent",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first",
+          "cjr.examples.most_frequent.mf_values_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_scan_run": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_scan_run"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_scan_run_bound": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_scan_run"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_scan_run_summaries": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_join_summary",
+          "cjr.examples.most_frequent.mf_join_summary_same",
+          "cjr.examples.most_frequent.mf_merge_summary",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_run_summaries_cons",
+          "cjr.examples.most_frequent.mf_run_summaries_head",
+          "cjr.examples.most_frequent.mf_scan_run",
+          "cjr.examples.most_frequent.mf_single_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score_leb": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score_leb_spec": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_score_leb"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score_refl": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score_total": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_score_trans": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_set_value_wp": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_single_summary": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_single_summary_valid": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_head",
+          "cjr.examples.most_frequent.mf_pair_summary_valid",
+          "cjr.examples.most_frequent.mf_single_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sort_scan": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_summary",
+          "cjr.examples.most_frequent.mf_run_summaries",
+          "cjr.examples.most_frequent.mf_sorted_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_correct": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_run_summaries_complete",
+          "cjr.examples.most_frequent.mf_sort_scan",
+          "cjr.examples.most_frequent.mf_summary_selection_correct",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_empty": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_sort_scan"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_interleaved_tie": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_sort_scan"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_three_way_tie": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_sort_scan"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_head_absent": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_values_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_qsort"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_contains": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_lookup",
+          "cjr.examples.most_frequent.mf_qsort_perm",
+          "cjr.examples.most_frequent.mf_sorted_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_frequency": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_values",
+          "cjr.examples.most_frequent.mf_qsort",
+          "cjr.examples.most_frequent.mf_qsort_perm",
+          "cjr.examples.most_frequent.mf_sorted_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_length": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_values",
+          "cjr.examples.most_frequent.mf_qsort_perm",
+          "cjr.examples.most_frequent.mf_sorted_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_ordered": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_bounded",
+          "cjr.examples.most_frequent.mf_pairs_values",
+          "cjr.examples.most_frequent.mf_qsort_sorted",
+          "cjr.examples.most_frequent.mf_sorted_pairs",
+          "cjr.examples.most_frequent.pair_before"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_origin": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pairs",
+          "cjr.examples.most_frequent.mf_pairs_lookup",
+          "cjr.examples.most_frequent.mf_qsort_perm",
+          "cjr.examples.most_frequent.mf_sorted_pairs"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_values_sorted": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_sorted_pairs",
+          "cjr.examples.most_frequent.mf_sorted_pairs_length",
+          "cjr.examples.most_frequent.mf_sorted_pairs_ordered",
+          "cjr.examples.most_frequent.mf_values_sorted",
+          "cjr.examples.most_frequent.mf_values_sorted_from_lookup",
+          "cjr.examples.most_frequent.pair_before"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_spec_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_input",
+          "cjr.examples.most_frequent.mf_option_value",
+          "cjr.examples.most_frequent.mf_sort_scan",
+          "cjr.examples.most_frequent.mf_sort_scan_correct",
+          "cjr.examples.most_frequent.mf_wp",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_strict_better": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_strict_better_case": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_strict_better_no": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_strict_better"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_strict_better_yes": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_strict_better"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summaries_complete": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary_valid"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summary": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summary_count": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summary_first": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_summary"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summary_selection_correct": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_best_summary",
+          "cjr.examples.most_frequent.mf_best_summary_none",
+          "cjr.examples.most_frequent.mf_best_summary_sound",
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_not_mem",
+          "cjr.examples.most_frequent.mf_frequency_pos_mem",
+          "cjr.examples.most_frequent.mf_summaries_complete",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_summary_valid": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_summary_count",
+          "cjr.examples.most_frequent.mf_summary_first"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_swap_arrays_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_call_swap",
+          "cjr.examples.most_frequent.mf_get_value_wp",
+          "cjr.examples.most_frequent.mf_set_value_wp",
+          "cjr.examples.most_frequent.mf_swap_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_swap_body": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_swap_map": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair",
+          "cjr.examples.most_frequent.mf_pair_swap"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_swap_pairs_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_call_swap",
+          "cjr.examples.most_frequent.mf_pair_arrays",
+          "cjr.examples.most_frequent.mf_pair_swap",
+          "cjr.examples.most_frequent.mf_swap_arrays_wp",
+          "cjr.examples.most_frequent.mf_swap_map"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_update_best": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_strict_better"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_update_best_scores": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_score",
+          "cjr.examples.most_frequent.mf_score_refl",
+          "cjr.examples.most_frequent.mf_strict_better",
+          "cjr.examples.most_frequent.mf_strict_better_no",
+          "cjr.examples.most_frequent.mf_strict_better_yes",
+          "cjr.examples.most_frequent.mf_update_best"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_values_sorted": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_values_sorted_from_lookup": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_values_sorted"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.mf_wp": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_body",
+          "cjr.examples.most_frequent.mf_empty_wp",
+          "cjr.examples.most_frequent.mf_input",
+          "cjr.examples.most_frequent.mf_nonempty_wp",
+          "cjr.examples.most_frequent.mf_option_value",
+          "cjr.examples.most_frequent.mf_sort_scan"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.most_frequent_empty": {
+        "depends_on": [
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.most_frequent_spec": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.most_frequent_spec_unique": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_first_index_attained",
+          "cjr.examples.most_frequent.mf_first_index_or_len",
+          "cjr.examples.most_frequent.mf_frequency",
+          "cjr.examples.most_frequent.mf_frequency_pos_mem",
+          "cjr.examples.most_frequent.most_frequent_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.most_frequent.pair_before": {
+        "depends_on": [
+          "cjr.examples.most_frequent.mf_pair"
+        ],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.mf_memory.mf_free_dom_subset": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.mf_memory.mf_free_lookup_outside": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.mf_memory.mf_ghost_free_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.mf_memory.mf_wf_free_block": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.mf_memory.mf_wp_free_block": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_array_object": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_decision": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_decision_slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_decision_slot_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_decision_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_summary_none": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_summary_sound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_update": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_update_slot": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_update_slot_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_best_update_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_bounded": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_bounded_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_call_partition": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_call_qsort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_call_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_choose": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_choose_correct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_choose_none": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_choose_sound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_cleanup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_cleanup_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_complete": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_indices": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_indices_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_loop_is_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_loop_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_step_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_values": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_values_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_values_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_copy_values_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_count_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_empty_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_extend_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_find_group_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_attained": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_head": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_minimum": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len_head": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_first_index_or_len_skip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_fold_best": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_fold_best_sound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_forward_scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_forward_scan_correct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_forward_scan_groups": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_frequency": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_frequency_cons_other": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_frequency_head": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_frequency_not_mem": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_frequency_pos_mem": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_get_value_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_inner": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_inner_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_inner_is_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_inner_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_outer": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_outer_is_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_outer_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_step_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_group_summary_decomposition": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_increment_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_input": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_join_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_join_summary_same": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_le_bool": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lex_compare": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lex_compare_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lomuto": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lomuto_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lomuto_map": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_lomuto_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_merge_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_nat_le_bool": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_nonempty_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_option_value": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_arrays": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_eq_dec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_leb": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_leb_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_extend": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_skip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_summary_valid": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pair_swap_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pairs": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pairs_bounded": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pairs_indices": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pairs_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_pairs_values": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_loop_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_map": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_scan_is_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_scan_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_step_is_code": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_step_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_partition_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_map": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_perm": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_slice_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_sorted": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_qsort_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_rank": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_rank_compare": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_rank_order": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_release_array_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_result": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_complete": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_head": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_nil": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_run_summaries_sound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_scan_run": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_scan_run_bound": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_scan_run_summaries": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score_leb": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score_leb_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score_refl": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score_total": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_score_trans": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_set_value_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_single_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_single_summary_valid": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sort_scan": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_correct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_interleaved_tie": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sort_scan_three_way_tie": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_head_absent": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_contains": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_frequency": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_ordered": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_origin": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_sorted_pairs_values_sorted": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_spec_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_strict_better": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_strict_better_case": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_strict_better_no": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_strict_better_yes": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summaries_complete": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summary": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summary_count": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summary_first": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summary_selection_correct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_summary_valid": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_swap_arrays_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_swap_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_swap_map": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_swap_pairs_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_update_best": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_update_best_scores": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_values_sorted": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_values_sorted_from_lookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.mf_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.most_frequent_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.most_frequent_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.most_frequent_spec_unique": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.most_frequent.pair_before": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

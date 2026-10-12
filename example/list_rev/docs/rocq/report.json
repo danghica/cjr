@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/list_rev.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 28
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.list_rev.rev_loop_at_subst",
+      "cjr.examples.list_rev.rev_prefix_nil",
+      "cjr.examples.list_rev.reverse_twice_spec"
+    ],
+    "source_issues": {
+      "rocq/list_rev.v": []
+    },
+    "declarations": {
+      "cjr.examples.list_rev.app_assoc'": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.app_nil_r'": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.call_reverse": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.is_list_cons_destruct": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.is_list_snoc_acc": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_app": {
+        "depends_on": [
+          "cjr.examples.list_rev.app_assoc'",
+          "cjr.examples.list_rev.app_nil_r'"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_body": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_loop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_cons": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_done": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_eq_rev": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_rev"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_inv": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_loop": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_step"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_loop_at": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_step_at",
+          "cjr.examples.list_rev.sld"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_loop_at_subst": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_loop",
+          "cjr.examples.list_rev.rev_loop_at",
+          "cjr.examples.list_rev.rev_step_at_subst",
+          "cjr.examples.list_rev.sld"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_prefix_nil": {
+        "depends_on": [
+          "cjr.examples.list_rev.app_nil_r'"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_prefix_step": {
+        "depends_on": [
+          "cjr.examples.list_rev.app_assoc'",
+          "cjr.examples.list_rev.rev_cons"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_rev": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_app"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_step": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_step_at": {
+        "depends_on": [
+          "cjr.examples.list_rev.sas",
+          "cjr.examples.list_rev.sld"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.rev_step_at_subst": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_step",
+          "cjr.examples.list_rev.rev_step_at",
+          "cjr.examples.list_rev.sas",
+          "cjr.examples.list_rev.sld"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.reverse_spec": {
+        "depends_on": [
+          "cjr.examples.list_rev.call_reverse",
+          "cjr.examples.list_rev.rev_body",
+          "cjr.examples.list_rev.rev_loop",
+          "cjr.examples.list_rev.rev_loop_at",
+          "cjr.examples.list_rev.sld",
+          "cjr.examples.list_rev.wp_rev_loop"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.reverse_twice": {
+        "depends_on": [
+          "cjr.examples.list_rev.call_reverse",
+          "cjr.examples.list_rev.rev_body"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.reverse_twice_spec": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_body",
+          "cjr.examples.list_rev.rev_rev",
+          "cjr.examples.list_rev.reverse_spec",
+          "cjr.examples.list_rev.reverse_twice"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.sas": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.sld": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.list_rev.wp_rev_loop": {
+        "depends_on": [
+          "cjr.examples.list_rev.rev_done",
+          "cjr.examples.list_rev.rev_inv",
+          "cjr.examples.list_rev.rev_loop_at",
+          "cjr.examples.list_rev.wp_rev_loop_run"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.wp_rev_loop_run": {
+        "depends_on": [
+          "cjr.examples.list_rev.app_nil_r'",
+          "cjr.examples.list_rev.is_list_cons_destruct",
+          "cjr.examples.list_rev.rev_done",
+          "cjr.examples.list_rev.rev_eq_rev",
+          "cjr.examples.list_rev.rev_loop_at",
+          "cjr.examples.list_rev.rev_step_at",
+          "cjr.examples.list_rev.sld",
+          "cjr.examples.list_rev.wp_rev_step_at"
+        ],
+        "issues": []
+      },
+      "cjr.examples.list_rev.wp_rev_step_at": {
+        "depends_on": [
+          "cjr.examples.list_rev.is_list_cons_destruct",
+          "cjr.examples.list_rev.is_list_snoc_acc",
+          "cjr.examples.list_rev.rev_prefix_step",
+          "cjr.examples.list_rev.rev_step_at",
+          "cjr.examples.list_rev.sas",
+          "cjr.examples.list_rev.sld"
+        ],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.list_rev.app_assoc'": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.app_nil_r'": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.call_reverse": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.is_list_cons_destruct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.is_list_snoc_acc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_done": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_eq_rev": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_inv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_loop_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_loop_at_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_prefix_nil": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_prefix_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_rev": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_step_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.rev_step_at_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.reverse_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.reverse_twice": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.reverse_twice_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.sas": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.sld": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.wp_rev_loop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.wp_rev_loop_run": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.list_rev.wp_rev_step_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

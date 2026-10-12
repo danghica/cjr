@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 434" role="img">
+<title>prefix benchmark medians and IQR</title>
+<style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="24" font-size="17">prefix · median and IQR</text>
+<circle cx="250" cy="20" r="5" fill="#176f76"/><text x="260" y="24">CJR</text>
+<circle cx="400" cy="20" r="5" fill="#de8b37"/><text x="410" y="24">Flat</text>
+<circle cx="550" cy="20" r="5" fill="#8562a0"/><text x="560" y="24">Native</text>
+<text x="18" y="69">broad</text><path d="M 205 65 H 990" class="grid"/>
+<path d="M 933.3 81 H 1006.7" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 229.0 81 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 596.6 81 H 603.4" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="81" r="4" fill="#176f76"/>
+<path d="M 947.1 87 H 992.9" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="87" r="4" fill="#de8b37"/>
+<path d="M 229.0 87 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="87" r="4" fill="#de8b37"/>
+<path d="M 598.3 87 H 601.7" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="87" r="4" fill="#de8b37"/>
+<path d="M 932.3 93 H 1007.7" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="93" r="4" fill="#8562a0"/>
+<path d="M 229.0 93 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="93" r="4" fill="#8562a0"/>
+<path d="M 595.1 93 H 604.9" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="93" r="4" fill="#8562a0"/>
+<text x="230.0" y="109" text-anchor="middle">256</text>
+<text x="600.0" y="109" text-anchor="middle">4,096</text>
+<text x="970.0" y="109" text-anchor="middle">16,384</text>
+<text x="18" y="121">build</text><path d="M 205 117 H 990" class="grid"/>
+<path d="M 969.0 133 H 971.0" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="133" r="4" fill="#176f76"/>
+<path d="M 229.0 133 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="133" r="4" fill="#176f76"/>
+<path d="M 599.0 133 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="133" r="4" fill="#176f76"/>
+<path d="M 969.0 139 H 971.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="139" r="4" fill="#de8b37"/>
+<path d="M 229.0 139 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="139" r="4" fill="#de8b37"/>
+<path d="M 599.0 139 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="139" r="4" fill="#de8b37"/>
+<path d="M 969.0 145 H 971.0" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="145" r="4" fill="#8562a0"/>
+<path d="M 229.0 145 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="145" r="4" fill="#8562a0"/>
+<path d="M 599.0 145 H 601.0" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="145" r="4" fill="#8562a0"/>
+<text x="230.0" y="161" text-anchor="middle">256</text>
+<text x="600.0" y="161" text-anchor="middle">4,096</text>
+<text x="970.0" y="161" text-anchor="middle">16,384</text>
+<text x="18" y="173">empty</text><path d="M 205 169 H 990" class="grid"/>
+<path d="M 969.0 185 H 971.0" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="185" r="4" fill="#176f76"/>
+<path d="M 229.0 185 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="185" r="4" fill="#176f76"/>
+<path d="M 599.0 185 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="185" r="4" fill="#176f76"/>
+<path d="M 969.0 191 H 971.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="191" r="4" fill="#de8b37"/>
+<path d="M 229.0 191 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="191" r="4" fill="#de8b37"/>
+<path d="M 599.0 191 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="191" r="4" fill="#de8b37"/>
+<path d="M 969.0 197 H 971.0" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="197" r="4" fill="#8562a0"/>
+<path d="M 229.0 197 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="197" r="4" fill="#8562a0"/>
+<path d="M 599.0 197 H 601.0" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="197" r="4" fill="#8562a0"/>
+<text x="230.0" y="213" text-anchor="middle">256</text>
+<text x="600.0" y="213" text-anchor="middle">4,096</text>
+<text x="970.0" y="213" text-anchor="middle">16,384</text>
+<text x="18" y="225">hits</text><path d="M 205 221 H 990" class="grid"/>
+<path d="M 969.0 237 H 971.0" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="237" r="4" fill="#176f76"/>
+<path d="M 229.0 237 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="237" r="4" fill="#176f76"/>
+<path d="M 599.0 237 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="237" r="4" fill="#176f76"/>
+<path d="M 969.0 243 H 971.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="243" r="4" fill="#de8b37"/>
+<path d="M 229.0 243 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="243" r="4" fill="#de8b37"/>
+<path d="M 599.0 243 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="243" r="4" fill="#de8b37"/>
+<path d="M 969.0 249 H 971.0" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="249" r="4" fill="#8562a0"/>
+<path d="M 229.0 249 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="249" r="4" fill="#8562a0"/>
+<path d="M 599.0 249 H 601.0" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="249" r="4" fill="#8562a0"/>
+<text x="230.0" y="265" text-anchor="middle">256</text>
+<text x="600.0" y="265" text-anchor="middle">4,096</text>
+<text x="970.0" y="265" text-anchor="middle">16,384</text>
+<text x="18" y="277">misses</text><path d="M 205 273 H 990" class="grid"/>
+<path d="M 969.0 289 H 971.0" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="289" r="4" fill="#176f76"/>
+<path d="M 229.0 289 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="289" r="4" fill="#176f76"/>
+<path d="M 599.0 289 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="289" r="4" fill="#176f76"/>
+<path d="M 969.0 295 H 971.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="295" r="4" fill="#de8b37"/>
+<path d="M 229.0 295 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="295" r="4" fill="#de8b37"/>
+<path d="M 599.0 295 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="295" r="4" fill="#de8b37"/>
+<path d="M 969.0 301 H 971.0" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="301" r="4" fill="#8562a0"/>
+<path d="M 229.0 301 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="301" r="4" fill="#8562a0"/>
+<path d="M 599.0 301 H 601.0" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="301" r="4" fill="#8562a0"/>
+<text x="230.0" y="317" text-anchor="middle">256</text>
+<text x="600.0" y="317" text-anchor="middle">4,096</text>
+<text x="970.0" y="317" text-anchor="middle">16,384</text>
+<text x="18" y="329">selective</text><path d="M 205 325 H 990" class="grid"/>
+<path d="M 969.0 341 H 971.0" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="341" r="4" fill="#176f76"/>
+<path d="M 229.0 341 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="341" r="4" fill="#176f76"/>
+<path d="M 599.0 341 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="341" r="4" fill="#176f76"/>
+<path d="M 968.9 347 H 971.1" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="347" r="4" fill="#de8b37"/>
+<path d="M 229.0 347 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="347" r="4" fill="#de8b37"/>
+<path d="M 599.0 347 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="347" r="4" fill="#de8b37"/>
+<path d="M 969.0 353 H 971.0" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="353" r="4" fill="#8562a0"/>
+<path d="M 229.0 353 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="353" r="4" fill="#8562a0"/>
+<path d="M 599.0 353 H 601.0" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="353" r="4" fill="#8562a0"/>
+<text x="230.0" y="369" text-anchor="middle">256</text>
+<text x="600.0" y="369" text-anchor="middle">4,096</text>
+<text x="970.0" y="369" text-anchor="middle">16,384</text>
+<text x="18" y="381">whole</text><path d="M 205 377 H 990" class="grid"/>
+<path d="M 937.2 393 H 1002.8" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="393" r="4" fill="#176f76"/>
+<path d="M 229.0 393 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="393" r="4" fill="#176f76"/>
+<path d="M 596.6 393 H 603.4" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="393" r="4" fill="#176f76"/>
+<path d="M 957.6 399 H 982.4" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="399" r="4" fill="#de8b37"/>
+<path d="M 229.0 399 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="399" r="4" fill="#de8b37"/>
+<path d="M 597.8 399 H 602.2" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="399" r="4" fill="#de8b37"/>
+<path d="M 908.1 405 H 1031.9" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="405" r="4" fill="#8562a0"/>
+<path d="M 229.0 405 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="405" r="4" fill="#8562a0"/>
+<path d="M 596.1 405 H 603.9" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="405" r="4" fill="#8562a0"/>
+<text x="230.0" y="421" text-anchor="middle">256</text>
+<text x="600.0" y="421" text-anchor="middle">4,096</text>
+<text x="970.0" y="421" text-anchor="middle">16,384</text>
+</svg>

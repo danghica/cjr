@@ -1,0 +1,131 @@
+{
+  "status": "passed",
+  "pages": [
+    {
+      "target": "example/index.html",
+      "width": 1280,
+      "title": "CJR examples",
+      "body": 1280,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/quadtree/docs/visual/example-index-1280.png"
+    },
+    {
+      "target": "example/quadtree/index.html",
+      "width": 1280,
+      "title": "Quadtree specification and validation",
+      "body": 1280,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-index-1280.png"
+    },
+    {
+      "target": "example/quadtree/docs/rocq/spec/model.html",
+      "width": 1280,
+      "title": "spec/model.v — Rocq Readable",
+      "body": 1280,
+      "articles": 71,
+      "graphs": 1,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-docs-rocq-spec-model-1280.png"
+    },
+    {
+      "target": "example/quadtree/docs/rocq/index.html",
+      "width": 1280,
+      "title": "Project specifications — Rocq Readable",
+      "body": 1280,
+      "articles": 0,
+      "graphs": 1,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-docs-rocq-index-1280.png"
+    },
+    {
+      "target": "example/array_list/index.html",
+      "width": 1280,
+      "title": "array_list specifications and results",
+      "body": 1280,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/array_list/docs/visual/example-array_list-index-1280.png"
+    },
+    {
+      "target": "example/array_list/docs/rocq/rocq/array_list.html",
+      "width": 1280,
+      "title": "rocq/array_list.v — Rocq Readable",
+      "body": 1280,
+      "articles": 174,
+      "graphs": 1,
+      "screenshot": "example/array_list/docs/visual/example-array_list-docs-rocq-rocq-array_list-1280.png"
+    },
+    {
+      "target": "example/array_list/benchmark/results/report.html",
+      "width": 1280,
+      "title": "Benchmark report",
+      "body": 1280,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/array_list/docs/visual/example-array_list-benchmark-results-report-1280.png"
+    },
+    {
+      "target": "example/index.html",
+      "width": 390,
+      "title": "CJR examples",
+      "body": 390,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/quadtree/docs/visual/example-index-390.png"
+    },
+    {
+      "target": "example/quadtree/index.html",
+      "width": 390,
+      "title": "Quadtree specification and validation",
+      "body": 390,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-index-390.png"
+    },
+    {
+      "target": "example/quadtree/docs/rocq/spec/model.html",
+      "width": 390,
+      "title": "spec/model.v — Rocq Readable",
+      "body": 390,
+      "articles": 71,
+      "graphs": 1,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-docs-rocq-spec-model-390.png"
+    },
+    {
+      "target": "example/quadtree/docs/rocq/index.html",
+      "width": 390,
+      "title": "Project specifications — Rocq Readable",
+      "body": 390,
+      "articles": 0,
+      "graphs": 1,
+      "screenshot": "example/quadtree/docs/visual/example-quadtree-docs-rocq-index-390.png"
+    },
+    {
+      "target": "example/array_list/index.html",
+      "width": 390,
+      "title": "array_list specifications and results",
+      "body": 390,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/array_list/docs/visual/example-array_list-index-390.png"
+    },
+    {
+      "target": "example/array_list/docs/rocq/rocq/array_list.html",
+      "width": 390,
+      "title": "rocq/array_list.v — Rocq Readable",
+      "body": 390,
+      "articles": 174,
+      "graphs": 1,
+      "screenshot": "example/array_list/docs/visual/example-array_list-docs-rocq-rocq-array_list-390.png"
+    },
+    {
+      "target": "example/array_list/benchmark/results/report.html",
+      "width": 390,
+      "title": "Benchmark report",
+      "body": 390,
+      "articles": 0,
+      "graphs": 0,
+      "screenshot": "example/array_list/docs/visual/example-array_list-benchmark-results-report-390.png"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test report</title><link rel="stylesheet" href="../docs/report.css"><main><header><h1>Runtime test report</h1><a href="../index.html">Project index</a></header><p><span class="badge">passed</span> 17 reported test cases.</p><ul><li><span class="badge">passed</span> hash_map.signedRemainder</li><li><span class="badge">passed</span> hash_map.extremeKeys</li><li><span class="badge">passed</span> hash_map.freshMap</li><li><span class="badge">passed</span> hash_map.addThenGet</li><li><span class="badge">passed</span> hash_map.addOverwrite</li><li><span class="badge">passed</span> hash_map.removeMissing</li><li><span class="badge">passed</span> hash_map.addThenRemove</li><li><span class="badge">passed</span> hash_map.collisionsAndWraparound</li><li><span class="badge">passed</span> hash_map.tombstoneDoesNotHideExistingKey</li><li><span class="badge">passed</span> hash_map.negativeKeysAndZeroValues</li><li><span class="badge">passed</span> hash_map.updateAtLoadLimitDoesNotGrow</li><li><span class="badge">passed</span> hash_map.growthPreservesEveryEntry</li><li><span class="badge">passed</span> hash_map.repeatedGrowthAndRemoval</li><li><span class="badge">passed</span> hash_map.explicitGrowthPreservesContents</li><li><span class="badge">passed</span> hash_map.tombstonesAcrossEntireProbeCycle</li><li><span class="badge">passed</span> hash_map.freshBuffersAreZero</li><li><span class="badge">passed</span> hash_map.lookupWrapsPastTombstones</li></ul><h2>Run metadata</h2><pre>{
+  &quot;cases&quot;: [
+    &quot;hash_map.signedRemainder&quot;,
+    &quot;hash_map.extremeKeys&quot;,
+    &quot;hash_map.freshMap&quot;,
+    &quot;hash_map.addThenGet&quot;,
+    &quot;hash_map.addOverwrite&quot;,
+    &quot;hash_map.removeMissing&quot;,
+    &quot;hash_map.addThenRemove&quot;,
+    &quot;hash_map.collisionsAndWraparound&quot;,
+    &quot;hash_map.tombstoneDoesNotHideExistingKey&quot;,
+    &quot;hash_map.negativeKeysAndZeroValues&quot;,
+    &quot;hash_map.updateAtLoadLimitDoesNotGrow&quot;,
+    &quot;hash_map.growthPreservesEveryEntry&quot;,
+    &quot;hash_map.repeatedGrowthAndRemoval&quot;,
+    &quot;hash_map.explicitGrowthPreservesContents&quot;,
+    &quot;hash_map.tombstonesAcrossEntireProbeCycle&quot;,
+    &quot;hash_map.freshBuffersAreZero&quot;,
+    &quot;hash_map.lookupWrapsPastTombstones&quot;
+  ],
+  &quot;compiler&quot;: &quot;Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin&quot;,
+  &quot;flags&quot;: [
+    &quot;--test&quot;,
+    &quot;-O2&quot;
+  ],
+  &quot;machine&quot;: {
+    &quot;machine&quot;: &quot;arm64&quot;,
+    &quot;node&quot;: &quot;Dans-Mac-mini.local&quot;,
+    &quot;processor&quot;: &quot;arm&quot;,
+    &quot;release&quot;: &quot;25.6.0&quot;,
+    &quot;system&quot;: &quot;Darwin&quot;,
+    &quot;version&quot;: &quot;Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132&quot;
+  },
+  &quot;sdk&quot;: &quot;macOS TAPI compatibility copy: arm64e.x1 removed, arm64e labels normalized to arm64&quot;,
+  &quot;status&quot;: &quot;passed&quot;
+}</pre><h2>Execution output</h2><pre>--------------------------------------------------------------------------------------------------
+TP: default, time elapsed: 633000 ns, RESULT:
+    TCS: HashMapTests, time elapsed: 613000 ns, RESULT:
+    [ PASSED ] CASE: signedRemainder (133000 ns)
+    [ PASSED ] CASE: extremeKeys (6000 ns)
+    [ PASSED ] CASE: freshMap (4000 ns)
+    [ PASSED ] CASE: addThenGet (4000 ns)
+    [ PASSED ] CASE: addOverwrite (2000 ns)
+    [ PASSED ] CASE: removeMissing (3000 ns)
+    [ PASSED ] CASE: addThenRemove (4000 ns)
+    [ PASSED ] CASE: collisionsAndWraparound (3000 ns)
+    [ PASSED ] CASE: tombstoneDoesNotHideExistingKey (4000 ns)
+    [ PASSED ] CASE: negativeKeysAndZeroValues (4000 ns)
+    [ PASSED ] CASE: updateAtLoadLimitDoesNotGrow (4000 ns)
+    [ PASSED ] CASE: growthPreservesEveryEntry (4000 ns)
+    [ PASSED ] CASE: repeatedGrowthAndRemoval (31000 ns)
+    [ PASSED ] CASE: explicitGrowthPreservesContents (4000 ns)
+    [ PASSED ] CASE: tombstonesAcrossEntireProbeCycle (3000 ns)
+    [ PASSED ] CASE: freshBuffersAreZero (130000 ns)
+    [ PASSED ] CASE: lookupWrapsPastTombstones (5000 ns)
+Summary: TOTAL: 17
+    PASSED: 17, SKIPPED: 0, ERROR: 0
+    FAILED: 0
+--------------------------------------------------------------------------------------------------
+</pre><h2>Downloads</h2><p><a href="results/report.json">report.json</a></p></main></html>
