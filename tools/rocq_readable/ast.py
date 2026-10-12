@@ -226,6 +226,11 @@ class Adapter:
         self.coverage.append(reason)
         return Doc(Token("original Rocq [" + reason + "]"), [Doc(Token(text), raw=True)], block=True)
 
+    def cjr_fallback(self, token, arguments, env, reason):
+        self.coverage.append("Cangjie unavailable: " + reason)
+        return Doc(Token("CJR " + token.text + " [" + reason + "]", identity=token.identity),
+                   [self.term(arg, env) for arg in arguments])
+
     def ref(self, node, env):
         name = identifier(node)
         loc = node.get("loc") or {}
@@ -345,7 +350,12 @@ class Adapter:
         selector = (kind, key, len(children), scope_name, entry_name, label.identity if kind == "notation" else None)
         self.encounters.setdefault(selector, (label, children, self.source.fragment(node)))
         if rule:
-            return self.dictionary.apply(rule, label, children)
+            if rule["label"].startswith("CJR "):
+                self.coverage.append("Cangjie unavailable: " + rule["label"])
+            sort = self.source.arrow_sorts.get((node.get("loc") or {}).get("bp"), "unknown")
+            if rule.get("when") == "proposition" and sort == "unknown":
+                self.coverage.append("unclassified arrow at byte " + str((node.get("loc") or {}).get("bp", "?")))
+            return self.dictionary.apply(rule, label, children, proposition=sort == "proposition")
         if kind == "application":
             return Doc(label, children)
         # The notation's exact grammar key remains visible, with all slots.
@@ -368,12 +378,22 @@ class Adapter:
             if tag == "CApp":
                 callee, arguments = args
                 callee_expr = value(callee)
+                special = None
+                if callee_expr[0] == "CRef" and callee_expr[2] is None:
+                    token = self.ref(callee_expr[1], env)
+                    from .cangjie import contextual
+                    if all(explicit is None for _, explicit in arguments):
+                        special = contextual(self, token, [term for term, _ in arguments], node, env)
+                    if isinstance(special, Doc):
+                        return special
                 children = []
-                for term, explicit in arguments:
+                for term, explicit in arguments if special is None else []:
                     child = self.term(term, env)
                     if explicit is not None:
                         child = Doc(Token("named argument " + self.source.fragment(explicit)), [child])
                     children.append(child)
+                if special is not None:
+                    children = special
                 if callee_expr[0] != "CRef":
                     return Doc(Token("apply"), [self.term(callee, env), *children])
                 if callee_expr[2] is not None:

@@ -638,5 +638,127 @@ Definition field (b : A.box) := A.item b.
         audit_links(output)
 
 
+class CustomSyntaxTests(unittest.TestCase):
+    def test_templates_validate_reload_and_preserve_links(self):
+        from tools.rocq_readable.layout import render_html
+        base = {"kind": "application", "key": "P.eq", "arity": 2, "label": "equals", "template": "{0}={1}"}
+        for text in ("{0}", "{0}={0}", "{0}={2}", "{x}={1}", "{0!r}={1}", "{0:04}={1}", "{0}={1", "{0.__class__}={1}", " {0}\n{1}"):
+            with self.subTest(text=text), self.assertRaises(DictionaryError):
+                validate({**base, "template": text})
+        with tempfile.TemporaryDirectory() as tmp:
+            dictionary = Dictionary(Path(tmp) / "rules.json")
+            dictionary.replace(base)
+            dictionary.save()
+            dictionary = Dictionary(dictionary.path)
+            doc = dictionary.apply(dictionary.rules[0], Token("eq", identity="P.eq"), [leaf("A", local="binder-A"), leaf("<B>", identity="P.B")])
+            self.assertEqual(doc.plain(), "A=<B>")
+            target = Path(tmp) / "out.html"
+            rendered = render_html(doc, target, {"P.eq": (target, "eq"), "P.B": (target, "B")})
+            self.assertIn('href="#binder-A"', rendered)
+            self.assertIn('href="#eq"', rendered)
+            self.assertIn('&lt;B&gt;', rendered)
+            self.assertIn('href="#B"', rendered)
+
+    def test_nested_and_multiline_templates(self):
+        equal = Doc(Token("equals"), [leaf("A"), leaf("B")], template="{0}={1}")
+        implies = Doc(Token("arrow"), [equal, leaf("C")], template="IF {0} THEN {1}")
+        self.assertEqual(implies.plain(), "IF (A=B) THEN C")
+        self.assertEqual(Doc(Token("f"), [implies]).plain(), "f(IF (A=B) THEN C)")
+        loop = Doc(Token("while"), [leaf("ready"), Doc(Token("seq"), [leaf("first()"), leaf("second()")], template="{0}\n{1}")], template="while ({0}) {{\n    {1}\n}}")
+        self.assertEqual(loop.plain(), "while (ready) {\n    first()\n    second()\n}")
+        long = Doc(Token("eq"), [leaf("A" * 80), leaf("B" * 80)], template="{0}={1}")
+        self.assertEqual(long.plain().count("A"), 80)
+        self.assertEqual(long.plain().count("B"), 80)
+        self.assertIn("=", long.plain())
+        forced = Doc(Token("eq"), [leaf("A"), leaf("B")], block=True, template="{0}={1}")
+        self.assertEqual(forced.plain(), "    A\n=\n    B")
+        transparent = Doc(Token("wrapper"), [equal], template="{0}")
+        self.assertEqual(transparent.plain(), "A=B")
+        self.assertEqual(Doc(Token("op"), [transparent, leaf("C")], template="{0}+{1}").plain(), "(A=B)+C")
+        nested_long = Doc(Token("arrow"), [long, leaf("C")], template="IF {0} THEN {1}")
+        multiline = nested_long.plain()
+        self.assertEqual(multiline.count("("), 1)
+        self.assertEqual(multiline.count(")"), 1)
+        self.assertLess(multiline.index(")"), multiline.index("THEN"))
+
+    def test_learning_accepts_custom_template(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            dictionary = Dictionary(root / "rules.json")
+            encounters = {("application", "P.eq", 2, None, None): (Token("eq"), [leaf("A"), leaf("B")], "eq A B")}
+            with patch("builtins.input", side_effect=["1", '{"label":"equals","template":"{0}={1}"}', "y", "done"]), redirect_stdout(io.StringIO()):
+                learning(dictionary, encounters, root / "preview")
+            self.assertEqual(Dictionary(dictionary.path).rules[0]["template"], "{0}={1}")
+            self.assertIn("A=B", (root / "preview/rule-preview.html").read_text())
+
+
+@unittest.skipUnless(backend_available(), "install the pinned coq-lsp backend for integration tests")
+class CustomSyntaxIntegration(unittest.TestCase):
+    def test_sorts_cangjie_and_original_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            path = root / "Syntax.v"
+            config = f'-Q . SyntaxTest\n-Q {ROOT / "theories"} cjr\n'
+            (root / "_CoqProject").write_text(config)
+            path.write_text('''From Coq Require Import String ZArith.
+From cjr Require Import notation.
+Open Scope string_scope.
+Open Scope Z_scope.
+Definition implication (P Q : Prop) : Prop := P -> Q.
+Definition function_type := Z -> Z.
+Definition mixed (P : Prop) : Prop := (Z -> Z) = (Z -> Z) -> P.
+Definition nested := forall (P Q : Prop), P -> Q.
+Definition program : expr := VarBind "x" (Val (LitV (LitInt 1)))
+  (While (BinOp LeOp (Var "x") (Val (LitV (LitInt 4))))
+    (Assign "x" (BinOp PlusOp (Var "x") (Val (LitV (LitInt 1)))))).
+Definition lambda_code : expr := Rec None (Some "x") (Var "x").
+Definition pointer_code (p : expr) : expr := Store p (Load p).
+Definition anonymous_let : expr := Let None (Val (LitV LitUnit)) (Val (LitV LitUnit)).
+Definition symbolic_name (name : string) : expr := Var name.
+Definition stack_code (p : expr) : expr := StackLoad p.
+Definition sum_code (a b : expr) : expr := (a + b)%E.
+Definition call_code (f x : expr) : expr := App f x.
+Definition branch_code (b : bool) : expr := If (Val (LitV (LitBool b))) (Val (LitV LitNull)) (Val (LitV (LitFloat 2))).
+Definition allocation (n : expr) : expr := Seq (Free (Alloc n)) (Offset n n).
+''')
+            binary = Path(executable()).with_name("coqc")
+            subprocess.run([str(binary), "-Q", ".", "SyntaxTest", "-Q", str(ROOT / "theories"), "cjr", str(path)], cwd=root, check=True, capture_output=True, timeout=60)
+            with redirect_stderr(io.StringIO()):
+                sources, resolutions = prepare([path], root, 30)
+            source = sources[0]
+            self.assertEqual(source.errors, [])
+            adapter = Adapter(source, Dictionary(DEFAULT_DICTIONARY), {d.identity for d in source.declarations})
+            docs = {d.name: adapter.declaration(d).plain() for d in source.declarations}
+            self.assertIn("IF P THEN Q", docs["implication"])
+            self.assertIn("arrow(Z, Z)", docs["function_type"])
+            self.assertIn("IF (arrow(Z, Z)=arrow(Z, Z)) THEN P", docs["mixed"])
+            self.assertIn("IF P THEN Q", docs["nested"])
+            self.assertIn("var x = 1", docs["program"])
+            self.assertIn("while (", docs["program"])
+            self.assertIn("x = (x + 1)", docs["program"])
+            self.assertIn("{ x =>", docs["lambda_code"])
+            self.assertIn(".write(", docs["pointer_code"])
+            self.assertIn(".read()", docs["pointer_code"])
+            self.assertIn("let _ = ()", docs["anonymous_let"])
+            self.assertIn("CJR Var [symbolic identifier or binder](name)", docs["symbolic_name"])
+            self.assertIn("CJR StackLoad", docs["stack_code"])
+            self.assertIn("a + b", docs["sum_code"])
+            self.assertIn("f(x)", docs["call_code"])
+            self.assertIn("CPointer<Int64>()", docs["branch_code"])
+            self.assertIn("2.0", docs["branch_code"])
+            self.assertIn("calloc", docs["allocation"])
+            output = root / "html"
+            generate(sources, resolutions, Dictionary(DEFAULT_DICTIONARY), output)
+            html = (output / "Syntax.html").read_text()
+            self.assertIn("Original declaration", html)
+            self.assertIn("VarBind", html)
+            self.assertIn("cangjie-binder", html)
+            audit_links(output)
+            source.arrow_sorts.clear()
+            adapter = Adapter(source, Dictionary(DEFAULT_DICTIONARY), set())
+            adapter.declaration(next(d for d in source.declarations if d.name == "implication"))
+            self.assertTrue(any("unclassified arrow" in item for item in adapter.coverage))
+
+
 if __name__ == "__main__":
     unittest.main()

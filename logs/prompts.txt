@@ -365,3 +365,55 @@ Create nine directories under the singular top-level `example/`: `quadtree`, `ar
 [2026-10-12T07:35:22+00:00]
 push to github
 
+[2026-10-12T07:41:09+00:00]
+refresh the rendered docs in the examples for list_rev to add generated english explanations
+
+[2026-10-12T07:57:58+00:00]
+the rocq_readable tool should have some custom syntax stored in an editable tool-global dictionary. to begin with equals(A, B) should be rendered as A=B; arrow(A, B) should be rendered as IF A THEN B; CJR  terms should be rendered as CANGJIE
+
+[2026-10-12T07:57:58+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Editable syntax for `rocq_readable`
+
+## Summary
+
+Extend the existing tool-global `renderings.json` dictionary to support custom syntax, with these defaults:
+
+- Equality: `A=B`.
+- Propositional implication: `IF A THEN B`.
+- Visible CJR expressions: readable Cangjie syntax, retaining symbolic helper references.
+
+## Implementation
+
+- Add an optional `template` field to rendering rules, using numbered placeholders such as `{0}={1}`. Support multiline templates with relative indentation. Preserve existing rules and `--dictionary` behavior.
+- Validate templates as plain text, require every argument exactly once, and reject malformed placeholders. Extend `--learn` to preview and save templates.
+- Render templates through the semantic document tree so argument links, binder anchors, HTML escaping, grouping, and indentation survive substitution. Preserve operator identity on displayed syntax.
+- Add semantic classification for arrows during backend preparation. Use isolated Rocq checks in the available declaration context; apply the implication template only when the arrow is established to be a proposition. Keep `arrow(A, B)` for function types and unclassified arrows, reporting classification gaps.
+- Seed Cangjie templates for literals, variables, calls, operators, bindings, assignments, sequencing, conditionals, loops, and pointer operations. Match resolved CJR identities and notation scopes rather than short names.
+- Use the repository’s existing Cangjie printer as the syntax reference. Add contextual handling for string identifiers and optional binders. Where stack operations, recursive closures, or aggregate layouts cannot be faithfully expressed without extraction metadata, retain a clearly marked CJR form with all arguments.
+- Document template editing, proposition-only implication, and Cangjie coverage.
+
+## Validation
+
+- Test dictionary validation, persistence, learning previews, and compatibility with existing rules.
+- Check exact equality and implication output, nested grouping, multiline formatting, escaping, and preserved links.
+- Test proposition arrows, function types, mixed nesting, and unavailable classification.
+- Exercise CJR constructors and notation in real Rocq declarations, including symbolic arguments and unsupported forms.
+- Run renderer tests and repository verification; render a representative example offline and inspect its HTML.
+
+## Assumptions
+
+- Translate visible syntax without unfolding helper definitions or reconstructing complete programs.
+- Use the existing shared dictionary; no separate configuration store is needed.
+- Keep original-source excerpts in Rocq syntax.
+- During implementation, log unrecorded human prompts using the repository’s logging script. Planning leaves repository files unchanged.
+
+[2026-10-12T08:21:54+00:00]
+refresh the rendered html files in list_rev
+
+[2026-10-12T08:23:53+00:00]
+why are the explanation notices unavailable in list_rev? fix
+
+[2026-10-12T08:34:52+00:00]
+push to github
+

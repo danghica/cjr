@@ -1,28 +1,8 @@
-make verify started: 2026-10-12T06:56:01Z
-/Library/Developer/CommandLineTools/usr/bin/make -C example/quadtree verify
+make verify started: 2026-10-12T08:06:45Z
+make[2]: Nothing to be done for `real-all'.
 Checking for Admitted / Axiom / cheat in theories/*.v...
-/Library/Developer/CommandLineTools/usr/bin/make -C ../.. tools/extraction/rocq/cj_print.vo example/hash_map/rocq/hm_tactics.vo
-make[3]: `tools/extraction/rocq/cj_print.vo' is up to date.
-make[3]: `example/hash_map/rocq/hm_tactics.vo' is up to date.
-COQC=/Users/danghica/.opam/default/bin/coqc COQCHK=/Users/danghica/.opam/default/bin/coqchk python3 scripts/verify.py
-COQC example/quadtree/algorithm/program.v
-COQC example/quadtree/spec/model.v
-COQC example/quadtree/algorithm/extract.v
-COQC example/quadtree/proof/ownership.v
-COQC example/quadtree/spec/bounds.v
-COQC example/quadtree/proof/routing.v
-COQC example/quadtree/proof/helpers.v
-COQC example/quadtree/proof/insertion_model.v
-COQC example/quadtree/proof/correctness.v
-COQC example/quadtree/proof/insertion_helpers.v
-COQC example/quadtree/proof/insertion.v
-COQC example/quadtree/proof/algebra.v
-Print Assumptions audit (theories/verify_assumptions.v)...
-"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/quadtree cjr.quadtree -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
 coqchk on 37 .vo files...
 "coqchk" -silent -o  -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/quadtree cjr.quadtree -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo example/misc/rocq/arith.vo example/misc/rocq/struct_upd.vo example/misc/rocq/cell.vo example/misc/rocq/swap.vo example/misc/rocq/sum_block.vo example/misc/rocq/class_upd.vo example/misc/rocq/frame_call.vo example/misc/rocq/vtable.vo example/list/rocq/list.vo example/list_rev/rocq/list_rev.vo example/array/rocq/array.vo example/array_list/rocq/array_list.vo example/qsort/rocq/qsort.vo example/hash_map/rocq/hm_tactics.vo example/hash_map/rocq/hash_map.vo example/most_frequent/rocq/mf_memory.vo example/most_frequent/rocq/most_frequent.vo tools/extraction/rocq/cj_print.vo tools/extraction/rocq/emit_cj.vo theories/verify_assumptions.vo example/quadtree/spec/model.vo example/quadtree/algorithm/program.vo example/quadtree/proof/ownership.vo example/quadtree/proof/routing.vo example/quadtree/proof/helpers.vo example/quadtree/proof/correctness.vo example/quadtree/algorithm/extract.vo example/quadtree/spec/bounds.vo example/quadtree/proof/insertion_model.vo example/quadtree/proof/insertion_helpers.vo example/quadtree/proof/insertion.vo example/quadtree/proof/algebra.vo
-coqchk passed; 98 declarations closed under the global context
-Assumption audit OK (88/88 theorems closed).
 
 CONTEXT SUMMARY
 ===============
@@ -39,4 +19,13 @@ CONTEXT SUMMARY
   
 * Inductives whose positivity is assumed: <none>
   
-make verify finished: 2026-10-12T07:08:03Z (exit status 0)
+Print Assumptions audit (theories/verify_assumptions.v)...
+"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/quadtree cjr.quadtree -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
+Assumption audit OK (88/88 theorems closed).
+/Library/Developer/CommandLineTools/usr/bin/make -C example/quadtree verify
+/Library/Developer/CommandLineTools/usr/bin/make -C ../.. tools/extraction/rocq/cj_print.vo example/hash_map/rocq/hm_tactics.vo
+make[3]: `tools/extraction/rocq/cj_print.vo' is up to date.
+make[3]: `example/hash_map/rocq/hm_tactics.vo' is up to date.
+COQC=/Users/danghica/.opam/default/bin/coqc COQCHK=/Users/danghica/.opam/default/bin/coqchk python3 scripts/verify.py
+coqchk passed; 98 declarations closed under the global context
+make verify finished: 2026-10-12T08:21:11Z (exit status 0)

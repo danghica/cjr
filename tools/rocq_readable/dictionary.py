@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .layout import Doc, Token
+from .layout import Doc, Token, template_parts
 
 
 class DictionaryError(ValueError):
@@ -12,7 +12,7 @@ class DictionaryError(ValueError):
 
 
 def validate(rule):
-    if not isinstance(rule, dict) or set(rule) - {"kind", "key", "arity", "scope", "entry", "identity", "label", "layout", "slots"}:
+    if not isinstance(rule, dict) or set(rule) - {"kind", "key", "arity", "scope", "entry", "identity", "label", "layout", "slots", "template", "when"}:
         raise DictionaryError("rule contains unknown fields")
     if rule.get("kind") not in ("application", "notation"):
         raise DictionaryError("kind must be application or notation")
@@ -30,6 +30,20 @@ def validate(rule):
     slots = rule.get("slots", list(range(arity)))
     if not isinstance(slots, list) or any(type(x) is not int for x in slots) or sorted(slots) != list(range(arity)):
         raise DictionaryError("slots must contain each argument/binder placeholder exactly once")
+    if "when" in rule and rule["when"] != "proposition":
+        raise DictionaryError("when must be proposition")
+    if "template" in rule:
+        text = rule["template"]
+        if not isinstance(text, str) or not text or any((ord(c) < 32 and c != "\n") or ord(c) == 127 for c in text):
+            raise DictionaryError("template must be nonempty plain text with spaces for indentation")
+        try:
+            placeholders = [p for p in template_parts(text) if isinstance(p, int)]
+        except ValueError as exc:
+            raise DictionaryError(str(exc)) from exc
+        if sorted(placeholders) != list(range(arity)):
+            raise DictionaryError("template must contain each numbered slot exactly once")
+        if any((len(line) - len(line.lstrip(" "))) % 4 for line in text.splitlines()):
+            raise DictionaryError("template indentation must use multiples of four spaces")
     return {**rule, "layout": rule.get("layout", "call"), "slots": slots}
 
 
@@ -65,9 +79,10 @@ class Dictionary:
             raise DictionaryError(f"ambiguous rendering rules for {key!r}")
         return winners[0]
 
-    def apply(self, rule, original: Token, children):
+    def apply(self, rule, original: Token, children, proposition=False):
         label = Token(rule["label"], identity=original.identity, local=original.local)
-        return Doc(label, [children[i] for i in rule["slots"]], block=rule["layout"] == "block")
+        template = rule.get("template") if rule.get("when") != "proposition" or proposition else None
+        return Doc(label, [children[i] for i in rule["slots"]], block=rule["layout"] == "block", template=template)
 
     def replace(self, rule):
         rule = validate(rule)

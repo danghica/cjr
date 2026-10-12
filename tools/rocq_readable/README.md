@@ -153,10 +153,26 @@ conjunction, pure assertions, persistence, and later modalities. Explicit WP
 masks, stuckness arguments, and postcondition binders stay in the document.
 Iris WP specifications express partial correctness, not termination.
 
-Gallina's `arrow(A, B)` retains the distinction from resource-consuming
-implication. In propositions it means ordinary implication; in types it means
-a function type. The concrete AST alone does not establish which interpretation
-applies, so the renderer does not guess from the spelling of its arguments.
+Ordinary propositional implication renders as `IF A THEN B`; equality renders
+as `A=B`. Isolated Rocq `Check` queries establish whether an arrow has sort
+`Prop` in its declaration environment, including explicit local binders.
+Function types retain `arrow(A, B)`. If a check cannot reconstruct the local
+context (for example pattern binders or inferred types), the arrow also retains
+that spelling and the coverage report records an unclassified arrow. These
+queries do not modify the source or the document's proof state. Consuming
+implication remains a separate construct.
+
+Resolved CJR expression/value constructors render recursively as Cangjie surface
+syntax: literals, identifiers, calls, operators, `let`/`var`, assignments,
+sequences, anonymous closures, `if`/`while`, and unsafe pointer operations.
+Literal string identifiers and optional binders receive contextual treatment;
+Cangjie keywords use the same renaming as the repository's extraction printer.
+Bindings and their uses remain linked. Helper references remain symbolic: the
+renderer does not unfold definitions or reconstruct complete programs.
+Stack forms, recursive/symbolic closures, symbolic identifiers, and aggregate
+operations requiring unavailable layout metadata retain a marked CJR form with
+all arguments, and appear in the coverage report. This presentation may contain
+symbolic Rocq expressions and is not a standalone compilable Cangjie program.
 
 Built-in rules cover common Gallina/stdlib forms and CJR/Iris ownership and WP
 notation. Other functions remain calls. Unmapped notation retains its exact
@@ -182,6 +198,16 @@ The JSON root has exactly `version: 1` and a `rules` array. Each rule has:
 - `label`: the displayed name.
 - `layout`: `call` (inline when it fits) or `block` (always indented).
 - `slots`: a permutation containing every slot number exactly once.
+- Optional `template`: plain text with numbered placeholders, e.g. `{0}={1}`
+  or `IF {0} THEN {1}`. Numbers address children after the `slots` permutation.
+  Every slot must appear exactly once. Escape literal braces as `{{` and `}}`.
+  Newlines are supported; indentation uses multiples of four spaces relative
+  to the containing document. Place a multiline child on its own template line
+  to retain that indentation. Nested custom expressions are parenthesized to
+  preserve grouping. `layout: block` forces multiline layout.
+- Optional `when: proposition`: activates the template only for an arrow
+  established to have sort `Prop`; otherwise the rule uses its ordinary label
+  and layout. The seeded arrow rules use this guard.
 - Optional `scope` and `entry` selectors for notation matching. `null` selects
   the absence of scope/entry information; omitting a selector matches any value.
 - Optional `identity` matches Rocq's exact resolved notation identity, separating
@@ -204,14 +230,21 @@ The JSON root has exactly `version: 1` and a `rules` array. Each rule has:
 }
 ```
 
-Templates are structured labels/layouts, not executable code or raw HTML.
+For example, an equality rule can add `"template": "{0}={1}"`. A CJR
+conditional uses `"template": "if ({0}) {{\n    {1}\n}} else {{\n    {2}\n}}"`.
+The JSON string encodes newlines as `\n`; the renderer expands them into lines.
+Rules without `template` retain their existing call/block rendering.
+
+Templates are plain text and numbered children, not executable code or raw HTML.
 The renderer preserves each child document's symbols, binders, links, and nested
 scope. Duplicate selectors, ambiguous equally specific matches, missing slots,
 extra slots, unknown fields, and malformed files are rejected.
 
 With `--learn`, choose a numbered encountered construct to teach or replace.
 The CLI shows the source and every numbered slot, accepts JSON containing
-`label`, `layout`, and `slots`, then writes a local HTML preview. A rule is saved
+`label`, `layout`, `slots`, and optional `template` and `when`, then writes a
+local HTML preview. Guarded templates preview their propositional form; actual
+rendering still requires semantic classification. A rule is saved
 only after answering `y` to its acceptance prompt. Blank input skips a template;
 `done` exits learning. `remove NUMBER` previews a deletion for confirmation.
 EOF or interruption cancels learning without saving an unaccepted rule.

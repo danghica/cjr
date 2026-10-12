@@ -6,7 +6,21 @@ import html
 import hashlib
 from pathlib import Path
 import os
+import string
 from urllib.parse import quote
+
+
+def template_parts(text):
+    """Literal text and integer slots; braces are escaped as {{ and }}."""
+    parts = []
+    for literal, name, spec, conversion in string.Formatter().parse(text):
+        if literal:
+            parts.append(literal)
+        if name is not None:
+            if not name.isascii() or not name.isdecimal() or spec or conversion:
+                raise ValueError("template placeholders must be numbered slots, e.g. {0}")
+            parts.append(int(name))
+    return parts
 
 
 @dataclass(frozen=True)
@@ -24,10 +38,44 @@ class Doc:
     children: list[Doc] = field(default_factory=list)
     block: bool = False
     raw: bool = False
+    template: str | None = None
+
+    def literal(self, text):
+        return Token(text, identity=self.label.identity, local=self.label.local)
+
+    def argument(self, child):
+        tokens = child.inline()
+        # Parentheses make nested custom operators unambiguous. Transparent
+        # wrappers inherit their child's grouping requirement.
+        if tokens is not None and child.compound():
+            return [Token("("), *tokens, Token(")")]
+        return tokens
+
+    def compound(self):
+        if self.template is None:
+            return False
+        parts = template_parts(self.template)
+        if len(parts) == 1 and isinstance(parts[0], int):
+            return self.children[parts[0]].compound()
+        return bool(self.children)
 
     def inline(self):
-        if self.block or self.raw and "\n" in self.label.text:
+        if self.block or self.raw and "\n" in self.label.text or self.template is not None and "\n" in self.template:
             return None
+        if self.template is not None:
+            parts = template_parts(self.template)
+            if len(parts) == 1 and isinstance(parts[0], int):
+                return self.children[parts[0]].inline()
+            tokens = []
+            for part in parts:
+                if isinstance(part, str):
+                    tokens.append(self.literal(part))
+                else:
+                    child = self.argument(self.children[part])
+                    if child is None:
+                        return None
+                    tokens.extend(child)
+            return tokens
         parts = [child.inline() for child in self.children]
         if any(part is None for part in parts):
             return None
@@ -44,6 +92,35 @@ class Doc:
         inline = self.inline()
         if inline is not None and indent * 4 + sum(len(t.text) for t in inline) <= width:
             return [(indent, inline)]
+        if self.template is not None:
+            lines = []
+            for text in self.template.split("\n"):
+                spaces = len(text) - len(text.lstrip(" "))
+                level = indent + spaces // 4
+                pending = []
+                parts = template_parts(text[spaces:])
+                for part in parts:
+                    if isinstance(part, str):
+                        pending.append(self.literal(part))
+                        continue
+                    child = self.children[part]
+                    tokens = child.inline() if len(parts) == 1 else self.argument(child)
+                    if not self.block and tokens is not None and (level * 4 + sum(len(t.text) for t in pending + tokens) <= width):
+                        pending.extend(tokens)
+                    else:
+                        if pending:
+                            lines.append((level, pending))
+                        child_level = level + 1 if pending or self.block else level
+                        if len(parts) > 1 and child.compound():
+                            lines.append((child_level, [Token("(")]))
+                            lines.extend(child.lines(child_level + 1, width))
+                            lines.append((child_level, [Token(")")]))
+                        else:
+                            lines.extend(child.lines(child_level, width))
+                        pending = []
+                if pending or not text:
+                    lines.append((level, pending))
+            return lines
         if self.raw:
             return [(indent, [Token(line, css="unsupported")]) for line in self.label.text.splitlines()]
         if not self.children:

@@ -72,6 +72,8 @@ def prepare(paths, root, timeout, selected=None):
             with Backend(workspace, timeout) as backend:
                 document, diagnostics = backend.document(path, source.text, selected=selected, model=source)
                 declarations(source, document)
+                from .semantics import classify_arrows
+                classify_arrows(backend, source)
                 errors = [d for d in diagnostics if d.get("severity") == 1]
                 source.errors.extend(f"line {d['range']['start']['line'] + 1}: {d['message']}" for d in errors[:8])
                 if len(errors) > 8:
@@ -152,16 +154,16 @@ def learning(dictionary, encounters, output):
             print("Original:", source)
             for i, child in enumerate(children):
                 print(f"Slot {i}:\n{child.plain()}")
-            print('Enter JSON: {"label":"readable_name", "layout":"call" or "block", "slots":[all slot numbers]}; blank skips.')
+            print('Enter JSON with label, layout, slots, optional template (e.g. "{0}={1}") and when; blank skips.')
             text = input("template> ").strip()
             if not text:
                 continue
             fields = json.loads(text)
-            if not isinstance(fields, dict) or set(fields) - {"label", "layout", "slots"}:
-                raise DictionaryError("template accepts only label, layout, and slots")
+            if not isinstance(fields, dict) or set(fields) - {"label", "layout", "slots", "template", "when"}:
+                raise DictionaryError("template accepts only label, layout, slots, template, and when")
             from .dictionary import validate
             rule = validate({**selector, **fields})
-            document = dictionary.apply(rule, label, children)
+            document = dictionary.apply(rule, label, children, proposition=True)
             preview = output / "rule-preview.html"
             output.mkdir(parents=True, exist_ok=True)
             (output / "style.css").write_text(CSS)

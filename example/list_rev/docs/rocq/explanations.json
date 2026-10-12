@@ -1,0 +1,170 @@
+{
+  "entries": {
+    "cjr.examples.list_rev.app_assoc':24f0da824a0ff781d729dccf6fe3c2180674fc7a9b24a342a7c8eed3ccd67635": {
+      "description": "The lemma states that appending lists of integers is associative: for any lists xs, ys, and zs, appending xs to ys and then appending zs gives the same list as appending xs to the result of appending ys to zs. It has no additional premises."
+    },
+    "cjr.examples.list_rev.app_assoc':286c64e217150e755fcc441e5678fe4050ea800a310bfaa352d48f55e1a0f4b3": {
+      "description": "Concatenation of integer lists is associative: joining xs to ys and then zs produces the same list as joining xs to the concatenation of ys and zs."
+    },
+    "cjr.examples.list_rev.app_nil_r':03af443829eaa5d2bab0e11080a252838a0e47d1e44f62778664a7e5f052eef7": {
+      "description": "Appending the empty list to a list of integers leaves that list unchanged."
+    },
+    "cjr.examples.list_rev.app_nil_r':429faab4315845067c3f4133f7d070c36e7a7226ad0ef76a7faeab1b579e7e4d": {
+      "description": "The lemma states that for any list xs of integers, appending the empty list to its right leaves xs unchanged. It has no additional premises."
+    },
+    "cjr.examples.list_rev.call_reverse:687efddef278c50796ee1f9a175342b90a9a56ece47ec2915150ea5a9bd08c37": {
+      "description": "This expression calls the function with body rev_body, binding its parameter n to the supplied CJR value p. The function has no recursive name."
+    },
+    "cjr.examples.list_rev.call_reverse:ff501d1068593fc6f4815e395ff2d70a65ba930b39c41c1d2386dbbc3cb2b186": {
+      "description": "call_reverse takes a value p and constructs an expression that applies an unnamed function with parameter n and body rev_body to p. The supplied body calls call_nil, initializes acc to its result and cur to n, runs rev_loop, then returns acc. The definition appears in a context with implicit cjrGS and invGS_gen instances. Since call_nil and rev_loop are not defined here, the input does not establish that this reverses a list, and it supplies no WP contract or proof of partial correctness or termination."
+    },
+    "cjr.examples.list_rev.is_list_cons_destruct:95b5b17a016fc265484aee8e1a91ee1ba4f7d50fbd92c01c1a2fcedce263afc7": {
+      "description": "Ownership of a nonempty list with head x and tail v can be unpacked into an object pointer, ownership of its true tag in field 0, its integer head x in field 1, its next pointer in field 2, and ownership of the tail list at that next pointer. The separating conjunction keeps these resources distinct."
+    },
+    "cjr.examples.list_rev.is_list_cons_destruct:c772d5e9f001754167a9e9512dd6fbfef2aa2aaa442dfe1f900543b8907ca771": {
+      "description": "This lemma says that, given the assertion is_list (x :: v) p for a nonempty integer list, one can consume that assertion to obtain an object o and a value nxt: p is the object value for o, and one separately owns its field 0 containing true, field 1 containing x, field 2 containing nxt, and the assertion is_list v nxt for the remaining list. It assumes the stated cjrGS and invariant typeclass contexts; the full meaning of is_list is not supplied. This is a separation-logic decomposition, not a WP contract or a termination claim."
+    },
+    "cjr.examples.list_rev.is_list_snoc_acc:54399b6c177809bc1d23600a9628f78f36a002355c3a7f24f6f6f9ea5288285d": {
+      "description": "Ownership of a list u at acc, together with a node o whose fields contain a true tag, integer x, and next pointer acc, can be combined into ownership of the list x :: u at o. Despite the lemma's name, this operation prepends x to the represented accumulator list."
+    },
+    "cjr.examples.list_rev.is_list_snoc_acc:bcca7bc4dc59d9b9df05fd37b45981794fd671932704eb242462b805b45c3c23": {
+      "description": "This lemma says that, given the resource asserting that acc represents the integer list u and ownership of object o’s fields 0, 1, and 2 containing true, x, and acc respectively, those resources can be consumed to establish that the object value referring to o represents x :: u, the list with x prepended to u. The precise definition of is_list and the runtime meaning of this field layout are not supplied. This is a resource entailment, not a WP contract, so it makes no claim about program termination."
+    },
+    "cjr.examples.list_rev.rev_app:5203670d1c8ba775d6fda4558d3466fa08d3a50d75057cb231c7946507f437ad": {
+      "description": "Reversing a concatenation gives the reversed second list followed by the reversed first list. This identity describes how reversal changes the order of two adjacent list segments."
+    },
+    "cjr.examples.list_rev.rev_app:f68dfacfd036ca0f7a4eaab084e1bdabd44b89147d07c988791c341626660997": {
+      "description": "The lemma states that for any two lists of integers xs and ys, reversing their concatenation gives the same list as concatenating reversed ys with reversed xs. It has no additional premises. The supplied dependencies state that list concatenation is associative and that appending an empty list on the right leaves a list unchanged; no proof is supplied."
+    },
+    "cjr.examples.list_rev.rev_body:50d0ccf3765d39b0470871640887ba69c960099704227031bc86c587fb5ff4b0": {
+      "description": "The reversal body creates an empty list for the initial accumulator, binds mutable variables acc and cur to that list and the argument n, runs the reversal loop, and returns the final accumulator."
+    },
+    "cjr.examples.list_rev.rev_body:90387fd615f61a99b061ef35a7947eb457954ed38329d66082c7a71b72d4e543": {
+      "description": "rev_body defines a program expression that calls call_nil, binds its result to acc0, initializes acc from acc0 and cur from n, runs rev_loop, and then returns acc. The loop repeatedly executes rev_step while the field loaded from cur at index 0 satisfies its condition. The definitions of call_nil and rev_step, and the relevant field layout and condition semantics, are not supplied, so this input alone does not establish that the program reverses a list or terminates; it includes no WP contract or correctness proof."
+    },
+    "cjr.examples.list_rev.rev_cons:9b1ff73cf9f3708a29dbe28f323c546d49c83eab248e3e78cb26f36e9be13138": {
+      "description": "The lemma states that for any integer x and list of integers u, reversing the list formed by placing x at the front of u gives the same result as reversing u and appending the singleton list [x]. It has no additional premises."
+    },
+    "cjr.examples.list_rev.rev_cons:a61ab5de43e6a107c2f1254e13c8ba4607bca50ce2b445fcb8d1b145881faaf0": {
+      "description": "Reversing a list whose first element is x gives the reversed tail followed by the one-element list containing x."
+    },
+    "cjr.examples.list_rev.rev_done:dd9fa08c941f7c0397c8dcdfef5e6cbfe331265b7eea250061c1fedd97ee3639": {
+      "description": "The final reversal state owns both stack slots, a list with contents rev xs at the accumulator pointer, and an empty list at the current pointer. Unlike the loop invariant, it explicitly records that no input elements remain."
+    },
+    "cjr.examples.list_rev.rev_eq_rev:c55deed2354b355377c3067aff667114cd70dd5307163d4390c56c81802864f3": {
+      "description": "If reversing u gives xs, then u is the reversal of xs. This is a statement about list contents, independent of their heap representation."
+    },
+    "cjr.examples.list_rev.rev_eq_rev:c80dd0fd22bafc365dcdd5a48e47d05814861238612a91e55c18e738f80f0a37": {
+      "description": "The lemma states that for any two lists of integers u and xs, if reversing u gives xs, then u equals the reverse of xs. Its premise is rev u = xs, and the supplied dependency says that reversing a list twice returns the original list, which explains this implication."
+    },
+    "cjr.examples.list_rev.rev_inv:65778a6474b5856aafba8e785396f529c7428189b6361acd957e6a099967e162": {
+      "description": "The reversal invariant owns both stack slots and two separately owned lists: u at the accumulator and v at the current pointer. It also requires rev u concatenated with v to equal the original contents xs. The existentially quantified lists and pointers describe the current split between processed and remaining elements."
+    },
+    "cjr.examples.list_rev.rev_inv:c59f25f67847c0566cdddff0d050ff45d90613cd597d3230077e0765d2d1d6ed": {
+      "description": "rev_inv xs la lc is a separation-logic assertion saying that there exist lists u and v and values acc and cur such that reversing u and appending v gives xs, stack locations identified by la and lc hold acc and cur respectively, and is_list relates v to cur and u to acc. These ownership and list assertions are combined with separating conjunction, requiring their resources to coexist separately. This describes a state suitable for list reversal, but the input does not define is_list or establish any correctness or termination result."
+    },
+    "cjr.examples.list_rev.rev_loop:2df121fa044c69df62d06d80a7e57a52154261df5acde48c560e69ae1a190aa2": {
+      "description": "rev_loop defines a program expression that repeatedly executes rev_step while the value loaded from field 0 of cur satisfies the loop condition. Each step saves field 2 of cur as nxt, replaces that field with acc, sets acc to cur, and advances cur to nxt. This suggests a list-reversal loop, but the input does not establish the field layout, how the condition is interpreted, or the required memory validity. The definition appears in a context with cjrGS and invGS_gen typeclass instances; it supplies no correctness contract or proof of termination."
+    },
+    "cjr.examples.list_rev.rev_loop:61f2a004655642aea4ff132c28c1b8a756f77c0ee185721f33ea6470a975e162": {
+      "description": "The reversal loop tests field 0 of the current node and repeats rev_step while that test is true. The expression uses the variables cur and acc maintained by the surrounding reversal body."
+    },
+    "cjr.examples.list_rev.rev_loop_at:4a00f8c2d05a0729da2939d14e45c81bdd61971d855d9668bab7388bd1bdeef9": {
+      "description": "rev_loop_at defines a program expression with integer parameters la and lc that repeatedly executes rev_step_at while loading field 0 of the value in stack slot lc supplies the loop condition. Each step saves field 2 of that value as nxt, replaces field 2 with the value loaded from stack slot la, then calls sas on la with the current lc value and on lc with nxt. This suggests a list-reversal loop, but the input does not define sas, the field layout, or how the condition is interpreted. The definition has implicit cjrGS and invGS_gen contexts; it supplies no WP contract or guarantee of correctness or termination."
+    },
+    "cjr.examples.list_rev.rev_loop_at:53774b64ed715b4bda2e3194081a3d55cc84973e2c7a5b884f4e927f3e247fca": {
+      "description": "This loop uses the explicit stack slots la and lc for the accumulator and current node. While field 0 of the node loaded from lc is true, it executes rev_step_at on those slots."
+    },
+    "cjr.examples.list_rev.rev_loop_at_subst:7c2df013f45e5db34197b1f4605caf44014cc49fdd0a6879e4935a79c2f095fc": {
+      "description": "For any integers la and lc, this lemma states that substituting lc for the variable \"cur\" and then la for \"acc\" in rev_loop yields exactly rev_loop_at la lc. The resulting loop tests field 0 of sld lc, a stack-load expression indexed by lc, and executes rev_step_at la lc as its body; the supplied step lemma states the corresponding substitution equality for the body. The declaration assumes the two listed typeclass instances and has no further explicit premises. It states an equality of expressions, not a WP contract or a claim of partial correctness or termination; the input does not establish the runtime meaning of the field and stack operations."
+    },
+    "cjr.examples.list_rev.rev_loop_at_subst:dbcbb05506c47104177d146c62941b8ef60a27a76996356fd6730bcbd188d7fe": {
+      "description": "Replacing cur and acc in rev_loop with stack slots lc and la produces exactly rev_loop_at la lc, relating the loop in the function body to its explicit-slot form."
+    },
+    "cjr.examples.list_rev.rev_prefix_nil:ba12c057c1c8d3bc38943d8e0182b4809b77dc81a2cfc1ddb22d18d4d6382e20": {
+      "description": "The lemma states that for any list u of integers, appending the empty list to the reverse of u leaves that reversed list unchanged. It has no additional premises and is an instance of the supplied general lemma that appending an empty list to any integer list leaves it unchanged."
+    },
+    "cjr.examples.list_rev.rev_prefix_nil:ba2c318e2901a3e5e13e0396f28aa9fb4a84887f120c7bfc0952dd23232fbd4f": {
+      "description": "Once the remaining suffix is empty, concatenating it after the reversed accumulator has no effect."
+    },
+    "cjr.examples.list_rev.rev_prefix_step:0f3efbb53772cd6a7736860509845b124002c95d017c6cf7094214f5111312fa": {
+      "description": "If the remaining list v starts with x and has tail v', moving x to the front of the accumulator u preserves the represented original list: rev (x :: u) followed by v' equals rev u followed by v."
+    },
+    "cjr.examples.list_rev.rev_prefix_step:6a294a5cc2567596d78aa7687722eed45905c082fdcb81cbe90900158270011e": {
+      "description": "For integer lists u and v, if v starts with x and has remaining tail v', then reversing the list formed by putting x before u and appending v' gives the same list as reversing u and appending v. Thus, moving the first element of v to the front of u preserves the combined list rev u ++ v."
+    },
+    "cjr.examples.list_rev.rev_rev:18cd742843c088dbd8cfc3dc8cb1ccf1ba6a93a87804a1f9a036baeb75eceb8d": {
+      "description": "The lemma rev_rev states that reversing a list xs of integers twice gives back the original list. It has no additional premises. The supplied dependency rev_app states that reversing two concatenated lists reverses each list and swaps their order, but no proof is supplied to show how it is used or establish that rev_rev has been verified."
+    },
+    "cjr.examples.list_rev.rev_rev:ebf3851ab53f86344da146af12ccbbb9b97005f6b2b68068d999591f0af848d4": {
+      "description": "Reversing an integer list twice restores its original sequence of elements."
+    },
+    "cjr.examples.list_rev.rev_step:8026dc05418f719900ffadce8e8112bee93deb1c47f0182dad4ca9041d50066f": {
+      "description": "rev_step defines an expression that saves field 2 of cur as nxt, stores acc in that field, assigns cur to acc, and then assigns nxt to cur. This resembles one step of linked-list reversal if field 2 is the next-node link, but the supplied input does not establish that layout or the conditions needed for valid field access. The context includes cjrGS and invGS_gen typeclass assumptions; this definition provides no WP contract or claim of partial correctness or termination."
+    },
+    "cjr.examples.list_rev.rev_step:cd5bbf57bfd90ee9c1808164b54740bb4ccb1d3fbc399e508c97114d5ea48abe": {
+      "description": "One reversal step saves the current node's next pointer from field 2, changes that pointer to the accumulator, makes the current node the new accumulator, and advances cur to the saved next node. This definition constructs the program expression; it does not itself assert its correctness."
+    },
+    "cjr.examples.list_rev.rev_step_at:2fd99d6b15a23a2000560151c5acaeca824549f29bf449e582a7b3a3083b5824": {
+      "description": "This is the reversal step expressed using explicit stack slots: la holds the accumulator and lc holds the current node. It saves the current node's next pointer, redirects that pointer to the accumulator, updates la to the current node, and updates lc to the saved successor."
+    },
+    "cjr.examples.list_rev.rev_step_at:9da9c6517e386425fe73d98708f2512f6bd9e7f0f4309d012871e2386a7d69aa": {
+      "description": "rev_step_at builds an expression using two integer-indexed stack locations, la and lc: it saves field 2 of the value loaded from lc as nxt, writes the value loaded from la into that field, assigns the value loaded from lc to la, and assigns nxt to lc. This resembles one step of reversing a linked list, but the input does not establish that field 2 is a next pointer or provide the runtime validity and layout assumptions needed for these operations. The definition supplies no WP contract or proof of correctness or termination."
+    },
+    "cjr.examples.list_rev.rev_step_at_subst:4567d817df78978c039b1e299c17436acfa954963985470f0719e13009fc4e0a": {
+      "description": "Replacing the variables cur and acc in rev_step with stack slots lc and la produces exactly rev_step_at la lc. This equality connects the variable-based program expression with the explicit-slot expression used in its specification."
+    },
+    "cjr.examples.list_rev.rev_step_at_subst:931c723b81d37e0d494f5d9a0b5e03398776664417835777e1a9495443791b31": {
+      "description": "The lemma states that, for any integers la and lc, substituting lc for “cur” and then la for “acc” in rev_step yields exactly rev_step_at la lc, whose definition uses stack loads and assignments at those integers. The expression saves field 2 of the current value as “nxt”, writes the accumulator into that field, updates the accumulator to the current value, and updates the current value to “nxt”. The declaration assumes the listed typeclass contexts but has no additional explicit premises. Since subst_var and runtime layout details are not supplied, their precise interpretation is uncertain; this expression equality is not a WP contract and makes no claim about execution correctness or termination."
+    },
+    "cjr.examples.list_rev.reverse_spec:18fa2e48a5a42a07f2f6b6bd335619d07309a115173f926929f30b67f0237322": {
+      "description": "For any integer list xs and value l, reverse_spec states that, given the resource assertion is_list xs l, calling call_reverse l satisfies a partial-correctness contract: if the call returns a value v, then is_list (rev xs) v holds, describing the reversed list. The separating implication uses the supplied assertion as a resource premise, under the stated CJR and invariant typeclass assumptions. This contract does not guarantee termination, and the input does not define is_list’s precise representation or provide a proof establishing the lemma."
+    },
+    "cjr.examples.list_rev.reverse_spec:28fd54d460e4d9d54b1980657178b8cc316be3c0f6f5dc963ea13a448b885964": {
+      "description": "Given ownership of a list with contents xs at l, calling the reversal function satisfies a WP contract returning a value v that owns a list with contents rev xs. The postcondition specifies the reversed contents rather than equality of the returned pointer with l, and the WP statement does not assert termination."
+    },
+    "cjr.examples.list_rev.reverse_twice:0607d04b2469ff5aed5cbf3f7d987fdf98325e724c1081da0f712ed5f820120d": {
+      "description": "This expression reverses the list at p, binds the first result to r, and calls the same reversal body on r. Its result is the value returned by the second reversal."
+    },
+    "cjr.examples.list_rev.reverse_twice:864de22f8b35e50458e5cfc8bafde0fc739c0ec000e1de07fdf671790a0281ef": {
+      "description": "reverse_twice builds a program expression that applies the function with body rev_body to p, binds its result to r, and applies the same function to r. The supplied rev_body initializes an accumulator using call_nil, sets cur to its argument, runs rev_loop, and returns the accumulator. The names suggest reversing a list twice, but call_nil and rev_loop are not defined here, so the input does not establish that behavior, restoration of the original list, or termination. The definition is given under the cjrGS and invGS_gen typeclass context; no WP contract or correctness proof is supplied."
+    },
+    "cjr.examples.list_rev.reverse_twice_spec:271fcfec8ddb418a8341d6d1803ca4bc11abca5558eba0f553bbcc55f93cf627": {
+      "description": "Given ownership of a list with contents xs at p, reversing it twice satisfies a WP contract returning ownership of a list with the original contents xs. The specification restores the element sequence without requiring the returned pointer or empty-list sentinel to equal the original one. It states partial correctness, not termination."
+    },
+    "cjr.examples.list_rev.reverse_twice_spec:c80ce6b6616bda210eba68db1ad7fdef45d5a8309a937eace5d7f0bf89841f89": {
+      "description": "For any integer list xs and program value p, this lemma states that, given the resource assertion is_list xs p, reverse_twice p satisfies a partial-correctness WP contract: if it returns a value v, then is_list xs v holds, so the result represents the original list. The supplied definition applies reversal twice, consistent with the supplied fact that reversing a list twice gives the original list. The premise is a separating implication that consumes the supplied resource; the exact representation described by is_list is not provided. The contract assumes the listed logical typeclass instances and does not guarantee termination."
+    },
+    "cjr.examples.list_rev.sas:9a79d171349ab853e3edabb5ca220f220bfefd0d44fee2b4f0169c03dab52f63": {
+      "description": "This helper builds a CJR expression that assigns the result of expression e to the stack slot identified by z."
+    },
+    "cjr.examples.list_rev.sas:e677c3e7ed1649ee8e0c4733d9847834c963d4353cad5a5909ed018b6126a9f6": {
+      "description": "The definition sas takes an integer z and an expression e and constructs a StackAssign expression whose first argument is the value containing the stack literal LitStack z and whose second argument is e. It is a shorthand for this expression construction; the supplied input does not establish the assignment’s runtime or layout semantics. No WP contract or claim about correctness or termination is provided."
+    },
+    "cjr.examples.list_rev.sld:320f282cc66ea3adc80711bf9b79dfa3b819ff28adc1b9fdfb6cbdb9686b611f": {
+      "description": "This helper builds a CJR expression that loads the value stored in the stack slot identified by the integer z."
+    },
+    "cjr.examples.list_rev.sld:5cb25590967563f8e25ca09e4bf5b409dba38c627aae3aae2bb7735deecdd62b": {
+      "description": "The definition sld takes an integer z and constructs an expression that applies StackLoad to the literal stack value LitStack z. The supplied context includes implicit cjrGS and invGS_gen instances, but the input does not establish the runtime meaning of the stack literal or the metadata needed to interpret the load. This is an expression definition, not a WP contract or a claim of correctness or termination."
+    },
+    "cjr.examples.list_rev.wp_rev_loop:3d1153e9e4e05523da03d73affe327f9e3427faa38ddf4cc592e995a71968cb9": {
+      "description": "Ownership of the reversal invariant is sufficient for the explicit-slot loop's WP contract. If the loop returns, rev_done holds: the accumulator contains a list with the reversed original contents and the current pointer represents an empty list. This is a partial-correctness specification."
+    },
+    "cjr.examples.list_rev.wp_rev_loop:9db36e845bcac86ed198c232275235facbf43ac326df904d7d0fcb94ce021f59": {
+      "description": "This lemma states a partial-correctness contract for the reversal loop: given separate ownership of stack entries la and lc holding lists u and v, with reverse(u) followed by v equal to the original integer list xs, running rev_loop_at la lc ensures that, if it terminates, la holds reverse(xs) and lc holds an empty list, with the corresponding ownership preserved. The return value is ignored, and termination is not asserted. The loop tests field 0 of the value loaded through lc and executes rev_step_at; the supplied input does not establish that field’s runtime interpretation or the step’s implementation."
+    },
+    "cjr.examples.list_rev.wp_rev_loop_run:8fc0a33cd85855f863b470ae2eb434feeac104c32bb8676f6ce64caff0d7d886": {
+      "description": "For any accumulator u and pointers acc and cur, if rev u concatenated with the remaining list v equals xs and the corresponding stack slots and lists are owned separately, the explicit-slot reversal loop satisfies a WP contract with final state rev_done xs la lc. On return, the accumulator represents the reversed original list and the current list is empty; the contract itself does not assert termination."
+    },
+    "cjr.examples.list_rev.wp_rev_loop_run:cb8906ccd50af8b65d3f08bcb0d4cf785c3955e374e25b2a86a75ddfe15a348a": {
+      "description": "This lemma gives a partial-correctness contract for a list-reversal loop: assuming rev u ++ v = xs, ownership of stack locations la and lc holding acc and cur, and list resources representing u at acc and v at cur, running rev_loop_at la lc ensures that, if it terminates, la holds a representation of rev xs and lc holds an empty-list representation, with ownership of both stack locations preserved. The loop repeatedly moves the current list’s head onto the accumulator. The WP contract does not establish termination, and the supplied input does not fully define the list representation."
+    },
+    "cjr.examples.list_rev.wp_rev_step_at:083b7e09af02e66cf333b935b3af3c57b6a1923ae87033243870c64893076ba2": {
+      "description": "This lemma gives a partial-correctness contract for one list-reversal step: assuming reversing u and appending x :: v yields xs, and separately owning stack slots la and lc containing acc and cur together with list representations of u at acc and x :: v at cur, rev_step_at moves the first node of the current list onto the accumulator. If it terminates, la contains cur representing x :: u, and lc contains some nxt representing v, with the corresponding ownership restored and rev (x :: u) ++ v still equal to xs. The return value is ignored, and the WP contract does not establish termination."
+    },
+    "cjr.examples.list_rev.wp_rev_step_at:26c333ad274b94ede852df4cdeecb3e2e8284cc607ef8eb24932cbe0cb9d8dc3": {
+      "description": "Given rev u followed by x :: v equals xs, ownership of the accumulator and current stack slots, and separate ownership of lists u and x :: v, one reversal step moves the head node onto the accumulator. If it returns, la contains the former current pointer, lc contains its successor, the lists represent x :: u and v, and the content equation is preserved. This WP contract expresses partial correctness, not termination."
+    }
+  },
+  "version": 1
+}
