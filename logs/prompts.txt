@@ -417,3 +417,74 @@ why are the explanation notices unavailable in list_rev? fix
 [2026-10-12T08:34:52+00:00]
 push to github
 
+[2026-10-13T02:34:29+00:00]
+is there a deck of slides somewhere? 
+
+[2026-10-13T02:35:41+00:00]
+can you make a powerpoint-compatible slide deck? don't do it yet
+
+[2026-10-13T02:52:34+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# CJR PowerPoint deck
+
+## Deliverables and design
+
+Create `paper/slides/` containing an editable `cjr.pptx`, JavaScript rebuild source using `@oai/artifact-tool`, required assets, and rebuild instructions. Include speaker notes with explanations and source citations. No PDF deliverable.
+
+Use 28 widescreen slides for a 40–45 minute talk to programmers unfamiliar with formal methods. White backgrounds, restrained blue accents, large readable text, short code excerpts, and editable benchmark charts.
+
+## Slide sequence
+
+Preserve your topic order, expanding sections where needed:
+
+1. Title and central question: trusting agent-generated code.
+2. Trust and review as a bottleneck in agentic programming.
+3. Post-generation verification versus constructing verified programs.
+4. CompCert: an extracted, verified compiler and its semantic preservation theorem.
+5. CJR’s purpose: an algorithmically realistic Cangjie fragment.
+6. Supported features and deliberately limited convenience features.
+7. CJR syntax, with a small concrete program.
+8. Machine state and small-step semantics.
+9. Rocq, formerly Coq: proof terms and kernel checking.
+10. Rocq achievements: CompCert, Four Colour, and Feit–Thompson.
+11. Escape hatches and audits: admissions, axioms, dependency assumptions, and independent checking.
+12. Separation logic: ownership and separating conjunction.
+13. Local reasoning and the frame rule.
+14. Iris: mechanized logic, research profile, and representative applications.
+15. CJR adequacy: formal statement and plain-English interpretation.
+16. Guarantee boundaries: partial correctness, specifications, printer, compiler, and runtime.
+17. `cell.v`: allocation, write, read, and free.
+18. Cell proof: ownership at each step and the resulting guarantee.
+19. List representation and operation contracts.
+20. List benchmarks.
+21. In-place reversal, invariant, and double-reversal theorem.
+22. Reversal benchmarks.
+23. Hash map: probing, tombstones, growth, and contracts.
+24. Hash map benchmarks, including collision behaviour.
+25. Quadtree: subdivision, ownership, insertion, and range-query contracts.
+26. Quadtree benchmarks across uniform, clustered, and shared-prefix datasets.
+27. Rocq-readable: purpose and side-by-side source/rendered contract.
+28. Rocq-readable: dependency navigation, English explanations, and interpretation limits.
+
+## Evidence and benchmark work
+
+- Use current repository definitions, proofs, extracted programs, and recorded results as primary evidence. Verify external historical claims against authoritative sources and cite them in notes.
+- Explain CompCert’s success precisely: Rocq extraction produces the compiler implementation; semantic preservation establishes compiler correctness. Distinguish this from CJR’s syntax-directed emission.
+- Explain that kernel checking alone permits declared assumptions. Describe the repository’s actual assumption audits and independent checks without claiming they certify specification intent or target-code equivalence.
+- Reuse existing list, hash map, and quadtree measurements, retaining dates, baselines, units, uncertainty, and provenance. Label historical measurements.
+- Add a reversal benchmark under `example/list_rev/benchmark/`, integrated with the existing benchmark/report workflow. Compare extracted CJR reversal with an independently written native implementation of the equivalent singly linked algorithm.
+- Measure reversal at 256, 4096, and 16384 elements using three processes and seven trials per process, warmup and calibration, rotating implementation order, and median/IQR reporting. Build lists outside timing; repeatedly reverse existing lists and consume a checksum. Validate full sequence reversal and double reversal outside timing.
+- Keep all factual qualifications that affect interpretation, including differences between baselines and proof coverage.
+
+## Validation and acceptance
+
+- Check reversal correctness for empty, singleton, duplicate-containing, and larger lists. Run the benchmark and retain raw results and machine/compiler metadata.
+- Run relevant repository checks, including `make verify`, after benchmark integration.
+- Render and inspect all 28 slides for clipping, overlap, readable code, equations, chart labels, and consistency.
+- Confirm text and charts remain editable and speaker notes survive PPTX export.
+- Rebuild the deck from its saved source and confirm every requested topic appears in order.
+- Make no commits or pushes. Defer repository mutations, including prompt-log updates, until execution mode permits them.
+
+[2026-10-13T03:18:19+00:00]
+commit and push
+

@@ -1,0 +1,62 @@
+[
+  {
+    "case": "list_reverse",
+    "implementation": "CJR",
+    "iqr_ns": 767.578125,
+    "median_ns": 28451.171875,
+    "n": 16384,
+    "q1_ns": 28113.28125,
+    "q3_ns": 28880.859375,
+    "samples": 21
+  },
+  {
+    "case": "list_reverse",
+    "implementation": "Native",
+    "iqr_ns": 539.0625,
+    "median_ns": 18202.1484375,
+    "n": 16384,
+    "q1_ns": 17997.0703125,
+    "q3_ns": 18536.1328125,
+    "samples": 21
+  },
+  {
+    "case": "list_reverse",
+    "implementation": "CJR",
+    "iqr_ns": 5.7525634765625,
+    "median_ns": 443.7103271484375,
+    "n": 256,
+    "q1_ns": 442.1539306640625,
+    "q3_ns": 447.906494140625,
+    "samples": 21
+  },
+  {
+    "case": "list_reverse",
+    "implementation": "Native",
+    "iqr_ns": 4.41741943359375,
+    "median_ns": 192.92449951171875,
+    "n": 256,
+    "q1_ns": 191.45965576171875,
+    "q3_ns": 195.8770751953125,
+    "samples": 21
+  },
+  {
+    "case": "list_reverse",
+    "implementation": "CJR",
+    "iqr_ns": 1111.083984375,
+    "median_ns": 7864.501953125,
+    "n": 4096,
+    "q1_ns": 7696.2890625,
+    "q3_ns": 8807.373046875,
+    "samples": 21
+  },
+  {
+    "case": "list_reverse",
+    "implementation": "Native",
+    "iqr_ns": 1028.4423828125,
+    "median_ns": 4318.359375,
+    "n": 4096,
+    "q1_ns": 4230.3466796875,
+    "q3_ns": 5258.7890625,
+    "samples": 21
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "compiler": "cjc",
+  "group_by": [
+    "case",
+    "n",
+    "implementation"
+  ],
+  "jobs": [
+    {
+      "compile": [
+        "{cjc}",
+        "{root}/example/list_rev/extracted/list_rev.cj",
+        "{root}/tools/project_tools/benchmark_common.cj",
+        "{root}/example/list_rev/benchmark/list_rev_bench.cj",
+        "--test",
+        "-O2",
+        "-o",
+        "{binary}"
+      ],
+      "expected_rows_per_process": 42,
+      "harness_sources": [
+        "tools/project_tools/benchmark_common.cj",
+        "example/list_rev/benchmark/list_rev_bench.cj"
+      ],
+      "name": "list_reverse",
+      "pattern": "BENCH,(?P<case>[a-z_]+),(?P<implementation>CJR|Native),(?P<n>\\d+),(?P<trial>\\d+),(?P<elapsed_ns>\\d+),(?P<operations>\\d+),(?P<checksum>-?\\d+)",
+      "run": [
+        "{binary}"
+      ],
+      "sources": [
+        "example/list_rev/extracted/list_rev.cj",
+        "tools/project_tools/benchmark_common.cj",
+        "example/list_rev/benchmark/list_rev_bench.cj"
+      ],
+      "run_env": {
+        "CJR_BENCH_PROCESS": "{process}"
+      }
+    }
+  ],
+  "output": "example/list_rev/benchmark/results",
+  "plots": {
+    "facet": "case",
+    "filename": "{facet}.svg"
+  },
+  "processes": 3,
+  "project_root": "../../..",
+  "protocol": {
+    "flags": [
+      "--test",
+      "-O2"
+    ],
+    "processes": 3,
+    "samples_per_process": 7,
+    "warmup_batches": 2,
+    "calibration_target_ns": 20000000,
+    "order": "(trial + process) parity",
+    "unit": "ns per full reversal",
+    "timed_work": "two reversals per batch on prebuilt list, endpoint checksum, sentinel allocation included",
+    "validation": "full sequences before timing and after samples; empty, singleton, duplicates, negative values and all measured sizes"
+  },
+  "report_css": "../../docs/report.css",
+  "report_index": "../../index.html",
+  "required_compiler_version": "1.0.5",
+  "timeout_seconds": 600
+}

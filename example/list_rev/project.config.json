@@ -1,5 +1,6 @@
 {
   "artifacts": {
+    "benchmark_report": "benchmark/results/report.html",
     "docs": "docs/rocq",
     "documentation": "docs/metadata.json",
     "extracted": "extracted",
