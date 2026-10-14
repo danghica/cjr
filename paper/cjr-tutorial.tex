@@ -88,7 +88,7 @@ Syntax, Semantics, and Separation Logic}
 We present \cjr{} (Cangjie Radical), the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, together with \texttt{func}, \texttt{if}, and \texttt{while}.
 This note is a reading guide to the Coq/Iris mechanization.
 We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
-Finally, we walk through the examples that exercise the rules in order, and we conclude with a linked-list development, an array library, and an array list, each with the usual equations of that data structure.
+Finally, we walk through the examples that exercise the rules in order: linked lists, arrays, resizable arrays, sorting, and hash maps, followed by AES encryption and IGE chaining. The AES example separates checked cipher algebra and kernel refinement from the outstanding refinement of complete executable routines.
 \end{abstract}
 
 \clearpage
@@ -311,6 +311,8 @@ two expressions in sequence, or a block
   & \texttt{Seq} \\
 \texttt{+}, \texttt{-}, \texttt{\%}, \texttt{<=}, \texttt{==} on \texttt{Int64}, \texttt{\&\&}
   & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{RemOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
+\texttt{\textasciicircum}, \texttt{\&} on \texttt{Int64}
+  & \texttt{BitXorOp}, \texttt{BitAndOp} \\
 \texttt{f(a)}
   & \texttt{App} \\
 \hline
@@ -438,8 +440,31 @@ v ::=\;
   \mid \langle v_0,\ldots,v_{k-1}\rangle
 \]
 and we use the expression forms by the same names as the constructors.
-\(\mathsf{BinOp}\) ranges over \(+\), \(-\), signed remainder, \(\le\), \(=\), and boolean conjunction.
-Integer operations act on \(\mathsf{LitInt}\); conjunction acts on booleans.
+\begin{lstlisting}
+Inductive bin_op :=
+  PlusOp | MinusOp | RemOp | LeOp | EqOp | AndOp
+  | BitXorOp | BitAndOp.
+\end{lstlisting}
+
+\(\mathsf{BinOp}\) ranges over \(+\), \(-\), signed remainder, \(\le\), \(=\),
+boolean conjunction, integer bitwise XOR, and integer bitwise AND.
+Integer operations act on \(\mathsf{LitInt}\); \texttt{AndOp} acts on booleans.
+The two bitwise evaluator cases are:
+\begin{lstlisting}
+| BitXorOp, LitV (LitInt n1), LitV (LitInt n2) =>
+    Some (LitV (LitInt (Z.lxor n1 n2)))
+| BitAndOp, LitV (LitInt n1), LitV (LitInt n2) =>
+    Some (LitV (LitInt (Z.land n1 n2)))
+\end{lstlisting}
+Thus the semantics uses Rocq's unbounded signed integers, including their
+bitwise operations on negative values; it does not impose a 64-bit truncation.
+For byte-valued operands, XOR stays within \(0\ldots255\), and AND with 255
+selects the low eight bits. For example, \(128\mathbin{\mathrm{XOR}}27=155\)
+and \(511\mathbin{\mathrm{AND}}255=255\).
+The expression notations are \texttt{e1 .\textasciicircum{} e2} and
+\texttt{e1 .\& e2}; the printer emits Cangjie \texttt{\textasciicircum} and
+\texttt{\&}. Boolean conjunction keeps its separate \texttt{\&\&} spelling.
+Bitwise OR, complement, and shifts are outside the current syntax.
 Anything else makes \(\mathsf{bin\_op\_eval}\) return \(\None\), and the machine gets stuck.
 
 Structs and objects are built by a list zipper.
@@ -989,6 +1014,24 @@ Its proof specializes \texttt{wp\_binop}; no new ghost state or ownership
 rule is needed. The printer emits Cangjie's \texttt{\%} operator.
 The nonzero premise excludes a stuck zero-divisor operation in CJR;
 the language does not yet model the target's arithmetic exceptions.
+
+\paragraph{Bitwise rules.}
+The integer XOR and AND rules also specialize \texttt{wp\_binop}:
+\begin{lstlisting}
+Lemma wp_bitxor (a b : Z) E Phi :
+  later (pound 1 -*- Phi (LitV (LitInt (Z.lxor a b))))
+  |- WP BinOp BitXorOp (Val (LitV (LitInt a)))
+                      (Val (LitV (LitInt b))) @ E {{ Phi }}.
+Lemma wp_bitand (a b : Z) E Phi :
+  later (pound 1 -*- Phi (LitV (LitInt (Z.land a b))))
+  |- WP BinOp BitAndOp (Val (LitV (LitInt a)))
+                      (Val (LitV (LitInt b))) @ E {{ Phi }}.
+\end{lstlisting}
+Neither needs an additional numeric side condition: both operations are
+defined for every pair of integers. As with the remainder rule, the
+\texttt{later} and step credit account for the pure reduction, and no heap
+ownership changes. Byte bounds used in AES are established by the example's
+pure lemmas rather than by the primitive rules.
 
 \textit{Intuition for \texttt{while}.}
 The loop rule does not mention an invariant; it unfolds the loop once into a conditional.
@@ -3886,6 +3929,8 @@ language rules.\par
 \lstinputlisting[firstline=2911,lastline=2923]{example/hash_map/rocq/hash_map.v}
 
 \lstinputlisting{example/hash_map/extracted/hash_map.cj}
+
+\input{paper/aes.tex}
 
 \input{paper/benchmark.tex}
 

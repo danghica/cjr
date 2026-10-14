@@ -1,4 +1,4 @@
-make verify started: 2026-10-14T05:26:27Z
+make verify started: 2026-10-14T05:54:07Z
 make[2]: Nothing to be done for `real-all'.
 Checking for Admitted / Axiom / cheat in theories/*.v...
 coqchk on 46 .vo files...
@@ -28,4 +28,4 @@ make[3]: `tools/extraction/rocq/cj_print.vo' is up to date.
 make[3]: `example/hash_map/rocq/hm_tactics.vo' is up to date.
 COQC=/Users/danghica/.opam/default/bin/coqc COQCHK=/Users/danghica/.opam/default/bin/coqchk python3 scripts/verify.py
 coqchk passed; 98 declarations closed under the global context
-make verify finished: 2026-10-14T05:42:42Z (exit status 0)
+make verify finished: 2026-10-14T06:10:28Z (exit status 0)

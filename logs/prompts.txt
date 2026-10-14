@@ -601,3 +601,9 @@ add this explanations to aes_ige/benchmark/results/report.html and note them as 
 [2026-10-14T05:26:10+00:00]
 push to github
 
+[2026-10-14T05:48:55+00:00]
+refresh the paper and the readme to add the new operators (bitwise operators) and a section on aes encryption. 
+
+[2026-10-14T05:53:52+00:00]
+push to githubm
+

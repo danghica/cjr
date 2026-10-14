@@ -1,0 +1,161 @@
+\section{AES encryption and IGE chaining}
+\label{sec:aes}
+
+The example in \texttt{example/aes\_ige/} adds a concrete block cipher to the
+data-structure developments. It implements AES-128, AES-192, and AES-256,
+including key expansion, block encryption and decryption, and
+OpenSSL-compatible Infinite Garble Extension (IGE). Its proof coverage has
+two parts: checked algebra for the concrete pure cipher definitions, and Iris
+refinement contracts for individual executable kernels. Refinement of the
+complete key-expansion routine, AES routines, and IGE loops remains outstanding.
+Consequently, this section does not claim an end-to-end weakest-precondition
+theorem for the extracted encryption API.
+
+\subsection{Bytes, blocks, and the new primitives}
+
+A byte is an integer satisfying \(0\leq x<256\). Four bytes form a column,
+and four columns form a 16-byte block. The memory representation stores each
+byte in one \texttt{Int64} word, in column order. This matches the existing
+word-addressed raw heap; no packed-byte memory model is introduced.
+
+Integer XOR combines bytes and round keys. Integer AND provides masking and
+the high-bit test used by multiplication by two in the AES byte field:
+\[
+ d=(x+x)\mathbin{\mathrm{AND}}255,\qquad
+ \mathsf{xtime}(x)=
+ \begin{cases}
+ d & \text{if }x\mathbin{\mathrm{AND}}128=0,\\
+ d\mathbin{\mathrm{XOR}}27 & \text{otherwise}.
+ \end{cases}
+\]
+For example, \(\mathsf{xtime}(128)=27\). Masking removes the ninth bit and
+the conditional XOR implements reduction by the AES field polynomial.
+The correspondence lemma \texttt{xtime\_correspondence} checks this arithmetic
+implementation against the pure byte function for every byte.
+\texttt{xtime\_wp} then proves the CJR call returns that value. Addition,
+\texttt{BitAndOp}, and \texttt{BitXorOp} suffice; no multiplication, division,
+or shift primitive is needed. The S-box and inverse S-box use concrete tables
+lowered to branches, whose byte-domain correspondence is also checked.
+
+\subsection{Concrete AES and inverse laws}
+
+The files \texttt{bytes.v} and \texttt{block.v} define byte operations,
+SubBytes and its inverse, ShiftRows and its inverse, MixColumns and its
+inverse, and block XOR. The file \texttt{aes.v} defines the key schedule
+and round composition. Keys of 16, 24, and 32 bytes select 10, 12, and 14
+rounds respectively. Encryption begins with AddRoundKey; each intermediate
+round applies SubBytes, ShiftRows, MixColumns, and AddRoundKey. The final
+round omits MixColumns. Decryption reverses these transformations using the
+same forward key schedule in reverse order.
+
+Let \(E_k\) and \(D_k\) denote the concrete pure functions
+\texttt{encrypt key} and \texttt{decrypt key}. On byte-valued blocks,
+the checked theorems \texttt{decrypt\_encrypt} and
+\texttt{encrypt\_decrypt} establish
+\[
+ D_k(E_k(b))=b,\qquad E_k(D_k(b))=b.
+\]
+The proofs compose the transformation inverse laws through the round list;
+they do not assume an abstract cipher inverse axiom. Byte-range preservation
+and injectivity/surjectivity are proved as well. The pure definitions are
+total even for other key lists; the API supports only the three valid key
+lengths. Inverse laws alone do not establish cryptographic security or
+agreement with an external standard. Independent known-answer tests exercise
+that agreement on the compiled implementation.
+
+\subsection{IGE state, round trips, and chunking}
+
+The file \texttt{ige.v} models the IV as a pair \((C_0,P_0)\): the previous
+ciphertext block followed by the previous plaintext block. For each block,
+\[
+ C_i=E_k(P_i\mathbin{\mathrm{XOR}}C_{i-1})
+        \mathbin{\mathrm{XOR}}P_{i-1},\qquad
+ P_i=D_k(C_i\mathbin{\mathrm{XOR}}P_{i-1})
+        \mathbin{\mathrm{XOR}}C_{i-1}.
+\]
+Both directions update the state to \((C_i,P_i)\). Thus decryption of an
+encrypted message starts from the original IV, while continuation of the
+same message starts from the updated IV.
+
+Write \(\mathcal E_k(xs,v)\) and \(\mathcal D_k(xs,v)\) for the pure
+IGE functions, each returning a block list and a final IV. For byte-valued
+blocks and IV, \texttt{ige\_decrypt\_encrypt} states
+\[
+ \mathcal E_k(xs,v)=(cs,w)
+ \quad\Longrightarrow\quad
+ \mathcal D_k(cs,v)=(xs,w).
+\]
+\texttt{ige\_encrypt\_decrypt} proves the converse composition, including
+the same final-IV agreement. Induction over the message uses the AES inverse
+laws and cancellation of XOR to recover the block and the next state.
+
+Length and byte-range preservation, injectivity, and surjectivity are checked.
+Empty input returns the empty list and the original IV. The chunk theorem
+\texttt{ige\_encrypt\_chunks} states that encrypting \(xs\mathbin{+\!+}ys\)
+equals encrypting \(xs\), then encrypting \(ys\) with the first call's final
+IV, concatenating the outputs and retaining the second call's IV.
+\texttt{ige\_decrypt\_chunks} gives the corresponding decryption law.
+
+\subsection{Executable contracts and caller obligations}
+
+The CJR program is in \texttt{program.v}. The file \texttt{refinement.v}
+proves S-box, inverse S-box, and byte-doubling contracts.
+The file \texttt{memory.v} defines \texttt{block\_at}, a separating
+conjunction owning the sixteen raw words of a block, and proves contracts
+for block copy, ShiftRows/inverse ShiftRows, SubBytes/inverse SubBytes,
+MixColumns, and block XOR. These contracts preserve source ownership and
+replace the destination contents with the corresponding pure transformation.
+For instance, \texttt{copy\_wp} has the shape
+\[
+ \mathsf{block\_at}(p,b)\sep\mathsf{block\_at}(q,old)
+ \;\vdash\;
+ \Wpre\,\mathsf{copy}(p,q)\,
+ \{\lambda v.\;\pure{v=\Unit}\sep
+   \mathsf{block\_at}(p,b)\sep\mathsf{block\_at}(q,b)\}.
+\]
+Separating ownership supplies the disjoint buffers needed by this contract.
+These kernel results do not yet compose into a proof of the complete
+executable encryption, decryption, or key-expansion API.
+
+The extracted API begins with \texttt{aesExpandKey}. Key expansion reserves
+240 words and writes
+176/208/240 words for the three variants, returning 10/12/14 rounds;
+invalid key length returns zero without changing the schedule.
+The block routines, \texttt{aesEncryptBlock} and \texttt{aesDecryptBlock},
+process sixteen words. The IGE routines, \texttt{aesIgeEncrypt} and
+\texttt{aesIgeDecrypt}, process a nonnegative multiple of
+sixteen logical bytes and updates a 32-word IV. All routines use a 64-word
+workspace. Input, output, schedule, IV, and workspace buffers must be
+disjoint, large enough, and supplied with byte-valued inputs and a matching
+schedule and round count. These are caller obligations, not dynamic pointer
+or capacity checks. Invalid round counts and invalid IGE message lengths
+return false without changing output or IV. Empty messages preserve the IV
+but still require a valid round count.
+
+\subsection{Runtime evidence and limits}
+
+The recorded runtime report contains fifteen passing cases: primitive
+correspondence, exhaustive S-box inverse checks, NIST block known-answer
+vectors for all three key sizes, OpenSSL IGE fixtures and published vectors,
+chunk composition, empty input, invalid arguments, and buffer guards.
+The executable cipher never calls OpenSSL; the reference fixtures are
+generated independently and record library provenance.
+
+The example also benchmarks extracted Cangjie against OpenSSL's native C
+\texttt{AES\_ige\_encrypt} API. Complete outputs and final IVs are checked
+before timing. Both harnesses reuse expanded schedules, reset IVs, and
+checksum outputs inside the timed region, with three processes and seven
+samples per workload. Throughput is measured per logical byte; forward
+key-expansion timing includes its checksum. OpenSSL inverse-schedule setup
+is excluded from decryption throughput and is not separately measured.
+The offline report at \texttt{example/aes\_ige/docs/report.html} links the
+measurements, comparison charts, fixtures, and proof declarations.
+
+The comparison combines word-per-byte versus packed-byte representations,
+cipher algorithms, library optimization, and compiler effects. It does not
+isolate language overhead or establish use of hardware AES instructions.
+The implementation provides no padding, authentication, or in-place
+operation. Its branch-based S-box is not constant-time, and no side-channel
+or cryptographic security theorem is claimed. Kernel proof checking
+validates the stated algebra and refinement contracts; full executable
+refinement and the printer/compiler correspondence remain separate limits.

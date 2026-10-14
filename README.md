@@ -94,6 +94,23 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 
 The shared `hm_tactics.v` evaluation-context automation adds 110 supporting lines outside the example counts above.
 
+## Integer and bitwise operators
+
+The core supports addition, subtraction, signed remainder, integer comparison
+and equality, Boolean conjunction, and the new integer bitwise XOR and AND.
+`BitXorOp` evaluates with `Z.lxor`, uses Rocq expression notation `e1 .^ e2`,
+and prints Cangjie `^`; `BitAndOp` evaluates with `Z.land`, uses `e1 .& e2`,
+and prints `&`. `wp_bitxor` and `wp_bitand` specialize `wp_binop` and require
+no numeric side condition. Boolean `AndOp` remains separate and prints `&&`.
+Bitwise OR, complement, and shifts are not implemented.
+
+Integers in the model are unbounded signed Rocq integers, while extracted
+integer values are `Int64`; the model does not automatically truncate to 64
+bits or establish absence of overflow. AES keeps bytes in 0..255: XOR combines
+bytes, `x & 255` masks to eight bits, and `x & 128` tests the high bit. Byte
+doubling uses addition, masking, and conditional XOR with 27, so AES needs no
+multiplication, division, or shift primitive.
+
 ## In-place list reversal
 
 `example/list_rev/rocq/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
@@ -206,17 +223,48 @@ example keeps only its formal development, extracted program, harnesses, and
 configuration. Use `make benchmark` for the root CJR benchmark suites and
 `make project-report` to rebuild the root specification index.
 
-## AES-IGE
+## AES encryption and IGE chaining
 
-`example/aes_ige` contains concrete AES-128/192/256 and OpenSSL-compatible IGE,
-extracted Cangjie, independent NIST/OpenSSL tests, throughput benchmarks, and
-an offline report. The pure specification proves both inverse compositions,
-bijectivity, transformation inverse laws, range/length preservation, final-IV
-agreement, empty identity, and chunk composition without assumed AES correctness.
-The byte and block transformation kernels have Iris refinement contracts.
-Full key-expansion, AES-routine, and IGE-loop refinement is still outstanding;
-the report distinguishes that gap from the checked algebra and runtime results.
+[The AES-IGE example](example/aes_ige/README.md) implements concrete
+AES-128/192/256, key expansion, block encryption/decryption, and
+OpenSSL-compatible Infinite Garble Extension (IGE). The implementation uses
+SubBytes, ShiftRows, MixColumns, and AddRoundKey, with 10/12/14 rounds for
+16/24/32-byte keys; the final round omits MixColumns. Each logical byte occupies
+one `Int64` word. The [offline report](example/aes_ige/docs/report.html) and the
+paper's AES section explain the specification and exact proof coverage.
 
-CJR integer XOR (`BitXorOp`) and AND (`BitAndOp`) use `Z.lxor` and `Z.land`,
-print as `^` and `&`, and have dedicated WP rules. AES needs no multiplication,
-division, or shift primitive: byte doubling uses addition and masking.
+The pure Rocq specification proves both AES inverse compositions, bijectivity,
+transformation inverse laws, byte range preservation, both IGE inverse
+compositions with final-IV agreement, length preservation, empty identity, and
+chunk composition. These results use concrete cipher definitions without
+assuming AES correctness. Iris refinement contracts cover S-box/inverse S-box,
+byte doubling, and block copy, row permutations, byte substitutions,
+MixColumns, and XOR. **Full key-expansion, AES-routine, and IGE-loop refinement
+is still outstanding.** The algebraic results and runtime tests do not close
+that gap.
+
+`aesExpandKey` writes a forward schedule into a 240-word buffer and returns
+10/12/14 (zero for an invalid key length). `aesEncryptBlock` and
+`aesDecryptBlock` process 16 words; `aesIgeEncrypt` and `aesIgeDecrypt` process
+a nonnegative multiple of 16 logical bytes and update a 32-word IV. Reserve
+64 words for workspace; all buffers must be disjoint, large enough, and contain
+byte-valued inputs, with the schedule and round count matching the key.
+The IV is `previous ciphertext || previous plaintext`. Restore the original IV
+for decryption; retain the updated IV when continuing in chunks. Invalid round
+counts or message lengths return false without changing output or IV.
+
+The recorded runtime suite contains 15 passing cases, including NIST block
+known-answer vectors for all key sizes, OpenSSL IGE fixtures, inverse S-box
+checks, chunking, final IVs, invalid arguments, and buffer guards. The
+[performance report](example/aes_ige/benchmark/results/report.html) compares
+extracted Cangjie with the native OpenSSL C API after checking complete outputs
+and final IVs. It reuses schedules and includes IV reset and output checksums
+in timings. CJR's word-per-byte representation and OpenSSL's packed bytes,
+algorithms, and toolchains differ, so the comparison does not isolate language
+overhead or establish hardware AES use.
+
+From `example/aes_ige`, run `make build`, `make verify`, `make extract`,
+`make test`, `make benchmark`, and `make docs EXPLANATIONS=offline` as needed.
+The implementation provides no padding, authentication, or in-place operation.
+Its branch-based S-box is not constant-time; there is no side-channel or
+cryptographic security theorem.
