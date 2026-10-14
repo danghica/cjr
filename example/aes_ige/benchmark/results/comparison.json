@@ -1,0 +1,149 @@
+[
+  {
+    "case": "decrypt_128",
+    "n": 1024,
+    "cjr_median_ns": 198.5321044921875,
+    "openssl_median_ns": 2.288520336151123,
+    "cjr_over_openssl": 86.75129574163303
+  },
+  {
+    "case": "decrypt_128",
+    "n": 16,
+    "cjr_median_ns": 158.7371826171875,
+    "openssl_median_ns": 2.0315051078796387,
+    "cjr_over_openssl": 78.13772261831411
+  },
+  {
+    "case": "decrypt_128",
+    "n": 65536,
+    "cjr_median_ns": 225.2349853515625,
+    "openssl_median_ns": 2.315998077392578,
+    "cjr_over_openssl": 97.25180152357423
+  },
+  {
+    "case": "decrypt_192",
+    "n": 1024,
+    "cjr_median_ns": 239.03656005859375,
+    "openssl_median_ns": 2.6367902755737305,
+    "cjr_over_openssl": 90.65436954654369
+  },
+  {
+    "case": "decrypt_192",
+    "n": 16,
+    "cjr_median_ns": 191.6046142578125,
+    "openssl_median_ns": 2.3865699768066406,
+    "cjr_over_openssl": 80.28451548451548
+  },
+  {
+    "case": "decrypt_192",
+    "n": 65536,
+    "cjr_median_ns": 269.9737548828125,
+    "openssl_median_ns": 2.6514530181884766,
+    "cjr_over_openssl": 101.82105925726104
+  },
+  {
+    "case": "decrypt_256",
+    "n": 1024,
+    "cjr_median_ns": 279.50286865234375,
+    "openssl_median_ns": 2.9772520065307617,
+    "cjr_over_openssl": 93.87947947947949
+  },
+  {
+    "case": "decrypt_256",
+    "n": 16,
+    "cjr_median_ns": 223.8922119140625,
+    "openssl_median_ns": 2.7196407318115234,
+    "cjr_over_openssl": 82.32418690277899
+  },
+  {
+    "case": "decrypt_256",
+    "n": 65536,
+    "cjr_median_ns": 316.58935546875,
+    "openssl_median_ns": 3.0121803283691406,
+    "cjr_over_openssl": 105.10305524774418
+  },
+  {
+    "case": "encrypt_128",
+    "n": 1024,
+    "cjr_median_ns": 149.10125732421875,
+    "openssl_median_ns": 2.176344394683838,
+    "cjr_over_openssl": 68.50995535836552
+  },
+  {
+    "case": "encrypt_128",
+    "n": 16,
+    "cjr_median_ns": 108.58535766601562,
+    "openssl_median_ns": 1.9463896751403809,
+    "cjr_over_openssl": 55.7880875822998
+  },
+  {
+    "case": "encrypt_128",
+    "n": 65536,
+    "cjr_median_ns": 176.361083984375,
+    "openssl_median_ns": 2.1799206733703613,
+    "cjr_over_openssl": 80.90252371968391
+  },
+  {
+    "case": "encrypt_192",
+    "n": 1024,
+    "cjr_median_ns": 177.459716796875,
+    "openssl_median_ns": 2.5191307067871094,
+    "cjr_over_openssl": 70.44482301722506
+  },
+  {
+    "case": "encrypt_192",
+    "n": 16,
+    "cjr_median_ns": 129.32586669921875,
+    "openssl_median_ns": 2.3015737533569336,
+    "cjr_over_openssl": 56.190190086497125
+  },
+  {
+    "case": "encrypt_192",
+    "n": 65536,
+    "cjr_median_ns": 210.45684814453125,
+    "openssl_median_ns": 2.526402473449707,
+    "cjr_over_openssl": 83.30297739819751
+  },
+  {
+    "case": "encrypt_256",
+    "n": 1024,
+    "cjr_median_ns": 206.207275390625,
+    "openssl_median_ns": 2.854466438293457,
+    "cjr_over_openssl": 72.24021716433494
+  },
+  {
+    "case": "encrypt_256",
+    "n": 16,
+    "cjr_median_ns": 148.49853515625,
+    "openssl_median_ns": 2.659916877746582,
+    "cjr_over_openssl": 55.82826155156187
+  },
+  {
+    "case": "encrypt_256",
+    "n": 65536,
+    "cjr_median_ns": 245.12481689453125,
+    "openssl_median_ns": 2.893805503845215,
+    "cjr_over_openssl": 84.70673532440783
+  },
+  {
+    "case": "key_128",
+    "n": 16,
+    "cjr_median_ns": 510.7269287109375,
+    "openssl_median_ns": 28.397560119628906,
+    "cjr_over_openssl": 17.984887664976323
+  },
+  {
+    "case": "key_192",
+    "n": 24,
+    "cjr_median_ns": 532.3333740234375,
+    "openssl_median_ns": 19.715309143066406,
+    "cjr_over_openssl": 27.001015817733276
+  },
+  {
+    "case": "key_256",
+    "n": 32,
+    "cjr_median_ns": 683.197021484375,
+    "openssl_median_ns": 34.04712677001953,
+    "cjr_over_openssl": 20.066216632587324
+  }
+]

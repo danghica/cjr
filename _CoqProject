@@ -8,6 +8,7 @@
 -Q example/most_frequent/rocq cjr.examples
 -Q example/misc/rocq cjr.examples
 -Q tools/extraction/rocq cjr.examples
+-Q example/aes_ige/rocq cjr.aes_ige
 -Q example/quadtree cjr.quadtree
 -arg -w
 -arg +admitted-proof
@@ -53,3 +54,13 @@ example/quadtree/proof/insertion_model.v
 example/quadtree/proof/insertion_helpers.v
 example/quadtree/proof/insertion.v
 example/quadtree/proof/algebra.v
+
+example/aes_ige/rocq/bytes.v
+example/aes_ige/rocq/block.v
+example/aes_ige/rocq/aes.v
+example/aes_ige/rocq/ige.v
+example/aes_ige/rocq/program.v
+example/aes_ige/rocq/extract.v
+example/aes_ige/rocq/refinement.v
+example/aes_ige/rocq/vectors.v
+example/aes_ige/rocq/memory.v

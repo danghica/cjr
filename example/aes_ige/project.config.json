@@ -1,0 +1,56 @@
+{
+  "artifacts": {
+    "benchmark": "benchmark/results/metadata.json",
+    "benchmark_report": "benchmark/results/report.html",
+    "docs": "docs/rocq",
+    "documentation": "docs/metadata.json",
+    "extracted": "extracted",
+    "renderer": "docs/rocq/report.json",
+    "test_report": "test/report.html",
+    "tests": "test/results/report.json",
+    "verification": "proof/results/verification.json"
+  },
+  "css": "docs/report.css",
+  "declaration_groups": [
+    {
+      "name": "Byte algebra and finite-field specification",
+      "pattern": "bytes"
+    },
+    {
+      "name": "AES transformations",
+      "pattern": "block"
+    },
+    {
+      "name": "AES and key schedule",
+      "pattern": "aes.v|/aes.html"
+    },
+    {
+      "name": "IGE algebra",
+      "pattern": "ige.v|/ige.html"
+    },
+    {
+      "name": "Executable kernel ownership contracts",
+      "pattern": "memory|refinement"
+    },
+    {
+      "name": "Executable program and extraction",
+      "pattern": ".*"
+    }
+  ],
+  "documentation_metadata": "docs/metadata.json",
+  "index": "index.html",
+  "intro": "Concrete AES-128/192/256 and OpenSSL-compatible IGE with checked algebraic laws and extracted Cangjie.",
+  "link_check": "docs/link-check.json",
+  "links": [
+    {
+      "label": "Rendered Rocq specifications",
+      "path": "docs/rocq/index.html"
+    },
+    {
+      "label": "Proof and implementation report",
+      "path": "docs/report.html"
+    }
+  ],
+  "name": "aes_ige",
+  "title": "AES-IGE specification, algebra and validation"
+}

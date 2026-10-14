@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "date_utc": "2026-10-14T04:07:57.133847+00:00",
+  "workloads": 18,
+  "records": 25002,
+  "compared_bytes": 400032,
+  "coverage": "Complete encryption/decryption outputs and 32-byte final IVs, all key sizes and message sizes",
+  "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
+  "library": "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libcrypto.3.dylib",
+  "library_sha256": "1eda496905d4741521085e070606ff1e419bac671946f8905039c5bae8d8b0b6",
+  "output_sha256": "dcfa04754508830ebacaca320028154f15541d3038836af1b87f85b3ed1175a9"
+}

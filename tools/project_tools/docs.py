@@ -50,7 +50,7 @@ def hashes(root: Path, exclude=()):
         generated_docs = any(parts[i:i+2] == ("docs", "rocq") for i in range(len(parts)-1))
         if not path.is_file() or any(part in ignored for part in parts) or generated_docs or "generated" in parts:
             continue
-        if (path.suffix in {".v", ".cj", ".py", ".cjs", ".css", ".md", ".txt"}
+        if (path.suffix in {".v", ".cj", ".c", ".py", ".cjs", ".css", ".md", ".txt"}
                 or path.name.endswith(".config.json") or path.name in {"_CoqProject", "Makefile", "Makefile.local-late"}):
             result[path.relative_to(root).as_posix()]=hashlib.sha256(path.read_bytes()).hexdigest()
     repo = next((p for p in (root, *root.parents)

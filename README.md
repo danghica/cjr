@@ -62,7 +62,7 @@ assumptions, rebuild this development with `make -B`.
 - `theories/lang.v` — syntax, three-region state, small-step semantics
 - `theories/primitive_laws.v` — points-to facts and weakest-precondition rules
 - `theories/adequacy.v` — a proved specification does not get stuck
-- `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
+- `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, aes_ige, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
 - `tools/extraction/rocq/` — shared printer and aggregate extraction driver
 
 Open [all example reports](example/index.html). `make readable EXPLANATIONS=offline` regenerates the example and shared-library pages using existing explanation caches; `make project-report EXPLANATIONS=offline` also assembles reports. `make test` runs the runtime suites; `make benchmark` explicitly runs timed benchmarks.
@@ -205,3 +205,18 @@ charts, metadata, and link validation live under `tools/project_tools/`. Each
 example keeps only its formal development, extracted program, harnesses, and
 configuration. Use `make benchmark` for the root CJR benchmark suites and
 `make project-report` to rebuild the root specification index.
+
+## AES-IGE
+
+`example/aes_ige` contains concrete AES-128/192/256 and OpenSSL-compatible IGE,
+extracted Cangjie, independent NIST/OpenSSL tests, throughput benchmarks, and
+an offline report. The pure specification proves both inverse compositions,
+bijectivity, transformation inverse laws, range/length preservation, final-IV
+agreement, empty identity, and chunk composition without assumed AES correctness.
+The byte and block transformation kernels have Iris refinement contracts.
+Full key-expansion, AES-routine, and IGE-loop refinement is still outstanding;
+the report distinguishes that gap from the checked algebra and runtime results.
+
+CJR integer XOR (`BitXorOp`) and AND (`BitAndOp`) use `Z.lxor` and `Z.land`,
+print as `^` and `&`, and have dedicated WP rules. AES needs no multiplication,
+division, or shift primitive: byte doubling uses addition and masking.

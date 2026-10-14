@@ -488,3 +488,116 @@ Preserve your topic order, expanding sections where needed:
 [2026-10-13T03:18:19+00:00]
 commit and push
 
+[2026-10-13T06:00:47+00:00]
+is this correct cangjie: let frozen = 1
+var n = 3
+while (0 < n) {
+    n = n - 1
+}
+if (n <= 0) { 0 } else { n }
+
+
+[2026-10-13T06:03:00+00:00]
+whats the rocq cjr syntax for this fragment? 
+
+[2026-10-13T06:09:10+00:00]
+does cjr need a model of garbage collection?
+
+[2026-10-13T06:09:56+00:00]
+does cangjie have byte-level layout
+
+[2026-10-13T06:14:40+00:00]
+what about the coq checker flags, where are they defined?
+
+[2026-10-13T06:16:16+00:00]
+what is -q ?
+
+[2026-10-13T06:16:55+00:00]
+explain thiese flags: 
+
+[2026-10-13T06:18:54+00:00]
+what is -arg -w
+
+[2026-10-13T06:20:03+00:00]
+what is verify_assumptions.v
+
+[2026-10-13T07:01:43+00:00]
+refresh the extracted cell.html definitions including the LLM generated explanations. dont do anything else
+
+[2026-10-13T07:15:23+00:00]
+write this in algebraic notation: Lemma cons_then_tail_spec (x : Z) xs (p : val_cjr) :
+    is_list xs p -∗
+    WP cons_then_tail x p {{ v, ⌜ v = p ⌝ ∗ is_list xs v }}.
+
+[2026-10-13T07:24:28+00:00]
+what file is it in? 
+
+[2026-10-13T07:24:50+00:00]
+how about the rocq definition fo the data strcuture
+
+[2026-10-13T07:59:35+00:00]
+what is the native implementation of quadtrees used for the benchmarks?
+
+[2026-10-14T02:24:37+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Verified AES-IGE with proved algebraic properties
+
+## Summary
+
+Create `example/aes_ige` containing AES-128/192/256 encryption and decryption, verified IGE processing over separate buffers, extracted Cangjie, tests, benchmarks, and an offline report. Prove both implementation correctness and the key algebraic properties of the specification.
+
+## Implementation and interfaces
+
+- Model AES according to FIPS 197, using byte-valued integers, column-major state layout, concrete key expansion, and 10/12/14-round cipher loops.
+- Add integer XOR and bitwise AND primitives to CJR, including semantics, WP rules, notation, extraction support, and correspondence tests. Use addition and masking for byte doubling.
+- Implement the AES transformations and their inverses. Prove the S-box tables agree with the finite-field specification.
+- Expose key expansion into a caller-owned 240-byte schedule buffer, returning the round count or zero for invalid key length. Provide block encryption/decryption and IGE encryption/decryption using reusable caller-owned workspace.
+- Require disjoint input/output, IV, schedule, and workspace buffers. Preserve input and schedule. Reject invalid round counts and negative or non-block-aligned message lengths before modifying output or IV.
+- Use a mutable 32-byte IV ordered as previous ciphertext followed by previous plaintext. Empty input succeeds and preserves the IV. Exclude padding, in-place operation, and bidirectional IGE.
+
+## Specification and algebraic proofs
+
+State and prove these properties independently of the embedded implementation, for every supported key size and valid input:
+
+- **AES inverse laws:** `decrypt(k, encrypt(k, b)) = b` and `encrypt(k, decrypt(k, b)) = b`.
+- **AES bijectivity:** derive injectivity and surjectivity of encryption and decryption from the inverse laws.
+- **Transformation inverse laws:** prove both compositions for SubBytes/InvSubBytes, ShiftRows/InvShiftRows, and MixColumns/InvMixColumns. Prove applying AddRoundKey twice with the same round key is identity.
+- **Byte-XOR laws:** prove associativity, commutativity, zero identity, self-cancellation, and byte-range closure, supporting AES and IGE cancellation arguments.
+- **IGE inverse laws:** encryption followed by decryption, and decryption followed by encryption, recover the original message when both operations start from the same initial IV. Prove that the corresponding final IVs agree.
+- **IGE bijectivity:** for a fixed key, initial IV, and block count, derive injectivity and surjectivity on messages of that length.
+- **Length and range preservation:** AES preserves block size; IGE preserves message length; outputs and final IV remain byte-valued.
+- **Empty-message identity:** both IGE directions return the empty message and unchanged IV.
+- **Chunk composition:** processing `xs ++ ys` equals processing `xs`, then `ys` with the returned IV, for both encryption and decryption. Prove equality of concatenated outputs and final IV.
+
+Define pure IGE operations as returning `(output, finalIV)` so the stateful laws are explicit. Round-trip laws reset to the original IV before the inverse operation; they do not reuse the mutated final IV.
+
+## Implementation proofs and integration
+
+- Separate the mathematical model, embedded programs, and proofs within the example.
+- Prove Iris refinement contracts for helpers, key expansion, AES blocks, and complete IGE loops, including ownership, bounds, preservation, and IV updates.
+- Derive implementation-level round-trip and chunk-composition contracts from refinement and the pure algebraic theorems.
+- Use concrete AES throughout; introduce no admissions or assumed cipher correctness.
+- Integrate build load paths, extraction, test/report dispatch, and the examples index. Audit the public correctness contracts and algebraic theorems with `Print Assumptions` and kernel checks.
+
+## Validation and report
+
+- Test AES known-answer vectors for every key size, OpenSSL IGE vectors, and independently generated AES-192/256 IGE fixtures with recorded provenance.
+- Test both inverse compositions, chunk composition, empty and multi-block messages, high-bit bytes, final IV equality, rejected lengths, and memory preservation.
+- Run full `make verify`, runtime regression suites, extraction checks, and report link checks. Prove machine-range bounds for AES arithmetic and indexing.
+- Benchmark encryption/decryption at 16 bytes, 1 KiB, and 64 KiB for every key size; measure key expansion separately. Use three processes, seven samples per process, warm-up, and checked checksums.
+- Produce the existing-style offline report with rendered specifications, dependency diagrams, proof narrative, test provenance, and benchmark charts. Give each algebraic law its statement, assumptions, proof explanation, and implementation consequence.
+- State that the verified guarantees cover functional correctness and memory safety; constant-time behavior and cryptographic security proofs remain outside scope.
+- Preserve existing prompt-log changes and resume exact prompt logging when implementation mode begins.
+
+[2026-10-14T04:01:03+00:00]
+do it
+
+[2026-10-14T05:22:21+00:00]
+why is openssl so much faster? 
+
+[2026-10-14T05:24:32+00:00]
+add this explanations to aes_ige/benchmark/results/report.html and note them as possible causes not definitive
+
+[2026-10-14T05:26:10+00:00]
+push to github
+

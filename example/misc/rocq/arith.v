@@ -92,3 +92,14 @@ Proof. reflexivity. Qed.
 Example remainder_noninteger :
   bin_op_eval RemOp (LitV (LitBool true)) (LitV (LitInt 3)) = None.
 Proof. reflexivity. Qed.
+
+(** Bitwise operations retain the ordinary signed two's-complement laws. *)
+Example bitwise_signed_cases :
+  bin_op_eval BitXorOp (LitV (LitInt (-1))) (LitV (LitInt 85)) = Some (LitV (LitInt (-86))) ∧
+  bin_op_eval BitAndOp (LitV (LitInt (-1))) (LitV (LitInt 255)) = Some (LitV (LitInt 255)) ∧
+  bin_op_eval BitXorOp (LitV (LitInt 128)) (LitV (LitInt 255)) = Some (LitV (LitInt 127)).
+Proof. vm_compute. repeat split; reflexivity. Qed.
+Example bitwise_noninteger :
+  bin_op_eval BitXorOp (LitV (LitBool true)) (LitV (LitInt 3)) = None ∧
+  bin_op_eval BitAndOp (LitV (LitInt 3)) (LitV (LitBool true)) = None.
+Proof. split; reflexivity. Qed.

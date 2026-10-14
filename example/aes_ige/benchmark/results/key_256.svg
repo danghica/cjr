@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 200" role="img">
+<title>key_256: medians and interquartile ranges, ns/expansion, logarithmic axis</title>
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font:14px system-ui;fill:#26333a}</style>
+<text x="20" y="28">key_256 · median and IQR · ns/expansion · logarithmic axis</text>
+<path d="M 180.0 50 V 155" stroke="#e4e9e9"/>
+<text x="180.0" y="180" text-anchor="middle">10</text>
+<path d="M 490.0 50 V 155" stroke="#e4e9e9"/>
+<text x="490.0" y="180" text-anchor="middle">100</text>
+<path d="M 800.0 50 V 155" stroke="#e4e9e9"/>
+<text x="800.0" y="180" text-anchor="middle">1000</text>
+<text x="20" y="80">32 key bytes</text>
+<path d="M 748.4564314513647 80 H 748.9795990113224" stroke="#176f76" stroke-width="5"/>
+<circle cx="748.709248933973" cy="80" r="5" fill="#176f76"/>
+<text x="830" y="85">CJR: 683.20</text>
+<path d="M 340.61862322500826 107 H 353.1838683935209" stroke="#de8b37" stroke-width="5"/>
+<circle cx="344.9449450098565" cy="107" r="5" fill="#de8b37"/>
+<text x="830" y="112">OpenSSL: 34.05</text>
+</svg>

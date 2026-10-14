@@ -59,7 +59,7 @@ Definition binder_beq (a b : binder) : bool :=
 Definition binop_beq (a b : bin_op) : bool :=
   match a, b with
   | PlusOp, PlusOp | MinusOp, MinusOp | RemOp, RemOp | LeOp, LeOp
-  | EqOp, EqOp | AndOp, AndOp => true
+  | EqOp, EqOp | AndOp, AndOp | BitXorOp, BitXorOp | BitAndOp, BitAndOp => true
   | _, _ => false
   end.
 
@@ -433,6 +433,8 @@ Definition sym (op : bin_op) : string :=
   | LeOp => " <= "
   | EqOp => " == "
   | AndOp => " && "
+  | BitXorOp => " ^ "
+  | BitAndOp => " & "
   end.
 
 Definition lit (l : base_lit) : string :=

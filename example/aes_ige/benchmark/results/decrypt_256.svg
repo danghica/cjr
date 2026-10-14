@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 380" role="img">
+<title>decrypt_256: medians and interquartile ranges, ns/logical byte, logarithmic axis</title>
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font:14px system-ui;fill:#26333a}</style>
+<text x="20" y="28">decrypt_256 · median and IQR · ns/logical byte · logarithmic axis</text>
+<path d="M 180.0 50 V 335" stroke="#e4e9e9"/>
+<text x="180.0" y="360" text-anchor="middle">1</text>
+<path d="M 386.66666666666663 50 V 335" stroke="#e4e9e9"/>
+<text x="386.66666666666663" y="360" text-anchor="middle">10</text>
+<path d="M 593.3333333333333 50 V 335" stroke="#e4e9e9"/>
+<text x="593.3333333333333" y="360" text-anchor="middle">100</text>
+<path d="M 800.0 50 V 335" stroke="#e4e9e9"/>
+<text x="800.0" y="360" text-anchor="middle">1000</text>
+<text x="20" y="80">16 bytes</text>
+<path d="M 665.4143758219586 80 H 665.9068680707499" stroke="#176f76" stroke-width="5"/>
+<circle cx="665.6747239628974" cy="80" r="5" fill="#176f76"/>
+<text x="830" y="85">CJR: 223.89</text>
+<path d="M 269.28218911879827 107 H 270.7811354590284" stroke="#de8b37" stroke-width="5"/>
+<circle cx="269.7990509675338" cy="107" r="5" fill="#de8b37"/>
+<text x="830" y="112">OpenSSL: 2.72</text>
+<text x="20" y="170">1,024 bytes</text>
+<path d="M 685.4663674425026 170 H 685.8384872632173" stroke="#176f76" stroke-width="5"/>
+<circle cx="685.5864957147178" cy="170" r="5" fill="#176f76"/>
+<text x="830" y="175">CJR: 279.50</text>
+<path d="M 277.63032222115015 197 H 278.5878528095478" stroke="#de8b37" stroke-width="5"/>
+<circle cx="277.92188996946686" cy="197" r="5" fill="#de8b37"/>
+<text x="830" y="202">OpenSSL: 2.98</text>
+<text x="20" y="260">65,536 bytes</text>
+<path d="M 696.6003674800824 260 H 697.0629187093878" stroke="#176f76" stroke-width="5"/>
+<circle cx="696.7692371308887" cy="260" r="5" fill="#176f76"/>
+<text x="830" y="265">CJR: 316.59</text>
+<path d="M 278.3878672573516 287 H 279.1922364922175" stroke="#de8b37" stroke-width="5"/>
+<circle cx="278.968733376491" cy="287" r="5" fill="#de8b37"/>
+<text x="830" y="292">OpenSSL: 3.01</text>
+</svg>

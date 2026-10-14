@@ -170,6 +170,17 @@ Section laws.
     destruct (decide (d = 0)%Z); [contradiction|reflexivity].
   Qed.
 
+  (** Integer bitwise operations; Boolean conjunction remains [AndOp]. *)
+  Lemma wp_bitxor (a b : Z) E Φ :
+    ▷ (£ 1 -∗ Φ (LitV (LitInt (Z.lxor a b)))) ⊢
+    WP BinOp BitXorOp (Val (LitV (LitInt a))) (Val (LitV (LitInt b))) @ E {{ Φ }}.
+  Proof. apply wp_binop. reflexivity. Qed.
+
+  Lemma wp_bitand (a b : Z) E Φ :
+    ▷ (£ 1 -∗ Φ (LitV (LitInt (Z.land a b)))) ⊢
+    WP BinOp BitAndOp (Val (LitV (LitInt a))) (Val (LitV (LitInt b))) @ E {{ Φ }}.
+  Proof. apply wp_binop. reflexivity. Qed.
+
   Lemma wp_offset (l i : Z) E Φ :
     ▷ (£ 1 -∗ Φ (LitV (LitPtr (l + i)%Z))) ⊢
     WP Offset (Val (LitV (LitPtr l))) (Val (LitV (LitInt i))) @ E {{ Φ }}.

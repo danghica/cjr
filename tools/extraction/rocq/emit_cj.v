@@ -301,6 +301,8 @@ Definition p_most_frequent :=
           (Struct [] [Var "input"; int 0; int 42]))
         (App (Rec None (Some "input") most_frequent.mf_body) (Var "input")))).
 
+From cjr.aes_ige Require Import extract.
+
 (** * The files, in [_CoqProject] order *)
 
 Definition cj_files : list (string * prog) :=
@@ -319,7 +321,8 @@ Definition cj_files : list (string * prog) :=
    ("hash_map", p_hash_map);
    ("qsort_array", p_qsort_array);
    ("qsort_array_list", p_qsort_array_list);
-   ("most_frequent", p_most_frequent)].
+   ("most_frequent", p_most_frequent);
+   ("aes_ige", aes_program)].
 
 (** Every file, each preceded by a line [@@FILE NAME]. *)
 Definition cj_bundle : string :=

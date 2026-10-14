@@ -13,10 +13,10 @@ from . import benchmark, docs
 from .support import toolchain, metadata
 
 ROOT = Path(__file__).resolve().parents[2]
-NAMES = ('quadtree', 'array', 'array_list', 'list', 'list_rev', 'qsort', 'hash_map', 'most_frequent', 'misc')
+NAMES = ('quadtree', 'array', 'array_list', 'list', 'list_rev', 'qsort', 'hash_map', 'most_frequent', 'misc', 'aes_ige')
 PROGRAMS = ('arith', 'struct_upd', 'cell', 'swap', 'sum_block', 'class_upd', 'frame_call',
             'vtable', 'list', 'list_rev', 'array', 'array_list', 'hash_map',
-            'qsort_array', 'qsort_array_list', 'most_frequent')
+            'qsort_array', 'qsort_array_list', 'most_frequent', 'aes_ige')
 
 
 def owner(program):
@@ -76,7 +76,7 @@ def extract():
         if relative not in tutorial:
             further.extend(['\\subsection{\\texttt{' + program.replace('_', '\\_') + '.cj}}',
                             '\\lstinputlisting{' + relative + '}', ''])
-    (ROOT / 'paper/further.tex').write_text('\n'.join(further) + '\n')
+    (ROOT / 'paper/further.tex').write_text('\n'.join(further).rstrip() + '\n')
     print(f'Extracted {len(emitted)} programs into their example directories.')
 
 

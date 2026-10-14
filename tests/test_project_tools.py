@@ -2,17 +2,48 @@ import tempfile
 import unittest
 import csv
 import json
+import sys
 from pathlib import Path
 
-from tools.project_tools.benchmark import normalize
+from tools.project_tools.benchmark import normalize, provenance_root
 from tools.project_tools.docs import HTMLInfo, check_links
 from tools.project_tools.docs import hashes
-from tools.project_tools.benchmark import load_config, render
+from tools.project_tools.benchmark import load_config, render, plot
 from tools.project_tools.examples import PROGRAMS, ROOT, code_path
 from tools.rocq_readable.project import configuration, module_name
 
 
 class ProjectToolTests(unittest.TestCase):
+    def test_custom_benchmark_plot_command_receives_resolved_paths(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            output=root/'results'; output.mkdir()
+            (output/'summary.json').write_text('[]')
+            script=root/'plot.py'
+            script.write_text('import sys; from pathlib import Path; '
+                              'Path(sys.argv[1], "marker").write_text(sys.argv[2])')
+            config=root/'benchmark.json'
+            config.write_text(json.dumps({'output':'results', 'plots':{'command':
+                [sys.executable, '{root}/plot.py', '{output}', '{root}']}}))
+            plot(config)
+            self.assertEqual((output/'marker').read_text(),str(root.resolve()))
+
+    def test_native_benchmark_source_is_in_provenance(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            source=root/'benchmark.c'; source.write_text('int main(void) { return 0; }')
+            before=hashes(root)
+            self.assertIn('benchmark.c',before)
+            source.write_text('int main(void) { return 1; }')
+            self.assertNotEqual(before['benchmark.c'],hashes(root)['benchmark.c'])
+
+    def test_benchmark_provenance_can_scope_a_nested_report(self):
+        self.assertEqual(provenance_root({}, ROOT), ROOT)
+        self.assertEqual(provenance_root({'provenance_root': 'example/aes_ige'}, ROOT),
+                         ROOT / 'example/aes_ige')
+        with self.assertRaises(ValueError):
+            provenance_root({'provenance_root': '..'}, ROOT)
+
     def test_report_inventory_reads_rendered_declaration_articles(self):
         page = HTMLInfo('<nav aria-label="Project"><a href="index.html">Home</a></nav>'
                         '<article id="symbol-a"><h2>array_cells</h2><p>description</p></article>'
@@ -26,7 +57,9 @@ class ProjectToolTests(unittest.TestCase):
             path = ROOT / line
             self.assertTrue(path.is_file(), line)
             identity = module_name(path, configuration(path, ROOT), ROOT)
-            if '/rocq/' in line:
+            if line.startswith('example/aes_ige/rocq/'):
+                self.assertEqual(identity, 'cjr.aes_ige.' + path.stem)
+            elif '/rocq/' in line:
                 self.assertEqual(identity, 'cjr.examples.' + path.stem)
             elif line.startswith('example/quadtree/'):
                 self.assertEqual(identity, 'cjr.quadtree.' + '.'.join(path.relative_to(ROOT / 'example/quadtree').with_suffix('').parts))

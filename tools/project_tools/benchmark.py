@@ -41,6 +41,14 @@ def load_config(path: Path):
     return config, root
 
 
+def provenance_root(config, root: Path) -> Path:
+    """Scope source hashes to the report project while retaining build paths."""
+    candidate = (root / config.get("provenance_root", ".")).resolve()
+    if not candidate.is_relative_to(root.resolve()):
+        raise ValueError("benchmark provenance root must stay inside its project root")
+    return candidate
+
+
 def render(value, values):
     if isinstance(value, str):
         return value.format_map({k: str(v) for k, v in values.items()})
@@ -180,7 +188,8 @@ def run(config_path: Path):
         "compiler": version, "sdk": sdk or environment.get("SDKROOT", "compiler default"),
         "machine": platform.uname()._asdict(), "processes": processes,
         "samples": len(rows), "group_by": group_by,
-        "sources": project_hashes(root), "protocol": config.get("protocol", {}),
+        "benchmark_sources": source_hashes, "harness_sources": harness_hashes,
+        "sources": project_hashes(provenance_root(config, root)), "protocol": config.get("protocol", {}),
     }
     (output / "metadata.json").write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
     print(f"Saved {len(rows)} normalized measurements to {output}")
@@ -193,6 +202,10 @@ def plot(config_path: Path):
         raise ValueError("benchmark output must stay inside its project root")
     summary = json.loads((output / "summary.json").read_text())
     plot_config = config.get("plots", {})
+    if plot_config.get("command"):
+        command = render(plot_config["command"], {"root": root, "output": output})
+        subprocess.run(command, cwd=root, check=True, timeout=int(config.get("timeout_seconds", 900)))
+        return
     by = plot_config.get("facet", "distribution")
     facets = sorted({str(r.get(by, "all")) for r in summary})
     for facet in facets:

@@ -8,3 +8,6 @@ Notation "e1 % e2" := (BinOp RemOp e1%E e2%E) (at level 40, left associativity) 
 Notation "e1 ≤ e2" := (BinOp LeOp e1%E e2%E) : expr_scope.
 
 Bind Scope expr_scope with expr.
+
+Notation "e1 .^ e2" := (BinOp BitXorOp e1%E e2%E) (at level 40, left associativity) : expr_scope.
+Notation "e1 .& e2" := (BinOp BitAndOp e1%E e2%E) (at level 40, left associativity) : expr_scope.

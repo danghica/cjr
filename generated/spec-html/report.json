@@ -5,6 +5,8 @@
       "file": "theories/adequacy.v",
       "errors": [],
       "unsupported": [
+        "unclassified arrow at byte 785",
+        "unclassified arrow at byte 887",
         "unmapped notation #[ _ ; .. ; _ ]"
       ],
       "declarations": 4
@@ -14,6 +16,78 @@
       "errors": [],
       "unsupported": [
         "CFix",
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitStack [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Pop [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackAssign [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackFieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "Cangjie unavailable: symbolic identifier or binder",
+        "unclassified arrow at byte 11513",
+        "unclassified arrow at byte 11618",
+        "unclassified arrow at byte 11723",
+        "unclassified arrow at byte 11836",
+        "unclassified arrow at byte 11981",
+        "unclassified arrow at byte 12059",
+        "unclassified arrow at byte 12198",
+        "unclassified arrow at byte 12231",
+        "unclassified arrow at byte 12268",
+        "unclassified arrow at byte 15679",
+        "unclassified arrow at byte 15832",
+        "unclassified arrow at byte 16071",
+        "unclassified arrow at byte 16127",
+        "unclassified arrow at byte 16750",
+        "unclassified arrow at byte 17076",
+        "unclassified arrow at byte 17197",
+        "unclassified arrow at byte 17549",
+        "unclassified arrow at byte 17810",
+        "unclassified arrow at byte 17938",
+        "unclassified arrow at byte 18591",
+        "unclassified arrow at byte 18738",
+        "unclassified arrow at byte 18969",
+        "unclassified arrow at byte 19232",
+        "unclassified arrow at byte 19554",
+        "unclassified arrow at byte 19596",
+        "unclassified arrow at byte 19617",
+        "unclassified arrow at byte 19820",
+        "unclassified arrow at byte 20569",
+        "unclassified arrow at byte 20604",
+        "unclassified arrow at byte 21114",
+        "unclassified arrow at byte 21363",
+        "unclassified arrow at byte 21604",
+        "unclassified arrow at byte 21853",
+        "unclassified arrow at byte 22348",
+        "unclassified arrow at byte 22973",
+        "unclassified arrow at byte 23200",
+        "unclassified arrow at byte 23240",
+        "unclassified arrow at byte 23601",
+        "unclassified arrow at byte 23637",
+        "unclassified arrow at byte 24276",
+        "unclassified arrow at byte 24317",
+        "unclassified arrow at byte 24663",
+        "unclassified arrow at byte 26739",
+        "unclassified arrow at byte 27124",
+        "unclassified arrow at byte 27168",
+        "unclassified arrow at byte 28530",
+        "unclassified arrow at byte 29237",
+        "unclassified arrow at byte 29907",
+        "unclassified arrow at byte 30196",
+        "unclassified arrow at byte 30507",
+        "unclassified arrow at byte 30899",
+        "unclassified arrow at byte 31340",
+        "unclassified arrow at byte 31562",
+        "unclassified arrow at byte 31796",
+        "unclassified arrow at byte 32064",
+        "unclassified arrow at byte 32078",
+        "unclassified arrow at byte 8657",
         "unmapped notation (=)",
         "unmapped notation <[ _ := _ ]>",
         "unmapped notation _ ##ₘ _",
@@ -30,6 +104,10 @@
       "file": "theories/lifting.v",
       "errors": [],
       "unsupported": [
+        "unclassified arrow at byte 366",
+        "unclassified arrow at byte 391",
+        "unclassified arrow at byte 430",
+        "unclassified arrow at byte 462",
         "unmapped notation £ _"
       ],
       "declarations": 1
@@ -40,17 +118,39 @@
       "unsupported": [
         "unsupported declaration not"
       ],
-      "declarations": 4
+      "declarations": 6
     },
     {
       "file": "theories/primitive_laws.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitStack [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackAssign [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackFieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "Cangjie unavailable: symbolic identifier or binder",
+        "unclassified arrow at byte 10854",
+        "unclassified arrow at byte 14227",
+        "unclassified arrow at byte 2813",
+        "unclassified arrow at byte 2838",
+        "unclassified arrow at byte 2877",
+        "unclassified arrow at byte 2909",
+        "unclassified arrow at byte 5115",
+        "unclassified arrow at byte 5553",
+        "unclassified arrow at byte 6962",
         "unmapped notation True",
         "unmapped notation £ _",
         "unsupported declaration not"
       ],
-      "declarations": 41
+      "declarations": 43
     },
     {
       "file": "theories/verify_assumptions.v",
@@ -63,6 +163,17 @@
       "errors": [],
       "unsupported": [
         "CFix",
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Pop [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackAssign [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackFieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StackLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: symbolic identifier or binder",
         "unmapped notation _ +++ _",
         "unsupported declaration abbrev",
         "unsupported declaration not"
@@ -73,6 +184,8 @@
       "file": "tools/extraction/rocq/emit_cj.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
         "unmapped notation _ ++ _"
       ],
       "declarations": 47
@@ -111,6 +224,8 @@
       "cjr.notation.::expr_scope:x_'%'_x",
       "cjr.notation.::expr_scope:x_'+'_x",
       "cjr.notation.::expr_scope:x_'-'_x",
+      "cjr.notation.::expr_scope:x_'.&'_x",
+      "cjr.notation.::expr_scope:x_'.^'_x",
       "cjr.notation.::expr_scope:x_'≤'_x",
       "cjr.primitive_laws.cjr_irisGS",
       "cjr.primitive_laws.raw_mapsto_exclusive",
@@ -118,6 +233,8 @@
       "cjr.primitive_laws.wp_alloc",
       "cjr.primitive_laws.wp_alloc_one",
       "cjr.primitive_laws.wp_app",
+      "cjr.primitive_laws.wp_bitand",
+      "cjr.primitive_laws.wp_bitxor",
       "cjr.primitive_laws.wp_field_load",
       "cjr.primitive_laws.wp_field_store",
       "cjr.primitive_laws.wp_free_one",
@@ -1994,6 +2111,20 @@
         ],
         "issues": []
       },
+      "cjr.notation.::expr_scope:x_'.&'_x": {
+        "depends_on": [
+          "cjr.lang.bin_op",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
+      "cjr.notation.::expr_scope:x_'.^'_x": {
+        "depends_on": [
+          "cjr.lang.bin_op",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
       "cjr.notation.::expr_scope:x_'≤'_x": {
         "depends_on": [
           "cjr.lang.bin_op",
@@ -2187,6 +2318,28 @@
           "cjr.lang.expr",
           "cjr.primitive_laws.cjrGS",
           "cjr.primitive_laws.wp_pure_step"
+        ],
+        "issues": []
+      },
+      "cjr.primitive_laws.wp_bitand": {
+        "depends_on": [
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_binop"
+        ],
+        "issues": []
+      },
+      "cjr.primitive_laws.wp_bitxor": {
+        "depends_on": [
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_binop"
         ],
         "issues": []
       },
@@ -3575,6 +3728,16 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.notation.::expr_scope:x_'.&'_x": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.notation.::expr_scope:x_'.^'_x": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.notation.::expr_scope:x_'≤'_x": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3676,6 +3839,16 @@
         "description": null
       },
       "cjr.primitive_laws.wp_binop": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.primitive_laws.wp_bitand": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.primitive_laws.wp_bitxor": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null

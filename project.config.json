@@ -50,6 +50,10 @@
     {
       "label": "misc",
       "path": "example/misc/index.html"
+    },
+    {
+      "label": "aes_ige",
+      "path": "example/aes_ige/index.html"
     }
   ],
   "name": "CJR",

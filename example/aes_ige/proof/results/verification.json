@@ -1,0 +1,17 @@
+{
+  "assumptions": "all audited declarations closed under the global context",
+  "audited_declarations": 226,
+  "contract_coverage": "Concrete specification algebra and executable byte/block kernels; full key-expansion, AES-routine and IGE-loop refinement remains outstanding.",
+  "coqchk": "passed",
+  "date_utc": "2026-10-14T05:42:42Z",
+  "expected_declarations": 226,
+  "pending_obligations": [
+    "key-expansion Iris refinement",
+    "complete AES block Iris refinement",
+    "IGE-loop Iris refinement",
+    "implementation-level round-trip and chunk contracts"
+  ],
+  "refinement_status": "partial",
+  "repository_verify_log_sha256": "1c10215e07a0af6e3603db7a6699110d8cd98b00f9e04df29ebe3b10459f1a01",
+  "status": "passed"
+}
