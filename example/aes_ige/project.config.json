@@ -13,33 +13,71 @@
   "css": "docs/report.css",
   "declaration_groups": [
     {
-      "name": "Byte algebra and finite-field specification",
-      "pattern": "bytes"
+      "name": "Byte algebra, finite fields, and machine bounds",
+      "pattern": "bytes|index_bounds"
     },
     {
       "name": "AES transformations",
-      "pattern": "block"
+      "pattern": "/block.html"
     },
     {
-      "name": "AES and key schedule",
-      "pattern": "aes.v|/aes.html"
+      "name": "AES and key-schedule specification",
+      "pattern": "/aes.html|key_layout"
     },
     {
       "name": "IGE algebra",
-      "pattern": "ige.v|/ige.html"
+      "pattern": "/ige.html|/mode.html"
     },
     {
-      "name": "Executable kernel ownership contracts",
-      "pattern": "memory|refinement"
+      "name": "Key-expansion refinement and schedule layout",
+      "pattern": "expansion|/layout.html"
     },
     {
-      "name": "Executable program and extraction",
+      "name": "Complete AES refinement and inverse contracts",
+      "pattern": "encrypt_|decrypt_|/cipher.html"
+    },
+    {
+      "name": "Complete IGE refinement and client contracts",
+      "pattern": "ige_refinement|composition"
+    },
+    {
+      "name": "Transformation ownership and rejection contracts",
+      "pattern": "memory|kernels|refinement|rejection"
+    },
+    {
+      "name": "Administrative proof interfaces",
+      "pattern": "routines|calls|syntax"
+    },
+    {
+      "name": "Executable program, extraction, and vectors",
       "pattern": ".*"
     }
   ],
   "documentation_metadata": "docs/metadata.json",
+  "documentation_sources": [
+    "rocq/bytes.v",
+    "rocq/block.v",
+    "rocq/aes.v",
+    "rocq/ige.v",
+    "rocq/mode.v",
+    "rocq/program.v",
+    "rocq/extract.v",
+    "rocq/refinement.v",
+    "rocq/vectors.v",
+    "rocq/memory.v",
+    "rocq/expansion.v",
+    "rocq/routines.v",
+    "rocq/calls.v",
+    "rocq/rejection.v",
+    "rocq/index_bounds.v",
+    "rocq/cipher.v",
+    "rocq/key_layout.v",
+    "rocq/layout.v",
+    "rocq/ige_refinement.v",
+    "rocq/composition.v"
+  ],
   "index": "index.html",
-  "intro": "Concrete AES-128/192/256 and OpenSSL-compatible IGE with checked algebraic laws and extracted Cangjie.",
+  "intro": "Concrete AES-128/192/256 and OpenSSL-compatible IGE with complete Iris refinement, algebraic and implementation client laws, and extracted Cangjie.",
   "link_check": "docs/link-check.json",
   "links": [
     {
@@ -52,5 +90,5 @@
     }
   ],
   "name": "aes_ige",
-  "title": "AES-IGE specification, algebra and validation"
+  "title": "Verified AES-IGE specification and implementation"
 }

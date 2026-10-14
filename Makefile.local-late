@@ -24,7 +24,7 @@ project-tools-test:
 	$(PYTHON) -m unittest discover -s tests -p 'test_project_tools.py' -v
 
 VERIFY_LOG ?= build/verify.log
-VERIFY_THEOREMS := 226
+VERIFY_THEOREMS := 352
 
 .PHONY: verify verify-checks check-proofs check-axioms check-no-cheats
 # A recursive make keeps all build/check output inside the log and preserves

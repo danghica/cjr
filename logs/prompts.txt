@@ -607,3 +607,9 @@ refresh the paper and the readme to add the new operators (bitwise operators) an
 [2026-10-14T05:53:52+00:00]
 push to githubm
 
+[2026-10-14T05:58:34+00:00]
+why did you not finish the correctness proof?
+
+[2026-10-14T06:16:20+00:00]
+continue , finish the remaining proofs. 
+

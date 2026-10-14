@@ -12,7 +12,7 @@
     "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libcrypto.dylib",
     "-Wl,-rpath,/opt/homebrew/Cellar/openssl@3/3.6.1/lib",
     "-o",
-    "/var/folders/mq/rtbdtgcd44b6bxl9gmby_9xm0000gn/T/project-benchmark-6glqcqk4/openssl_ige"
+    "/var/folders/mq/rtbdtgcd44b6bxl9gmby_9xm0000gn/T/project-benchmark-to8aogn6/openssl_ige"
   ],
   "library": "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libcrypto.3.dylib",
   "library_sha256": "1eda496905d4741521085e070606ff1e419bac671946f8905039c5bae8d8b0b6",

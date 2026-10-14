@@ -1,0 +1,67 @@
+{
+  "examples": [
+    {
+      "cases": 5,
+      "date_utc": null,
+      "example": "quadtree",
+      "status": "passed"
+    },
+    {
+      "cases": 3,
+      "date_utc": null,
+      "example": "array",
+      "status": "passed"
+    },
+    {
+      "cases": 9,
+      "date_utc": null,
+      "example": "array_list",
+      "status": "passed"
+    },
+    {
+      "cases": 3,
+      "date_utc": null,
+      "example": "list",
+      "status": "passed"
+    },
+    {
+      "cases": 6,
+      "date_utc": null,
+      "example": "list_rev",
+      "status": "passed"
+    },
+    {
+      "cases": 11,
+      "date_utc": null,
+      "example": "qsort",
+      "status": "passed"
+    },
+    {
+      "cases": 17,
+      "date_utc": null,
+      "example": "hash_map",
+      "status": "passed"
+    },
+    {
+      "cases": 11,
+      "date_utc": null,
+      "example": "most_frequent",
+      "status": "passed"
+    },
+    {
+      "cases": 9,
+      "date_utc": null,
+      "example": "misc",
+      "status": "passed"
+    },
+    {
+      "cases": 15,
+      "date_utc": null,
+      "example": "aes_ige",
+      "status": "passed"
+    }
+  ],
+  "note": "Repository runtime regression run. The subsequent proof-only lemma-name correction does not change extracted programs.",
+  "status": "passed",
+  "total_cases": 89
+}

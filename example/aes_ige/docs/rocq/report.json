@@ -102,6 +102,174 @@
       "declarations": 32
     },
     {
+      "file": "rocq/calls.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]"
+      ],
+      "declarations": 2
+    },
+    {
+      "file": "rocq/cipher.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 1075",
+        "unclassified arrow at byte 1238",
+        "unclassified arrow at byte 1503",
+        "unclassified arrow at byte 1526",
+        "unclassified arrow at byte 1546",
+        "unclassified arrow at byte 1571",
+        "unclassified arrow at byte 2534",
+        "unclassified arrow at byte 2557",
+        "unclassified arrow at byte 2577",
+        "unclassified arrow at byte 2602",
+        "unclassified arrow at byte 3564",
+        "unclassified arrow at byte 3587",
+        "unclassified arrow at byte 3607",
+        "unclassified arrow at byte 3632",
+        "unclassified arrow at byte 4215",
+        "unclassified arrow at byte 4238",
+        "unclassified arrow at byte 4258",
+        "unclassified arrow at byte 4283",
+        "unclassified arrow at byte 4892",
+        "unclassified arrow at byte 4915",
+        "unclassified arrow at byte 4935",
+        "unclassified arrow at byte 4960",
+        "unclassified arrow at byte 5543",
+        "unclassified arrow at byte 5566",
+        "unclassified arrow at byte 5586",
+        "unclassified arrow at byte 5611",
+        "unclassified arrow at byte 6198",
+        "unclassified arrow at byte 6448",
+        "unclassified arrow at byte 6465",
+        "unclassified arrow at byte 7001",
+        "unclassified arrow at byte 7018",
+        "unclassified arrow at byte 7558",
+        "unclassified arrow at byte 7575",
+        "unclassified arrow at byte 8218",
+        "unclassified arrow at byte 8235",
+        "unclassified arrow at byte 8877",
+        "unclassified arrow at byte 8894",
+        "unclassified arrow at byte 9405",
+        "unclassified arrow at byte 9422"
+      ],
+      "declarations": 18
+    },
+    {
+      "file": "rocq/composition.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1489",
+        "unclassified arrow at byte 1506",
+        "unclassified arrow at byte 1531",
+        "unclassified arrow at byte 1546",
+        "unclassified arrow at byte 1573",
+        "unclassified arrow at byte 3068",
+        "unclassified arrow at byte 3085",
+        "unclassified arrow at byte 3110",
+        "unclassified arrow at byte 3135",
+        "unclassified arrow at byte 3150",
+        "unclassified arrow at byte 3177",
+        "unclassified arrow at byte 5208",
+        "unclassified arrow at byte 5225",
+        "unclassified arrow at byte 731",
+        "unclassified arrow at byte 752",
+        "unclassified arrow at byte 769",
+        "unclassified arrow at byte 794",
+        "unclassified arrow at byte 808"
+      ],
+      "declarations": 5
+    },
+    {
+      "file": "rocq/expansion.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "unclassified arrow at byte 11160",
+        "unclassified arrow at byte 11181",
+        "unclassified arrow at byte 11740",
+        "unclassified arrow at byte 13448",
+        "unclassified arrow at byte 13472",
+        "unclassified arrow at byte 13493",
+        "unclassified arrow at byte 13514",
+        "unclassified arrow at byte 1412",
+        "unclassified arrow at byte 14977",
+        "unclassified arrow at byte 14998",
+        "unclassified arrow at byte 15019",
+        "unclassified arrow at byte 15041",
+        "unclassified arrow at byte 15051",
+        "unclassified arrow at byte 15061",
+        "unclassified arrow at byte 16895",
+        "unclassified arrow at byte 17240",
+        "unclassified arrow at byte 17264",
+        "unclassified arrow at byte 17286",
+        "unclassified arrow at byte 17303",
+        "unclassified arrow at byte 17330",
+        "unclassified arrow at byte 1748",
+        "unclassified arrow at byte 1940",
+        "unclassified arrow at byte 1966",
+        "unclassified arrow at byte 19695",
+        "unclassified arrow at byte 19719",
+        "unclassified arrow at byte 20493",
+        "unclassified arrow at byte 21262",
+        "unclassified arrow at byte 21286",
+        "unclassified arrow at byte 21317",
+        "unclassified arrow at byte 24842",
+        "unclassified arrow at byte 24869",
+        "unclassified arrow at byte 25293",
+        "unclassified arrow at byte 25363",
+        "unclassified arrow at byte 25383",
+        "unclassified arrow at byte 25411",
+        "unclassified arrow at byte 27922",
+        "unclassified arrow at byte 27933",
+        "unclassified arrow at byte 27964",
+        "unclassified arrow at byte 28247",
+        "unclassified arrow at byte 28258",
+        "unclassified arrow at byte 28324",
+        "unclassified arrow at byte 2957",
+        "unclassified arrow at byte 30295",
+        "unclassified arrow at byte 30306",
+        "unclassified arrow at byte 30360",
+        "unclassified arrow at byte 31658",
+        "unclassified arrow at byte 31728",
+        "unclassified arrow at byte 31748",
+        "unclassified arrow at byte 31776",
+        "unclassified arrow at byte 32517",
+        "unclassified arrow at byte 32587",
+        "unclassified arrow at byte 32607",
+        "unclassified arrow at byte 3263",
+        "unclassified arrow at byte 32635",
+        "unclassified arrow at byte 3290",
+        "unclassified arrow at byte 3309",
+        "unclassified arrow at byte 33348",
+        "unclassified arrow at byte 33364",
+        "unclassified arrow at byte 33380",
+        "unclassified arrow at byte 4349",
+        "unclassified arrow at byte 4532",
+        "unclassified arrow at byte 5225",
+        "unclassified arrow at byte 584",
+        "unclassified arrow at byte 6686",
+        "unclassified arrow at byte 7720",
+        "unclassified arrow at byte 7741",
+        "unclassified arrow at byte 8983",
+        "unclassified arrow at byte 9007",
+        "unclassified arrow at byte 9028",
+        "unclassified arrow at byte 9049",
+        "unclassified arrow at byte 9071",
+        "unclassified arrow at byte 9081",
+        "unclassified arrow at byte 9091",
+        "unclassified arrow at byte 977",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ / _",
+        "unmapped notation _ < _ <= _",
+        "unmapped notation _ mod _"
+      ],
+      "declarations": 61
+    },
+    {
       "file": "rocq/extract.v",
       "errors": [],
       "unsupported": [],
@@ -143,6 +311,82 @@
       "declarations": 24
     },
     {
+      "file": "rocq/ige_refinement.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 12151",
+        "unclassified arrow at byte 12168",
+        "unclassified arrow at byte 12193",
+        "unclassified arrow at byte 12207",
+        "unclassified arrow at byte 6949",
+        "unclassified arrow at byte 6966",
+        "unclassified arrow at byte 6983",
+        "unclassified arrow at byte 8875",
+        "unclassified arrow at byte 8892",
+        "unclassified arrow at byte 8917",
+        "unclassified arrow at byte 8932",
+        "unclassified arrow at byte 8958",
+        "unmapped notation _ ⊣⊢ _",
+        "unmapped notation emp"
+      ],
+      "declarations": 8
+    },
+    {
+      "file": "rocq/index_bounds.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1091",
+        "unclassified arrow at byte 1101",
+        "unclassified arrow at byte 1124",
+        "unclassified arrow at byte 1137",
+        "unclassified arrow at byte 256",
+        "unclassified arrow at byte 291",
+        "unclassified arrow at byte 307",
+        "unclassified arrow at byte 438",
+        "unclassified arrow at byte 454",
+        "unclassified arrow at byte 607",
+        "unclassified arrow at byte 637",
+        "unclassified arrow at byte 771",
+        "unclassified arrow at byte 816",
+        "unclassified arrow at byte 942",
+        "unclassified arrow at byte 965",
+        "unmapped notation - _",
+        "unmapped notation _ <= _ < _",
+        "unmapped notation _ <= _ <= _"
+      ],
+      "declarations": 7
+    },
+    {
+      "file": "rocq/key_layout.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1009",
+        "unclassified arrow at byte 1465",
+        "unclassified arrow at byte 351"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "rocq/layout.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1149",
+        "unclassified arrow at byte 1207",
+        "unclassified arrow at byte 1227",
+        "unclassified arrow at byte 4187",
+        "unclassified arrow at byte 4821",
+        "unclassified arrow at byte 4879",
+        "unclassified arrow at byte 4899",
+        "unclassified arrow at byte 4927",
+        "unclassified arrow at byte 6047",
+        "unclassified arrow at byte 6064",
+        "unclassified arrow at byte 650",
+        "unclassified arrow at byte 676",
+        "unmapped notation _ ⊣⊢ _"
+      ],
+      "declarations": 12
+    },
+    {
       "file": "rocq/memory.v",
       "errors": [],
       "unsupported": [
@@ -155,6 +399,21 @@
         "unclassified arrow at byte 8810"
       ],
       "declarations": 21
+    },
+    {
+      "file": "rocq/mode.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1325",
+        "unclassified arrow at byte 1350",
+        "unclassified arrow at byte 1574",
+        "unclassified arrow at byte 1599",
+        "unclassified arrow at byte 739",
+        "unclassified arrow at byte 756",
+        "unclassified arrow at byte 911",
+        "unclassified arrow at byte 928"
+      ],
+      "declarations": 11
     },
     {
       "file": "rocq/program.v",
@@ -182,6 +441,29 @@
       "declarations": 13
     },
     {
+      "file": "rocq/rejection.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 1369",
+        "unclassified arrow at byte 1381",
+        "unclassified arrow at byte 1393",
+        "unclassified arrow at byte 1908",
+        "unclassified arrow at byte 2493",
+        "unclassified arrow at byte 2505",
+        "unclassified arrow at byte 2517",
+        "unclassified arrow at byte 837",
+        "unclassified arrow at byte 849",
+        "unclassified arrow at byte 861"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "rocq/routines.v",
+      "errors": [],
+      "unsupported": [],
+      "declarations": 3
+    },
+    {
       "file": "rocq/vectors.v",
       "errors": [],
       "unsupported": [],
@@ -200,21 +482,44 @@
       "cjr.aes_ige.aes.expanded_key_length",
       "cjr.aes_ige.aes.gf_inverse_nonzero",
       "cjr.aes_ige.aes.gf_inverse_zero",
-      "cjr.aes_ige.aes.key_schedule_length",
       "cjr.aes_ige.block.inv_mix_fips",
       "cjr.aes_ige.block.xor_comm",
       "cjr.aes_ige.bytes.block_loop_machine_bounds",
       "cjr.aes_ige.bytes.bx_cancel",
       "cjr.aes_ige.bytes.byte_machine_bounds",
+      "cjr.aes_ige.cipher.block_implementation_roundtrip",
+      "cjr.aes_ige.cipher.decrypt_block_app_wp",
+      "cjr.aes_ige.cipher.encrypt_block_app_wp",
+      "cjr.aes_ige.composition.ige_implementation_chunks",
+      "cjr.aes_ige.composition.ige_implementation_empty",
+      "cjr.aes_ige.composition.ige_implementation_roundtrip",
+      "cjr.aes_ige.expansion.cells_load_wp",
+      "cjr.aes_ige.expansion.cells_store_wp",
+      "cjr.aes_ige.expansion.col_list_bytes",
+      "cjr.aes_ige.expansion.exp_sbox_app_wp",
+      "cjr.aes_ige.expansion.expand_branch_keylen",
+      "cjr.aes_ige.expansion.expand_invalid_wp",
+      "cjr.aes_ige.expansion.expansion_tail_no_key",
+      "cjr.aes_ige.expansion.expansion_word_wp",
+      "cjr.aes_ige.expansion.flatten_cols_app",
+      "cjr.aes_ige.expansion.key_expansion_refines",
+      "cjr.aes_ige.expansion.valid_key_cols",
+      "cjr.aes_ige.expansion.words_three_wp",
       "cjr.aes_ige.extract.aes_program",
-      "cjr.aes_ige.ige.ige_decrypt_chunks",
       "cjr.aes_ige.ige.ige_decrypt_empty",
       "cjr.aes_ige.ige.ige_decrypt_injective",
       "cjr.aes_ige.ige.ige_decrypt_surjective",
-      "cjr.aes_ige.ige.ige_encrypt_chunks",
       "cjr.aes_ige.ige.ige_encrypt_empty",
       "cjr.aes_ige.ige.ige_encrypt_injective",
       "cjr.aes_ige.ige.ige_encrypt_surjective",
+      "cjr.aes_ige.ige_refinement.work_pack",
+      "cjr.aes_ige.index_bounds.expansion_offset_bounds",
+      "cjr.aes_ige.index_bounds.expansion_predecessor_bounds",
+      "cjr.aes_ige.index_bounds.ige_index_bounds",
+      "cjr.aes_ige.index_bounds.iv_offset_bounds",
+      "cjr.aes_ige.index_bounds.schedule_offset_bounds",
+      "cjr.aes_ige.index_bounds.workspace_offset_bounds",
+      "cjr.aes_ige.layout.expand_supported_key_wp",
       "cjr.aes_ige.memory.copy_wp",
       "cjr.aes_ige.memory.inv_sbox_app_wp",
       "cjr.aes_ige.memory.inv_sbox_body_args_closed",
@@ -234,9 +539,14 @@
       "cjr.aes_ige.memory.xtime_body_args_closed",
       "cjr.aes_ige.memory.xtime_body_dst_closed",
       "cjr.aes_ige.memory.xtime_body_src_closed",
+      "cjr.aes_ige.mode.ige_step_range",
       "cjr.aes_ige.refinement.inv_sbox_wp",
       "cjr.aes_ige.refinement.sbox_wp",
       "cjr.aes_ige.refinement.xtime_wp",
+      "cjr.aes_ige.rejection.decrypt_invalid_rounds_wp",
+      "cjr.aes_ige.rejection.encrypt_invalid_rounds_wp",
+      "cjr.aes_ige.rejection.ige_invalid_rounds_wp",
+      "cjr.aes_ige.routines.mix_three_inv",
       "cjr.aes_ige.vectors.fips_aes_128",
       "cjr.aes_ige.vectors.fips_aes_192",
       "cjr.aes_ige.vectors.fips_aes_256",
@@ -248,11 +558,22 @@
       "rocq/aes.v": [],
       "rocq/block.v": [],
       "rocq/bytes.v": [],
+      "rocq/calls.v": [],
+      "rocq/cipher.v": [],
+      "rocq/composition.v": [],
+      "rocq/expansion.v": [],
       "rocq/extract.v": [],
       "rocq/ige.v": [],
+      "rocq/ige_refinement.v": [],
+      "rocq/index_bounds.v": [],
+      "rocq/key_layout.v": [],
+      "rocq/layout.v": [],
       "rocq/memory.v": [],
+      "rocq/mode.v": [],
       "rocq/program.v": [],
       "rocq/refinement.v": [],
+      "rocq/rejection.v": [],
+      "rocq/routines.v": [],
       "rocq/vectors.v": []
     },
     "declarations": {
@@ -1411,6 +1732,915 @@
         ],
         "issues": []
       },
+      "cjr.aes_ige.calls.invoke_from_app": {
+        "depends_on": [
+          "cjr.aes_ige.calls.struct_values_wp",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.calls.struct_values_wp": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_body": {
+        "depends_on": [
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.program.encrypt_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_cipher": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt",
+          "cjr.aes_ige.aes.encrypt"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_cipher_inverse": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt_encrypt",
+          "cjr.aes_ige.aes.encrypt_decrypt",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.block_cipher"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_cipher_range": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt_bytes",
+          "cjr.aes_ige.aes.encrypt_bytes",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.block_cipher"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_cipher_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.block_body",
+          "cjr.aes_ige.cipher.block_cipher",
+          "cjr.aes_ige.cipher.decrypt_block_wp",
+          "cjr.aes_ige.cipher.encrypt_block_wp",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.block_implementation_roundtrip": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.block_body",
+          "cjr.aes_ige.cipher.block_cipher",
+          "cjr.aes_ige.cipher.block_cipher_inverse",
+          "cjr.aes_ige.cipher.block_cipher_range",
+          "cjr.aes_ige.cipher.block_cipher_wp",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.decrypt_block_app_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.key_schedule_length",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.schedule_bytes",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.decrypt_schedule_app_wp",
+          "cjr.aes_ige.cipher.key_supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.decrypt_block_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.key_schedule_length",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.schedule_bytes",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.decrypt_schedule_wp",
+          "cjr.aes_ige.cipher.key_supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_app_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.decrypt_schedule_body_wp",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_body_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.decrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.calls.invoke_from_app",
+          "cjr.aes_ige.cipher.decrypt_schedule_app_wp",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.encrypt_block_app_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.encrypt",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.key_schedule_length",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.schedule_bytes",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.encrypt_schedule_app_wp",
+          "cjr.aes_ige.cipher.key_supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.encrypt_block_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.encrypt",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.key_schedule_length",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.schedule_bytes",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.encrypt_schedule_wp",
+          "cjr.aes_ige.cipher.key_supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_app_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.encrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.encrypt_schedule_body_wp",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_body_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.encrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.encrypt_schedule",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.calls.invoke_from_app",
+          "cjr.aes_ige.cipher.encrypt_schedule_app_wp",
+          "cjr.aes_ige.cipher.supported_rounds",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.key_supported_rounds": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.cipher.supported_rounds"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.cipher.supported_rounds": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.composition.ige_call": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.ige_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.composition.ige_call_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.composition.ige_call",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.ige_refinement.ige_public_wp",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.composition.ige_implementation_chunks": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.composition.ige_call",
+          "cjr.aes_ige.composition.ige_call_wp",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.ige_refinement.blocks_at_app",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.mode.ige_spec_chunks",
+          "cjr.aes_ige.mode.ige_spec_length",
+          "cjr.aes_ige.mode.ige_spec_range",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.composition.ige_implementation_empty": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.composition.ige_call",
+          "cjr.aes_ige.composition.ige_call_wp",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.mode.ige_spec_empty",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.composition.ige_implementation_roundtrip": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.composition.ige_call",
+          "cjr.aes_ige.composition.ige_call_wp",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.mode.ige_spec_inverse",
+          "cjr.aes_ige.mode.ige_spec_length",
+          "cjr.aes_ige.mode.ige_spec_range",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.cells_load_wp": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.eptr"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.cells_store_wp": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.program.int"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.col_at": {
+        "depends_on": [
+          "cjr.aes_ige.block.column"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.col_list_bytes": {
+        "depends_on": [
+          "cjr.aes_ige.aes.col_list",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.bytes.byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.copy_key_loop_wp": {
+        "depends_on": [
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.expansion.copy_word_acc",
+          "cjr.aes_ige.expansion.copy_word_cont_wp",
+          "cjr.aes_ige.expansion.key_copy_byte",
+          "cjr.aes_ige.expansion.nth_lookup_default",
+          "cjr.aes_ige.expansion.seqs_app",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.copy_word_acc": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.words_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.copy_word_cont_wp": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.key_copy_byte",
+          "cjr.aes_ige.expansion.seq_word",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.eptr": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.exp_sbox_app_wp": {
+        "depends_on": [
+          "cjr.aes_ige.bytes.byte",
+          "cjr.aes_ige.bytes.sbox",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.sbox_body",
+          "cjr.aes_ige.refinement.groups_wp",
+          "cjr.aes_ige.refinement.sbox_table_value"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.exp_sbox_args_closed": {
+        "depends_on": [
+          "cjr.aes_ige.program.sbox_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_branch_args": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_args",
+          "cjr.aes_ige.expansion.seqs_closed",
+          "cjr.aes_ige.program.expand_branch"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_branch_keylen": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_keylen",
+          "cjr.aes_ige.expansion.key_copy_byte_keylen",
+          "cjr.aes_ige.expansion.seqs_closed",
+          "cjr.aes_ige.program.expand_branch"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_branch_keylen_key": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_keylen",
+          "cjr.aes_ige.expansion.expansion_byte_no_key",
+          "cjr.aes_ige.expansion.seqs_closed_subst",
+          "cjr.aes_ige.program.expand_branch"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_branch_swap": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_swap",
+          "cjr.aes_ige.expansion.key_copy_byte_swap",
+          "cjr.aes_ige.expansion.seqs_swap",
+          "cjr.aes_ige.program.expand_branch"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_branch_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.copy_key_loop_wp",
+          "cjr.aes_ige.expansion.expansion_loop_wp",
+          "cjr.aes_ige.expansion.expansion_tail_no_key_schedule",
+          "cjr.aes_ige.expansion.seqs_app",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.program.expand_branch",
+          "cjr.aes_ige.program.int"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_invalid_wp": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.expand_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_key_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.expansion.expand_branch_args",
+          "cjr.aes_ige.expansion.expand_branch_keylen_key",
+          "cjr.aes_ige.expansion.expand_branch_swap",
+          "cjr.aes_ige.expansion.expand_branch_wp",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.expand_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expand_words_step": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.expansion.expansion_column"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expanded_key_columns": {
+        "depends_on": [
+          "cjr.aes_ige.aes.col_list",
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.aes.expanded_key",
+          "cjr.aes_ige.aes.flatten_words_length",
+          "cjr.aes_ige.aes.nk_of_length",
+          "cjr.aes_ige.aes.read_col",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.initial_words_flatten"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_args": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.exp_sbox_args_closed",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_index": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_normal",
+          "cjr.aes_ige.expansion.word_div",
+          "cjr.aes_ige.expansion.word_mod",
+          "cjr.aes_ige.program.expansion_byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_keylen": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.sbox_keylen_closed",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_no_key": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.sbox_key_closed",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_no_key_schedule": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.sbox_key_closed",
+          "cjr.aes_ige.expansion.sbox_schedule_closed",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_normal": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rcon",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_byte_swap": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_no_key",
+          "cjr.aes_ige.expansion.expansion_byte_no_key_schedule",
+          "cjr.aes_ige.program.expansion_byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_column": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rcon",
+          "cjr.aes_ige.aes.rotate_word",
+          "cjr.aes_ige.block.cmap",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.cxor",
+          "cjr.aes_ige.bytes.sbox"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_column_bytes": {
+        "depends_on": [
+          "cjr.aes_ige.aes.cmap_sbox_bytes",
+          "cjr.aes_ige.aes.cxor_bytes",
+          "cjr.aes_ige.aes.nth_col_bytes",
+          "cjr.aes_ige.aes.rcon_byte",
+          "cjr.aes_ige.aes.rotate_word_bytes",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.bytes.byte",
+          "cjr.aes_ige.expansion.expansion_column"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_loop_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.aes.nth_col_bytes",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.expand_words_step",
+          "cjr.aes_ige.expansion.expansion_column",
+          "cjr.aes_ige.expansion.expansion_column_bytes",
+          "cjr.aes_ige.expansion.expansion_word_cont_wp",
+          "cjr.aes_ige.expansion.nth_lookup_default",
+          "cjr.aes_ige.expansion.prefix_insert",
+          "cjr.aes_ige.expansion.seqs_app",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.expansion.words_three_acc",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_tail_no_key": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_no_key",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_tail_no_key_schedule": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_no_key_schedule",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_word_cont_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rcon",
+          "cjr.aes_ige.aes.rotate_word",
+          "cjr.aes_ige.block.cmap",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.block.cxor",
+          "cjr.aes_ige.bytes.bx_zero",
+          "cjr.aes_ige.bytes.sbox",
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.expansion_byte_normal",
+          "cjr.aes_ige.expansion.expansion_word_indices",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.expansion_byte",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.seqs",
+          "cjr.aes_ige.program.unit_e",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_word_indices": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.expansion_byte_index",
+          "cjr.aes_ige.expansion.expansion_byte_normal",
+          "cjr.aes_ige.expansion.seq_word",
+          "cjr.aes_ige.program.expansion_byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_word_term": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rcon",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.seqs",
+          "cjr.aes_ige.program.unit_e",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.expansion_word_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.rcon",
+          "cjr.aes_ige.aes.rotate_word",
+          "cjr.aes_ige.block.cmap",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.block.cxor",
+          "cjr.aes_ige.bytes.bx_zero",
+          "cjr.aes_ige.bytes.sbox",
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.expansion.expansion_word_term",
+          "cjr.aes_ige.program.call1",
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.put",
+          "cjr.aes_ige.program.sb",
+          "cjr.aes_ige.program.seqs",
+          "cjr.aes_ige.program.unit_e",
+          "cjr.aes_ige.program.xb"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.flatten_cols": {
+        "depends_on": [
+          "cjr.aes_ige.aes.col_list"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.flatten_cols_app": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.flatten_cols"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.initial_words_flatten": {
+        "depends_on": [
+          "cjr.aes_ige.aes.read_col",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.map_nth_seq",
+          "cjr.aes_ige.expansion.read_col_flatten"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.key_copy_byte": {
+        "depends_on": [
+          "cjr.aes_ige.program.get",
+          "cjr.aes_ige.program.put"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.key_copy_byte_keylen": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.key_copy_byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.key_copy_byte_swap": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.key_copy_byte"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.key_expansion_refines": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.aes.expanded_key",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.expansion.expand_key_wp",
+          "cjr.aes_ige.expansion.expanded_key_columns",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.program.expand_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.map_nth_seq": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.mask_id": {
+        "depends_on": [
+          "cjr.aes_ige.bytes.byte",
+          "cjr.aes_ige.bytes.mask"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.nth_lookup_default": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.prefix_insert": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.read_col_flatten": {
+        "depends_on": [
+          "cjr.aes_ige.aes.col_list",
+          "cjr.aes_ige.aes.read_col",
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.mask_id"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.sbox_key_closed": {
+        "depends_on": [
+          "cjr.aes_ige.program.sbox_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.sbox_keylen_closed": {
+        "depends_on": [
+          "cjr.aes_ige.program.sbox_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.sbox_schedule_closed": {
+        "depends_on": [
+          "cjr.aes_ige.program.sbox_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.seq_word": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.seqs_app": {
+        "depends_on": [
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.seqs_closed": {
+        "depends_on": [
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.seqs_closed_subst": {
+        "depends_on": [
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.seqs_swap": {
+        "depends_on": [
+          "cjr.aes_ige.program.seqs"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.valid_key_cols": {
+        "depends_on": [
+          "cjr.aes_ige.aes.flatten_words_bytes",
+          "cjr.aes_ige.aes.flatten_words_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.word_div": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.word_mod": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.words_at": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.words_three_acc": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.words_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.expansion.words_three_wp": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.words_at"
+        ],
+        "issues": []
+      },
       "cjr.aes_ige.extract.aes_program": {
         "depends_on": [
           "cjr.aes_ige.extract.tint",
@@ -1667,6 +2897,321 @@
           "cjr.aes_ige.ige.dec_step",
           "cjr.aes_ige.ige.enc_step",
           "cjr.aes_ige.ige.iv_bytes"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.blocks_at": {
+        "depends_on": [
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.memory.block_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.blocks_at_app": {
+        "depends_on": [
+          "cjr.aes_ige.ige_refinement.blocks_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.ige_iteration_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.dec_step",
+          "cjr.aes_ige.ige.enc_step",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.mode.ige_step",
+          "cjr.aes_ige.mode.next_iv",
+          "cjr.aes_ige.program.cipher_call",
+          "cjr.aes_ige.program.cp",
+          "cjr.aes_ige.program.ige_iteration",
+          "cjr.aes_ige.program.ige_tmp",
+          "cjr.aes_ige.program.ige_work",
+          "cjr.aes_ige.program.in_at",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.program.ivp",
+          "cjr.aes_ige.program.ivq",
+          "cjr.aes_ige.program.out_at",
+          "cjr.aes_ige.program.ptr",
+          "cjr.aes_ige.program.seqs",
+          "cjr.aes_ige.program.unit_e",
+          "cjr.aes_ige.program.work",
+          "cjr.aes_ige.program.xx",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.ige_loop_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.ige_refinement.ige_iteration_wp",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.mode.ige_spec_step",
+          "cjr.aes_ige.mode.ige_step",
+          "cjr.aes_ige.mode.next_iv",
+          "cjr.aes_ige.mode.next_iv_range",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.le",
+          "cjr.aes_ige.program.plus",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.ige_public_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.cipher.key_supported_rounds",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.ige_refinement.blocks_at",
+          "cjr.aes_ige.ige_refinement.ige_loop_wp",
+          "cjr.aes_ige.ige_refinement.iv_at",
+          "cjr.aes_ige.ige_refinement.workspace_at",
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.bool_e",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.ige_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.program.le",
+          "cjr.aes_ige.program.valid_rounds",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.iv_at": {
+        "depends_on": [
+          "cjr.aes_ige.ige.iv",
+          "cjr.aes_ige.memory.block_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.work_pack": {
+        "depends_on": [
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.routines.work_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.ige_refinement.workspace_at": {
+        "depends_on": [
+          "cjr.aes_ige.memory.block_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.expansion_offset_bounds": {
+        "depends_on": [
+          "cjr.aes_ige.index_bounds.int64_max"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.expansion_predecessor_bounds": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.ige_index_bounds": {
+        "depends_on": [
+          "cjr.aes_ige.index_bounds.int64_max"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.int64_max": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.iv_offset_bounds": {
+        "depends_on": [
+          "cjr.aes_ige.index_bounds.int64_max"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.schedule_offset_bounds": {
+        "depends_on": [
+          "cjr.aes_ige.index_bounds.int64_max"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.index_bounds.workspace_offset_bounds": {
+        "depends_on": [
+          "cjr.aes_ige.index_bounds.int64_max"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.key_layout.key_columns": {
+        "depends_on": [
+          "cjr.aes_ige.block.column",
+          "cjr.aes_ige.key_layout.key_columns"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.key_layout.key_columns_bytes": {
+        "depends_on": [
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.bytes.byte",
+          "cjr.aes_ige.key_layout.key_columns"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.key_layout.key_columns_layout": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.key_layout.key_columns"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.key_layout.valid_key_columns": {
+        "depends_on": [
+          "cjr.aes_ige.aes.nk_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.key_layout.key_columns",
+          "cjr.aes_ige.key_layout.key_columns_bytes",
+          "cjr.aes_ige.key_layout.key_columns_layout"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.column_schedule": {
+        "depends_on": [
+          "cjr.aes_ige.layout.columns_block"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.column_schedule_four": {
+        "depends_on": [
+          "cjr.aes_ige.block.block",
+          "cjr.aes_ige.layout.column_schedule",
+          "cjr.aes_ige.layout.columns_block"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.column_schedule_model": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.aes.expand_words_bytes",
+          "cjr.aes_ige.aes.expand_words_length",
+          "cjr.aes_ige.aes.flatten_words_length",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.expanded_key_columns",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.layout.column_schedule",
+          "cjr.aes_ige.layout.read_block_columns"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.columns_block": {
+        "depends_on": [
+          "cjr.aes_ige.block.block",
+          "cjr.aes_ige.block.column"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.expand_supported_key_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.aes.nk_of_length",
+          "cjr.aes_ige.aes.rounds_of_length",
+          "cjr.aes_ige.aes.valid_key",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.key_layout.key_columns",
+          "cjr.aes_ige.key_layout.valid_key_columns",
+          "cjr.aes_ige.layout.key_expansion_schedule_wp",
+          "cjr.aes_ige.program.expand_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.key_expansion_schedule_wp": {
+        "depends_on": [
+          "cjr.aes_ige.aes.expand_words",
+          "cjr.aes_ige.aes.expand_words_length",
+          "cjr.aes_ige.aes.key_schedule",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.eptr",
+          "cjr.aes_ige.expansion.expand_key_wp",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.layout.column_schedule_model",
+          "cjr.aes_ige.layout.words_at_app",
+          "cjr.aes_ige.layout.words_at_schedule",
+          "cjr.aes_ige.program.expand_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.read_block_columns": {
+        "depends_on": [
+          "cjr.aes_ige.aes.read_block",
+          "cjr.aes_ige.block.column_bytes",
+          "cjr.aes_ige.expansion.flatten_cols",
+          "cjr.aes_ige.expansion.read_col_flatten",
+          "cjr.aes_ige.layout.columns_block"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.schedule_at_cons": {
+        "depends_on": [
+          "cjr.aes_ige.memory.block_at",
+          "cjr.aes_ige.routines.schedule_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.words_at_app": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.words_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.words_at_cons": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.words_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.words_at_four": {
+        "depends_on": [
+          "cjr.aes_ige.block.block",
+          "cjr.aes_ige.expansion.col_at",
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.layout.words_at_cons",
+          "cjr.aes_ige.memory.block_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.layout.words_at_schedule": {
+        "depends_on": [
+          "cjr.aes_ige.expansion.words_at",
+          "cjr.aes_ige.layout.column_schedule",
+          "cjr.aes_ige.layout.column_schedule_four",
+          "cjr.aes_ige.layout.schedule_at_cons",
+          "cjr.aes_ige.layout.words_at_four",
+          "cjr.aes_ige.routines.schedule_at"
         ],
         "issues": []
       },
@@ -1952,6 +3497,97 @@
       "cjr.aes_ige.memory.xtime_body_src_closed": {
         "depends_on": [
           "cjr.aes_ige.program.xtime_body"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec": {
+        "depends_on": [
+          "cjr.aes_ige.ige.ige_decrypt",
+          "cjr.aes_ige.ige.ige_encrypt"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_chunks": {
+        "depends_on": [
+          "cjr.aes_ige.ige.ige_decrypt_chunks",
+          "cjr.aes_ige.ige.ige_encrypt_chunks",
+          "cjr.aes_ige.mode.ige_spec"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_empty": {
+        "depends_on": [
+          "cjr.aes_ige.mode.ige_spec"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_inverse": {
+        "depends_on": [
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.ige_decrypt_encrypt",
+          "cjr.aes_ige.ige.ige_encrypt_decrypt",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.mode.ige_spec"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_length": {
+        "depends_on": [
+          "cjr.aes_ige.ige.ige_decrypt_length",
+          "cjr.aes_ige.ige.ige_encrypt_length",
+          "cjr.aes_ige.mode.ige_spec"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_range": {
+        "depends_on": [
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.ige_decrypt_range",
+          "cjr.aes_ige.ige.ige_encrypt_range",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.mode.ige_spec"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_spec_step": {
+        "depends_on": [
+          "cjr.aes_ige.mode.ige_spec",
+          "cjr.aes_ige.mode.ige_step",
+          "cjr.aes_ige.mode.next_iv"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_step": {
+        "depends_on": [
+          "cjr.aes_ige.ige.dec_step",
+          "cjr.aes_ige.ige.enc_step"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.ige_step_range": {
+        "depends_on": [
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.dec_step_bytes",
+          "cjr.aes_ige.ige.enc_step_bytes",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.mode.ige_step"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.next_iv": {
+        "depends_on": [
+          "cjr.aes_ige.block.block"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.mode.next_iv_range": {
+        "depends_on": [
+          "cjr.aes_ige.block.block_bytes",
+          "cjr.aes_ige.ige.dec_step_bytes",
+          "cjr.aes_ige.ige.enc_step_bytes",
+          "cjr.aes_ige.ige.iv_bytes",
+          "cjr.aes_ige.mode.ige_step",
+          "cjr.aes_ige.mode.next_iv"
         ],
         "issues": []
       },
@@ -2537,6 +4173,79 @@
           "cjr.aes_ige.program.xtime_body",
           "cjr.aes_ige.refinement.xtime_arith",
           "cjr.aes_ige.refinement.xtime_correspondence"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.rejection.decrypt_invalid_rounds_wp": {
+        "depends_on": [
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.bool_e",
+          "cjr.aes_ige.program.choose_rounds",
+          "cjr.aes_ige.program.decrypt_body",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.rejection.encrypt_invalid_rounds_wp": {
+        "depends_on": [
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.bool_e",
+          "cjr.aes_ige.program.choose_rounds",
+          "cjr.aes_ige.program.encrypt_body",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.rejection.ige_invalid_length_wp": {
+        "depends_on": [
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.bool_e",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.ige_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.program.le"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.rejection.ige_invalid_rounds_wp": {
+        "depends_on": [
+          "cjr.aes_ige.memory.pv",
+          "cjr.aes_ige.program.args",
+          "cjr.aes_ige.program.bool_e",
+          "cjr.aes_ige.program.eq",
+          "cjr.aes_ige.program.ige_body",
+          "cjr.aes_ige.program.int",
+          "cjr.aes_ige.program.invoke",
+          "cjr.aes_ige.program.le",
+          "cjr.aes_ige.program.valid_rounds",
+          "cjr.aes_ige.rejection.ige_invalid_length_wp"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.routines.mix_three_inv": {
+        "depends_on": [
+          "cjr.aes_ige.block.inv_mix_columns",
+          "cjr.aes_ige.block.mix_columns"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.routines.schedule_at": {
+        "depends_on": [
+          "cjr.aes_ige.memory.block_at"
+        ],
+        "issues": []
+      },
+      "cjr.aes_ige.routines.work_at": {
+        "depends_on": [
+          "cjr.aes_ige.memory.block_at"
         ],
         "issues": []
       },
@@ -3293,6 +5002,436 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.aes_ige.calls.invoke_from_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.calls.struct_values_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_cipher": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_cipher_inverse": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_cipher_range": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_cipher_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.block_implementation_roundtrip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.decrypt_block_app_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.decrypt_block_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_app_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_body_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.decrypt_schedule_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.encrypt_block_app_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.encrypt_block_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_app_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_body_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.encrypt_schedule_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.key_supported_rounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.cipher.supported_rounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.composition.ige_call": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.composition.ige_call_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.composition.ige_implementation_chunks": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.composition.ige_implementation_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.composition.ige_implementation_roundtrip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.cells_load_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.cells_store_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.col_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.col_list_bytes": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.copy_key_loop_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.copy_word_acc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.copy_word_cont_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.eptr": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.exp_sbox_app_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.exp_sbox_args_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_branch_args": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_branch_keylen": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_branch_keylen_key": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_branch_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_branch_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_invalid_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_key_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expand_words_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expanded_key_columns": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_args": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_index": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_keylen": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_no_key": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_no_key_schedule": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_normal": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_byte_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_column": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_column_bytes": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_loop_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_tail_no_key": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_tail_no_key_schedule": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_word_cont_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_word_indices": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_word_term": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.expansion_word_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.flatten_cols": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.flatten_cols_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.initial_words_flatten": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.key_copy_byte": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.key_copy_byte_keylen": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.key_copy_byte_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.key_expansion_refines": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.map_nth_seq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.mask_id": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.nth_lookup_default": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.prefix_insert": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.read_col_flatten": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.sbox_key_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.sbox_keylen_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.sbox_schedule_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.seq_word": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.seqs_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.seqs_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.seqs_closed_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.seqs_swap": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.valid_key_cols": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.word_div": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.word_mod": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.words_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.words_three_acc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.expansion.words_three_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.aes_ige.extract.aes_program": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3428,6 +5567,161 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.aes_ige.ige_refinement.blocks_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.blocks_at_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.ige_iteration_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.ige_loop_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.ige_public_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.iv_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.work_pack": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.ige_refinement.workspace_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.expansion_offset_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.expansion_predecessor_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.ige_index_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.int64_max": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.iv_offset_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.schedule_offset_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.index_bounds.workspace_offset_bounds": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.key_layout.key_columns": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.key_layout.key_columns_bytes": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.key_layout.key_columns_layout": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.key_layout.valid_key_columns": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.column_schedule": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.column_schedule_four": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.column_schedule_model": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.columns_block": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.expand_supported_key_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.key_expansion_schedule_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.read_block_columns": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.schedule_at_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.words_at_app": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.words_at_cons": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.words_at_four": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.layout.words_at_schedule": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.aes_ige.memory.block_at": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3529,6 +5823,61 @@
         "description": null
       },
       "cjr.aes_ige.memory.xtime_body_src_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_chunks": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_empty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_inverse": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_range": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_spec_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.ige_step_range": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.next_iv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.mode.next_iv_range": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null
@@ -3904,6 +6253,41 @@
         "description": null
       },
       "cjr.aes_ige.refinement.xtime_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.rejection.decrypt_invalid_rounds_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.rejection.encrypt_invalid_rounds_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.rejection.ige_invalid_length_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.rejection.ige_invalid_rounds_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.routines.mix_three_inv": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.routines.schedule_at": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.aes_ige.routines.work_at": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null

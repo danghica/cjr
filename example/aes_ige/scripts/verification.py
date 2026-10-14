@@ -15,10 +15,10 @@ def main():
  count=audit.count('Closed under the global context')
  expected=int(re.search(r'VERIFY_THEOREMS := (\d+)',(REPO/'Makefile.local-late').read_text())[1])
  if count<expected:raise SystemExit('Incomplete assumption audit.')
- data=dict(status='passed',refinement_status='partial',coqchk='passed',assumptions='all audited declarations closed under the global context',
+ data=dict(status='passed',refinement_status='complete',coqchk='passed',assumptions='all audited declarations closed under the global context',
   audited_declarations=count,expected_declarations=expected,date_utc=finishes[-1][0],
-  contract_coverage='Concrete specification algebra and executable byte/block kernels; full key-expansion, AES-routine and IGE-loop refinement remains outstanding.',
-  pending_obligations=['key-expansion Iris refinement','complete AES block Iris refinement','IGE-loop Iris refinement','implementation-level round-trip and chunk contracts'],
+  contract_coverage='Concrete specification algebra; Iris refinement of byte/block helpers, caller-owned key expansion, all AES block variants, and full IGE loops; implementation round-trip, empty-message, and chunk-composition contracts.',
+  pending_obligations=[],
   repository_verify_log_sha256=hashlib.sha256(log.read_bytes()).hexdigest())
  dest=ROOT/'proof/results/verification.json';dest.parent.mkdir(parents=True,exist_ok=True)
  dest.write_text(json.dumps(data,indent=2,sort_keys=True)+'\n')

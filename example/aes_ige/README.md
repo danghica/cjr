@@ -14,6 +14,18 @@ transformation inverses, byte-XOR laws, both IGE inverse compositions with final
 agreement, range/length preservation, empty identity, and chunk composition.
 No cipher correctness, additional axioms, or admissions are assumed.
 
+The complete Iris refinement covers caller-owned key expansion, every AES block
+variant, and both IGE loops. Client contracts prove both implementation round trips
+with identical original IV values, final-IV agreement, empty identity, and chunk
+composition. Invalid-argument contracts prove rejection before raw-buffer access.
+All public contracts are included in the repository assumption and kernel audits.
+The offline renderer selects the mathematical model and generic public contracts;
+internal fixed-round specializations and closure-substitution machinery remain
+in the complete build and kernel audit.
+The guarantees cover functional correctness and memory safety under the buffer
+ownership and bounds preconditions; constant-time behavior and cryptographic
+security proofs remain outside scope.
+
 ## API
 
 - `aesExpandKey(key, keyLen, schedule)` returns 10/12/14 for 16/24/32 key bytes,

@@ -3,7 +3,7 @@ PYTHON ?= python3
 EXPLANATIONS ?= auto
 .PHONY: build verify extract test docs benchmark report assemble
 build:
-	$(MAKE) -C $(REPO) example/aes_ige/rocq/ige.vo example/aes_ige/rocq/extract.vo
+	$(MAKE) -C $(REPO) example/aes_ige/rocq/composition.vo example/aes_ige/rocq/layout.vo example/aes_ige/rocq/rejection.vo example/aes_ige/rocq/index_bounds.vo example/aes_ige/rocq/extract.vo
 verify:
 	$(MAKE) -C $(REPO) verify
 	$(PYTHON) scripts/verification.py

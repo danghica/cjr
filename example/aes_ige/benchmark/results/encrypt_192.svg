@@ -12,24 +12,24 @@
 <path d="M 800.0 50 V 335" stroke="#e4e9e9"/>
 <text x="800.0" y="360" text-anchor="middle">1000</text>
 <text x="20" y="80">16 bytes</text>
-<path d="M 615.8492942401749 80 H 616.9297578444355" stroke="#176f76" stroke-width="5"/>
-<circle cx="616.4149821683859" cy="80" r="5" fill="#176f76"/>
-<text x="830" y="85">CJR: 129.33</text>
-<path d="M 254.40377968035222 107 H 255.1664623856219" stroke="#de8b37" stroke-width="5"/>
-<circle cx="254.8184785710107" cy="107" r="5" fill="#de8b37"/>
-<text x="830" y="112">OpenSSL: 2.30</text>
+<path d="M 618.6763077640467 80 H 620.6096008171007" stroke="#176f76" stroke-width="5"/>
+<circle cx="618.8233379875205" cy="80" r="5" fill="#176f76"/>
+<text x="830" y="85">CJR: 132.84</text>
+<path d="M 257.9499555796648 107 H 258.31509737205704" stroke="#de8b37" stroke-width="5"/>
+<circle cx="258.21443970785293" cy="107" r="5" fill="#de8b37"/>
+<text x="830" y="112">OpenSSL: 2.39</text>
 <text x="20" y="170">1,024 bytes</text>
-<path d="M 644.6014736032562 170 H 645.0798140109393" stroke="#176f76" stroke-width="5"/>
-<circle cx="644.8139553816482" cy="170" r="5" fill="#176f76"/>
-<text x="830" y="175">CJR: 177.46</text>
-<path d="M 262.54633601555037 197 H 264.4037058227325" stroke="#de8b37" stroke-width="5"/>
-<circle cx="262.92514502695576" cy="197" r="5" fill="#de8b37"/>
-<text x="830" y="202">OpenSSL: 2.52</text>
+<path d="M 645.7429450997247 170 H 646.5602976416139" stroke="#176f76" stroke-width="5"/>
+<circle cx="646.4353260652717" cy="170" r="5" fill="#176f76"/>
+<text x="830" y="175">CJR: 180.69</text>
+<path d="M 265.7760510957765 197 H 266.05130161135315" stroke="#de8b37" stroke-width="5"/>
+<circle cx="265.97743659837477" cy="197" r="5" fill="#de8b37"/>
+<text x="830" y="202">OpenSSL: 2.61</text>
 <text x="20" y="260">65,536 bytes</text>
-<path d="M 659.7813385387647 260 H 660.419211407879" stroke="#176f76" stroke-width="5"/>
-<circle cx="660.1203661479228" cy="260" r="5" fill="#176f76"/>
-<text x="830" y="265">CJR: 210.46</text>
-<path d="M 262.840158567688 287 H 263.9219547799614" stroke="#de8b37" stroke-width="5"/>
-<circle cx="263.18385782361565" cy="287" r="5" fill="#de8b37"/>
-<text x="830" y="292">OpenSSL: 2.53</text>
+<path d="M 659.8172578495307 260 H 660.4581179690172" stroke="#176f76" stroke-width="5"/>
+<circle cx="659.9510124189453" cy="260" r="5" fill="#176f76"/>
+<text x="830" y="265">CJR: 210.06</text>
+<path d="M 265.3925825008834 287 H 268.0551163680523" stroke="#de8b37" stroke-width="5"/>
+<circle cx="267.978868138942" cy="287" r="5" fill="#de8b37"/>
+<text x="830" y="292">OpenSSL: 2.67</text>
 </svg>

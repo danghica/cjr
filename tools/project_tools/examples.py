@@ -81,10 +81,14 @@ def extract():
 
 
 def readable(name, explanations):
-    if name == 'quadtree':
+    project = ROOT / 'example' / name
+    config = json.loads((project / 'project.config.json').read_text())
+    if 'documentation_sources' in config:
+        sources = config['documentation_sources']
+    elif name == 'quadtree':
         sources = []  # Includes the generated audit module, as before relocation.
     else:
-        sources = [line.strip() for line in (ROOT / 'example' / name / '_CoqProject').read_text().splitlines()
+        sources = [line.strip() for line in (project / '_CoqProject').read_text().splitlines()
                    if line.strip().endswith('.v') and not line.startswith('-')]
     command = [sys.executable, '-m', 'tools.rocq_readable', 'build', '--output', 'docs/rocq',
                '--explanations', explanations]
