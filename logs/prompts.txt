@@ -613,3 +613,37 @@ why did you not finish the correctness proof?
 [2026-10-14T06:16:20+00:00]
 continue , finish the remaining proofs. 
 
+[2026-10-15T03:10:12+00:00]
+what is the lemma proving the implementation correct for linked lists? 
+
+[2026-10-15T03:15:15+00:00]
+what are the key implementation lemmas for hash maps? 
+
+[2026-10-15T03:19:06+00:00]
+what are the key quadtree correctness lemmas? 
+
+[2026-10-15T03:21:44+00:00]
+what are the main aes correctness lemmas? 
+
+[2026-10-15T03:50:08+00:00]
+express this logically in iris using wp: Lemma cell_adequate Σ `{!cjrGpreS Σ} :
+  adequate NotStuck cell state_init (λ v _, v = LitV LitUnit).
+
+
+[2026-10-15T06:21:56+00:00]
+render with coq_readable: Lemma reverse_spec (xs : list Z)
+                   (l : val_cjr) :
+  is_list xs l -∗
+  WP call_reverse l
+    {{ v, is_list (rev xs) v }}.
+
+
+[2026-10-15T06:27:18+00:00]
+explain in simple english
+
+[2026-10-15T07:58:15+00:00]
+update the readme of the project with all the examples and the correct paths. do not add full paths to the table. 
+
+[2026-10-15T08:00:03+00:00]
+push to github. do not run the coq validation this time. 
+

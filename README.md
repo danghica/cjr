@@ -71,28 +71,35 @@ Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a tr
 
 ## Extracted Cangjie
 
-`make cj` prints each file in `example/*/rocq/` to `example/*/extracted/`. Counts are `wc -l` of the whole file. A `.v` file includes the program, the specification, and the proofs.
+`make cj` generates the Cangjie files linked below. All links are relative to
+this repository. Counts are `wc -l` of the complete files; Rocq counts include
+programs, specifications, and proofs. For multi-file developments, counts sum
+the files in the linked source directories listed in `_CoqProject`, excluding
+extraction drivers. The most-frequent count includes `mf_memory.v`.
 
-| Spec | Lines | Extracted | Lines | Spec / extracted |
-|---|---:|---|---:|---:|
-| `example/misc/rocq/arith.v` | 94 | `example/misc/extracted/arith.cj` | 18 | 5.2 |
-| `example/misc/rocq/struct_upd.v` | 57 | `example/misc/extracted/struct_upd.cj` | 27 | 2.1 |
-| `example/misc/rocq/cell.v` | 35 | `example/misc/extracted/cell.cj` | 15 | 2.3 |
-| `example/misc/rocq/swap.v` | 40 | `example/misc/extracted/swap.cj` | 18 | 2.2 |
-| `example/misc/rocq/sum_block.v` | 90 | `example/misc/extracted/sum_block.cj` | 20 | 4.5 |
-| `example/misc/rocq/class_upd.v` | 45 | `example/misc/extracted/class_upd.cj` | 23 | 2.0 |
-| `example/misc/rocq/frame_call.v` | 37 | `example/misc/extracted/frame_call.cj` | 20 | 1.9 |
-| `example/misc/rocq/vtable.v` | 70 | `example/misc/extracted/vtable.cj` | 33 | 2.1 |
-| `example/list/rocq/list.v` | 227 | `example/list/extracted/list.cj` | 54 | 4.2 |
-| `example/list_rev/rocq/list_rev.v` | 287 | `example/list_rev/extracted/list_rev.cj` | 65 | 4.4 |
-| `example/array/rocq/array.v` | 354 | `example/array/extracted/array.cj` | 39 | 9.1 |
-| `example/array_list/rocq/array_list.v` | 2340 | `example/array_list/extracted/array_list.cj` | 127 | 18.4 |
-| `example/qsort/rocq/qsort.v` | 1749 | `example/qsort/extracted/qsort_array.cj` (76), `example/qsort/extracted/qsort_array_list.cj` (135) | 211 | 8.3 |
-| `example/hash_map/rocq/hash_map.v` | 2684 | `example/hash_map/extracted/hash_map.cj` | 245 | 11.0 |
-| **Total** | **8109** | | **915** | **8.9** |
+| Example | Rocq source | Lines | Extracted Cangjie | Lines | Rocq / Cangjie |
+|---|---|---:|---|---:|---:|
+| [arith](example/misc/README.md) | [arith.v](example/misc/rocq/arith.v) | 105 | [arith.cj](example/misc/extracted/arith.cj) | 18 | 5.8 |
+| [struct_upd](example/misc/README.md) | [struct_upd.v](example/misc/rocq/struct_upd.v) | 57 | [struct_upd.cj](example/misc/extracted/struct_upd.cj) | 27 | 2.1 |
+| [cell](example/misc/README.md) | [cell.v](example/misc/rocq/cell.v) | 35 | [cell.cj](example/misc/extracted/cell.cj) | 15 | 2.3 |
+| [swap](example/misc/README.md) | [swap.v](example/misc/rocq/swap.v) | 40 | [swap.cj](example/misc/extracted/swap.cj) | 18 | 2.2 |
+| [sum_block](example/misc/README.md) | [sum_block.v](example/misc/rocq/sum_block.v) | 90 | [sum_block.cj](example/misc/extracted/sum_block.cj) | 20 | 4.5 |
+| [class_upd](example/misc/README.md) | [class_upd.v](example/misc/rocq/class_upd.v) | 45 | [class_upd.cj](example/misc/extracted/class_upd.cj) | 23 | 2.0 |
+| [frame_call](example/misc/README.md) | [frame_call.v](example/misc/rocq/frame_call.v) | 37 | [frame_call.cj](example/misc/extracted/frame_call.cj) | 20 | 1.9 |
+| [vtable](example/misc/README.md) | [vtable.v](example/misc/rocq/vtable.v) | 70 | [vtable.cj](example/misc/extracted/vtable.cj) | 33 | 2.1 |
+| [list](example/list/README.md) | [list.v](example/list/rocq/list.v) | 227 | [list.cj](example/list/extracted/list.cj) | 54 | 4.2 |
+| [list_rev](example/list_rev/README.md) | [list_rev.v](example/list_rev/rocq/list_rev.v) | 287 | [list_rev.cj](example/list_rev/extracted/list_rev.cj) | 65 | 4.4 |
+| [array](example/array/README.md) | [array.v](example/array/rocq/array.v) | 354 | [array.cj](example/array/extracted/array.cj) | 39 | 9.1 |
+| [array_list](example/array_list/README.md) | [array_list.v](example/array_list/rocq/array_list.v) | 2340 | [array_list.cj](example/array_list/extracted/array_list.cj) | 130 | 18.0 |
+| [qsort](example/qsort/README.md) | [qsort.v](example/qsort/rocq/qsort.v) | 1749 | [qsort_array.cj](example/qsort/extracted/qsort_array.cj), [qsort_array_list.cj](example/qsort/extracted/qsort_array_list.cj) | 213 | 8.2 |
+| [hash_map](example/hash_map/README.md) | [hash_map.v](example/hash_map/rocq/hash_map.v) | 2925 | [hash_map.cj](example/hash_map/extracted/hash_map.cj) | 283 | 10.3 |
+| [most_frequent](example/most_frequent/README.md) | [rocq/](example/most_frequent/rocq/) | 2395 | [most_frequent.cj](example/most_frequent/extracted/most_frequent.cj) | 143 | 16.7 |
+| [quadtree](example/quadtree/README.md) | [spec/](example/quadtree/spec/), [algorithm/](example/quadtree/algorithm/), [proof/](example/quadtree/proof/) | 1471 | [quadtree.cj](example/quadtree/extracted/quadtree.cj) | 386 | 3.8 |
+| [aes_ige](example/aes_ige/README.md) | [rocq/](example/aes_ige/rocq/) | 3690 | [aes_ige.cj](example/aes_ige/extracted/aes_ige.cj) | 3394 | 1.1 |
+| **Total** | | **15917** | | **4881** | **3.3** |
 
-
-The shared `hm_tactics.v` evaluation-context automation adds 110 supporting lines outside the example counts above.
+The shared [hm_tactics.v](example/hash_map/rocq/hm_tactics.v) evaluation-context
+automation adds 110 supporting lines outside these counts.
 
 ## Integer and bitwise operators
 
@@ -115,7 +122,7 @@ multiplication, division, or shift primitive.
 
 `example/list_rev/rocq/list_rev.v` reuses `list.is_list`, reverses existing cons links, and proves `reverse_spec` and `reverse_twice_spec` without admissions or additional axioms. The loop theorem establishes an empty remainder and a reversed accumulator. One fresh empty sentinel separates the two owned chains.
 
-The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `example/list_rev/extracted/list_rev.cj`; `example/list_rev/test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See `paper/test-history.md` for the dated results.
+The tutorial includes a detailed subsection for each definition and lemma, complete checked proof listings, and explanations of the invariant, each memory step, the induction, and the final scope cleanup. `make cj` includes the standalone `example/list_rev/extracted/list_rev.cj`; `example/list_rev/test/list_rev_test.cj` covers six runtime cases, including changes observed through references to the original nodes. See [the reversal test history](example/list_rev/test/history.md) for the dated results.
 
 ## Verified hash map
 
@@ -237,11 +244,12 @@ The pure Rocq specification proves both AES inverse compositions, bijectivity,
 transformation inverse laws, byte range preservation, both IGE inverse
 compositions with final-IV agreement, length preservation, empty identity, and
 chunk composition. These results use concrete cipher definitions without
-assuming AES correctness. Iris refinement contracts cover S-box/inverse S-box,
-byte doubling, and block copy, row permutations, byte substitutions,
-MixColumns, and XOR. **Full key-expansion, AES-routine, and IGE-loop refinement
-is still outstanding.** The algebraic results and runtime tests do not close
-that gap.
+assuming AES correctness. Iris refinement contracts cover caller-owned key expansion, all three AES
+block variants, and both IGE loops, including their supporting byte and block
+operations. Client contracts prove both implementation round trips, final-IV
+agreement, empty identity, and chunk composition. Invalid-argument contracts
+prove rejection before raw-buffer access. These guarantees require the stated
+buffer ownership and bounds preconditions.
 
 `aesExpandKey` writes a forward schedule into a 240-word buffer and returns
 10/12/14 (zero for an invalid key length). `aesEncryptBlock` and
