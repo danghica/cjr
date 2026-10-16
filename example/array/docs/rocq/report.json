@@ -5,6 +5,20 @@
       "file": "rocq/array.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 10099",
+        "unclassified arrow at byte 10111",
+        "unclassified arrow at byte 10132",
+        "unclassified arrow at byte 10686",
+        "unclassified arrow at byte 5543",
+        "unclassified arrow at byte 7231",
+        "unclassified arrow at byte 9532",
         "unmapped notation <[ _ := _ ]>"
       ],
       "declarations": 27

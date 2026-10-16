@@ -160,6 +160,12 @@ Section laws.
     - iIntros "!> Hcred". iApply wp_value'. iApply ("H" with "Hcred").
   Qed.
 
+  (** Multiplication uses unbounded integers, like addition and subtraction. *)
+  Lemma wp_mul (a b : Z) E Φ :
+    ▷ (£ 1 -∗ Φ (LitV (LitInt (a * b)))) ⊢
+    WP BinOp MulOp (Val (LitV (LitInt a))) (Val (LitV (LitInt b))) @ E {{ Φ }}.
+  Proof. apply wp_binop. reflexivity. Qed.
+
   (** Signed remainder is defined only for a nonzero divisor. *)
   Lemma wp_rem (n d : Z) E Φ :
     d ≠ 0%Z →

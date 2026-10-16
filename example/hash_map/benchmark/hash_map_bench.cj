@@ -67,7 +67,7 @@ class HashMapBenchmark {
                     while (i < n) { sum += m.get(i).getOrThrow(); i += 1 }; sum })
         }
         for (n in [256, 1024, 4096]) {
-            // With final CJR capacity 2*n, these keys all start in bucket zero.
+            // Capacity-spaced keys: these all collided before multiplicative mixing.
             lookupPair("hashmap_collision", n, 0, 2 * n)
         }
     }

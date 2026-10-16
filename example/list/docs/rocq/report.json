@@ -4,7 +4,14 @@
     {
       "file": "rocq/list.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]"
+      ],
       "declarations": 21
     }
   ],

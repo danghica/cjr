@@ -103,3 +103,22 @@ Example bitwise_noninteger :
   bin_op_eval BitXorOp (LitV (LitBool true)) (LitV (LitInt 3)) = None ∧
   bin_op_eval BitAndOp (LitV (LitInt 3)) (LitV (LitBool true)) = None.
 Proof. split; reflexivity. Qed.
+
+(** Multiplication is signed and unbounded in the model. *)
+Definition multiply_body : expr :=
+  Let (Some "a") (StructLoad (Var "args") 0)
+    (Let (Some "b") (StructLoad (Var "args") 1)
+      (Var "a" * Var "b")).
+
+Example multiplication_cases :
+  bin_op_eval MulOp (LitV (LitInt (-7))) (LitV (LitInt 6)) = Some (LitV (LitInt (-42))) ∧
+  bin_op_eval MulOp (LitV (LitInt (-7))) (LitV (LitInt (-6))) = Some (LitV (LitInt 42)) ∧
+  bin_op_eval MulOp (LitV (LitInt 0)) (LitV (LitInt 42)) = Some (LitV (LitInt 0)) ∧
+  bin_op_eval MulOp (LitV (LitInt 9223372036854775807)) (LitV (LitInt 2)) =
+    Some (LitV (LitInt 18446744073709551614)).
+Proof. vm_compute. repeat split; reflexivity. Qed.
+
+Example multiplication_noninteger :
+  bin_op_eval MulOp (LitV (LitBool true)) (LitV (LitInt 3)) = None ∧
+  bin_op_eval MulOp (LitV (LitInt 3)) (LitV (LitFloat 2)) = None.
+Proof. split; reflexivity. Qed.

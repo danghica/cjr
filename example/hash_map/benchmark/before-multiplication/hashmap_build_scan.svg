@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img">
+<title>hashmap_build_scan benchmark medians and IQR</title>
+<style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="24" font-size="17">hashmap_build_scan · median and IQR</text>
+<circle cx="250" cy="44" r="5" fill="#176f76"/><text x="260" y="48">CJR</text>
+<circle cx="400" cy="44" r="5" fill="#de8b37"/><text x="410" y="48">Std</text>
+<path d="M 230.0 65 V 293" class="grid"/><text x="230.0" y="311" text-anchor="middle">0.00</text>
+<path d="M 392.5 65 V 293" class="grid"/><text x="392.5" y="311" text-anchor="middle">7.31</text>
+<path d="M 555.0 65 V 293" class="grid"/><text x="555.0" y="311" text-anchor="middle">14.63</text>
+<path d="M 717.5 65 V 293" class="grid"/><text x="717.5" y="311" text-anchor="middle">21.94</text>
+<path d="M 880.0 65 V 293" class="grid"/><text x="880.0" y="311" text-anchor="middle">29.25</text>
+<text x="555" y="329" text-anchor="middle">Time (ns per operation; lower is faster)</text>
+<text x="18" y="80">hashmap_build_scan · n=256</text>
+<g><title>CJR: median 28.8582, Q1 28.2745, Q3 29.2549 ns/op</title><path d="M 858.2 90 H 880.0" stroke="#176f76" stroke-width="2"/><circle cx="871.2" cy="90" r="4" fill="#176f76"/><text x="900" y="94">CJR 28.86 ns/op</text></g>
+<g><title>Std: median 16.8266, Q1 16.2010, Q3 17.8261 ns/op</title><path d="M 590.0 110 H 626.1" stroke="#de8b37" stroke-width="2"/><circle cx="603.9" cy="110" r="4" fill="#de8b37"/><text x="900" y="114">Std 16.83 ns/op</text></g>
+<text x="18" y="156">hashmap_build_scan · n=4,096</text>
+<g><title>CJR: median 27.8053, Q1 27.4277, Q3 28.5416 ns/op</title><path d="M 839.4 166 H 864.2" stroke="#176f76" stroke-width="2"/><circle cx="847.8" cy="166" r="4" fill="#176f76"/><text x="900" y="170">CJR 27.81 ns/op</text></g>
+<g><title>Std: median 17.3531, Q1 17.0898, Q3 19.7601 ns/op</title><path d="M 609.7 186 H 669.0" stroke="#de8b37" stroke-width="2"/><circle cx="615.6" cy="186" r="4" fill="#de8b37"/><text x="900" y="190">Std 17.35 ns/op</text></g>
+<text x="18" y="232">hashmap_build_scan · n=16,384</text>
+<g><title>CJR: median 27.7443, Q1 26.8250, Q3 28.2059 ns/op</title><path d="M 826.0 242 H 856.7" stroke="#176f76" stroke-width="2"/><circle cx="846.4" cy="242" r="4" fill="#176f76"/><text x="900" y="246">CJR 27.74 ns/op</text></g>
+<g><title>Std: median 18.5738, Q1 18.1351, Q3 21.0075 ns/op</title><path d="M 632.9 262 H 696.8" stroke="#de8b37" stroke-width="2"/><circle cx="642.7" cy="262" r="4" fill="#de8b37"/><text x="900" y="266">Std 18.57 ns/op</text></g>
+</svg>

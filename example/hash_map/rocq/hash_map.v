@@ -5,13 +5,13 @@ The library stores entries in a bucket array and an entry array. An entry
 with hash [-1] is empty; a deleted entry sits on a free list. The load
 limit is three quarters, and growth uses a shift to reach one and a half
 times the old capacity. A raw cell of this language holds one integer, and
-the operators include addition, subtraction, remainder, and comparison, so the table here
+the operators include addition, subtraction, multiplication, remainder, and comparison, so the table here
 is three arrays from the array library: a tag, a key, and a value. Tag [0]
 is empty, which is what allocation writes; tag [1] is occupied; tag [2] is
-a deleted slot. The bucket is the non-negative remainder of the key by the
-capacity, computed by primitive signed remainder and one correction, and the table
+a deleted slot. The bucket uses a bounded multiplicative hash followed by the non-negative
+remainder modulo capacity, and the table
 doubles, by adding the capacity to itself, when [size + size] reaches the
-capacity. Both agree with a power-of-two mask and a load of one half.
+capacity. The load limit is one half.
 Lookup walks from that bucket, skips deleted slots, and stops at an empty
 slot or a matching key, wrapping at most once. Insertion reuses the first
 deleted slot on that walk. A missing key is a struct of a boolean and an
@@ -76,11 +76,27 @@ Proof.
   apply Nat2Z.inj_lt. rewrite Z2Nat.id; [|lia]. lia.
 Qed.
 
-(** [bucket] is that remainder, as an index. For a power-of-two capacity it
-is the mask the source computes with [capacity - 1]. *)
+(** Reduce before multiplying so even extreme Int64 keys have a representable
+intermediate product. Reduction modulo an odd prime mixes high bits into low
+bits before selecting a power-of-two bucket. This is not a cryptographic hash. *)
+Definition hash_prime : Z := 2147483647.
+Definition hash_multiplier : Z := 1000000007.
+Definition hash_key (k : Z) : Z :=
+  Z.rem (Z.rem k hash_prime * hash_multiplier) hash_prime.
+Arguments hash_key _ : simpl never.
+
+Lemma hash_product_int64 k :
+  (-9223372036854775808 ≤ Z.rem k hash_prime * hash_multiplier ≤ 9223372036854775807)%Z.
+Proof.
+  pose proof (Z.rem_bound_abs k hash_prime ltac:(unfold hash_prime; lia)) as H.
+  unfold hash_prime in H. change (Z.abs (Z.rem k hash_prime) < 2147483647)%Z in H.
+  apply Z.abs_lt in H. unfold hash_multiplier. lia.
+Qed.
+
+(** The mixed hash is normalized to a valid array index. *)
 
 Definition bucket (k : Z) (cap : nat) : nat :=
-  Z.to_nat (residue k (Z.of_nat cap)).
+  Z.to_nat (residue (hash_key k) (Z.of_nat cap)).
 
 Lemma bucket_lt k cap : (0 < cap)%nat → (bucket k cap < cap)%nat.
 Proof. apply residue_nat_lt. Qed.
@@ -1614,6 +1630,27 @@ Section hash_map.
       iApply wp_if_false. hm_pure. done.
   Qed.
 
+  Definition bucket_body : expr :=
+    Let (Some "k") (StructLoad (Var "args") 0)
+      (Let (Some "cap") (StructLoad (Var "args") 1)
+        (Let (Some "reduced") (BinOp RemOp (Var "k") (Val (LitV (LitInt hash_prime))))
+          (Let (Some "product") (BinOp MulOp (Var "reduced") (Val (LitV (LitInt hash_multiplier))))
+            (Let (Some "mixed") (BinOp RemOp (Var "product") (Val (LitV (LitInt hash_prime))))
+              (App (Val (RecV None (Some "args") residue_body))
+                (Struct [] [Var "mixed"; Var "cap"])))))).
+
+  Definition call_bucket (k cap : Z) : expr :=
+    App (Val (RecV None (Some "args") bucket_body))
+      (Val (StructV [LitV (LitInt k); LitV (LitInt cap)])).
+
+  Lemma bucket_wp (k cap : Z) :
+    (0 < cap)%Z →
+    ⊢ WP call_bucket k cap {{ v, ⌜ v = LitV (LitInt (residue (hash_key k) cap)) ⌝ }}.
+  Proof.
+    intros Hcap. unfold call_bucket, bucket_body. iApply wp_app. simpl. hm_admin.
+    iApply residue_wp. exact Hcap.
+  Qed.
+
   (** * Imperative [HashMap] *)
 
   Definition lit_tag_empty : expr := Val (LitV (LitInt tag_empty)).
@@ -1766,7 +1803,7 @@ Section hash_map.
     (Let (Some "cap") (StructLoad (Var "args") 3)
     (Let (Some "k") (StructLoad (Var "args") 4)
     (Let (Some "start")
-      (App (Val (RecV None (Some "args") residue_body)) (Struct [] [Var "k"; Var "cap"]))
+      (App (Val (RecV None (Some "args") bucket_body)) (Struct [] [Var "k"; Var "cap"]))
       (App (Val scan_v) (Struct [] [Var "cap"; Var "start"; zlit 0; Var "cap";
         Var "tags"; Var "keys"; Var "vals"; Var "k"; lit_m1]))))))).
 
@@ -1804,7 +1841,7 @@ Section hash_map.
         (Let (Some "vals") (FieldLoad (Var "m") 3)
           (Let (Some "cap") (arr_len (Var "tags"))
             (Let (Some "bargs") (Struct [] [Var "k"; Var "cap"])
-              (Let (Some "start") (App (Val (RecV None (Some "args") residue_body)) (Var "bargs"))
+              (Let (Some "start") (App (Val (RecV None (Some "args") bucket_body)) (Var "bargs"))
                 (App (Rec (Some "scan") (Some "args") scan_body)
                   (Struct [] [Var "cap"; Var "start"; zlit 0; Var "cap";
                     Var "tags"; Var "keys"; Var "vals"; Var "k"; lit_m1]))))))).
@@ -1868,7 +1905,7 @@ Definition lookup_open : expr :=
   (Let (Some "vals") (FieldLoad (Var "m") 3)
   (Let (Some "cap") (arr_len (Var "tags"))
   (Let (Some "start")
-    (App (Val (RecV None (Some "args") residue_body)) (Struct [] [Var "k"; Var "cap"]))
+    (App (Val (RecV None (Some "args") bucket_body)) (Struct [] [Var "k"; Var "cap"]))
     (App (Val (RecV None (Some "args") lookup_buffer_body))
       (Struct [] [Var "tags"; Var "keys"; Var "vals"; Var "cap"; Var "start"; Var "k"])))))).
 Definition lookup_for_body : expr :=
@@ -2281,10 +2318,10 @@ Qed.
     iDestruct (is_array_obj_hm with "Hv") as (ov) "(%Hv & Hv)". subst ta ka va.
     unfold call_buffer_probe, buffer_probe_body. iApply wp_app. simpl. hm_admin.
     try try hm_take. hm_admin. iApply (wp_wand with "[]").
-    { iApply residue_wp. lia. }
+    { iApply bucket_wp. lia. }
     iIntros (r) "%Hr". subst r. hm_admin.
-    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
-      (unfold bucket; rewrite Z2Nat.id; pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
+    replace (residue (hash_key k) (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+      (unfold bucket; rewrite Z2Nat.id; pose proof (residue_spec (hash_key k) (Z.of_nat cap) ltac:(lia)); lia).
     iApply (scan_spec cap (bucket k cap) 0 cap _ _ _ tags keys vals k None with "Ht Hk Hv");
       try done; try (apply bucket_lt; done); lia.
   Qed.
@@ -2576,11 +2613,11 @@ Qed.
     { iApply (array.length_spec with "Ht"). }
     iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
     try hm_take. iApply (wp_wand with "[]").
-    { iApply residue_wp. lia. }
+    { iApply bucket_wp. lia. }
     iIntros (r) "%Hr". subst r. hm_args.
-    assert (0 ≤ residue k (Z.of_nat cap))%Z as Hres by
-      (pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
-    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+    assert (0 ≤ residue (hash_key k) (Z.of_nat cap))%Z as Hres by
+      (pose proof (residue_spec (hash_key k) (Z.of_nat cap) ltac:(lia)); lia).
+    replace (residue (hash_key k) (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
       (unfold bucket; rewrite Z2Nat.id; lia).
     iApply (wp_wand with "[Ht Hk Hv]").
     { iApply (scan_spec cap (bucket k cap) 0 cap _ _ _ tags keys vals k None with "Ht Hk Hv");
@@ -2624,11 +2661,11 @@ Qed.
     { iApply (array.length_spec with "Ht"). }
     iIntros (r) "[%Hr Ht]". subst r. rewrite Lt. hm_admin.
     try hm_take. iApply (wp_wand with "[]").
-    { iApply residue_wp. lia. }
+    { iApply bucket_wp. lia. }
     iIntros (r) "%Hr". subst r. hm_args.
-    assert (0 ≤ residue k (Z.of_nat cap))%Z as Hres by
-      (pose proof (residue_spec k (Z.of_nat cap) ltac:(lia)); lia).
-    replace (residue k (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
+    assert (0 ≤ residue (hash_key k) (Z.of_nat cap))%Z as Hres by
+      (pose proof (residue_spec (hash_key k) (Z.of_nat cap) ltac:(lia)); lia).
+    replace (residue (hash_key k) (Z.of_nat cap)) with (Z.of_nat (bucket k cap)) by
       (unfold bucket; rewrite Z2Nat.id; lia).
     iApply (wp_wand with "[Ht Hk Hv]").
     { iApply (lookup_buffer_spec cap (bucket k cap) _ _ _ tags keys vals k with "Ht Hk Hv");

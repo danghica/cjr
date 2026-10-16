@@ -1,22 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 320" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 370" role="img">
 <title>small_domain benchmark medians and IQR</title>
 <style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
 <rect width="100%" height="100%" fill="white"/>
 <text x="20" y="24" font-size="17">small_domain · median and IQR</text>
-<circle cx="250" cy="20" r="5" fill="#176f76"/><text x="260" y="24">CJR</text>
-<circle cx="400" cy="20" r="5" fill="#de8b37"/><text x="410" y="24">StdHash</text>
-<circle cx="550" cy="20" r="5" fill="#8562a0"/><text x="560" y="24">StdSort</text>
-<text x="18" y="69">small_domain</text><path d="M 205 65 H 990" class="grid"/>
-<path d="M 964.7 81 H 975.3" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 229.0 81 H 231.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 599.0 81 H 601.0" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 969.0 87 H 971.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 229.0 87 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 599.0 87 H 601.0" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 961.1 93 H 978.9" stroke="#8562a0" stroke-width="2"/><circle cx="970.0" cy="93" r="4" fill="#8562a0"/>
-<path d="M 229.0 93 H 231.0" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="93" r="4" fill="#8562a0"/>
-<path d="M 595.7 93 H 604.3" stroke="#8562a0" stroke-width="2"/><circle cx="600.0" cy="93" r="4" fill="#8562a0"/>
-<text x="230.0" y="109" text-anchor="middle">256</text>
-<text x="600.0" y="109" text-anchor="middle">4,096</text>
-<text x="970.0" y="109" text-anchor="middle">16,384</text>
+<circle cx="250" cy="44" r="5" fill="#176f76"/><text x="260" y="48">CJR</text>
+<circle cx="400" cy="44" r="5" fill="#de8b37"/><text x="410" y="48">StdHash</text>
+<circle cx="550" cy="44" r="5" fill="#8562a0"/><text x="560" y="48">StdSort</text>
+<path d="M 230.0 65 V 335" class="grid"/><text x="230.0" y="353" text-anchor="middle">0.00</text>
+<path d="M 392.5 65 V 335" class="grid"/><text x="392.5" y="353" text-anchor="middle">4289234.38</text>
+<path d="M 555.0 65 V 335" class="grid"/><text x="555.0" y="353" text-anchor="middle">8578468.75</text>
+<path d="M 717.5 65 V 335" class="grid"/><text x="717.5" y="353" text-anchor="middle">12867703.12</text>
+<path d="M 880.0 65 V 335" class="grid"/><text x="880.0" y="353" text-anchor="middle">17156937.50</text>
+<text x="555" y="371" text-anchor="middle">Time (ns per operation; lower is faster)</text>
+<text x="18" y="80">small_domain · n=256</text>
+<g><title>CJR: median 13492.1875, Q1 13299.8047, Q3 13601.5625 ns/op</title><path d="M 230.5 90 H 230.5" stroke="#176f76" stroke-width="2"/><circle cx="230.5" cy="90" r="4" fill="#176f76"/><text x="900" y="94">CJR 13492.19 ns/op</text></g>
+<g><title>StdHash: median 1663.0859, Q1 1625.9766, Q3 1724.6094 ns/op</title><path d="M 230.1 110 H 230.1" stroke="#de8b37" stroke-width="2"/><circle cx="230.1" cy="110" r="4" fill="#de8b37"/><text x="900" y="114">StdHash 1663.09 ns/op</text></g>
+<g><title>StdSort: median 60859.3750, Q1 60103.5156, Q3 62667.9688 ns/op</title><path d="M 232.3 130 H 232.4" stroke="#8562a0" stroke-width="2"/><circle cx="232.3" cy="130" r="4" fill="#8562a0"/><text x="900" y="134">StdSort 60859.38 ns/op</text></g>
+<text x="18" y="170">small_domain · n=4,096</text>
+<g><title>CJR: median 1305000.0000, Q1 1287796.8750, Q3 1314328.1250 ns/op</title><path d="M 278.8 180 H 279.8" stroke="#176f76" stroke-width="2"/><circle cx="279.4" cy="180" r="4" fill="#176f76"/><text x="900" y="184">CJR 1305000.00 ns/op</text></g>
+<g><title>StdHash: median 24953.1250, Q1 24093.7500, Q3 25421.8750 ns/op</title><path d="M 230.9 200 H 231.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.9" cy="200" r="4" fill="#de8b37"/><text x="900" y="204">StdHash 24953.12 ns/op</text></g>
+<g><title>StdSort: median 1265484.3750, Q1 1206671.8750, Q3 1413531.2500 ns/op</title><path d="M 275.7 220 H 283.6" stroke="#8562a0" stroke-width="2"/><circle cx="277.9" cy="220" r="4" fill="#8562a0"/><text x="900" y="224">StdSort 1265484.38 ns/op</text></g>
+<text x="18" y="260">small_domain · n=16,384</text>
+<g><title>CJR: median 17035000.0000, Q1 16904437.5000, Q3 17156937.5000 ns/op</title><path d="M 870.4 270 H 880.0" stroke="#176f76" stroke-width="2"/><circle cx="875.4" cy="270" r="4" fill="#176f76"/><text x="900" y="274">CJR 17035000.00 ns/op</text></g>
+<g><title>StdHash: median 100562.5000, Q1 99500.0000, Q3 105437.5000 ns/op</title><path d="M 233.8 290 H 234.0" stroke="#de8b37" stroke-width="2"/><circle cx="233.8" cy="290" r="4" fill="#de8b37"/><text x="900" y="294">StdHash 100562.50 ns/op</text></g>
+<g><title>StdSort: median 6121125.0000, Q1 5983562.5000, Q3 6405375.0000 ns/op</title><path d="M 456.7 310 H 472.7" stroke="#8562a0" stroke-width="2"/><circle cx="461.9" cy="310" r="4" fill="#8562a0"/><text x="900" y="314">StdSort 6121125.00 ns/op</text></g>
 </svg>

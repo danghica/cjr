@@ -1,14 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 320" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 190" role="img">
 <title>reverse_sorted benchmark medians and IQR</title>
 <style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
 <rect width="100%" height="100%" fill="white"/>
 <text x="20" y="24" font-size="17">reverse_sorted · median and IQR</text>
-<circle cx="250" cy="20" r="5" fill="#176f76"/><text x="260" y="24">CJR</text>
-<circle cx="400" cy="20" r="5" fill="#de8b37"/><text x="410" y="24">StdHash</text>
-<circle cx="550" cy="20" r="5" fill="#8562a0"/><text x="560" y="24">StdSort</text>
-<text x="18" y="69">reverse_sorted</text><path d="M 205 65 H 990" class="grid"/>
-<path d="M 220.0 81 H 240.0" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 228.4 87 H 231.6" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 226.4 93 H 233.6" stroke="#8562a0" stroke-width="2"/><circle cx="230.0" cy="93" r="4" fill="#8562a0"/>
-<text x="230.0" y="109" text-anchor="middle">256</text>
+<circle cx="250" cy="44" r="5" fill="#176f76"/><text x="260" y="48">CJR</text>
+<circle cx="400" cy="44" r="5" fill="#de8b37"/><text x="410" y="48">StdHash</text>
+<circle cx="550" cy="44" r="5" fill="#8562a0"/><text x="560" y="48">StdSort</text>
+<path d="M 230.0 65 V 155" class="grid"/><text x="230.0" y="173" text-anchor="middle">0.00</text>
+<path d="M 392.5 65 V 155" class="grid"/><text x="392.5" y="173" text-anchor="middle">28420.41</text>
+<path d="M 555.0 65 V 155" class="grid"/><text x="555.0" y="173" text-anchor="middle">56840.82</text>
+<path d="M 717.5 65 V 155" class="grid"/><text x="717.5" y="173" text-anchor="middle">85261.23</text>
+<path d="M 880.0 65 V 155" class="grid"/><text x="880.0" y="173" text-anchor="middle">113681.64</text>
+<text x="555" y="191" text-anchor="middle">Time (ns per operation; lower is faster)</text>
+<text x="18" y="80">reverse_sorted · n=256</text>
+<g><title>CJR: median 112845.7031, Q1 110640.6250, Q3 113681.6406 ns/op</title><path d="M 862.6 90 H 880.0" stroke="#176f76" stroke-width="2"/><circle cx="875.2" cy="90" r="4" fill="#176f76"/><text x="900" y="94">CJR 112845.70 ns/op</text></g>
+<g><title>StdHash: median 4238.2812, Q1 3904.2969, Q3 4376.9531 ns/op</title><path d="M 252.3 110 H 255.0" stroke="#de8b37" stroke-width="2"/><circle cx="254.2" cy="110" r="4" fill="#de8b37"/><text x="900" y="114">StdHash 4238.28 ns/op</text></g>
+<g><title>StdSort: median 24658.2031, Q1 24156.2500, Q3 25251.9531 ns/op</title><path d="M 368.1 130 H 374.4" stroke="#8562a0" stroke-width="2"/><circle cx="371.0" cy="130" r="4" fill="#8562a0"/><text x="900" y="134">StdSort 24658.20 ns/op</text></g>
 </svg>

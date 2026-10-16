@@ -52,5 +52,12 @@
   "report_css": "../../docs/report.css",
   "report_index": "../../index.html",
   "required_compiler_version": "1.0.5",
-  "timeout_seconds": 600
+  "timeout_seconds": 600,
+  "workloads": {
+    "hashmap_build_scan": "Construct an empty map, insert n sequential keys with natural growth, then retrieve every value by key. Time is divided by n: one unit includes insertion and retrieval, allocation, and rehashing.",
+    "hashmap_hit": "Query each existing sequential key; map preparation is outside timing. Unit: one query.",
+    "hashmap_miss": "Query n through 2*n-1 in a map containing 0 through n-1. Unit: one absent-key query.",
+    "hashmap_wide_key": "Query existing keys starting at 1000000. Unit: one query.",
+    "hashmap_collision": "Query keys spaced by 2*n. These all began in bucket zero under the old direct-remainder CJR hash; the new multiplicative hash spreads this workload. Unit: one query."
+  }
 }

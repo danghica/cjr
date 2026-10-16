@@ -119,7 +119,7 @@ def ensure_fresh(root, data, label, current, inventory=True):
     if inventory and set(recorded)!=set(current): raise RuntimeError(f"Source inventory changed since {label}")
 
 
-def report(config_path):
+def report(config_path, allow_stale=False):
     config,root=load(config_path)
     paths=config.get("artifacts",{})
     index=inside(root,config.get("index","index.html"))
@@ -127,9 +127,15 @@ def report(config_path):
         return os.path.relpath(path,index.parent).replace(os.sep,"/")
     current=hashes(root)
     loaded={name:artifact(root,rel) for name,rel in paths.items() if name not in {"index","css","docs","extracted"} and not name.endswith("_report")}
+    stale=[]
     for name,data in loaded.items():
         if isinstance(data,dict) and data.get("sources") and not (name == "benchmark" and data.get("historical")):
-            ensure_fresh(root,data,name,current,inventory=(name!="extraction"))
+            try:
+                ensure_fresh(root,data,name,current,inventory=(name!="extraction"))
+            except RuntimeError as exc:
+                if not allow_stale:
+                    raise
+                stale.append((name, str(exc), data.get("date_utc", "date recorded in artifact metadata")))
         if name in {"verification","tests","benchmark"} and data.get("status") not in {None,"passed"}:
             raise RuntimeError(f"{name} has not passed")
     docdir=inside(root,paths.get("docs","docs/rocq"))
@@ -168,6 +174,13 @@ def report(config_path):
     bench=loaded.get("benchmark",{})
     renderer=loaded.get("renderer",{})
     summary=[]
+    if stale:
+        summary.append('<p><strong>Saved results from earlier source snapshots.</strong> '
+                       'This documentation refresh did not rerun the checks or measurements below. '
+                       'Their recorded dates and source hashes are preserved; their source inventory '
+                       'differs from the current checkout.</p><ul>' +
+                       ''.join(f'<li>{html.escape(name)}: {html.escape(str(date))}. '
+                               f'{html.escape(reason)}</li>' for name, reason, date in stale) + '</ul>')
     if verification:
         summary.append(f'<p><span class="badge">Proof checks</span> {html.escape(str(verification.get("coqchk","passed")))}; {html.escape(str(verification.get("audited_declarations","")))} declarations audited; {html.escape(str(verification.get("assumptions","assumption audit passed")))}.</p>')
         if verification.get("contract_coverage"):
@@ -237,7 +250,11 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command",choices=["metadata","report","test-report"])
     parser.add_argument("config",type=Path)
+    parser.add_argument("--allow-stale", action="store_true", help="Render saved source snapshots with a visible notice; preserve recorded provenance")
     args=parser.parse_args()
+    if args.command == "report":
+        report(args.config.resolve(), allow_stale=args.allow_stale)
+        return
     {"metadata":metadata,"report":report,"test-report":test_report}[args.command](args.config.resolve())
 
 

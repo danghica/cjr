@@ -1,0 +1,302 @@
+[
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 1.38092041015625,
+    "median_ns": 27.744293212890625,
+    "n": 16384,
+    "q1_ns": 26.824951171875,
+    "q3_ns": 28.20587158203125,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 2.872467041015625,
+    "median_ns": 18.573760986328125,
+    "n": 16384,
+    "q1_ns": 18.13507080078125,
+    "q3_ns": 21.007537841796875,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 0.980377197265625,
+    "median_ns": 28.858184814453125,
+    "n": 256,
+    "q1_ns": 28.2745361328125,
+    "q3_ns": 29.254913330078125,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 1.62506103515625,
+    "median_ns": 16.826629638671875,
+    "n": 256,
+    "q1_ns": 16.201019287109375,
+    "q3_ns": 17.826080322265625,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "CJR",
+    "iqr_ns": 1.1138916015625,
+    "median_ns": 27.805328369140625,
+    "n": 4096,
+    "q1_ns": 27.42767333984375,
+    "q3_ns": 28.54156494140625,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_build_scan",
+    "implementation": "Std",
+    "iqr_ns": 2.6702880859375,
+    "median_ns": 17.353057861328125,
+    "n": 4096,
+    "q1_ns": 17.08984375,
+    "q3_ns": 19.7601318359375,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "CJR",
+    "iqr_ns": 76.019287109375,
+    "median_ns": 851.837158203125,
+    "n": 1024,
+    "q1_ns": 820.220947265625,
+    "q3_ns": 896.240234375,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "Std",
+    "iqr_ns": 1.708984375,
+    "median_ns": 251.80816650390625,
+    "n": 1024,
+    "q1_ns": 250.80108642578125,
+    "q3_ns": 252.51007080078125,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "CJR",
+    "iqr_ns": 18.9971923828125,
+    "median_ns": 222.7630615234375,
+    "n": 256,
+    "q1_ns": 212.42523193359375,
+    "q3_ns": 231.42242431640625,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "Std",
+    "iqr_ns": 0.675201416015625,
+    "median_ns": 96.78268432617188,
+    "n": 256,
+    "q1_ns": 96.50421142578125,
+    "q3_ns": 97.17941284179688,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "CJR",
+    "iqr_ns": 430.0537109375,
+    "median_ns": 3308.59375,
+    "n": 4096,
+    "q1_ns": 3258.4228515625,
+    "q3_ns": 3688.4765625,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_collision",
+    "implementation": "Std",
+    "iqr_ns": 8.331298828125,
+    "median_ns": 951.84326171875,
+    "n": 4096,
+    "q1_ns": 948.577880859375,
+    "q3_ns": 956.9091796875,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "CJR",
+    "iqr_ns": 0.43714046478271484,
+    "median_ns": 4.096031188964844,
+    "n": 16384,
+    "q1_ns": 4.066824913024902,
+    "q3_ns": 4.503965377807617,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "Std",
+    "iqr_ns": 0.08243322372436523,
+    "median_ns": 2.3193359375,
+    "n": 16384,
+    "q1_ns": 2.277553081512451,
+    "q3_ns": 2.3599863052368164,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "CJR",
+    "iqr_ns": 0.3418922424316406,
+    "median_ns": 4.210472106933594,
+    "n": 256,
+    "q1_ns": 4.023551940917969,
+    "q3_ns": 4.365444183349609,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "Std",
+    "iqr_ns": 0.05984306335449219,
+    "median_ns": 2.2835731506347656,
+    "n": 256,
+    "q1_ns": 2.259969711303711,
+    "q3_ns": 2.319812774658203,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "CJR",
+    "iqr_ns": 0.42998790740966797,
+    "median_ns": 4.216790199279785,
+    "n": 4096,
+    "q1_ns": 4.05728816986084,
+    "q3_ns": 4.487276077270508,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_hit",
+    "implementation": "Std",
+    "iqr_ns": 0.10281801223754883,
+    "median_ns": 2.34830379486084,
+    "n": 4096,
+    "q1_ns": 2.2544264793395996,
+    "q3_ns": 2.3572444915771484,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "CJR",
+    "iqr_ns": 0.14960765838623047,
+    "median_ns": 3.126978874206543,
+    "n": 16384,
+    "q1_ns": 3.02731990814209,
+    "q3_ns": 3.1769275665283203,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "Std",
+    "iqr_ns": 0.015795230865478516,
+    "median_ns": 1.5902519226074219,
+    "n": 16384,
+    "q1_ns": 1.581251621246338,
+    "q3_ns": 1.5970468521118164,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "CJR",
+    "iqr_ns": 0.17964839935302734,
+    "median_ns": 3.4248828887939453,
+    "n": 256,
+    "q1_ns": 3.297567367553711,
+    "q3_ns": 3.4772157669067383,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "Std",
+    "iqr_ns": 0.0059604644775390625,
+    "median_ns": 1.611649990081787,
+    "n": 256,
+    "q1_ns": 1.6083121299743652,
+    "q3_ns": 1.6142725944519043,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "CJR",
+    "iqr_ns": 0.18858909606933594,
+    "median_ns": 3.077387809753418,
+    "n": 4096,
+    "q1_ns": 3.037691116333008,
+    "q3_ns": 3.2262802124023438,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_miss",
+    "implementation": "Std",
+    "iqr_ns": 0.00852346420288086,
+    "median_ns": 1.584768295288086,
+    "n": 4096,
+    "q1_ns": 1.5813708305358887,
+    "q3_ns": 1.5898942947387695,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "CJR",
+    "iqr_ns": 0.4106760025024414,
+    "median_ns": 4.239320755004883,
+    "n": 16384,
+    "q1_ns": 4.122734069824219,
+    "q3_ns": 4.53341007232666,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "Std",
+    "iqr_ns": 0.07784366607666016,
+    "median_ns": 2.3707151412963867,
+    "n": 16384,
+    "q1_ns": 2.308070659637451,
+    "q3_ns": 2.3859143257141113,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "CJR",
+    "iqr_ns": 0.3211498260498047,
+    "median_ns": 4.21750545501709,
+    "n": 256,
+    "q1_ns": 4.044294357299805,
+    "q3_ns": 4.365444183349609,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "Std",
+    "iqr_ns": 0.06276369094848633,
+    "median_ns": 2.3359060287475586,
+    "n": 256,
+    "q1_ns": 2.299010753631592,
+    "q3_ns": 2.361774444580078,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "CJR",
+    "iqr_ns": 0.45371055603027344,
+    "median_ns": 4.3517351150512695,
+    "n": 4096,
+    "q1_ns": 4.065036773681641,
+    "q3_ns": 4.518747329711914,
+    "samples": 21
+  },
+  {
+    "case": "hashmap_wide_key",
+    "implementation": "Std",
+    "iqr_ns": 0.11807680130004883,
+    "median_ns": 2.3485422134399414,
+    "n": 4096,
+    "q1_ns": 2.255260944366455,
+    "q3_ns": 2.373337745666504,
+    "samples": 21
+  }
+]

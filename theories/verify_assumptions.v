@@ -14,6 +14,9 @@ Print Assumptions vtable_adequate.
 Print Assumptions reverse_spec.
 Print Assumptions reverse_twice_spec.
 
+Print Assumptions wp_mul.
+Print Assumptions hash_map.hash_product_int64.
+Print Assumptions hash_map.bucket_wp.
 Print Assumptions wp_rem.
 Print Assumptions hash_map.residue_spec.
 

@@ -38,7 +38,7 @@ Definition int64_opt_c :=
 (** * Straight-line examples *)
 
 Definition sum_one_fn := Fn "sumOne" None None arith.sum_one [] t_int.
-Definition p_arith := Prog [] [] [sum_one_fn] arith.sum_one.
+Definition p_arith := Prog [] [] [sum_one_fn; Fn "multiply" None (Some "args") arith.multiply_body [t_int; t_int] t_int] arith.sum_one.
 
 Definition p_struct_upd :=
   Prog [] [cell_s]
@@ -156,6 +156,7 @@ Definition p_hash_map :=
      Fn "arrayGet" None (Some "args") array.get_body ["Array"; t_int] t_int;
      Fn "arraySet" None (Some "args") array.set_body ["Array"; t_int; t_int] "Unit";
      Fn "residue" None (Some "args") hash_map.residue_body [t_int; t_int] t_int;
+     Fn "hashBucket" None (Some "args") hash_map.bucket_body [t_int; t_int] t_int;
      Fn "scan" None (Some "args") hash_map.scan_body
        [t_int; t_int; t_int; t_int; "Array"; "Array"; "Array"; t_int; t_int] "ProbeResult";
      Fn "bufferProbe" None (Some "args") hash_map.buffer_probe_body

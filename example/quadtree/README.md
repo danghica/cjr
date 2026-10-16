@@ -53,3 +53,8 @@ checked checksums are consumed within each timed batch. Smaller capped batches
 can fall short of 20 ms. Medians and IQR summarize the 21 observations per
 workload and implementation. No speedup claim is inferred from these local
 measurements.
+
+The readable documentation selects the model, algorithm, and proof modules.
+The generated `proof/audit.v` contains only `Print Assumptions` commands and
+has no declaration pages; it remains part of verification, and is excluded
+from coq-lsp documentation rendering to avoid repeating the full audit.

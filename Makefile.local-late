@@ -6,6 +6,7 @@
 ASSUMPTIONS_LOG := build/assumptions.log
 PYTHON ?= python3
 EXPLANATIONS ?= auto
+REPORT_FLAGS ?=
 
 # Moving load paths invalidates compiled resolution data as well as objects.
 $(VOFILES): _CoqProject
@@ -13,8 +14,9 @@ $(foreach config,$(wildcard example/*/_CoqProject),$(eval $(filter $(dir $(confi
 
 # Optional documentation tooling; proof verification does not depend on it.
 .PHONY: readable readable-test project-tools-test
+# The assumption audit contains only Print commands, not declarations to render.
 readable:
-	$(PYTHON) -m tools.rocq_readable build --sources theories tools/extraction/rocq --output generated/spec-html --explanations $(EXPLANATIONS)
+	$(PYTHON) -m tools.rocq_readable build --sources $(filter-out theories/verify_assumptions.v,$(wildcard theories/*.v)) tools/extraction/rocq --output generated/spec-html --explanations $(EXPLANATIONS)
 	$(PYTHON) -m tools.project_tools.examples readable --explanations $(EXPLANATIONS)
 
 readable-test:
@@ -24,7 +26,7 @@ project-tools-test:
 	$(PYTHON) -m unittest discover -s tests -p 'test_project_tools.py' -v
 
 VERIFY_LOG ?= build/verify.log
-VERIFY_THEOREMS := 352
+VERIFY_THEOREMS := 355
 
 .PHONY: verify verify-checks check-proofs check-axioms check-no-cheats
 # A recursive make keeps all build/check output inside the log and preserves
@@ -91,4 +93,4 @@ benchmark-most-frequent: extract
 	$(PYTHON) -m tools.project_tools.examples benchmark --example most_frequent
 
 project-report: readable
-	$(PYTHON) -m tools.project_tools.examples report
+	$(PYTHON) -m tools.project_tools.examples report $(REPORT_FLAGS)

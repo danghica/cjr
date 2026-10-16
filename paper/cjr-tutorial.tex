@@ -143,9 +143,9 @@ In this repository the development is built with Coq 8.20.1 and Iris 4.4.0.
 The language is called Gallina (two l's); Rocq is the prover, and Iris is the
 program logic and library used for the heap reasoning.
 
-Once the CJR definitions are available, \texttt{tools/extraction/rocq/emit\_cj.v}
+Once the CJR definitions are available, \path{tools/extraction/rocq/emit_cj.v}
 uses a custom Gallina printer to turn the selected CJR syntax trees into
-Cangjie source files under \texttt{example/*/extracted/}.  This is not Rocq's
+Cangjie source files under \path{example/*/extracted/}.  This is not Rocq's
 standard extraction mechanism, and it does not extract proof terms: it
 serializes the program definitions.  A disciplined build runs
 \texttt{make verify} to check proofs and assumptions, then \texttt{make cj}
@@ -310,7 +310,7 @@ a name
 two expressions in sequence, or a block
   & \texttt{Seq} \\
 \texttt{+}, \texttt{-}, \texttt{\%}, \texttt{<=}, \texttt{==} on \texttt{Int64}, \texttt{\&\&}
-  & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{RemOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
+  & \texttt{PlusOp}, \texttt{MinusOp}, \texttt{MulOp}, \texttt{RemOp}, \texttt{LeOp}, \texttt{EqOp}, \texttt{AndOp} \\
 \texttt{\textasciicircum}, \texttt{\&} on \texttt{Int64}
   & \texttt{BitXorOp}, \texttt{BitAndOp} \\
 \texttt{f(a)}
@@ -442,11 +442,11 @@ v ::=\;
 and we use the expression forms by the same names as the constructors.
 \begin{lstlisting}
 Inductive bin_op :=
-  PlusOp | MinusOp | RemOp | LeOp | EqOp | AndOp
+  PlusOp | MinusOp | MulOp | RemOp | LeOp | EqOp | AndOp
   | BitXorOp | BitAndOp.
 \end{lstlisting}
 
-\(\mathsf{BinOp}\) ranges over \(+\), \(-\), signed remainder, \(\le\), \(=\),
+\(\mathsf{BinOp}\) ranges over \(+\), \(-\), \(*\), signed remainder, \(\le\), \(=\),
 boolean conjunction, integer bitwise XOR, and integer bitwise AND.
 Integer operations act on \(\mathsf{LitInt}\); \texttt{AndOp} acts on booleans.
 The two bitwise evaluator cases are:
@@ -1001,6 +1001,13 @@ That is what lets a vtable be an ordinary struct of closures.
 \later(\Phi(\mathsf{ptr}(\ell+i)))
   &\vdash \Wpre\,(\mathsf{ptr}(\ell)+i)\,\{\Phi\}.
 \end{align*}
+
+Multiplication is also a pure binary step: for integer operands $a,b$,
+\texttt{MulOp} returns the unbounded product $a\cdot b$.
+The specialized rule \texttt{wp\_mul} applies \texttt{wp\_binop} and needs no
+numeric side condition. Printing it as Cangjie \texttt{Int64} multiplication
+does not insert a runtime range check or prove absence of overflow.
+The hash-map example supplies its own bound for the reduced-key product.
 
 The specialized remainder rule makes its domain explicit:
 \begin{lstlisting}
@@ -3520,13 +3527,18 @@ to write one array while framing the others.
 
 The starting bucket is
 \[
- b(k,c)=\operatorname{Z.to\_nat}(\texttt{residue }k\ c).
+ b(k,c)=\operatorname{Z.to\_nat}(\texttt{residue }(h(k))\ c).
 \]
-The executable calculation uses primitive signed remainder:
+Here $h(k)=\operatorname{rem}(\operatorname{rem}(k,2147483647)
+\cdot1000000007,2147483647)$. The first reduction bounds the product within
+signed \texttt{Int64} for every input key; \texttt{hash\_product\_int64}
+proves this independently of the unbounded core arithmetic. Multiplication
+is the primitive \texttt{MulOp}, printed as \texttt{*}, with the pure rule
+\texttt{wp\_mul}. The final bucket normalization uses primitive signed remainder:
 \texttt{let rem = k \% cap}, followed by \texttt{rem + cap} when
 \texttt{rem < 0}. Cangjie integer division truncates toward zero, so the
 primitive is modeled by \texttt{Z.rem}, not \texttt{Z.modulo}.
-For example, $-7$ remainder $3$ is $-1$, and its normalized bucket is $2$.
+For example, $-7$ remainder $3$ is $-1$, and its normalized remainder is $2$.
 The \texttt{RemOp} evaluator rejects a zero divisor; \texttt{wp\_rem}
 requires a nonzero divisor and returns the signed remainder through the
 usual pure-step rule. Non-integer operands are also stuck.
@@ -3609,7 +3621,7 @@ step, preserving $s+n\leq c$; the induction hypothesis then applies.
 The found branch reads the value at the same bounded index. Every read returns
 its array ownership, so the caller can reconstruct the complete map predicate.
 
-\texttt{buffer\_probe\_spec} first verifies the remainder call, rewrites its
+\texttt{buffer\_probe\_spec} first verifies the mixed bucket call, rewrites its
 result to the bucket index, and instantiates \texttt{scan\_spec} with
 $n=c$, $s=0$, and no hole. \texttt{probe\_spec} opens the map object, reads its
 array fields and capacity, applies that result, then closes the predicate.
@@ -3784,7 +3796,7 @@ these client properties.
 
 The generated file below comes from these same core expressions. Its
 \texttt{ProbeResult} and \texttt{Int64Option} declarations are value structs;
-the mutable buffers and map remain classes. Runtime tests cover fresh maps,
+the mutable buffers and map remain classes. The 18 runtime cases cover fresh maps, extreme signed keys, bounded hash products,
 updates, removal, collision chains that wrap around capacity, negative keys,
 stored zero, a tombstone before an existing key, update at the load threshold,
 one and several doublings, explicit growth, and a complete cycle of tombstones.
@@ -3792,7 +3804,8 @@ These tests exercise printing and compilation in addition to the formal core.
 
 The core's integer semantics uses unbounded \texttt{Z}; extracted Cangjie uses
 \texttt{Int64}. The Coq results do not establish freedom from finite-machine
-integer overflow for arbitrarily large keys, counts, or capacities. Remainder
+integer overflow for arbitrary counts or capacities. The hash product has
+a separate proved bound for every integer key. Remainder
 normalization uses one signed remainder and at most one addition, but a
 collision chain can scan the entire capacity; this is a small verified example rather than a
 performance specification for the full Cangjie standard library. Rehashing
@@ -3800,6 +3813,13 @@ allocates new buffers without reclaiming the old ones, consistently with the
 example language's object-allocation model.
 
 \subsection{The checked proof scripts}
+
+\paragraph{Bounded hash multiplication.} The first remainder bounds the
+intermediate product; the executable bucket wrapper applies the primitive
+multiplication and remainder rules before normalization.
+
+\lstinputlisting[firstline=79,lastline=94]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1633,lastline=1653]{example/hash_map/rocq/hash_map.v}
 
 These listings include the complete proofs of the public operations and client
 properties, together with the central probe, insertion, and rehash arguments.
@@ -3818,115 +3838,115 @@ language rules.\par
 
 \paragraph{The executable remainder proof.} The wrapper uses immutable bindings, applies the primitive remainder rule under positive capacity, and selects the correction branch.
 
-\lstinputlisting[firstline=1600,lastline=1615]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1616,lastline=1631]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization.} Each array allocation is verified before the object is constructed. The final pure obligations are the zero-table invariant and the equality between zero occupied count and the stored size.
 
-\lstinputlisting[firstline=1928,lastline=1957]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1965,lastline=1994]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The pure search result.} This proof combines the prefix invariant with placement and uniqueness. The found branch identifies the finite-map entry; the absent branch rules out every occupied location for the key.
 
-\lstinputlisting[firstline=800,lastline=850]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=816,lastline=866]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The executable bounded scan.} The induction follows the fuel parameter. Array reads preserve ownership, and each recursive call consumes one step while preserving the bound on the complete scan.
 
-\lstinputlisting[firstline=2063,lastline=2133]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2100,lastline=2170]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{From a remainder to a buffer search.} The range theorem permits converting the remainder to a natural bucket index. The scan is then instantiated with the full capacity as fuel.
 
-\lstinputlisting[firstline=2271,lastline=2290]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2308,lastline=2327]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The iterative lookup kernel.} The induction advances one slot for a mismatch or tombstone, and verifies termination directly after an empty tag or matching key.
 
-\lstinputlisting[firstline=2167,lastline=2245]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2204,lastline=2282]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The lookup local-state wrapper.} Two owned stack cells hold the step and result; both are returned to their lexical scopes after reading the final option.
 
-\lstinputlisting[firstline=2246,lastline=2269]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2283,lastline=2306]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The dedicated abstract lookup.} The unchanged table invariant connects the loop result to the mathematical map lookup.
 
-\lstinputlisting[firstline=2604,lastline=2650]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2641,lastline=2687]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Physical insertion and overwrite.} The proof first obtains the exact probe result. It writes one value cell for a hit and three corresponding cells for an absent key; its postcondition is the exact pure update triple.
 
-\lstinputlisting[firstline=2310,lastline=2345]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2347,lastline=2382]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Preserving the invariant for a new key.} The pure proof checks the tag, key, value, uniqueness, load, and placement obligations. Strict room is used to preserve the half-full bound after increasing the live count.
 
-\lstinputlisting[firstline=1288,lastline=1333]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1304,lastline=1349]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Preserving the invariant for overwrite.} A present key determines an occupied slot. Updating its value changes neither the occupied key list nor any placement path.
 
-\lstinputlisting[firstline=1431,lastline=1470]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1447,lastline=1486]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The pure rehash induction.} Disjointness and the combined occupied-count bound are strengthened for the recursive call. The lookup equation then establishes preservation of every source key and accumulator key.
 
-\lstinputlisting[firstline=1346,lastline=1416]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1362,lastline=1432]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The executable rehash induction.} The source index is related to remaining suffixes with drop. Source arrays are framed through insertion into the destination, and the postcondition tracks the exact pure fold.
 
-\lstinputlisting[firstline=2426,lastline=2495]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2463,lastline=2532]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Updating the object and its stored size.} The buffer update is combined with the pure occupied-count equation. The size field is incremented in the absent-key case and retained in the overwrite case.
 
-\lstinputlisting[firstline=2513,lastline=2553]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2550,lastline=2590]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public search contract.} The object fields are opened, the buffer search is verified, and the complete representation is reconstructed. The semantic lookup equation and canonical absent value are exposed to clients.
 
-\lstinputlisting[firstline=2555,lastline=2602]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2592,lastline=2639]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Presence queries.} The dedicated lookup contract supplies the abstract lookup meaning. Projecting its flag yields exactly the presence boolean.
 
-\lstinputlisting[firstline=2660,lastline=2673]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2697,lastline=2710]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Value queries.} The dedicated lookup contract already supplies the option result, including the canonical zero for an absent key.
 
-\lstinputlisting[firstline=2675,lastline=2690]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2712,lastline=2727]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Replacing the buffers after rehashing.} New array ownership is established first, then the rehash theorem is applied, and only afterward are the three object fields replaced. Equality of map contents proves equality of occupied counts.
 
-\lstinputlisting[firstline=2692,lastline=2750]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2729,lastline=2787]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public insertion proof.} The initial presence check separates overwrite from insertion. Only the missing-key branch checks the load threshold. Either strict room already holds or one verified doubling establishes it.
 
-\lstinputlisting[firstline=2765,lastline=2797]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2802,lastline=2834]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The public removal proof.} The found branch marks the slot as a tombstone and uses the occupied-count decrement equation to update the size. The missing branch proves deletion of an absent map key.
 
-\lstinputlisting[firstline=2799,lastline=2842]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2836,lastline=2879]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The stored size query.} The representation equation and size-contents lemma identify the field value with the finite map size.
 
-\lstinputlisting[firstline=1959,lastline=1973]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=1996,lastline=2010]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The capacity query.} The owned tag array length equals the abstract capacity, so reading its length field returns that capacity.
 
-\lstinputlisting[firstline=1975,lastline=1988]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2012,lastline=2025]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{The emptiness query.} The field equality and occupied-count theorem connect the zero comparison to emptiness of the mathematical map.
 
-\lstinputlisting[firstline=1990,lastline=2006]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2027,lastline=2043]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by size.} The allocation result is bound to the next call, whose contract returns zero for the empty map.
 
-\lstinputlisting[firstline=2858,lastline=2867]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2895,lastline=2904]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by capacity.} The initialized representation supplies the default capacity to the query contract.
 
-\lstinputlisting[firstline=2869,lastline=2879]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2906,lastline=2916]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Initialization followed by emptiness.} The empty finite map supplies the true result to the emptiness query.
 
-\lstinputlisting[firstline=2881,lastline=2890]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2918,lastline=2927]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Insertion followed by lookup.} The new capacity is unpacked from the insertion result and passed to the query contract. The finite-map insertion law determines the returned value.
 
-\lstinputlisting[firstline=2897,lastline=2909]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2934,lastline=2946]{example/hash_map/rocq/hash_map.v}
 
 \paragraph{Insertion followed by presence.} The same composition uses the insertion lookup law to establish a true presence result.
 
-\lstinputlisting[firstline=2911,lastline=2923]{example/hash_map/rocq/hash_map.v}
+\lstinputlisting[firstline=2948,lastline=2960]{example/hash_map/rocq/hash_map.v}
 
 \lstinputlisting{example/hash_map/extracted/hash_map.cj}
 
@@ -4066,8 +4086,10 @@ loop: normalization now uses one remainder and at most one addition.
 Native tests cover both extreme \texttt{Int64} keys and positive and negative
 operands. The range and mathematical-modulo contracts are preserved.
 
-The map still uses the key's normalized remainder without hash mixing.
-Keys that are multiples of capacity therefore collide, and a successful
+The map now mixes keys with bounded multiplication and reduction modulo
+an odd prime before normalizing by capacity. Capacity-spaced keys no longer
+systematically collide. Keys separated by the hash prime still collide;
+this hash does not defend against adversarial inputs, and a successful
 lookup may scan a linear number of entries. The functional specification
 establishes lookup correctness, not an execution-time bound. Unbounded core
 integers also do not provide a general finite-machine overflow theorem;

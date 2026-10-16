@@ -5,9 +5,10 @@
       "file": "rocq/arith.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
         "unmapped notation - _"
       ],
-      "declarations": 6
+      "declarations": 11
     },
     {
       "file": "rocq/cell.v",
@@ -18,43 +19,68 @@
     {
       "file": "rocq/class_upd.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]"
+      ],
       "declarations": 3
     },
     {
       "file": "rocq/frame_call.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]"
+      ],
       "declarations": 2
     },
     {
       "file": "rocq/struct_upd.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]"
+      ],
       "declarations": 5
     },
     {
       "file": "rocq/sum_block.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]"
+      ],
       "declarations": 2
     },
     {
       "file": "rocq/swap.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]"
+      ],
       "declarations": 3
     },
     {
       "file": "rocq/vtable.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]"
+      ],
       "declarations": 4
     }
   ],
   "dependencies": {
     "complete": true,
     "roots": [
+      "cjr.examples.arith.bitwise_noninteger",
+      "cjr.examples.arith.bitwise_signed_cases",
+      "cjr.examples.arith.multiplication_cases",
+      "cjr.examples.arith.multiplication_noninteger",
+      "cjr.examples.arith.multiply_body",
       "cjr.examples.arith.remainder_noninteger",
       "cjr.examples.arith.remainder_signs",
       "cjr.examples.arith.remainder_zero_divisor",
@@ -79,6 +105,26 @@
       "rocq/vtable.v": []
     },
     "declarations": {
+      "cjr.examples.arith.bitwise_noninteger": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.arith.bitwise_signed_cases": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.arith.multiplication_cases": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.arith.multiplication_noninteger": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.arith.multiply_body": {
+        "depends_on": [],
+        "issues": []
+      },
       "cjr.examples.arith.remainder_noninteger": {
         "depends_on": [],
         "issues": []
@@ -237,6 +283,31 @@
     "model_selection": "CLI configured model",
     "failures": 0,
     "declarations": {
+      "cjr.examples.arith.bitwise_noninteger": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.arith.bitwise_signed_cases": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.arith.multiplication_cases": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.arith.multiplication_noninteger": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.arith.multiply_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.examples.arith.remainder_noninteger": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",

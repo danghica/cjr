@@ -49,7 +49,7 @@ class HashMap {
         let keys = this.keys
         let vals = this.vals
         let cap = length(tags)
-        let start = residue(k, cap)
+        let start = hashBucket(k, cap)
         lookupBuffer(tags, keys, vals, cap, start, k)
     }
 
@@ -58,7 +58,7 @@ class HashMap {
         let keys = this.keys
         let vals = this.vals
         let cap = length(tags)
-        let start = residue(k, cap)
+        let start = hashBucket(k, cap)
         scan(cap, start, 0, cap, tags, keys, vals, k, -1)
     }
 
@@ -171,6 +171,13 @@ func residue(k: Int64, cap: Int64): Int64 {
     if (rem <= -1) { rem + cap } else { rem }
 }
 
+func hashBucket(k: Int64, cap: Int64): Int64 {
+    let reduced = k % 2147483647
+    let product = reduced * 1000000007
+    let mixed = product % 2147483647
+    residue(mixed, cap)
+}
+
 func scan(fuel: Int64, start: Int64, step: Int64, cap: Int64, tags: Array, keys: Array, vals: Array, k: Int64, hole: Int64): ProbeResult {
     if (fuel <= 0) {
         ProbeResult(false, if (hole == -1) { start } else { hole }, 0)
@@ -199,7 +206,7 @@ func scan(fuel: Int64, start: Int64, step: Int64, cap: Int64, tags: Array, keys:
 }
 
 func bufferProbe(tags: Array, keys: Array, vals: Array, cap: Int64, k: Int64): ProbeResult {
-    let start = residue(k, cap)
+    let start = hashBucket(k, cap)
     scan(cap, start, 0, cap, tags, keys, vals, k, -1)
 }
 

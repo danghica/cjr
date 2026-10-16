@@ -647,3 +647,88 @@ update the readme of the project with all the examples and the correct paths. do
 [2026-10-15T08:00:03+00:00]
 push to github. do not run the coq validation this time. 
 
+[2026-10-15T08:01:51+00:00]
+the extracted code to rocq ration is strangely low. why? 
+
+[2026-10-15T08:04:01+00:00]
+what definitions are relvant for s-box functions? 
+
+[2026-10-15T08:04:50+00:00]
+what rocq file contains the code extracted into the s-box cangjie function? 
+
+[2026-10-15T08:06:42+00:00]
+what is the cangjie flie? 
+
+[2026-10-15T08:07:58+00:00]
+is aesSbox extracted by the standard Galina script or is it a one-off?
+
+[2026-10-15T08:08:52+00:00]
+what is a sbox_table? 
+
+[2026-10-15T08:09:36+00:00]
+why is it hardcoded? 
+
+[2026-10-15T08:10:04+00:00]
+'same fixed substitution' for all implementations ? 
+
+[2026-10-15T08:13:42+00:00]
+what other popular languages other than cangjie can cjr be extracted as? 
+
+[2026-10-15T08:20:36+00:00]
+when was the four color theorem and feith-0thomson proved in coq?
+
+[2026-10-15T08:21:24+00:00]
+when did compcert start? 
+
+[2026-10-15T08:24:22+00:00]
+does the adequacy result prove no memory leaks?
+
+[2026-10-15T09:15:03+00:00]
+can you find an implementation of aes  here [https://github.com/CJPLUK/Telegram_Cangjie/tree/main/Telegram_Cangjie/entry/src/main/cangjie/core/mtproto](https://github.com/CJPLUK/Telegram_Cangjie/tree/main/Telegram_Cangjie/entry/src/main/cangjie/core/mtproto)
+
+[2026-10-15T09:17:45+00:00]
+how does it compare to cjr? 
+
+[2026-10-16T02:21:30+00:00]
+do cjr arithmetic operations deal with overflow and underflow? 
+
+[2026-10-16T02:36:18+00:00]
+add integer multiplication to cjr and use it to improve performance of hashmaps. rerun the benchmarks. 
+
+[2026-10-16T05:37:11+00:00]
+
+# Response annotations:
+Each item contains text selected from an earlier Codex response and may include a user comment. Treat items as Annotation 1, Annotation 2, and so on in array order. Use every selection as context and address every comment. For every annotation you address, include its inline directive `:codex-annotation{index="N"}`, where N is its one-based array position (for example, `:codex-annotation{index="1"}`). Do not use unstructured annotation labels.
+<response-annotations>
+[{"text":"Ordinary hits/builds: 10–37% slower; larger-map misses roughly 2× slower.","annotation":"explain this","source":{"messageId":"msg_0fc3b472e4552312016ad1a6e3f9c48191b3ea920880bdf422","startOffset":170,"endOffset":243}}]
+</response-annotations>
+
+## My request:
+explain this
+
+[2026-10-16T05:39:35+00:00]
+
+# Response annotations:
+Each item contains text selected from an earlier Codex response and may include a user comment. Treat items as Annotation 1, Annotation 2, and so on in array order. Use every selection as context and address every comment. For every annotation you address, include its inline directive `:codex-annotation{index="N"}`, where N is its one-based array position (for example, `:codex-annotation{index="1"}`). Do not use unstructured annotation labels.
+<response-annotations>
+[{"text":"Capacity-spaced lookups: 38–658× faster.","source":{"messageId":"msg_0fc3b472e4552312016ad1a6e3f9c48191b3ea920880bdf422","startOffset":130,"endOffset":170}}]
+</response-annotations>
+
+## My request:
+explain 
+
+[2026-10-16T05:40:44+00:00]
+explain **Hashmap_Build_Scan data in the benchmark report**\
+
+[2026-10-16T05:43:41+00:00]
+it is suspicious that the data points for cjr and std are identical. justify
+
+[2026-10-16T05:45:48+00:00]
+refresh all the documentation (pdf report and readmes)
+
+[2026-10-16T07:29:35+00:00]
+by looking at the timestamps on the coq files and the verification log, is the verification log to date? 
+
+[2026-10-16T07:36:26+00:00]
+push to github without rerunning the proof verification script
+

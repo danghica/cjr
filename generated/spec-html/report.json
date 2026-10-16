@@ -31,63 +31,63 @@
         "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
         "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
         "Cangjie unavailable: symbolic identifier or binder",
-        "unclassified arrow at byte 11513",
-        "unclassified arrow at byte 11618",
-        "unclassified arrow at byte 11723",
-        "unclassified arrow at byte 11836",
-        "unclassified arrow at byte 11981",
-        "unclassified arrow at byte 12059",
-        "unclassified arrow at byte 12198",
-        "unclassified arrow at byte 12231",
-        "unclassified arrow at byte 12268",
-        "unclassified arrow at byte 15679",
-        "unclassified arrow at byte 15832",
-        "unclassified arrow at byte 16071",
-        "unclassified arrow at byte 16127",
-        "unclassified arrow at byte 16750",
-        "unclassified arrow at byte 17076",
-        "unclassified arrow at byte 17197",
-        "unclassified arrow at byte 17549",
-        "unclassified arrow at byte 17810",
-        "unclassified arrow at byte 17938",
-        "unclassified arrow at byte 18591",
-        "unclassified arrow at byte 18738",
-        "unclassified arrow at byte 18969",
-        "unclassified arrow at byte 19232",
-        "unclassified arrow at byte 19554",
-        "unclassified arrow at byte 19596",
-        "unclassified arrow at byte 19617",
-        "unclassified arrow at byte 19820",
-        "unclassified arrow at byte 20569",
-        "unclassified arrow at byte 20604",
-        "unclassified arrow at byte 21114",
-        "unclassified arrow at byte 21363",
-        "unclassified arrow at byte 21604",
-        "unclassified arrow at byte 21853",
-        "unclassified arrow at byte 22348",
-        "unclassified arrow at byte 22973",
-        "unclassified arrow at byte 23200",
-        "unclassified arrow at byte 23240",
-        "unclassified arrow at byte 23601",
-        "unclassified arrow at byte 23637",
-        "unclassified arrow at byte 24276",
-        "unclassified arrow at byte 24317",
-        "unclassified arrow at byte 24663",
-        "unclassified arrow at byte 26739",
-        "unclassified arrow at byte 27124",
-        "unclassified arrow at byte 27168",
-        "unclassified arrow at byte 28530",
-        "unclassified arrow at byte 29237",
-        "unclassified arrow at byte 29907",
-        "unclassified arrow at byte 30196",
-        "unclassified arrow at byte 30507",
-        "unclassified arrow at byte 30899",
-        "unclassified arrow at byte 31340",
-        "unclassified arrow at byte 31562",
-        "unclassified arrow at byte 31796",
-        "unclassified arrow at byte 32064",
-        "unclassified arrow at byte 32078",
-        "unclassified arrow at byte 8657",
+        "unclassified arrow at byte 11601",
+        "unclassified arrow at byte 11706",
+        "unclassified arrow at byte 11811",
+        "unclassified arrow at byte 11924",
+        "unclassified arrow at byte 12069",
+        "unclassified arrow at byte 12147",
+        "unclassified arrow at byte 12286",
+        "unclassified arrow at byte 12319",
+        "unclassified arrow at byte 12356",
+        "unclassified arrow at byte 15767",
+        "unclassified arrow at byte 15920",
+        "unclassified arrow at byte 16159",
+        "unclassified arrow at byte 16215",
+        "unclassified arrow at byte 16838",
+        "unclassified arrow at byte 17164",
+        "unclassified arrow at byte 17285",
+        "unclassified arrow at byte 17637",
+        "unclassified arrow at byte 17898",
+        "unclassified arrow at byte 18026",
+        "unclassified arrow at byte 18679",
+        "unclassified arrow at byte 18826",
+        "unclassified arrow at byte 19057",
+        "unclassified arrow at byte 19320",
+        "unclassified arrow at byte 19642",
+        "unclassified arrow at byte 19684",
+        "unclassified arrow at byte 19705",
+        "unclassified arrow at byte 19908",
+        "unclassified arrow at byte 20657",
+        "unclassified arrow at byte 20692",
+        "unclassified arrow at byte 21202",
+        "unclassified arrow at byte 21451",
+        "unclassified arrow at byte 21692",
+        "unclassified arrow at byte 21941",
+        "unclassified arrow at byte 22436",
+        "unclassified arrow at byte 23061",
+        "unclassified arrow at byte 23288",
+        "unclassified arrow at byte 23328",
+        "unclassified arrow at byte 23689",
+        "unclassified arrow at byte 23725",
+        "unclassified arrow at byte 24364",
+        "unclassified arrow at byte 24405",
+        "unclassified arrow at byte 24751",
+        "unclassified arrow at byte 26827",
+        "unclassified arrow at byte 27212",
+        "unclassified arrow at byte 27256",
+        "unclassified arrow at byte 28618",
+        "unclassified arrow at byte 29325",
+        "unclassified arrow at byte 29995",
+        "unclassified arrow at byte 30284",
+        "unclassified arrow at byte 30595",
+        "unclassified arrow at byte 30987",
+        "unclassified arrow at byte 31428",
+        "unclassified arrow at byte 31650",
+        "unclassified arrow at byte 31884",
+        "unclassified arrow at byte 32152",
+        "unclassified arrow at byte 32166",
+        "unclassified arrow at byte 8665",
         "unmapped notation (=)",
         "unmapped notation <[ _ := _ ]>",
         "unmapped notation _ ##ₘ _",
@@ -118,7 +118,7 @@
       "unsupported": [
         "unsupported declaration not"
       ],
-      "declarations": 6
+      "declarations": 7
     },
     {
       "file": "theories/primitive_laws.v",
@@ -137,26 +137,20 @@
         "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
         "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
         "Cangjie unavailable: symbolic identifier or binder",
-        "unclassified arrow at byte 10854",
-        "unclassified arrow at byte 14227",
+        "unclassified arrow at byte 11142",
+        "unclassified arrow at byte 14515",
         "unclassified arrow at byte 2813",
         "unclassified arrow at byte 2838",
         "unclassified arrow at byte 2877",
         "unclassified arrow at byte 2909",
         "unclassified arrow at byte 5115",
-        "unclassified arrow at byte 5553",
-        "unclassified arrow at byte 6962",
+        "unclassified arrow at byte 5841",
+        "unclassified arrow at byte 7250",
         "unmapped notation True",
         "unmapped notation £ _",
         "unsupported declaration not"
       ],
-      "declarations": 43
-    },
-    {
-      "file": "theories/verify_assumptions.v",
-      "errors": [],
-      "unsupported": [],
-      "declarations": 0
+      "declarations": 44
     },
     {
       "file": "tools/extraction/rocq/cj_print.v",
@@ -174,11 +168,12 @@
         "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
         "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
         "Cangjie unavailable: symbolic identifier or binder",
+        "unmapped notation - _",
         "unmapped notation _ +++ _",
         "unsupported declaration abbrev",
         "unsupported declaration not"
       ],
-      "declarations": 73
+      "declarations": 74
     },
     {
       "file": "tools/extraction/rocq/emit_cj.v",
@@ -201,6 +196,7 @@
       "cjr.examples.cj_print.bulk_copy_grow_enabled",
       "cjr.examples.cj_print.bulk_copy_remove_enabled",
       "cjr.examples.cj_print.val_beq",
+      "cjr.examples.cj_print.z_string_machine_bounds",
       "cjr.examples.emit_cj.cj_bundle",
       "cjr.lang.expr_cjr",
       "cjr.lang.expr_inhabited",
@@ -222,6 +218,7 @@
       "cjr.lang.val_inhabited",
       "cjr.lifting.wp_lift_pure_step",
       "cjr.notation.::expr_scope:x_'%'_x",
+      "cjr.notation.::expr_scope:x_'*'_x",
       "cjr.notation.::expr_scope:x_'+'_x",
       "cjr.notation.::expr_scope:x_'-'_x",
       "cjr.notation.::expr_scope:x_'.&'_x",
@@ -242,6 +239,7 @@
       "cjr.primitive_laws.wp_if_true",
       "cjr.primitive_laws.wp_let",
       "cjr.primitive_laws.wp_load",
+      "cjr.primitive_laws.wp_mul",
       "cjr.primitive_laws.wp_new",
       "cjr.primitive_laws.wp_offset",
       "cjr.primitive_laws.wp_rec",
@@ -262,7 +260,6 @@
       "theories/lifting.v": [],
       "theories/notation.v": [],
       "theories/primitive_laws.v": [],
-      "theories/verify_assumptions.v": [],
       "tools/extraction/rocq/cj_print.v": [],
       "tools/extraction/rocq/emit_cj.v": []
     },
@@ -931,9 +928,12 @@
         "issues": []
       },
       "cjr.examples.cj_print.z_string": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.cj_print.z_string_machine_bounds": {
         "depends_on": [
-          "cjr.examples.cj_print.:::x_'+++'_x",
-          "cjr.examples.cj_print.nat_string"
+          "cjr.examples.cj_print.z_string"
         ],
         "issues": []
       },
@@ -1082,8 +1082,10 @@
       },
       "cjr.examples.emit_cj.p_arith": {
         "depends_on": [
+          "cjr.examples.cj_print.fn",
           "cjr.examples.cj_print.prog",
-          "cjr.examples.emit_cj.sum_one_fn"
+          "cjr.examples.emit_cj.sum_one_fn",
+          "cjr.examples.emit_cj.t_int"
         ],
         "issues": []
       },
@@ -2097,6 +2099,13 @@
         ],
         "issues": []
       },
+      "cjr.notation.::expr_scope:x_'*'_x": {
+        "depends_on": [
+          "cjr.lang.bin_op",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
       "cjr.notation.::expr_scope:x_'+'_x": {
         "depends_on": [
           "cjr.lang.bin_op",
@@ -2431,6 +2440,17 @@
           "cjr.lang.val",
           "cjr.primitive_laws.::bi_scope:x_'↦ᵣ'_x",
           "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.primitive_laws.wp_mul": {
+        "depends_on": [
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_binop"
         ],
         "issues": []
       },
@@ -2994,6 +3014,11 @@
         "description": null
       },
       "cjr.examples.cj_print.z_string": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.cj_print.z_string_machine_bounds": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null
@@ -3718,6 +3743,11 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.notation.::expr_scope:x_'*'_x": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.notation.::expr_scope:x_'+'_x": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3884,6 +3914,11 @@
         "description": null
       },
       "cjr.primitive_laws.wp_load": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.primitive_laws.wp_mul": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null

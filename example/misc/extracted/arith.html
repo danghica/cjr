@@ -13,6 +13,10 @@ func sumOne(): Int64 {
     s
 }
 
+func multiply(a: Int64, b: Int64): Int64 {
+    a * b
+}
+
 main(): Unit {
     sumOne()
 }

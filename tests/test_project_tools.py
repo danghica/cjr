@@ -28,6 +28,30 @@ class ProjectToolTests(unittest.TestCase):
             plot(config)
             self.assertEqual((output/'marker').read_text(),str(root.resolve()))
 
+    def test_benchmark_dots_encode_measured_time_on_shared_axis(self):
+        import xml.etree.ElementTree as ET
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            output = root / 'results'; output.mkdir()
+            records = [dict(case='build', n=256, implementation=impl,
+                            median_ns=median, q1_ns=median-1, q3_ns=median+2)
+                       for impl, median in [('CJR', 30), ('Std', 15)]]
+            (output / 'summary.json').write_text(json.dumps(records))
+            config = root / 'benchmark.json'
+            config.write_text(json.dumps({'output': 'results', 'plots': {'facet': 'case'}}))
+            plot(config)
+            svg = ET.parse(output / 'build.svg')
+            ns = {'s': 'http://www.w3.org/2000/svg'}
+            dots = svg.findall('.//s:g/s:circle', ns)
+            self.assertEqual(len(dots), 2)
+            xs = [float(dot.attrib['cx']) for dot in dots]
+            self.assertGreater(xs[0], xs[1])
+            self.assertAlmostEqual((xs[0]-230)/(xs[1]-230), 2, places=3)
+            for group, record in zip(svg.findall('.//s:g', ns), records):
+                path = group.find('s:path', ns).attrib['d'].split()
+                self.assertAlmostEqual(float(path[1]), 230+650*record['q1_ns']/32, places=1)
+                self.assertAlmostEqual(float(path[-1]), 230+650*record['q3_ns']/32, places=1)
+
     def test_native_benchmark_source_is_in_provenance(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
@@ -77,24 +101,51 @@ class ProjectToolTests(unittest.TestCase):
                     if arg.endswith('.cj'):
                         self.assertTrue(Path(arg).is_file(), arg)
 
-    def test_benchmark_partitions_retain_all_original_measurements(self):
+    def test_historical_benchmark_partitions_preserve_provenance_until_rerun(self):
         historical = ROOT / 'paper/benchmark-history'
         with (historical / 'raw.csv').open() as stream:
             original = list(csv.DictReader(stream))
-        records = []
-        for name in ('list', 'array', 'array_list', 'hash_map'):
+        original_metadata = json.loads((historical / 'metadata.json').read_text())
+        key = lambda row: tuple(sorted(row.items()))
+        for name, prefix in [('list', 'list_'), ('array', 'array_'),
+                             ('array_list', 'arraylist_'), ('hash_map', 'hashmap_')]:
             output = ROOT / 'example' / name / 'benchmark/results'
             with (output / 'raw.csv').open() as stream:
                 partition = list(csv.DictReader(stream))
-            records.extend(partition)
             data = json.loads((output / 'metadata.json').read_text())
-            self.assertTrue(data['historical'])
             self.assertEqual(data['samples'], len(partition))
-            original_metadata = json.loads((historical / 'metadata.json').read_text())
-            self.assertEqual(data['date_utc'], original_metadata['date_utc'])
-            self.assertEqual(data['sources'], original_metadata['sources'])
-        key = lambda row: tuple(sorted(row.items()))
-        self.assertCountEqual([key(row) for row in records], [key(row) for row in original])
+            if data.get('historical'):
+                self.assertEqual(data['date_utc'], original_metadata['date_utc'])
+                self.assertEqual(data['sources'], original_metadata['sources'])
+                expected = [row for row in original if row['case'].startswith(prefix)]
+                self.assertCountEqual([key(row) for row in partition], [key(row) for row in expected])
+            else:
+                self.assertGreater(data['date_utc'], original_metadata['date_utc'])
+                self.assertTrue(data['benchmark_sources'])
+                self.assertTrue(data['harness_sources'])
+
+    def test_saved_report_requires_opt_in_and_preserves_failed_check_rejection(self):
+        from tools.project_tools.docs import report
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / 'style.css').write_text('')
+            saved = root / 'tests.json'
+            data = {'sources': {'program.cj': 'previous-hash'},
+                    'status': 'passed', 'date_utc': '2026-10-12T00:00:00Z'}
+            saved.write_text(json.dumps(data))
+            before = saved.read_bytes()
+            config = root / 'project.config.json'
+            config.write_text(json.dumps({'css': 'style.css', 'artifacts': {'tests': 'tests.json'}}))
+            with self.assertRaisesRegex(RuntimeError, 'Stale tests'):
+                report(config)
+            report(config, allow_stale=True)
+            page = (root / 'index.html').read_text()
+            self.assertIn('Saved results from earlier source snapshots', page)
+            self.assertIn(data['date_utc'], page)
+            self.assertEqual(saved.read_bytes(), before)
+            data['status'] = 'failed'; saved.write_text(json.dumps(data))
+            with self.assertRaisesRegex(RuntimeError, 'has not passed'):
+                report(config, allow_stale=True)
 
     def test_nested_example_provenance_tracks_shared_and_sibling_sources(self):
         with tempfile.TemporaryDirectory() as temp:

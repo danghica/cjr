@@ -937,7 +937,10 @@
         0,
         1
       ],
-      "scope": "expr_scope"
+      "scope": "expr_scope",
+      "entry": "InConstrEntry",
+      "identity": "cjr.notation.::expr_scope:x_'*'_x",
+      "template": "{0} * {1}"
     },
     {
       "kind": "notation",
@@ -1612,6 +1615,15 @@
       "arity": 0,
       "label": "MinusOp",
       "template": "-",
+      "layout": "call",
+      "slots": []
+    },
+    {
+      "kind": "application",
+      "key": "cjr.lang.MulOp",
+      "arity": 0,
+      "label": "MulOp",
+      "template": "*",
       "layout": "call",
       "slots": []
     },

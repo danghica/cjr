@@ -2,7 +2,7 @@
 table. Class and struct layouts, and the signatures of the functions an
 example defines, are passed in with each example. *)
 
-From Coq Require Import String Ascii ZArith List Bool.
+From Coq Require Import String Ascii ZArith List Bool DecimalString.
 From cjr Require Import lang.
 From cjr.examples Require Import array_list.
 Import ListNotations.
@@ -30,9 +30,16 @@ Fixpoint nat_digits (fuel n : nat) : string :=
 Definition nat_string (n : nat) : string :=
   if Nat.eqb n 0 then "0" else nat_digits (S n) n.
 
+(** Keep large machine literals in binary while converting to decimal. Going
+through unary [nat] would allocate billions of constructors for hash constants. *)
 Definition z_string (z : Z) : string :=
-  if Z.ltb z 0 then "-" +++ nat_string (Z.to_nat (Z.opp z))
-  else nat_string (Z.to_nat z).
+  NilZero.string_of_int (Z.to_int z).
+
+Example z_string_machine_bounds :
+  z_string (-9223372036854775808) = "-9223372036854775808" ∧
+  z_string 9223372036854775807 = "9223372036854775807" ∧
+  z_string 0 = "0".
+Proof. vm_compute. repeat split; reflexivity. Qed.
 
 Fixpoint cat_all (xs : list string) : string :=
   match xs with
@@ -58,7 +65,7 @@ Definition binder_beq (a b : binder) : bool :=
 
 Definition binop_beq (a b : bin_op) : bool :=
   match a, b with
-  | PlusOp, PlusOp | MinusOp, MinusOp | RemOp, RemOp | LeOp, LeOp
+  | PlusOp, PlusOp | MinusOp, MinusOp | MulOp, MulOp | RemOp, RemOp | LeOp, LeOp
   | EqOp, EqOp | AndOp, AndOp | BitXorOp, BitXorOp | BitAndOp, BitAndOp => true
   | _, _ => false
   end.
@@ -429,6 +436,7 @@ Definition sym (op : bin_op) : string :=
   match op with
   | PlusOp => " + "
   | MinusOp => " - "
+  | MulOp => " * "
   | RemOp => " % "
   | LeOp => " <= "
   | EqOp => " == "

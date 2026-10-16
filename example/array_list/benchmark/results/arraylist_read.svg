@@ -1,18 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 320" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img">
 <title>arraylist_read benchmark medians and IQR</title>
 <style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
 <rect width="100%" height="100%" fill="white"/>
 <text x="20" y="24" font-size="17">arraylist_read · median and IQR</text>
-<circle cx="250" cy="20" r="5" fill="#176f76"/><text x="260" y="24">CJR</text>
-<circle cx="400" cy="20" r="5" fill="#de8b37"/><text x="410" y="24">Std</text>
-<text x="18" y="69">arraylist_read</text><path d="M 205 65 H 990" class="grid"/>
-<path d="M 934.2 81 H 1005.8" stroke="#176f76" stroke-width="2"/><circle cx="970.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 205.9 81 H 254.1" stroke="#176f76" stroke-width="2"/><circle cx="230.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 559.6 81 H 640.4" stroke="#176f76" stroke-width="2"/><circle cx="600.0" cy="81" r="4" fill="#176f76"/>
-<path d="M 935.0 87 H 1005.0" stroke="#de8b37" stroke-width="2"/><circle cx="970.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 215.0 87 H 245.0" stroke="#de8b37" stroke-width="2"/><circle cx="230.0" cy="87" r="4" fill="#de8b37"/>
-<path d="M 553.8 87 H 646.2" stroke="#de8b37" stroke-width="2"/><circle cx="600.0" cy="87" r="4" fill="#de8b37"/>
-<text x="230.0" y="109" text-anchor="middle">256</text>
-<text x="600.0" y="109" text-anchor="middle">4,096</text>
-<text x="970.0" y="109" text-anchor="middle">16,384</text>
+<circle cx="250" cy="44" r="5" fill="#176f76"/><text x="260" y="48">CJR</text>
+<circle cx="400" cy="44" r="5" fill="#de8b37"/><text x="410" y="48">Std</text>
+<path d="M 230.0 65 V 293" class="grid"/><text x="230.0" y="311" text-anchor="middle">0.00</text>
+<path d="M 392.5 65 V 293" class="grid"/><text x="392.5" y="311" text-anchor="middle">0.26</text>
+<path d="M 555.0 65 V 293" class="grid"/><text x="555.0" y="311" text-anchor="middle">0.52</text>
+<path d="M 717.5 65 V 293" class="grid"/><text x="717.5" y="311" text-anchor="middle">0.78</text>
+<path d="M 880.0 65 V 293" class="grid"/><text x="880.0" y="311" text-anchor="middle">1.04</text>
+<text x="555" y="329" text-anchor="middle">Time (ns per operation; lower is faster)</text>
+<text x="18" y="80">arraylist_read · n=256</text>
+<g><title>CJR: median 1.0320, Q1 1.0287, Q3 1.0393 ns/op</title><path d="M 873.4 90 H 880.0" stroke="#176f76" stroke-width="2"/><circle cx="875.4" cy="90" r="4" fill="#176f76"/><text x="900" y="94">CJR 1.03 ns/op</text></g>
+<g><title>Std: median 0.9165, Q1 0.9149, Q3 0.9215 ns/op</title><path d="M 802.2 110 H 806.3" stroke="#de8b37" stroke-width="2"/><circle cx="803.2" cy="110" r="4" fill="#de8b37"/><text x="900" y="114">Std 0.92 ns/op</text></g>
+<text x="18" y="156">arraylist_read · n=4,096</text>
+<g><title>CJR: median 1.0101, Q1 1.0036, Q3 1.0214 ns/op</title><path d="M 857.7 166 H 868.8" stroke="#176f76" stroke-width="2"/><circle cx="861.8" cy="166" r="4" fill="#176f76"/><text x="900" y="170">CJR 1.01 ns/op</text></g>
+<g><title>Std: median 0.8861, Q1 0.8848, Q3 0.9052 ns/op</title><path d="M 783.3 186 H 796.1" stroke="#de8b37" stroke-width="2"/><circle cx="784.2" cy="186" r="4" fill="#de8b37"/><text x="900" y="190">Std 0.89 ns/op</text></g>
+<text x="18" y="232">arraylist_read · n=16,384</text>
+<g><title>CJR: median 1.0041, Q1 0.9992, Q3 1.0150 ns/op</title><path d="M 854.9 242 H 864.8" stroke="#176f76" stroke-width="2"/><circle cx="858.0" cy="242" r="4" fill="#176f76"/><text x="900" y="246">CJR 1.00 ns/op</text></g>
+<g><title>Std: median 0.8846, Q1 0.8806, Q3 0.8960 ns/op</title><path d="M 780.7 262 H 790.4" stroke="#de8b37" stroke-width="2"/><circle cx="783.2" cy="262" r="4" fill="#de8b37"/><text x="900" y="266">Std 0.88 ns/op</text></g>
 </svg>

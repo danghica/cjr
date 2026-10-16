@@ -65,7 +65,7 @@ assumptions, rebuild this development with `make -B`.
 - `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, aes_ige, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
 - `tools/extraction/rocq/` — shared printer and aggregate extraction driver
 
-Open [all example reports](example/index.html). `make readable EXPLANATIONS=offline` regenerates the example and shared-library pages using existing explanation caches; `make project-report EXPLANATIONS=offline` also assembles reports. `make test` runs the runtime suites; `make benchmark` explicitly runs timed benchmarks.
+Open [all example reports](example/index.html). `make readable EXPLANATIONS=offline` regenerates the example and shared-library pages using existing explanation caches; `make project-report EXPLANATIONS=offline REPORT_FLAGS=--allow-stale` also assembles reports. `make test` runs the runtime suites; `make benchmark` explicitly runs timed benchmarks.
 
 Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a translation from full Cangjie are out of scope.
 
@@ -79,7 +79,7 @@ extraction drivers. The most-frequent count includes `mf_memory.v`.
 
 | Example | Rocq source | Lines | Extracted Cangjie | Lines | Rocq / Cangjie |
 |---|---|---:|---|---:|---:|
-| [arith](example/misc/README.md) | [arith.v](example/misc/rocq/arith.v) | 105 | [arith.cj](example/misc/extracted/arith.cj) | 18 | 5.8 |
+| [arith](example/misc/README.md) | [arith.v](example/misc/rocq/arith.v) | 124 | [arith.cj](example/misc/extracted/arith.cj) | 22 | 5.6 |
 | [struct_upd](example/misc/README.md) | [struct_upd.v](example/misc/rocq/struct_upd.v) | 57 | [struct_upd.cj](example/misc/extracted/struct_upd.cj) | 27 | 2.1 |
 | [cell](example/misc/README.md) | [cell.v](example/misc/rocq/cell.v) | 35 | [cell.cj](example/misc/extracted/cell.cj) | 15 | 2.3 |
 | [swap](example/misc/README.md) | [swap.v](example/misc/rocq/swap.v) | 40 | [swap.cj](example/misc/extracted/swap.cj) | 18 | 2.2 |
@@ -92,24 +92,24 @@ extraction drivers. The most-frequent count includes `mf_memory.v`.
 | [array](example/array/README.md) | [array.v](example/array/rocq/array.v) | 354 | [array.cj](example/array/extracted/array.cj) | 39 | 9.1 |
 | [array_list](example/array_list/README.md) | [array_list.v](example/array_list/rocq/array_list.v) | 2340 | [array_list.cj](example/array_list/extracted/array_list.cj) | 130 | 18.0 |
 | [qsort](example/qsort/README.md) | [qsort.v](example/qsort/rocq/qsort.v) | 1749 | [qsort_array.cj](example/qsort/extracted/qsort_array.cj), [qsort_array_list.cj](example/qsort/extracted/qsort_array_list.cj) | 213 | 8.2 |
-| [hash_map](example/hash_map/README.md) | [hash_map.v](example/hash_map/rocq/hash_map.v) | 2925 | [hash_map.cj](example/hash_map/extracted/hash_map.cj) | 283 | 10.3 |
+| [hash_map](example/hash_map/README.md) | [hash_map.v](example/hash_map/rocq/hash_map.v) | 2962 | [hash_map.cj](example/hash_map/extracted/hash_map.cj) | 290 | 10.2 |
 | [most_frequent](example/most_frequent/README.md) | [rocq/](example/most_frequent/rocq/) | 2395 | [most_frequent.cj](example/most_frequent/extracted/most_frequent.cj) | 143 | 16.7 |
 | [quadtree](example/quadtree/README.md) | [spec/](example/quadtree/spec/), [algorithm/](example/quadtree/algorithm/), [proof/](example/quadtree/proof/) | 1471 | [quadtree.cj](example/quadtree/extracted/quadtree.cj) | 386 | 3.8 |
 | [aes_ige](example/aes_ige/README.md) | [rocq/](example/aes_ige/rocq/) | 3690 | [aes_ige.cj](example/aes_ige/extracted/aes_ige.cj) | 3394 | 1.1 |
-| **Total** | | **15917** | | **4881** | **3.3** |
+| **Total** | | **15973** | | **4892** | **3.3** |
 
 The shared [hm_tactics.v](example/hash_map/rocq/hm_tactics.v) evaluation-context
 automation adds 110 supporting lines outside these counts.
 
 ## Integer and bitwise operators
 
-The core supports addition, subtraction, signed remainder, integer comparison
+The core supports addition, subtraction, multiplication, signed remainder, integer comparison
 and equality, Boolean conjunction, and the new integer bitwise XOR and AND.
 `BitXorOp` evaluates with `Z.lxor`, uses Rocq expression notation `e1 .^ e2`,
 and prints Cangjie `^`; `BitAndOp` evaluates with `Z.land`, uses `e1 .& e2`,
 and prints `&`. `wp_bitxor` and `wp_bitand` specialize `wp_binop` and require
 no numeric side condition. Boolean `AndOp` remains separate and prints `&&`.
-Bitwise OR, complement, and shifts are not implemented.
+`MulOp` evaluates with `Z.mul`, uses expression notation `e1 * e2`, and prints Cangjie `*`; `wp_mul` has no numeric side condition. Bitwise OR, complement, and shifts are not implemented.
 
 Integers in the model are unbounded signed Rocq integers, while extracted
 integer values are `Int64`; the model does not automatically truncate to 64
@@ -128,9 +128,9 @@ The tutorial includes a detailed subsection for each definition and lemma, compl
 
 `example/hash_map/rocq/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
 
-The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `example/hash_map/test/hash_map_test.cj` contains 17 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `example/hash_map/test/hash_map_test.cj` contains 18 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
 
-Primitive signed remainder (`RemOp`, printed as `%`) follows division truncated toward zero. Its WP rule requires a nonzero divisor. HashMap bucket normalization now uses one remainder and at most one addition, with a proof that the result equals mathematical modulo for positive capacity; it no longer iterates in proportion to the key magnitude. Collision chains still use linear probing without hash mixing.
+Primitive signed remainder (`RemOp`, printed as `%`) follows division truncated toward zero. Its WP rule requires a nonzero divisor. HashMap bucket normalization now uses one remainder and at most one addition, with a proof that the result equals mathematical modulo for positive capacity; it no longer iterates in proportion to the key magnitude. HashMap now hashes keys as `((k % 2147483647) * 1000000007) % 2147483647` before bucket normalization. Reducing before multiplication keeps the product within `Int64` for every input key (`hash_product_int64`); capacity-spaced keys no longer systematically collide. Collision chains still use linear probing, and the hash is not adversarially secure.
 
 `add_spec` and its client theorems retain the resulting capacity existentially because insertion can grow. `grow(minCap)` performs one doubling; the retained argument does not promise arbitrary minimum capacity. The CJR integer model is unbounded; the proof does not establish absence of `Int64` overflow for arbitrary machine inputs.
 
@@ -276,3 +276,24 @@ From `example/aes_ige`, run `make build`, `make verify`, `make extract`,
 The implementation provides no padding, authentication, or in-place operation.
 Its branch-based S-box is not constant-time; there is no side-channel or
 cryptographic security theorem.
+
+## Documentation refresh
+
+The [PDF tutorial](paper/cjr-tutorial.pdf) and [hash-map benchmark report](example/hash_map/benchmark/results/report.html)
+include the bounded multiplicative hash and the October 16 measurements.
+The PDF uses saved October 12 observations for the other container suites;
+refreshing documentation preserves each run's date and source hashes.
+
+The hash change speeds up capacity-spaced CJR lookups by 38-658 times versus
+the immediately preceding CJR baseline. Ordinary hits and builds cost 10-37%
+more, and misses at larger sizes roughly double. These are workload-specific
+tradeoffs. Build-and-scan includes construction, insertion, growth, and a
+lookup of every key, normalized by the number of keys. The corrected HTML
+charts position dots by measured time and display IQR endpoints on the same
+axis; raw samples and numerical summaries were unaffected by the plotting bug.
+
+```sh
+make project-report EXPLANATIONS=offline REPORT_FLAGS=--allow-stale  # regenerate HTML from saved timings
+python3 paper/update_benchmarks.py        # requires ReportLab; figures and table
+make cj                                  # extract and rebuild the PDF twice
+```

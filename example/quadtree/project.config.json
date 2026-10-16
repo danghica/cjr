@@ -46,5 +46,19 @@
   ],
   "name": "CJR \u00b7 Quadtree",
   "renderer": "rocq-readable; coq-lsp AST backend",
-  "title": "Quadtree specification and validation"
+  "title": "Quadtree specification and validation",
+  "documentation_sources": [
+    "spec/bounds.v",
+    "spec/model.v",
+    "algorithm/extract.v",
+    "algorithm/program.v",
+    "proof/algebra.v",
+    "proof/correctness.v",
+    "proof/helpers.v",
+    "proof/insertion.v",
+    "proof/insertion_helpers.v",
+    "proof/insertion_model.v",
+    "proof/ownership.v",
+    "proof/routing.v"
+  ]
 }

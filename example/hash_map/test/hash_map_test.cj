@@ -37,6 +37,23 @@ class HashMapTests {
     }
 
     @TestCase
+    func mixedBucketsAndPrimeCollisions(): Unit {
+        @Expect(hashBucket(-9223372036854775807 - 1, 16), 2)
+        @Expect(hashBucket(9223372036854775807, 16), 7)
+        // These reduced keys produce the largest-magnitude hash products.
+        @Expect(hashBucket(2147483646, 16), 8)
+        @Expect(hashBucket(-2147483646, 16), 8)
+        @Expect(hashBucket(0, 8192) == hashBucket(8192, 8192), false)
+        let m = initHashMap()
+        // Mixing still permits collisions; original keys distinguish entries.
+        for (i in -20..21) { m.add(i * 2147483647, i + 100) }
+        for (i in -20..21) { @Expect(m.get(i * 2147483647).value, i + 100) }
+        @Expect(m.remove(0), 100)
+        @Expect(m.get(2147483647).value, 101)
+        @Expect(m.get(-2147483647).value, 99)
+    }
+
+    @TestCase
     func freshMap(): Unit {
         let m = initHashMap()
         @Expect(m.size(), 0)
@@ -84,32 +101,35 @@ class HashMapTests {
     }
     @TestCase
     func collisionsAndWraparound(): Unit {
+        @Expect(hashBucket(15, 16), 15)
+        @Expect(hashBucket(30, 16), 15)
+        @Expect(hashBucket(45, 16), 15)
         let m = initHashMap()
         m.add(15, 150)
-        m.add(31, 310)
-        m.add(47, 470)
+        m.add(30, 300)
+        m.add(45, 450)
         @Expect(m.get(15).value, 150)
-        @Expect(m.get(31).value, 310)
-        @Expect(m.get(47).value, 470)
-        @Expect(m.contains(63), false)
+        @Expect(m.get(30).value, 300)
+        @Expect(m.get(45).value, 450)
+        @Expect(m.contains(60), false)
         @Expect(m.size(), 3)
     }
 
     @TestCase
     func tombstoneDoesNotHideExistingKey(): Unit {
         let m = initHashMap()
-        m.add(1, 10)
-        m.add(17, 170)
-        m.add(33, 330)
-        @Expect(m.remove(1), 10)
-        @Expect(m.get(33).value, 330)
-        m.add(33, 331)
+        m.add(13, 10)
+        m.add(28, 280)
+        m.add(43, 430)
+        @Expect(m.remove(13), 10)
+        @Expect(m.get(43).value, 430)
+        m.add(43, 431)
         @Expect(m.size(), 2)
-        @Expect(m.get(33).value, 331)
-        m.add(49, 490)
+        @Expect(m.get(43).value, 431)
+        m.add(58, 580)
         @Expect(m.size(), 3)
-        @Expect(m.get(17).value, 170)
-        @Expect(m.get(49).value, 490)
+        @Expect(m.get(28).value, 280)
+        @Expect(m.get(58).value, 580)
     }
 
     @TestCase
@@ -221,18 +241,18 @@ class HashMapTests {
     @TestCase
     func lookupWrapsPastTombstones(): Unit {
         let m = initHashMap()
-        for (i in 0..8) { m.add(i * 16 + 15, i - 3) }
+        for (i in 0..8) { m.add(i * 15 + 15, i - 3) }
         @Expect(m.remove(15), -3)
-        @Expect(m.remove(47), -1)
+        @Expect(m.remove(45), -1)
         for (i in 0..8) {
             let present = i != 0 && i != 2
-            @Expect(m.contains(i * 16 + 15), present)
-            let r = m.get(i * 16 + 15)
+            @Expect(m.contains(i * 15 + 15), present)
+            let r = m.get(i * 15 + 15)
             @Expect(r.ok, present)
             @Expect(r.value, if (present) { i - 3 } else { 0 })
         }
-        @Expect(m.get(143).ok, false)
-        @Expect(m.get(143).value, 0)
+        @Expect(m.get(135).ok, false)
+        @Expect(m.get(135).value, 0)
         @Expect(m.size(), 6)
         @Expect(m.capacity(), 16)
     }

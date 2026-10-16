@@ -149,13 +149,13 @@ def benchmarks(name, run=False):
         benchmark.plot(config); benchmark.report(config)
 
 
-def report(name):
+def report(name, allow_stale=False):
     config = ROOT / 'example' / name / 'project.config.json'
     benchmarks(name)
     settings = json.loads(config.read_text())
     if 'tests' in settings['artifacts']:
         docs.test_report(config)
-    docs.metadata(config); docs.report(config)
+    docs.metadata(config); docs.report(config, allow_stale=allow_stale)
 
 
 def main(argv=None):
@@ -163,6 +163,7 @@ def main(argv=None):
     parser.add_argument('command', choices=('extract', 'readable', 'test', 'benchmark', 'report'))
     parser.add_argument('--example', choices=NAMES)
     parser.add_argument('--explanations', choices=('auto', 'offline'), default='auto')
+    parser.add_argument('--allow-stale', action='store_true', help='Render saved results with source-mismatch notices')
     args = parser.parse_args(argv)
     if args.command == 'extract':
         extract(); return
@@ -172,11 +173,11 @@ def main(argv=None):
             if args.command == 'readable': readable(name, args.explanations)
             elif args.command == 'test': runtime_tests(name)
             elif args.command == 'benchmark': benchmarks(name, run=True)
-            else: report(name)
+            else: report(name, allow_stale=args.allow_stale)
         except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as exc:
             failures.append(name); print(f'{name}: {exc}', file=sys.stderr)
     if args.command == 'report' and not args.example and not failures:
-        docs.metadata(ROOT / 'project.config.json'); docs.report(ROOT / 'project.config.json')
+        docs.metadata(ROOT / 'project.config.json'); docs.report(ROOT / 'project.config.json', allow_stale=args.allow_stale)
     if failures:
         raise SystemExit(1)
 

@@ -717,6 +717,8 @@ Definition anonymous_let : expr := Let None (Val (LitV LitUnit)) (Val (LitV LitU
 Definition symbolic_name (name : string) : expr := Var name.
 Definition stack_code (p : expr) : expr := StackLoad p.
 Definition sum_code (a b : expr) : expr := (a + b)%E.
+Definition product_code (a b : expr) : expr := (a * b)%E.
+Definition product_ast (a b : expr) : expr := BinOp MulOp a b.
 Definition call_code (f x : expr) : expr := App f x.
 Definition branch_code (b : bool) : expr := If (Val (LitV (LitBool b))) (Val (LitV LitNull)) (Val (LitV (LitFloat 2))).
 Definition allocation (n : expr) : expr := Seq (Free (Alloc n)) (Offset n n).
@@ -743,6 +745,8 @@ Definition allocation (n : expr) : expr := Seq (Free (Alloc n)) (Offset n n).
             self.assertIn("CJR Var [symbolic identifier or binder](name)", docs["symbolic_name"])
             self.assertIn("CJR StackLoad", docs["stack_code"])
             self.assertIn("a + b", docs["sum_code"])
+            self.assertIn("a * b", docs["product_code"])
+            self.assertIn("a * b", docs["product_ast"])
             self.assertIn("f(x)", docs["call_code"])
             self.assertIn("CPointer<Int64>()", docs["branch_code"])
             self.assertIn("2.0", docs["branch_code"])

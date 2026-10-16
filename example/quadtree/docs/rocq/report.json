@@ -10,27 +10,38 @@
     {
       "file": "algorithm/program.v",
       "errors": [],
-      "unsupported": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: recursive or symbolic closure",
+        "Cangjie unavailable: symbolic identifier or binder"
+      ],
       "declarations": 44
     },
     {
       "file": "proof/algebra.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 5526",
         "unmapped notation _ ∉ _"
       ],
       "declarations": 6
     },
     {
-      "file": "proof/audit.v",
-      "errors": [],
-      "unsupported": [],
-      "declarations": 0
-    },
-    {
       "file": "proof/correctness.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "Cangjie unavailable: recursive or symbolic closure",
+        "unclassified arrow at byte 1471",
+        "unclassified arrow at byte 1485",
+        "unclassified arrow at byte 6237",
+        "unclassified arrow at byte 6251",
         "unmapped notation _ ∈ _"
       ],
       "declarations": 5
@@ -39,6 +50,13 @@
       "file": "proof/helpers.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "Cangjie unavailable: recursive or symbolic closure",
+        "unclassified arrow at byte 1178",
+        "unclassified arrow at byte 5275",
+        "unclassified arrow at byte 844",
         "unmapped notation <[ _ := _ ]>"
       ],
       "declarations": 14
@@ -47,6 +65,26 @@
       "file": "proof/insertion.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 11047",
+        "unclassified arrow at byte 12074",
+        "unclassified arrow at byte 1419",
+        "unclassified arrow at byte 2173",
+        "unclassified arrow at byte 2187",
+        "unclassified arrow at byte 2202",
+        "unclassified arrow at byte 3158",
+        "unclassified arrow at byte 3176",
+        "unclassified arrow at byte 3191",
+        "unclassified arrow at byte 3208",
+        "unclassified arrow at byte 3223",
+        "unclassified arrow at byte 3254",
+        "unclassified arrow at byte 4490",
+        "unclassified arrow at byte 4504",
+        "unclassified arrow at byte 4519",
+        "unclassified arrow at byte 7252",
+        "unclassified arrow at byte 7266",
+        "unclassified arrow at byte 7281",
+        "unclassified arrow at byte 9951",
         "unmapped notation _ ∈ _",
         "unmapped notation _ ∉ _"
       ],
@@ -56,6 +94,27 @@
       "file": "proof/insertion_helpers.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR FieldStore [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "Cangjie unavailable: recursive or symbolic closure",
+        "unclassified arrow at byte 2306",
+        "unclassified arrow at byte 2326",
+        "unclassified arrow at byte 2364",
+        "unclassified arrow at byte 2381",
+        "unclassified arrow at byte 2396",
+        "unclassified arrow at byte 2427",
+        "unclassified arrow at byte 5341",
+        "unclassified arrow at byte 5361",
+        "unclassified arrow at byte 5399",
+        "unclassified arrow at byte 5416",
+        "unclassified arrow at byte 5431",
+        "unclassified arrow at byte 5462",
+        "unclassified arrow at byte 6983",
+        "unclassified arrow at byte 7001",
+        "unclassified arrow at byte 7016",
+        "unclassified arrow at byte 7033",
+        "unclassified arrow at byte 7048",
+        "unclassified arrow at byte 7079",
         "unmapped notation _ ∉ _",
         "unmapped notation _ ∪ _",
         "unmapped notation {[ _ ]}"
@@ -66,6 +125,7 @@
       "file": "proof/insertion_model.v",
       "errors": [],
       "unsupported": [
+        "unclassified arrow at byte 446",
         "unmapped notation {[ _ ]}"
       ],
       "declarations": 3
@@ -74,6 +134,9 @@
       "file": "proof/ownership.v",
       "errors": [],
       "unsupported": [
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "unclassified arrow at byte 2192",
+        "unclassified arrow at byte 2411",
         "unmapped notation <[ _ := _ ]>"
       ],
       "declarations": 15
@@ -82,6 +145,11 @@
       "file": "proof/routing.v",
       "errors": [],
       "unsupported": [
+        "unclassified arrow at byte 1349",
+        "unclassified arrow at byte 1363",
+        "unclassified arrow at byte 1378",
+        "unclassified arrow at byte 298",
+        "unclassified arrow at byte 318",
         "unmapped notation _ ∈ _"
       ],
       "declarations": 5
@@ -90,6 +158,24 @@
       "file": "spec/bounds.v",
       "errors": [],
       "unsupported": [
+        "unclassified arrow at byte 1016",
+        "unclassified arrow at byte 1034",
+        "unclassified arrow at byte 1261",
+        "unclassified arrow at byte 1279",
+        "unclassified arrow at byte 1489",
+        "unclassified arrow at byte 1706",
+        "unclassified arrow at byte 1870",
+        "unclassified arrow at byte 2057",
+        "unclassified arrow at byte 2073",
+        "unclassified arrow at byte 2518",
+        "unclassified arrow at byte 2532",
+        "unclassified arrow at byte 2548",
+        "unclassified arrow at byte 3119",
+        "unclassified arrow at byte 3136",
+        "unclassified arrow at byte 407",
+        "unclassified arrow at byte 601",
+        "unclassified arrow at byte 770",
+        "unclassified arrow at byte 788",
         "unmapped notation - _",
         "unmapped notation _ <= _ <= _"
       ],
@@ -100,6 +186,52 @@
       "errors": [],
       "unsupported": [
         "CGenarg",
+        "unclassified arrow at byte 11880",
+        "unclassified arrow at byte 11898",
+        "unclassified arrow at byte 11910",
+        "unclassified arrow at byte 11941",
+        "unclassified arrow at byte 11974",
+        "unclassified arrow at byte 11995",
+        "unclassified arrow at byte 12315",
+        "unclassified arrow at byte 12329",
+        "unclassified arrow at byte 14182",
+        "unclassified arrow at byte 14196",
+        "unclassified arrow at byte 14896",
+        "unclassified arrow at byte 14920",
+        "unclassified arrow at byte 15687",
+        "unclassified arrow at byte 15711",
+        "unclassified arrow at byte 16211",
+        "unclassified arrow at byte 1693",
+        "unclassified arrow at byte 16963",
+        "unclassified arrow at byte 17425",
+        "unclassified arrow at byte 1857",
+        "unclassified arrow at byte 2371",
+        "unclassified arrow at byte 2862",
+        "unclassified arrow at byte 3115",
+        "unclassified arrow at byte 3132",
+        "unclassified arrow at byte 4150",
+        "unclassified arrow at byte 4337",
+        "unclassified arrow at byte 4355",
+        "unclassified arrow at byte 4573",
+        "unclassified arrow at byte 4591",
+        "unclassified arrow at byte 4942",
+        "unclassified arrow at byte 5247",
+        "unclassified arrow at byte 5259",
+        "unclassified arrow at byte 5481",
+        "unclassified arrow at byte 5706",
+        "unclassified arrow at byte 5720",
+        "unclassified arrow at byte 5735",
+        "unclassified arrow at byte 6746",
+        "unclassified arrow at byte 7046",
+        "unclassified arrow at byte 7060",
+        "unclassified arrow at byte 7085",
+        "unclassified arrow at byte 9113",
+        "unclassified arrow at byte 9133",
+        "unclassified arrow at byte 9144",
+        "unclassified arrow at byte 964",
+        "unclassified arrow at byte 9734",
+        "unclassified arrow at byte 9750",
+        "unclassified arrow at byte 9761",
         "unmapped notation - _",
         "unmapped notation _ <= _ < _",
         "unmapped notation _ <= _ <= _",
@@ -158,7 +290,6 @@
       "algorithm/extract.v": [],
       "algorithm/program.v": [],
       "proof/algebra.v": [],
-      "proof/audit.v": [],
       "proof/correctness.v": [],
       "proof/helpers.v": [],
       "proof/insertion.v": [],
@@ -2102,9 +2233,9 @@
         "description": "node_class defines a declaration named \"QuadNode\" with nine fields labelled \"Int64\": tag, px, py, x0, y0, x1, y1, mx, and my, plus four fields labelled \"QuadNode\": ll, lr, ul, and ur. The names suggest quadtree data and four child nodes, but the input does not define Decl or establish the fields’ intended meanings, representation, or invariants."
       },
       "cjr.quadtree.algorithm.extract.quadtree_program": {
-        "status": "available",
-        "reason": "",
-        "description": "quadtree_program packages three data classes and twelve named functions into a program whose final expression is the unit value. The classes represent quadtree nodes, linked point lists, and trees; the functions provide tree creation, point insertion, membership checks, rectangular range queries, and supporting operations, with declared argument and result types. The supplied bodies check bounds before insertion or membership lookup and use node tags to distinguish empty nodes, stored points, and branches. Some helpers and branch bodies are missing, so exact boundary rules and complete behavior remain uncertain. This is a program definition, with no stated preconditions or WP contract, and it establishes neither partial correctness nor termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.extract.tree_class": {
         "status": "available",
@@ -2112,434 +2243,434 @@
         "description": "The definition tree_class constructs a Decl value named \"QuadTree\" with three entries: \"depth\" and \"side\", both labeled \"Int64\", and \"root\", labeled \"QuadNode\". This appears to describe a class or record, but the input does not define Decl or establish the meaning of those labels, any constraints on the entries, or any correctness or termination guarantees."
       },
       "cjr.quadtree.algorithm.program.qand": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qand takes two arguments, a and b, and returns BinOp AndOp a b. It appears to represent a binary AND operation, but the supplied input does not establish what BinOp or AndOp means or what types the arguments have."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qargs": {
-        "status": "available",
-        "reason": "",
-        "description": "qargs is qargs_from with its starting index fixed at 0: given a list of names and a body expression, it constructs nested let-bindings that bind each name to successive indexed loads from the variable \"args\", then ends with the supplied body. An empty list leaves the body unchanged. This defines an expression-building function; the input does not establish whether those loads are valid when the resulting expression runs."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qargs_from": {
-        "status": "available",
-        "reason": "",
-        "description": "qargs_from builds an expression that binds each name in the supplied list to a successive field loaded from the variable \"args\", starting at index i, then continues with body. An empty list returns body unchanged; otherwise, it constructs a Let for the first name and recursively processes the remaining names at the next index. The recursion follows the shrinking list, but the input does not specify how these expression constructors execute or guarantee that the generated field loads are valid."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qb": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qb takes a parameter b and wraps it as a Boolean literal with LitBool, then as a literal value with LitV, and finally with Val. Its type is inferred rather than explicitly stated; the input provides no further context about these constructors."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qchoose": {
-        "status": "available",
-        "reason": "",
-        "description": "qchoose selects ll when qlt x mx and qlt y my are true, ul when only the first is true, lr when only the second is true, and ur when both are false. The supplied qlt definition returns qb true exactly when qle holds and qeq does not; otherwise it returns qb false. This suggests choosing among four regions using strict comparisons, but the input does not define qle, qeq, qb, or If, so that interpretation is not fully established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qeq": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qeq takes two arguments, a and b, and constructs BinOp EqOp a b, apparently representing an equality operation between them. The input does not specify the arguments’ types or the meanings of BinOp and EqOp, so it does not establish how this expression is evaluated or what result it produces."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qi": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qi takes a parameter n and wraps it as an integer literal (LitInt n), then as a literal value (LitV), and finally with Val. Its type is inferred but not shown in the input; no further properties or correctness claims are supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qinside": {
-        "status": "available",
-        "reason": "",
-        "description": "qinside constructs an expression combining the conditions x0 ≤ x < x1 and y0 ≤ y < y1, intended to test whether (x, y) lies in a rectangle that includes its lower boundaries and excludes its upper boundaries. It uses qand for conjunction, qle for non-strict comparison, and qlt for a comparison that requires qle to hold and equality to fail. This interpretation assumes the named operators have their usual meanings; their evaluation semantics and the definitions of qeq and qb are not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qinvoke": {
-        "status": "available",
-        "reason": "",
-        "description": "qinvoke constructs an expression that applies a recursively named function, using the supplied name and body and a parameter named \"args\", to a structure built from the supplied list of argument expressions with an empty first component. The input does not define App, Rec, or Struct, so their precise evaluation behavior is uncertain; this definition alone establishes no correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qle": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qle takes two arguments, a and b, and constructs BinOp LeOp a b. This appears to represent a less-than-or-equal binary operation, but the supplied input does not establish the meanings of BinOp or LeOp or the types of the arguments."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qloads": {
-        "status": "available",
-        "reason": "",
-        "description": "qloads constructs an expression from an object variable name, a list of field names paired with natural-number indices, and a body expression. An empty list returns the body unchanged; each pair adds a nested Let that binds its name to FieldLoad of the object at that index, with bindings arranged in list order before the body. The recursion proceeds through the remaining list; the input supplies no premises about valid field indices or definitions establishing how the constructed expression executes."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qlt": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qlt constructs a conditional expression that yields the Boolean literal true when qle a b holds and qeq a b does not, and false otherwise. Here qle constructs a LeOp comparison, qeq constructs an EqOp comparison, and qb constructs a Boolean literal value. This appears intended to express strict less-than using less-than-or-equal and equality, but the input does not establish the operand types or comparison semantics."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qoverlap": {
-        "status": "available",
-        "reason": "",
-        "description": "qoverlap combines four comparisons with qand: x0 < a1, a0 < x1, y0 < b1, and b0 < y1. Assuming qand means logical conjunction and qlt means strict less-than, this expresses overlap of two axis-aligned rectangles with ordered lower and upper coordinates, excluding mere edge contact. qlt is built from qle and qeq, whose meanings are not supplied, so this interpretation is conditional; the declaration itself does not establish coordinate ordering or prove correctness."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qpoint_eq": {
-        "status": "available",
-        "reason": "",
-        "description": "qpoint_eq x y a b constructs an expression combining the equality comparison of x with a and that of y with b using an AND operation, suggesting a coordinate-by-coordinate comparison of two points. The supplied definitions establish this expression structure, but do not specify the parameter types or the operations’ evaluation semantics."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qrecur": {
-        "status": "available",
-        "reason": "",
-        "description": "qrecur takes a string name and a list of expressions args, and builds the expression App (Var name) (Struct [] args): an application of the variable named name to a structure containing an empty list and the supplied arguments. The input does not define App, Var, or Struct, so their precise semantics—and whether this represents a recursive call—are not established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qstores": {
-        "status": "available",
-        "reason": "",
-        "description": "qstores recursively builds an expression from an object name, a list of field-index/value-expression pairs, and a final body expression. An empty list yields the body; otherwise, it places a FieldStore for the first pair before the expression built from the remaining pairs, preserving list order. The recursion follows the shrinking list, but the input does not define the precise runtime behavior of Seq or FieldStore or establish that the generated program terminates; no WP contract is supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_cons": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_cons takes x, y, and tail and constructs an expression that invokes qt_cons_body under the name \"qt_cons\", packaging the three arguments in a Struct. The body uses qargs with the names \"x\", \"y\", and \"tail\", then forms a New expression containing qb true followed by those three variables. The input does not define qargs, qb, or the runtime meaning of New, so the precise allocation behavior is uncertain; it supplies no correctness or termination contract."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_cons_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_cons_body defines a program expression using qargs with the names x, y, and tail, applied to New with an empty first list and a second list containing the Boolean literal true followed by references to those three variables. The helper qb encodes a Boolean as a literal value, and qargs abbreviates qargs_from starting at 0. The supplied input does not define qargs_from or New, so their precise argument-binding and construction behavior is uncertain; this definition alone establishes no correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_contains": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_contains constructs a program expression that invokes the named body \"qt_contains\" with arguments t, x, and y packaged in a structure. The body binds these as tree, x, and y, loads side from tree slot 1, and tests whether the point lies inside the region described by (0, 0, side, side); if so, it loads root from slot 2 and calls qt_contains_node, otherwise it returns false. The supplied input does not establish the boundary convention, the node-level behavior, or any correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_contains_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_contains_body defines a program body with arguments tree, x, and y. It loads side from field 1 of tree and tests whether 0 ≤ x < side and 0 ≤ y < side; if so, it loads root from field 2 and calls qt_contains_node with root, x, and y, otherwise it returns false. The supplied input does not establish the requirements for valid tree field access or what the node routine does, and this definition provides no correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_contains_node": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_contains_node constructs a call to a recursively named program with arguments n, x, and y packed into a structure. Its body reads the node’s tag: tag 0 returns false, tag 1 compares (x, y) with coordinates stored in the node, and every other tag selects a child using stored midpoint coordinates and recursively searches that child. This appears to implement point membership in a quadtree, but the helper definitions and valid node-layout assumptions are not supplied, so their precise behavior is uncertain. No correctness contract or termination guarantee is established by this definition."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_contains_node_body": {
-        "status": "available",
-        "reason": "",
-        "description": "This definition builds a program body for checking whether a node contains the point (x, y): it reads the tag in field 0, returns false for tag 0, and for tag 1 compares x and y with the coordinates in fields 1 and 2. For any other tag, it loads splitting coordinates from fields 7–8 and four children from fields 9–12, chooses a child using comparisons with the splitting coordinates, and calls qt_contains_node on that child and the same point. This appears intended as a quadtree search, but valid node layouts, the meanings of the omitted helpers, and termination are not established by the supplied input; no correctness contract or proof is given."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_empty": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_empty takes four expression arguments and builds an invocation named \"qt_empty\", passing them as a structure to qt_empty_body. That body uses qargs with the names x0, y0, x1, and y1 and a New expression containing three qi 0 entries, the four named variables, two more qi 0 entries, and four qu entries. This appears intended to construct an empty quadtree with supplied bounds, but the input does not define qargs, New, qi, or qu, so their precise meaning is uncertain; no correctness or termination contract is supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_empty_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_empty_body defines a program body using qargs, which is qargs_from starting at 0, with the argument names x0, y0, x1, and y1. Its New expression takes an empty list and a list containing three integer zeros, the four named variables in order, two more integer zeros, and four unit values. The supplied input does not define qargs_from or New, so their precise behavior and the meaning of these fields are uncertain; this definition itself states no correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_insert": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_insert t x y constructs an invocation of the expression body qt_insert_body, named \"qt_insert\", with arguments t, x, and y packaged in a structure. The body binds these as tree, x, and y, loads side from tree field 1, and tests qinside using x, y, and bounds from (0, 0) to (side, side). If the test succeeds, it loads depth from field 0 and root from field 2 and calls qt_insert_node; otherwise, it produces false. The supplied input does not define the helpers’ precise semantics, including boundary inclusion or insertion behavior, and establishes neither correctness nor termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_insert_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_insert_body defines a program body with arguments tree, x, and y. It loads side from tree field 1 and tests whether 0 ≤ x < side and 0 ≤ y < side. If so, it loads depth from field 0 and root from field 2, then invokes qt_insert_node with root, depth, x, and y; otherwise, it returns false. The input does not establish the required validity of tree, the behavior or result of the insertion call, or termination; no correctness contract is supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_insert_branch": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_insert_branch defines a program expression that loads mx, my, ll, lr, ul, and ur from fields 7–12 of node, chooses a child using comparisons of x with mx and y with my (ll when both are less, ul when only x is less, lr when only y is less, and ur otherwise), then calls qt_insert_node with that child, d minus 1, x, and y. This assumes the named variables and function are available and the field loads are valid; the supplied input does not define qlt’s precise semantics or establish correctness or termination, and decreasing d alone does not prove termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_insert_node": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_insert_node builds an expression that invokes a recursive function named \"qt_insert_node\" with arguments n, d, x, and y. Its body binds these as node, d, x, and y and reads the node’s tag: tag 0 runs qt_seed on the node and coordinates, then returns true; tag 1 loads stored coordinates and returns false if qpoint_eq reports a match, otherwise runs qt_split; any other tag runs qt_insert_branch. The supplied input does not define these helpers fully or provide a correctness contract or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_insert_node_body": {
-        "status": "available",
-        "reason": "",
-        "description": "This defines a quadtree insertion body taking node, d, x, and y. It reads the node’s tag: tag 0 calls the seeding routine and then returns true; tag 1 compares the stored point with (x, y), returning false if they match, otherwise creating four children, seeding one with the old point, updating the node to tag 2, and proceeding with insertion. Any other tag also proceeds by choosing a child and recursively inserting with d reduced by one. Some helper definitions are missing, so their exact behavior is uncertain. No validity premises or WP contract are supplied, and this definition alone establishes neither correctness nor termination; decreasing d alone does not prove termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_make": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_make d constructs an expression that invokes qt_make_body under the recursive function name \"qt_make\", passing d as its sole argument. The body binds this argument as \"depth\", computes \"side\" using qt_power, computes \"root\" using qt_empty with two zero arguments and two copies of side, then uses New to construct a value containing depth, side, and root. The supplied input does not define these helpers’ semantics or state any correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_make_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_make_body defines a program body with an argument named depth: it calls qt_power on depth and binds the result to side, calls qt_empty with integer literals 0, 0, side, and side and binds the result to root, then uses New with an empty first list and the values depth, side, and root. The supplied definitions show how the calls and integer literals are constructed, but do not establish what qt_power or qt_empty computes or the precise meaning of New. This is a definition, with no stated correctness contract, premises, or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_nil": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_nil is defined as applying Rec None None qt_nil_body to qu, which represents the unit value. Its body is New [] [qb false; qi 0; qi 0; qu], apparently constructing something with an empty first list and four entries representing false, zero, zero, and unit. The supplied input does not define App, Rec, New, qb, or qi, so their exact behavior and the resulting structure are uncertain; no correctness or termination claim is provided."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_nil_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_nil_body is defined as a New expression with an empty first list and a second list containing four literal expressions: the Boolean false, the integer 0 twice, and the unit value. The supplied definitions explain these literals, but do not establish what New does or what the fields represent; no correctness or termination contract is given."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_power": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_power e constructs an expression that invokes a recursive function named \"qt_power\" with e as its sole argument. Its body names the argument d, returns 1 when d is at most 0, and otherwise recursively calls itself on d − 1 and adds the result to itself. Under the intended numeric interpretation, this computes 2 to the power d for nonnegative integer d and returns 1 for nonpositive d; however, the supplied input does not define all helper operations or establish correctness or termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_power_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_power_body defines a program body with an argument named d: if d is at most zero, it returns the integer 1; otherwise, it calls qt_power with d − 1, binds the result to n, and returns n + n. This suggests computing 2 to the power d for nonnegative integers, provided qt_power uses this body and the operations have their usual integer meanings. The input defines program syntax but supplies no correctness contract or termination proof."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_range": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_range t a b c d constructs a call to the program expression qt_range_body, named \"qt_range\", with the five arguments packaged in a structure. The body binds them as tree, a0, b0, a1, and b1, uses qloads to obtain root from tree at index 2, initializes acc to qt_nil, and calls qt_range_node with that root, the four remaining arguments, and acc. The names suggest a quadtree range query, but the supplied definitions do not establish its exact behavior, required input conditions, correctness, or termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_range_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_range_body defines a program expression using five named arguments: tree, a0, b0, a1, and b1. It loads field 2 of tree into root, binds the result of qt_nil to acc, and invokes qt_range_node with root, the four other arguments, and acc. The supplied definitions do not establish how arguments are bound, what qt_nil produces, or what qt_range_node does, so the intended range-query behavior and termination cannot be concluded from this input."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_range_branch": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_range_branch defines a program expression that loads fields 9, 10, 11, and 12 of node into ll, lr, ul, and ur, then calls qt_range_node on ur, ul, lr, and ll in that order. Each call receives the same a0, b0, a1, and b1 arguments, while its final argument passes along the preceding call’s result, starting with acc; the final call supplies the overall result. The names suggest a quadtree range traversal, but the input does not establish the fields’ meaning or qt_range_node’s behavior, and provides no correctness contract or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_range_node": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_range_node builds an invocation of the named recursive expression qt_range_node_body, passing n, a, b, c, d, and acc as its arguments. The supplied body returns acc when the node’s tag is 0 or its stored bounds fail the overlap test; for tag 1, it adds the stored point to acc if the point passes the inside test, and otherwise returns acc. Other tags with overlapping bounds use qt_range_branch. This appears to implement a quadtree range query, but the helper definitions, branch behavior, boundary conventions, and required node validity conditions are not supplied; no correctness or termination guarantee is established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_range_node_body": {
-        "status": "available",
-        "reason": "",
-        "description": "This definition builds a quadtree range-query body taking a node, query bounds, and an accumulator. It returns the accumulator unchanged if the node’s tag is 0 or its stored bounds fail the strict overlap test. For an overlapping node with tag 1, it reads a point and calls qt_cons with that point and the accumulator if the point lies within the query’s inclusive lower and exclusive upper bounds. For any other nonzero tag, it queries the upper-right, upper-left, lower-right, and lower-left children in that order, passing each result as the next accumulator. The input provides no node-validity premises or correctness contract, and does not establish termination or the exact behavior of qt_cons."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_seed": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_seed takes n, x, and y and builds an expression invoking qt_seed_body as a recursive function named \"qt_seed\", with those three arguments packaged in a structure. The body appears to bind them as \"node\", \"x\", and \"y\", then store qi 1, x, and y at node indices 0, 1, and 2 before continuing with qu; the exact behavior is uncertain because qargs, qstores, qi, and qu are not defined in the input. This is a definition, with no stated preconditions or WP contract, so it establishes neither partial correctness nor termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_seed_body": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_seed_body defines a program expression using qargs with the names node, x, and y. Its inner body stores the integer 1 in field 0 of node, the value of x in field 1, and the value of y in field 2, in that order, then evaluates to unit. The input shows that qargs starts qargs_from at 0, but does not define qargs_from, so its precise argument-handling behavior is uncertain. This definition supplies no correctness contract or guarantee of successful execution or termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qt_split": {
-        "status": "available",
-        "reason": "",
-        "description": "qt_split defines a program expression that reads a node’s bounds, calls qt_power on d − 1 to obtain a split offset, and calls qt_empty for four regions divided at those offsets. It selects a region for (px, py) using strict comparisons, calls qt_seed on it, then stores 2, 0, 0, the split coordinates, and the four child references in the node. Finally, it selects a child for (x, y) and recursively invokes qt_insert_node with depth d − 1. Equality at a split selects the right or upper region. The helper bodies and validity premises are not supplied, so their exact behavior, whether the splits are midpoints, and correctness or termination are not established; no WP contract is shown."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.algorithm.program.qu": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition qu names the expression Val (LitV LitUnit), which represents the unit literal as a value. No premises or WP contract are supplied, so this declaration alone establishes no correctness or termination claim; the precise meaning of the constructors depends on definitions not included in the input."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_insert_set": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma gives a partial-correctness contract: assuming ownership of a quadtree represented by v with contents S and parameter d, calling qt_insert with p’s integer coordinates preserves that representation at v, with contents updated to include p if both coordinates lie between 0 inclusive and width(d) exclusive, and otherwise unchanged. If the call returns, its result is the Boolean value true exactly when p is within those bounds and was not already in S, and false otherwise. The contract does not guarantee termination; the supplied input does not define the underlying tree_rep predicate further."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_insertion_commutative": {
-        "status": "available",
-        "reason": "",
-        "description": "This theorem states that, given separate ownership of quadtrees a and b with parameter d and the same point set S, inserting p then q into a and q then p into b leaves both representing the same set if the sequence terminates. Insertion adds a point only when it lies within domain d; points outside that domain leave the set unchanged, and duplicates add nothing. The contract ignores return values and establishes partial correctness, not termination. It concerns equality of represented point sets, without asserting that the resulting tree structures are identical."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_insertion_idempotent": {
-        "status": "available",
-        "reason": "",
-        "description": "Assuming ownership of a quadtree represented by v with parameter d and contents S, this theorem gives a partial-correctness contract for inserting the same point p twice in sequence: if execution terminates, the second insertion returns false, and v still represents a quadtree whose contents are S with p added when p lies within domain d, or S unchanged otherwise. Thus two insertions have the same effect on the contents as one. The contract does not guarantee termination; the supplied input does not further define the underlying tree representation."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_membership_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "Assuming tree_rep d t v holds—so d is at most 30, t satisfies valid d (domain d) t, and the required object fields and node representation are owned—the theorem gives a partial-correctness contract for querying whether point p belongs to the quadtree twice in succession. If the program returns, it produces a two-field structure containing two identical Boolean values indicating whether p is in the set of points stored in t, and restores tree_rep d t v. This WP contract does not establish termination; the precise meaning of validity and node representation is not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_range_distributes_union": {
-        "status": "available",
-        "reason": "",
-        "description": "This theorem states that, given ownership of representations of three valid quadtrees s, t, and u at the same depth d ≤ 30, with u’s contents equal to the union of s’s and t’s contents, querying all three with rectangle r returns a three-field structure containing point lists matching their respective query models and preserves all three tree representations. The points returned for u, viewed as a set, equal the union of the sets returned for s and t; this does not specify list order or concatenation. The WP contract expresses partial correctness: it guarantees this postcondition if execution terminates, but does not guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.algebra.wp_range_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "Given ownership of a tree representation at v, with depth d at most 30 and t satisfying the stated validity condition, this theorem gives a partial-correctness contract for two successive range queries using the same rectangle bounds: if execution returns, it produces a two-field structure whose fields each represent the same list query_model r t, restores the tree representation, and guarantees that the model list has no duplicate points. The model selects points from the enumeration of t, but the supplied definitions do not specify the precise selection rule or boundary conventions. The contract does not guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.correctness.wp_qt_cons_val": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, given ownership of a linked representation of the point list xs at tail, calling qt_cons with the integer coordinates of p and that tail satisfies a partial-correctness contract: if the call returns a value v, v represents the list p::xs with the corresponding ownership. The supplied body constructs a node containing a true marker, the two coordinates, and the tail; point_list describes such nodes recursively, ending in a node with a false marker. The statement assumes the supplied program and invariant typeclass contexts and does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.correctness.wp_qt_contains": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, given tree_rep d t v, calling qt_contains on v with the integer coordinates of p satisfies a partial-correctness contract: if it returns, its result is the Boolean value indicating whether p belongs to contents t, and the tree_rep resource is preserved. This premise includes d ≤ 30, validity of t in domain d, and ownership of the tree object’s fields and root representation. The contents are the set of points stored in the tree’s leaves. The contract does not guarantee termination; the supplied input does not define the precise validity conditions."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.correctness.wp_qt_contains_node_val": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states a partial-correctness contract for qt_contains_node: assuming b has both side lengths equal to width d, t is valid within b at depth d (leaves lie in their assigned rectangles and branches require positive remaining depth), and node_rep supplies ownership of the node n representing t, calling the function with n and the coordinates of p returns, if it terminates, a Boolean that is true exactly when p belongs to the points stored in t, while restoring the same node_rep ownership. There is no premise requiring p to lie within b, and this WP contract does not itself guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.correctness.wp_qt_range": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states a partial-correctness contract for querying a quadtree with rectangle r: given ownership of its representation, including d ≤ 30 and validity within its domain, if qt_range returns, it restores that representation and provides a separately owned linked list matching query_model r t. This list has no duplicate points, and its set is exactly the tree’s contents filtered by in_rect r. The supplied input does not define the rectangle boundary convention. The contract does not guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.correctness.wp_qt_range_node_val": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states a partial-correctness contract for qt_range_node: assuming b is a square of side width d, t is valid within b at depth d, and separate ownership is available for its node representation n and an accumulator list containing xs, any returned value represents query_model r t followed by xs, with ownership of the original tree representation preserved. The query model filters the tree’s enumerated points using in_rect r; the supplied input does not define its boundary convention or enumeration order. The WP contract does not guarantee termination, and no proof is supplied here."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_fields_load": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if the entry at index i in vs is v, then ownership of all fields of object o described by vs, together with a resource-consuming implication from that same ownership to Φ(v), establishes a partial-correctness WP contract for loading field i from the object value ov(o). If the load returns, its result satisfies Φ; the continuation receives the full field ownership again. This contract does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_fields_store": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma gives a partial-correctness contract for storing w in field i of object o: assuming vs contains v at index i, ownership of all the object’s fields described by vs, and a continuation that consumes ownership of those fields with index i updated to w to establish Φ at the unit value, the store satisfies the weakest-precondition contract with postcondition Φ. Thus, if the operation terminates, its unit result satisfies Φ; the contract does not itself guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qchoose": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, under the supplied cjrGS and invGS_gen logical context, qchoose compares the coordinates of p with midx d b and midy d b and, if it returns, produces the object value among a, c, e, and f selected by route d b p. Strict comparisons select the left or lower branch, while equality selects the right or upper branch. There are no explicit geometric or ownership premises. This is a partial-correctness WP contract, so it does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qinside": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, assuming the supplied cjrGS and invGS_gen typeclass context, qinside applied to the integer coordinates of point p and bounds of rectangle r satisfies a partial-correctness WP contract: if it returns, its result is the Boolean value indicating whether xmin r ≤ fst p < xmax r and ymin r ≤ snd p < ymax r. Thus lower boundaries are included and upper boundaries excluded. No ordering assumptions on the rectangle’s bounds are stated, and this contract does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qlt": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, assuming the implicit cjrGS and invGS_gen instances, comparing integer literals a and b with qlt satisfies a partial-correctness contract: if evaluation returns, its result is the Boolean literal representing whether a < b. The supplied definition implements this by checking a ≤ b and then excluding equality. No ordering premise on a and b is required, and the WP contract does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qoverlap": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states a partial-correctness contract: given the listed logical typeclass context, calling qoverlap with the integer coordinates of rectangles b and r returns, if it terminates, the Boolean value deciding whether xmin b < xmax r, xmin r < xmax b, ymin b < ymax r, and ymin r < ymax b all hold. These strict comparisons exclude boundary-only contact. No coordinate-ordering assumptions are stated, so the rectangle records need not describe valid geometric rectangles; the contract does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qpoint_eq": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, assuming the implicit cjrGS and invGS_gen instances, qpoint_eq compares the two integer coordinates of p and q and, if it returns, yields the Boolean literal representing whether p = q. It does this by combining the two coordinate equality checks with Boolean AND. The WP contract expresses partial correctness, not a guarantee of termination, and states no additional resource precondition."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_cons": {
-        "status": "available",
-        "reason": "",
-        "description": "Under the stated implicit logical contexts, this lemma gives a partial-correctness contract: given ownership of a point list representing xs at tail, calling qt_cons with the two integer coordinates of p and tail is safe, and if it returns v, v represents the list p::xs. The representation stores each point’s coordinates and a link to the remaining list, with a false-tagged object marking the empty list. The contract uses the supplied ownership and does not guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_empty_val": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, under the supplied resource and invariant typeclass assumptions, calling qt_empty with the four integer coordinates of any rectangle b satisfies a partial-correctness WP contract: if the call returns v, then v represents an Empty quadtree for b, with ownership of an object's fields described by node_values b 0 (0,0) 0 0 uv uv uv uv. The depth parameter d imposes no restriction in the Empty case, and no coordinate-ordering premise is stated. This contract does not guarantee termination; the precise field layout and meaning of uv are not established by the supplied definitions."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_make": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, assuming the supplied logical typeclass context and a natural number d at most 30, calling qt_make with d encoded as an integer satisfies a partial-correctness WP contract: if it returns a value v, v represents an Empty quadtree at depth d. The representation asserts validity over the rectangle from (0,0) to (width d,width d), with ownership of an object containing d, width d, and a root representing the empty tree. The contract does not assert termination; the supplied input does not define width, validity, or the detailed node representation."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_nil": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, assuming the implicit cjrGS and invGS_gen resource contexts, qt_nil satisfies a partial-correctness contract with no explicit resource precondition: if it returns a value v, then v represents an empty point list, meaning there is an object o with v = ov o and ownership of its fields containing false, 0, 0, and unit. The supplied definition constructs those values using New, though New’s precise semantics are not supplied. This contract does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_power": {
-        "status": "available",
-        "reason": "",
-        "description": "For any natural number d, under the supplied cjrGS and invGS_gen typeclass assumptions, this lemma states a partial-correctness WP contract for calling qt_power with the integer literal representing d: if the call terminates, its result is the integer literal 2^d. The contract does not establish termination; the supplied input gives neither the function body nor a proof of the lemma."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_power_val": {
-        "status": "available",
-        "reason": "",
-        "description": "For any natural number d, this lemma states a partial-correctness WP contract for calling the recursive qt_power function with a one-field structure containing d as an integer: if the call returns, its result is the integer value 2^d. The supplied body returns 1 when its argument is at most zero; otherwise, it recursively calls qt_power on the argument minus one and doubles the result. The contract assumes the listed cjrGS and invGS_gen typeclass contexts, whose roles are not explained in the input, and does not assert termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.helpers.wp_qt_seed": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, given ownership of node n representing an empty quadtree at depth d and rectangle b, calling qt_seed with n and the two integer coordinates of p has a partial-correctness contract: if it returns, its result is the unit value and ownership is returned with the same node representing Leaf p, retaining d and b. Its body specifies stores of 1 and the coordinates into node slots 0, 1, and 2. The contract assumes the supplied cjrGS and invGS_gen instances; it does not guarantee termination or require p to lie within b."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_duplicate": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that if point p already belongs to the contents of tree t and you hold the tree_rep d t v resources, inserting p’s two coordinates into the tree represented by v has a partial-correctness contract: if the call returns, it returns Boolean false and restores tree_rep d t v for the same abstract tree. The representation premise includes d ≤ 30, validity of t in domain d, and ownership of the tree object’s fields and root representation. This contract does not establish termination or that every internal memory location remains unchanged; the precise meaning of validity is not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_empty": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if point p lies inside rectangle b (including its lower edges but excluding its upper edges), and the required ownership of object o representing an empty quadtree is supplied, calling insert_self with o, depth d, and p’s coordinates satisfies a partial-correctness contract. If the call returns, the same object represents some tree t′ satisfying valid d b t′, whose contents are p together with the original empty tree’s contents; the returned Boolean indicates whether p was absent from those original contents. The supplied input does not define valid or contents, so their precise meanings remain unspecified. This contract does not guarantee termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_existing_node": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that, if b is a square of side length width d, t is valid within b at depth d, and point p already belongs to t, then ownership of the node representation at n supports calling insert_self with n, d, and p’s coordinates. Its partial-correctness WP contract says that if the call returns, it returns Boolean false and preserves ownership of a representation of the same tree t at n; it does not guarantee termination. Validity requires leaf points to lie within their assigned rectangles and branches to have positive remaining depth with valid children."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_leaf_succ": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states a partial-correctness contract for inserting point p into an object representing Leaf q at depth d+1. It assumes b is a square with side length width(d+1), both points lie within b (including lower boundaries and excluding upper boundaries), and insertion already satisfies the corresponding contract for every valid depth-d child tree whose box contains p. Given ownership of the leaf representation, the call ensures that, if it returns, the same object represents a valid tree whose contents are the original contents united with {p}, and returns a Boolean indicating whether p was absent from the original contents. This WP contract does not guarantee termination. The supplied input does not define width or contents, so their further interpretation is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_leaf_zero": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states a partial-correctness contract for inserting point p into an object representing a leaf containing q at depth zero. It assumes b is a square of side width(0), both points lie within its lower-inclusive, upper-exclusive bounds, and the caller supplies the leaf’s ownership resources. The supplied unit_unique lemma implies p = q under these premises. If the insertion returns, the object represents some tree t′ satisfying valid at depth zero in b, its contents are the old contents union {p}, and the returned Boolean indicates whether p was absent from the old contents. The contract does not guarantee termination. The definitions of width, valid, and contents are not supplied, so their further meaning is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_insert_rejected": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if point p lies outside the square domain from 0 inclusive to width d exclusive in each coordinate, and v satisfies tree_rep d t v, then inserting p into v returns the Boolean false if it terminates and preserves the same tree representation. The representation includes d ≤ 30, validity of t in that domain, and ownership of the object fields and represented nodes. This is a partial-correctness WP contract: it does not guarantee termination. The supplied input does not define width or the full validity and node-representation predicates."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_qt_insert": {
-        "status": "available",
-        "reason": "",
-        "description": "The theorem states a partial-correctness contract for inserting point p into a quadtree: given ownership described by tree_rep d t v, which includes d ≤ 30 and validity of t in its domain, if qt_insert returns, the same value v represents a valid resulting tree t'. Its contents are the old contents with p added when both coordinates lie between 0 inclusive and width d exclusive, and otherwise are unchanged. The returned Boolean is true exactly when p is inside this domain and was not already present; a false result also guarantees t' = t. This WP contract does not guarantee termination, and the supplied input does not define the detailed meaning of tree validity."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_qt_insert_node_val": {
-        "status": "available",
-        "reason": "",
-        "description": "This theorem states a partial-correctness contract for inserting point p into a quadtree: assuming b is a square with side length width d, t is valid at depth d within b, p lies inside b (including its lower boundaries but excluding its upper boundaries), and node_rep supplies ownership of t’s representation at n, calling insert_self with n, d, and p’s coordinates satisfies insert_post. If the call returns, n represents a valid tree whose contents are the original contents plus p, and the returned value is bv applied to whether p was previously absent. The contract does not guarantee termination; the supplied input does not define width or bv further."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion.wp_qt_insert_set_refinement": {
-        "status": "available",
-        "reason": "",
-        "description": "This theorem states a partial-correctness contract for inserting point p into a quadtree: given ownership of a representation of t at v, including d ≤ 30 and validity within its domain, if qt_insert returns, the same v represents some valid tree t′ whose points are the original points plus p when p lies inside the domain, and unchanged otherwise. The returned Boolean is true exactly when p is inside the domain and was not already present. The domain includes its lower boundaries and excludes its upper boundaries. The contract does not guarantee termination; the supplied input does not define the precise meaning of tree validity."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.branch_call": {
-        "status": "available",
-        "reason": "",
-        "description": "branch_call builds an instance of the branch-insertion expression by substituting n for \"node\", the integer literal d + 1 for \"d\", the two coordinates of p for \"x\" and \"y\", and the recursive insertion function insert_self for \"qt_insert_node\". The supplied branch expression loads midpoint and child fields, chooses a child using the coordinates, and recursively calls insertion with the depth reduced by one, so the intended recursive depth is d. The definitions of the loading, selection, recursion, and substitution helpers are not supplied, so their precise behavior is not established; this definition alone provides no correctness or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.insert_post": {
-        "status": "available",
-        "reason": "",
-        "description": "insert_post defines an insertion postcondition: there must exist a resulting quadtree t' that is valid within rectangle b at depth d, contains exactly the old points together with p, and is represented at n by the resources described by node_rep. The value v is a Boolean literal that is true exactly when p was absent from the old tree. Validity requires leaves to lie within their assigned rectangles and branches to respect the depth limit. This definition supplies no preconditions or proof that insertion achieves it; no WP contract is shown, and using this as a partial-correctness WP postcondition would describe the result if execution returns, without establishing termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.insert_self": {
-        "status": "available",
-        "reason": "",
-        "description": "insert_self defines a recursive function value named qt_insert_node with an argument named args and body qt_insert_node_body. The body unpacks node, d, x, and y and reads the node’s tag: tag 0 calls qt_seed and then returns true; tag 1 loads stored coordinates and returns false if they match x and y, otherwise using qt_split; any other tag uses qt_insert_branch. The supplied input does not define these helpers or establish correctness or termination, and this declaration contains no WP contract."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.install_call": {
-        "status": "available",
-        "reason": "",
-        "description": "install_call builds a program that sequentially stores integer 2 in field 0 of n, integer 0 in fields 1 and 2, xmin b + width d and ymin b + width d in fields 7 and 8, and a, c, e, and f in fields 9–12, then runs branch_call n d p. That final expression substitutes n, depth d + 1, the two coordinates of p, and insert_self into qt_insert_branch. The input does not establish the fields’ intended roles or the branch code’s behavior; this definition supplies no correctness contract, memory-validity premises, or termination guarantee."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.wp_branch_call": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states a partial-correctness contract for insertion into a quadtree branch at depth d+1: assuming its box is square with side length width(d+1), the tree is valid, the point p lies inside the box, and recursive insertion satisfies the stated contract for every valid child tree whose box contains p, ownership of the branch’s memory representation gives the contract for branch_call. If the call returns, the same node represents a valid tree whose contents are the original contents together with p, and the returned Boolean indicates whether p was previously absent. This WP contract does not guarantee termination; the supplied input also omits the branch program’s body, so its precise execution steps are not established here."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.wp_install_call": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states a partial-correctness contract for installing four child nodes into object o and then calling branch insertion for point p. It assumes b is a square of the prescribed size at depth d+1, the original four-child tree is valid there, p lies within b, and recursive insertion satisfies its contract for any valid child containing p; it also requires separate ownership of o’s initial leaf-shaped fields and all four child representations. If the call returns, o represents a valid tree whose contents are the original tree’s contents together with p, and the result encodes whether p was previously absent. This WP contract does not guarantee termination; the supplied input does not define the precise square-width formula or the body of branch_call."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.wp_seed_val": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, given ownership of an empty node n represented by node_rep at depth d and rectangle b, calling qt_seed with n and the two integer coordinates of p is safe and, if it terminates, returns unit and provides ownership of the same node representing Leaf p, with the same d and b. No additional condition on p is stated. This is a partial-correctness WP contract: it does not guarantee termination, and the supplied declaration alone does not establish that a proof has been checked."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_helpers.wp_split_call": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states a partial-correctness contract for splitting a quadtree leaf containing q and inserting p. It assumes b is a square of side width(d+1), both points lie inside b, the leaf’s fields are owned, and recursive insertion satisfies the stated contract for every valid depth-d child containing p. The split code creates four children, places q in its chosen child, and proceeds with insertion. If it returns, the same root object represents a valid depth-(d+1) tree whose contents are the original leaf’s contents together with p, and the returned Boolean indicates whether p was absent before insertion. This WP contract does not guarantee termination. The supplied input does not define width or contents, so their precise definitions cannot be established here."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_model.seeded": {
         "status": "available",
@@ -2547,9 +2678,9 @@
         "description": "The definition seeded takes a quadrant k and a point p (a pair of integers) and constructs a quadtree branch with Leaf p in the child position selected by k—LL, LR, UL, or UR—and Empty in the other three positions. It imposes no condition on the point’s coordinates and does not establish that the point geometrically belongs to the selected quadrant."
       },
       "cjr.quadtree.proof.insertion_model.seeded_contents": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that for any quadrant k and point p, the contents of seeded k p are exactly the singleton set containing p. The seeded tree places a leaf containing p in the child selected by k and leaves the other three children empty; contents combines the children's point sets by union. There are no additional premises."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.insertion_model.seeded_valid": {
         "status": "available",
@@ -2557,9 +2688,9 @@
         "description": "The lemma states that if point p lies in the child rectangle for quadrant k of rectangle b, computed using d, then the tree seeded k p is valid for b at depth d + 1. This tree has one branch containing a leaf with p in quadrant k and empty trees in the other three quadrants. Validity requires that leaf to lie in its corresponding child rectangle, while empty trees are always valid. Rectangle membership includes the lower bounds and excludes the upper bounds."
       },
       "cjr.quadtree.proof.ownership.bv": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition bv takes a Boolean b and wraps it first with LitBool, then with LitV, producing a value that represents that Boolean. The input supplies no further context about these constructors and states no correctness or termination contract."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.fields": {
         "status": "available",
@@ -2567,69 +2698,69 @@
         "description": "The definition fields takes an integer object identifier o and a list of values vs and produces an Iris proposition asserting ownership of each field of ObjId o: the field at each list index i contains the corresponding value v. These assertions are combined using separating conjunction, so their ownership resources must be held separately. The definition assumes a cjrGS(Σ) instance; the input does not give the precise semantics of field ownership or assert anything about fields outside the list."
       },
       "cjr.quadtree.proof.ownership.fields_lookup": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma says that if looking up index i in the list vs returns v, then ownership of all the listed fields of object o can be split into ownership of field i with value v and a resource that restores ownership of all the fields when that field ownership is returned. Here, fields o vs means separate ownership of each indexed field in vs."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.fields_update": {
-        "status": "available",
-        "reason": "",
-        "description": "If the list vs contains v at index i, this lemma says that ownership of all fields of object o described by vs can be split into ownership of field i with value v and a resource that, for any value w, consumes ownership of that field with value w to restore ownership of all fields described by vs with entry i replaced by w. Here fields means the separating conjunction of ownership of each indexed field in the list; the lemma describes how ownership can be taken apart and rebuilt, without itself asserting that a program performs an update or terminates."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.is_quadtree": {
-        "status": "available",
-        "reason": "",
-        "description": "is_quadtree d S v is an ownership assertion saying that some abstract quadtree t contains exactly the finite set of points S and is represented by v through tree_rep. This requires d ≤ 30 and valid d (domain d) t, plus ownership of an object whose fields store d, width d, and a root satisfying node_rep. Contents are empty for Empty, a singleton for Leaf, and the union of the four children’s contents for Branch. The supplied input does not define valid or node_rep, so their precise requirements are uncertain; this definition is not a WP contract and makes no termination claim."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.iv": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition iv takes an integer z of type Z and constructs LitV (LitInt z), wrapping z first as an integer literal and then as a literal value. It has no stated premises; the input provides no further context about these constructors."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.node_rep": {
-        "status": "available",
-        "reason": "",
-        "description": "node_rep defines the field ownership needed for object value n to represent quadtree t within rectangle b, using d as a bound on branch nesting. Empty nodes have tag 0, leaves have tag 1 and store their point, and both use unit values for child fields. A branch is impossible at depth zero; at depth h+1 it has tag 2, stores split coordinates and four child values, and separately owns each child’s representation at depth h in its corresponding subrectangle. Every node stores b’s bounds. The definition recurses structurally on t; it is an ownership predicate, not a WP contract or a claim that a program terminates. It does not itself require leaf points to lie within their rectangles, and the missing definition of width limits interpretation of the split coordinates."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.node_rep_object": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, given the separation-logic assertion node_rep d b t v representing a quadtree node, one can derive the pure fact that v = ov o for some integer o, so v is an object-literal value. Each possible case of node_rep explicitly includes this equality; a branch at depth zero is impossible because its assertion is False. This is a logical implication about the representation, not a WP contract or a claim about program termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.node_values": {
-        "status": "available",
-        "reason": "",
-        "description": "node_values constructs a 13-element list containing, in order, the tag, the point’s two integer coordinates, the rectangle’s xmin, ymin, xmax, and ymax fields, the integers mx and my, and the four supplied values ll, lr, ul, and ur. Each of the first nine integers is wrapped as an integer literal value using iv; the final four values are included unchanged. The definition imposes no conditions on these inputs, and the supplied text does not establish the intended roles of mx, my, or the four final values."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.ov": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition ov takes an integer o of type Z and constructs LitV (LitObj o), wrapping o first in LitObj and then in LitV. The input does not establish any further meaning or properties of these constructors."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.point_list": {
-        "status": "available",
-        "reason": "",
-        "description": "point_list defines a recursive ownership assertion describing how a list of integer-coordinate points is represented by a value v, in the supplied cjrGS context. For an empty list, v must refer to an object whose four fields contain false, zero, zero, and unit. For a list beginning with (x,y), v must refer to an object whose fields contain true, x, y, and a tail value that recursively represents the remaining points. The separating conjunctions require ownership of these fields and the recursive tail together as separate resources. This is an assertion definition, not a WP contract or a claim about program correctness or termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.point_list_object": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that from the separation-logic assertion point_list xs v, one can derive the pure fact that v is an object literal ov o for some integer o, where ov o means LitV (LitObj o). This holds for both empty and nonempty lists because each branch of point_list explicitly includes that equality alongside field assertions and, for a nonempty list, a recursive assertion for the tail. It is an assertion entailment, not a WP contract or a claim about program termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.tree_domain": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that owning the quadtree assertion is_quadtree d S v entails the pure fact that every point in S lies within domain d, the rectangle Rect 0 0 (width d) (width d). Its premise provides some tree t whose contents are S together with the ownership assertion tree_rep d t v; the supplied input does not define tree_rep or specify the rectangle’s boundary conventions. This is a logical ownership implication, not a WP contract or a termination claim."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.tree_rep": {
-        "status": "available",
-        "reason": "",
-        "description": "tree_rep d t v describes ownership of an object representing quadtree t at depth d. It requires d to be at most 30 and t to be valid in the square from (0,0) with width 2^d: leaves must lie in their assigned rectangles, and branches require positive remaining depth and valid children. The value v must refer to an object whose three owned fields store d, 2^d, and a root value; separately owned node fields recursively represent empty nodes, leaves, or four-child branches. The precise node-field layout and child-rectangle geometry are not supplied. This is an ownership assertion, not a WP contract or a claim of program termination."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.ownership.uv": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition introduces uv as LitV LitUnit: the unit literal wrapped as a value. No premises or further properties are stated, and the input does not explain how this value is used."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.routing.child_tree": {
         "status": "available",
@@ -2647,14 +2778,14 @@
         "description": "This declaration registers a global instance that decides whether rectangles b and r satisfy overlap: each rectangle’s minimum x-coordinate is strictly below the other’s maximum x-coordinate, and likewise for y. The strict inequalities exclude mere boundary touching. No proof or implementation is supplied here, so the input states the decision instance without showing how it is established."
       },
       "cjr.quadtree.proof.routing.query_pruned": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that querying tree t for points in rectangle r returns an empty list if b is a square of side width d, t is valid at depth d within b, and b and r do not overlap. Validity requires leaves to lie in their assigned boxes and branches to have positive remaining depth with valid children; the supplied valid_contents lemma states that all stored points then lie in b. The query filters enumerated points using inclusive lower and exclusive upper rectangle bounds, and overlap uses strict inequalities, so rectangles that only touch at an edge do not overlap."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.proof.routing.routed_member": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square of side length width(S d) and the four-child branch is valid at depth S d, then a point p belongs to the branch’s contents exactly when it belongs to the child selected by comparing its coordinates with the horizontal and vertical split positions. Validity requires each child to be valid within its corresponding smaller rectangle at depth d. Coordinates equal to a split position route right or up. The supplied input does not define width or rectangle boundary membership, so their precise interpretation is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.all_bounds": {
         "status": "available",
@@ -2667,14 +2798,14 @@
         "description": "box_bounds defines a condition on a rectangle b: its integer coordinates must satisfy 0 ≤ xmin ≤ xmax ≤ 1073741824 and 0 ≤ ymin ≤ ymax ≤ 1073741824. Thus both coordinate ranges are ordered and lie within these inclusive bounds; equal endpoints are allowed. This definition states the condition but does not prove that any particular rectangle satisfies it."
       },
       "cjr.quadtree.spec.bounds.child_bounds": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has both side lengths equal to width (S d), where S d is the successor of d, and its x and y bounds are ordered and lie between 0 and 1073741824, then the child rectangle selected by any quadrant k also has ordered bounds within that range. The child uses the parent’s edges and the coordinates midx d b and midy d b, which the supplied midpoint_bounds lemma places within the parent under the same premises. The definitions of width and these midpoint coordinates are not supplied, so their exact values are unspecified here."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.decrement_int64": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that for any natural number d less than 30, converting its successor d + 1 to an integer and subtracting 1 gives exactly the integer representation of d, and that result lies within the signed 64-bit range from −9223372036854775808 to 9223372036854775807."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.domain_bounds": {
         "status": "available",
@@ -2682,9 +2813,9 @@
         "description": "The lemma states that for any natural number d at most 30, domain d satisfies box_bounds: its x and y lower bounds are nonnegative and no greater than their respective upper bounds, which are at most 1,073,741,824. The domain is defined as Rect 0 0 (width d) (width d), and the supplied width lemmas state that width d is positive and, under the same premise, within that limit. The intended rectangle interpretation is suggested by this definition, though Rect and its coordinate accessors are not defined in the input."
       },
       "cjr.quadtree.spec.bounds.doubling_int64": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that for any natural number d less than 30, doubling width(d), where width(d) is the integer 2 raised to the power d, gives a value within the signed 64-bit integer range, from −9223372036854775808 to 9223372036854775807. The supplied declaration states this claim but does not include its proof."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.int64": {
         "status": "available",
@@ -2697,14 +2828,14 @@
         "description": "The lemma states that if a rectangle b has ordered x and y bounds between 0 and 1,073,741,824, and point p lies inside it, including the lower edges but excluding the upper edges, then both coordinates of p lie within the signed 64-bit integer range, from −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807."
       },
       "cjr.quadtree.spec.bounds.midpoint_bounds": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square with side length width(d + 1) and its x and y bounds are ordered and lie between 0 and 1073741824, then midx(d, b) and midy(d, b) lie within their respective bounds, including the endpoints. These coordinates add width(d) to the lower bounds; the supplied width relation makes this half the square’s side length, so they are its midpoint coordinates."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.midpoint_int64": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square of side length 2^(d+1), with each minimum coordinate between zero and its corresponding maximum and both maximum coordinates at most 1,073,741,824, then its midpoint coordinates, xmin b + 2^d and ymin b + 2^d, both lie within the signed 64-bit integer range, from −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.bounds.power_result_int64": {
         "status": "available",
@@ -2722,9 +2853,9 @@
         "description": "The lemma states that if a rectangle b satisfies box_bounds—its coordinates obey 0 ≤ xmin ≤ xmax ≤ 1,073,741,824 and 0 ≤ ymin ≤ ymax ≤ 1,073,741,824—then all four coordinates lie within the signed 64-bit integer range, from −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807. The supplied declaration states this implication but does not include its proof."
       },
       "cjr.quadtree.spec.bounds.valid_all_bounds": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square with side length width d, its x and y endpoints are ordered and lie between 0 and 1073741824, and t is valid for depth d and box b, then these coordinate bounds hold for the root box and every recursively assigned child box in t. Validity requires each leaf point to satisfy in_rect for its assigned box and each branch to have positive remaining depth, with valid children at the next lower depth. The supplied input does not define width, in_rect, or child_box, so their precise interpretation is not established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.admissible": {
         "status": "available",
@@ -2737,9 +2868,9 @@
         "description": "build_tree constructs a quadtree from a natural-number depth, a rectangle, and a list of integer-coordinate points. An empty list gives Empty; a singleton gives a Leaf; and at depth zero, any nonempty list gives a Leaf containing only its first point. Otherwise, it creates four branches by filtering the full list for each child rectangle and recursively processing those points with depth reduced by one. This decreasing depth bounds recursion. No conditions on the rectangle or points are stated, and the missing definitions of midx, midy, and in_rect leave the precise subdivision and boundary behavior uncertain."
       },
       "cjr.quadtree.spec.model.build_tree_correct": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has side length width d and every point in xs lies inside b (including its lower boundaries but excluding its upper boundaries), then build_tree d b xs produces a valid quadtree whose contents are exactly the set of points in xs, ignoring duplicates and order. Validity means leaves lie in their assigned rectangles and branches occur only at positive depth, with valid children in the four quadrants. The supplied unit_unique lemma explains why keeping only the first point at depth zero preserves the set: all points in such a square are equal. The definition of width is not supplied, so its numerical relationship to depth is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.child_box": {
         "status": "available",
@@ -2747,29 +2878,29 @@
         "description": "child_box takes a natural number d, a rectangle b with integer coordinates, and a quadrant, and constructs the corresponding lower-left, lower-right, upper-left, or upper-right rectangle using b’s outer bounds and split coordinates xmin b + width d and ymin b + width d. No premises constrain these coordinates; since width is not defined in the input, it is not established that the splits are actual midpoints or that the resulting rectangles lie within b."
       },
       "cjr.quadtree.spec.model.child_route": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square with side length 2^(d+1) and p lies inside it, then p also lies inside the child rectangle selected by route, which compares p’s coordinates with the square’s horizontal and vertical midpoints. Rectangle membership includes the lower bounds and excludes the upper bounds, so points exactly on a dividing line are routed to the right or upper child."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.child_route_unique": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if point p lies in the child rectangle for quadrant k of rectangle b, then route d b p returns k. Membership includes the rectangle’s lower bounds and excludes its upper bounds. The child rectangles and routing function use the same split coordinates, xmin b + 2^d and ymin b + 2^d; points exactly on a split are routed right or up. Membership in the chosen child rectangle is the only stated premise, and no proof is supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.child_square": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has both coordinate spans equal to width(d + 1), then any quadrant k selected by child_box has both spans equal to width(d). The child boundaries use the parent’s edges and split points xmin(b) + width(d) and ymin(b) + width(d); the supplied width_succ lemma states that width(d + 1) is twice width(d). No additional premise restricts the quadrant, and the input provides no proof of the lemma."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.child_subset": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square with side length width (d + 1), then any point p inside its selected child quadrant k is also inside b. The child rectangles split b at coordinates width d above its lower bounds; the supplied width relation makes this half the parent’s side length. Rectangle membership includes the lower boundaries and excludes the upper boundaries."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.children_enumerate_disjoint": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that two quadtrees valid at depth d in different child quadrants of the same square b cannot enumerate a common point. It assumes b has width and height width(S d), the quadrant indices k and j differ, and each tree is valid in its corresponding child box; assuming a point p appears in both enumerations then yields a contradiction. Enumeration collects leaf points, while validity requires leaves to lie in their assigned rectangles and branches to respect the depth and subdivision. The supplied declarations state that distinct child boxes are disjoint, although the exact boundary convention for rectangle membership is not given."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.contains_set": {
         "status": "available",
@@ -2782,9 +2913,9 @@
         "description": "contains_state takes a point p and a quadtree t and returns a pair containing the original tree t and a Boolean indicating whether p belongs to its contents. The contents are the empty set for Empty, the singleton point set for a Leaf, and the union of the four child trees’ contents for a Branch. This is a definition, not a correctness or termination contract."
       },
       "cjr.quadtree.spec.model.contains_state_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that applying contains_state twice with the same p, passing the state returned by the first call into the second, yields the original state t and equal answers a and b. The supplied definition returns its input state unchanged together with contains_set p (contents t), which explains both equalities. No additional premises are stated; the input does not define contains_set or contents, so their precise interpretation is not established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.contents": {
         "status": "available",
@@ -2807,19 +2938,19 @@
         "description": "The recursive function enumerate takes a quadtree and returns a list of its leaf points, each a pair of integers. An empty tree contributes no points, a leaf contributes its single point, and a branch concatenates the lists from its four children in their declared order: ll, lr, ul, ur. It recurses on child trees, preserves repeated points, and requires no additional premises; the input does not specify geometric constraints on the tree."
       },
       "cjr.quadtree.spec.model.enumerate_contents": {
-        "status": "available",
-        "reason": "",
-        "description": "For every quadtree t, this lemma states that converting the list produced by enumerate t into a set gives exactly contents t, the set of points in its leaves. Empty trees contribute no points, leaves contribute their single point, and branches combine their four subtrees. The set conversion ignores list order and repeated points. There are no additional premises."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.enumerate_member": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, for any quadtree t and point p, p appears in the list enumerate t exactly when it belongs to the set contents t. Enumeration collects leaf points by concatenating the four branches’ lists, while contents combines their sets of points; both give no points for an empty tree. No additional premises are stated, and the lemma concerns membership only, without asserting an order or absence of duplicates in the list."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.enumerate_unique": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has both side lengths equal to width d and quadtree t is valid within b at depth d, then enumerating t produces a list with no repeated points. Enumeration collects leaf points by concatenating the four child lists; validity requires each leaf point to lie in its assigned rectangle, forbids branches at depth zero, and checks children in their respective quadrant boxes at the next smaller depth. The supplied supporting lemmas state that child boxes remain square and distinct valid quadrants have disjoint enumerations, although the precise definitions of width, child boxes, and rectangle membership are not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.height": {
         "status": "available",
@@ -2842,9 +2973,9 @@
         "description": "insert_reference takes a depth d, a point p, and a tree t. If p lies in the domain from (0,0) to (width d,width d), including the lower boundaries and excluding the upper boundaries, it rebuilds a tree at depth d from the set of points already in t together with p; otherwise it returns t unchanged. Set union avoids duplicate points, but the supplied definitions do not establish that rebuilding preserves every point: build_tree keeps only the first point when its depth is zero, and the definitions of width, child_box, and select_points are not supplied."
       },
       "cjr.quadtree.spec.model.insert_reference_correct": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that if t is a valid quadtree at depth d within the domain from (0, 0) to (width d, width d), reference insertion of p preserves validity and gives exactly the set of points specified by insert_set. If p lies inside the domain, including its lower edges but excluding its upper edges, insertion rebuilds the tree from its existing points together with p; otherwise it leaves t unchanged. Validity requires leaves to lie in their assigned rectangles and branches to have positive remaining depth with valid children in their respective child rectangles."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.insert_set": {
         "status": "available",
@@ -2852,14 +2983,14 @@
         "description": "insert_set takes a natural number d, an integer-coordinate point p, and a finite set of points S. It adds p to S if p lies in the square domain from (0, 0) to (width d, width d), including the lower boundaries and excluding the upper boundaries; otherwise, it returns S unchanged. Adding a point already in S leaves the set unchanged. The supplied input does not define width, so it does not establish the domain’s size for a given d."
       },
       "cjr.quadtree.spec.model.insertion_commutative": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that inserting points p and q into S, using the same natural-number parameter d, gives the same result in either order. Each insertion adds its point to the set only if the point lies in domain d; otherwise it leaves the set unchanged. There are no explicit additional premises, so neither point is required to lie in the domain. The input supplies the statement but no proof."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.insertion_idempotent": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that inserting the same point p twice into a point set S, using the same natural-number parameter d, has the same result as inserting it once. The definition adds p to S if p lies within domain d and otherwise leaves S unchanged. No additional premises are stated; the supplied input does not explain how d determines the domain."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.insertion_preserves_domain": {
         "status": "available",
@@ -2867,14 +2998,14 @@
         "description": "The lemma states that if every point in S lies within domain d, then every point in insert_set d p S also lies within that domain. This holds because insert_set adds p only when p lies within the domain; otherwise it leaves S unchanged. The only premise is that S is admissible, so p need not already lie within the domain."
       },
       "cjr.quadtree.spec.model.insertion_rejected": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if point p lies outside the domain for natural number d, inserting p into the set S leaves S unchanged. The domain is the square from (0, 0) to (width d, width d), including its lower boundaries and excluding its upper boundaries. This follows the supplied definition of insert_set, which adds p only when p is inside that square and otherwise returns S."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.membership_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that the pair consisting of contains_set p S and S equals itself. Here contains_set p S is the Boolean decision of whether the point p belongs to the collection S. The statement has no additional premises and expresses only reflexive equality; it does not establish any behavior of repeated membership checks."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.midx": {
         "status": "available",
@@ -2887,9 +3018,9 @@
         "description": "The definition midy takes a natural number d and a rectangle b and returns the integer ymin b + 2^d, adding a power-of-two offset to the rectangle’s lower y-coordinate. Despite its name, the supplied input does not establish that this value is the rectangle’s vertical midpoint, since it gives no relationship between d and the rectangle’s bounds."
       },
       "cjr.quadtree.spec.model.partition_points": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if b is a square with side length width(S d) and every point in the list xs lies within b, then selecting points from xs in each of b’s four child rectangles and taking the union of those sets gives exactly the set of points in xs. Rectangle membership includes the lower boundaries and excludes the upper boundaries, and conversion to sets ignores duplicates and list order. The supplied input does not define width or the midpoint functions, so their precise numerical behavior is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.point": {
         "status": "available",
@@ -2922,14 +3053,14 @@
         "description": "query_model takes a rectangle r and a quadtree t, collects the tree’s points into a list, and filters that list using in_rect r. Enumeration contributes no points for Empty, one point for a Leaf, and concatenates the four subtrees’ lists in order for a Branch. The exact boundary rules for rectangle membership are not supplied, so they cannot be determined from this input."
       },
       "cjr.quadtree.spec.model.query_model_contents": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that, for any rectangle r and quadtree t, converting the list returned by query_model r t into a set gives exactly the points in t’s contents that satisfy in_rect r. The contents are empty for an empty tree, a singleton for a leaf, and the union of the four children’s contents for a branch. The supplied supporting lemmas relate enumeration to tree contents and point selection to set filtering. No additional premises are stated, and the equality does not specify list order or duplicate counts."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.query_model_unique": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that query_model r t contains no duplicate points if b has both side lengths equal to width d and t is valid at depth d within b. Validity allows empty trees, requires each leaf point to lie in its box, and permits branches only at positive depth, with each child valid at the next smaller depth in its corresponding child box. The query applies select_points r to the enumeration of t; the supplied enumerate_unique lemma states that this enumeration has no duplicates under the same premises. The input does not define select_points, so its precise selection behavior is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.query_state": {
         "status": "available",
@@ -2937,24 +3068,24 @@
         "description": "The definition query_state takes r and t and returns the pair consisting of t itself and query_model r t, which is defined by applying select_points r to enumerate t. Thus it pairs the original t with a selection computed from its enumeration; the supplied input does not establish the parameter types or the precise meanings of enumeration and selection."
       },
       "cjr.quadtree.spec.model.query_state_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that applying query_state twice with the same r, passing the state returned by the first call into the second, leaves the final state equal to the original t and produces equal query results. The supplied definition returns the input state unchanged together with query_model r t, which explains both equalities. There are no explicit additional premises; the types of r and t and the meaning of query_model are not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.range_distributes_union": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that filtering the union of two point sets S and T to keep points inside a rectangle r gives the same set as filtering S and T separately and then taking their union. Here, range_set is defined using the in_rect filter, and union_set is set union. The statement applies to any rectangle r and point sets S and T, with no additional premises."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.range_empty_rectangle": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that for any rectangle r with integer bounds and any collection of points S, filtering S to points inside r gives the empty set if xmax r is at most xmin r or ymax r is at most ymin r. Membership includes the lower bounds and excludes the upper bounds, so either premise makes the corresponding coordinate condition impossible."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.range_repeated": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that the pair consisting of range_set r S and S equals itself. Here r is a rectangle, S is a collection of points, and range_set r S filters S using the predicate in_rect r. This is a reflexive equality with no additional premises; it asserts no further property of the filtering operation."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.range_set": {
         "status": "available",
@@ -2962,9 +3093,9 @@
         "description": "range_set takes a rectangle r with integer bounds and a set of points S, and filters S to keep exactly the points whose x coordinate is at least xmin r and strictly less than xmax r, and whose y coordinate is at least ymin r and strictly less than ymax r. Thus the lower boundaries are included and the upper boundaries are excluded. The rectangle record imposes no requirement that the lower bounds be smaller than the upper bounds."
       },
       "cjr.quadtree.spec.model.range_tree_union": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, if both trees t and u are valid at depth d in the domain Rect 0 0 (width d) (width d), querying their reference union with r returns exactly the union of the sets returned by querying each tree separately. The reference union is built from the union of their contents; validity requires leaves to lie in their assigned rectangles and branches to respect the remaining depth and child rectangles. Results are compared as sets, so order and duplicates do not matter. The precise geometric meaning of r is not supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.rectangle": {
         "status": "available",
@@ -2972,19 +3103,19 @@
         "description": "The declaration defines a record type called rectangle, constructed with Rect, containing four integer (Z) fields: xmin, ymin, xmax, and ymax. Their names suggest minimum and maximum coordinates, but the declaration imposes no ordering constraints or other conditions ensuring that they describe a valid rectangle."
       },
       "cjr.quadtree.spec.model.reference_insert_commutative": {
-        "status": "available",
-        "reason": "",
-        "description": "This lemma states that, if t is valid at depth d within the square domain from (0,0) to (width d,width d), inserting points p and q in either order produces the same set of stored points, though not necessarily identical tree structures. Validity requires leaves to lie in their assigned rectangles and branches to have positive remaining depth with valid children in their respective child boxes. Reference insertion rebuilds the tree with the added point when it lies inside the domain and otherwise leaves the tree unchanged, so neither point needs an additional inside-domain premise."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.reference_insert_idempotent": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, if t is a valid quadtree at depth d within domain d, inserting the same point p twice with insert_reference gives the same set of stored points as inserting it once; it does not assert that the resulting tree structures are identical. Validity requires leaves to lie within their assigned rectangles and branches to have positive remaining depth with valid children. Reference insertion rebuilds the tree from its existing points plus p when p lies inside the domain, and otherwise leaves it unchanged."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.root_square": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that for every natural number d, domain d satisfies square d: its maximum x-coordinate equals its minimum x-coordinate plus width d, and likewise for its y-coordinates. The domain is defined as Rect 0 0 (width d) (width d). There are no additional premises, but the supplied input does not define Rect or the coordinate accessors, so their interpretation is not fully established."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.route": {
         "status": "available",
@@ -3002,24 +3133,24 @@
         "description": "The lemma states that a point p belongs to select_points r xs exactly when it belongs to the original list xs and lies inside rectangle r. Being inside means its x and y coordinates are each at least the corresponding minimum and strictly below the corresponding maximum, so lower boundaries are included and upper boundaries are excluded. The supplied definition describes select_points as filtering xs by this condition; no additional premises are stated."
       },
       "cjr.quadtree.spec.model.select_points_set": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that, for any rectangle r and list of points xs, filtering the list to points satisfying in_rect r and then converting it to a set gives the same set as first converting the list to a set and then applying the same filter. Set conversion discards duplicates and order, and no additional premises are stated. The input does not define the precise boundary convention used by in_rect."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.square": {
-        "status": "available",
-        "reason": "",
-        "description": "The definition square d b states that the rectangle b, whose coordinates are integers, has both its horizontal and vertical extent equal to 2 raised to the natural-number power d: xmax is xmin plus 2^d, and ymax is ymin plus 2^d. It defines a proposition about b rather than constructing a rectangle or proving that any particular rectangle satisfies it."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.subdivision_coverage": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has both side lengths equal to width(S d), then a point p lies in b exactly when it lies in at least one of the four child rectangles formed using midx d b and midy d b. Rectangle membership includes the lower boundaries and excludes the upper boundaries. The supplied child_route and child_subset lemmas state the two directions of this equivalence; the definitions of width and the split coordinates are not supplied, so their precise numerical meaning is unspecified."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.subdivision_disjoint": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that two distinct child quadrants of the same rectangle are disjoint: if k differs from j and point p lies in child_box d b k, then p does not lie in child_box d b j. These child boxes use the rectangle’s bounds and the midpoint functions at parameter d; membership includes the lower bounds and excludes the upper bounds on both coordinates. The supplied declaration states this property but does not include its proof."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.union_reference": {
         "status": "available",
@@ -3027,9 +3158,9 @@
         "description": "union_reference d t u constructs a quadtree by taking the set union of the points contained in t and u, converting that set to a list with elements, and passing it to build_tree with depth d and the rectangle Rect 0 0 (width d) (width d). The builder returns Empty for an empty list, a leaf for a single point, and otherwise recursively builds four children while decreasing the depth; at depth zero it keeps only the first point. No assumptions or correctness guarantee are stated, so the input does not establish that the resulting tree preserves every point in the union; elements, width, and the child-selection helpers are not defined here."
       },
       "cjr.quadtree.spec.model.union_reference_correct": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if both quadtrees t and u are valid at depth d within the domain from (0, 0) to (width d, width d), then union_reference d t u, which rebuilds a tree from the union of their point sets, is also valid there and contains exactly the points present in either input. Validity requires leaves to lie within their assigned rectangles and branches to respect the depth limit and recursively satisfy validity in their child rectangles."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.union_set": {
         "status": "available",
@@ -3037,9 +3168,9 @@
         "description": "The definition union_set takes two sets of points, S and T, and returns their union: the set containing every point that belongs to either S or T. The supplied dependency defines points as gset point; this declaration introduces no additional premises or correctness claims."
       },
       "cjr.quadtree.spec.model.unit_unique": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that any two points p and q inside a rectangle b satisfying square 0 b must be equal. The supplied definitions and width_zero make b have width and height 1, with membership including the lower boundaries and excluding the upper boundaries. The coordinate types are not supplied, so the input does not establish why such a rectangle can contain at most one point."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.valid": {
         "status": "available",
@@ -3047,9 +3178,9 @@
         "description": "valid defines when a quadtree fits a rectangle within a given depth: an empty tree is always valid, and a leaf is valid when its point lies inside the rectangle, including the lower bounds but excluding the upper bounds. A branch is invalid at depth zero; at depth d + 1, all four children must be valid at depth d in their respective lower-left, lower-right, upper-left, and upper-right boxes. Those boxes use midx and midy at depth d, whose definitions are not supplied, so their exact split positions are unknown. The definition recurses structurally on the tree."
       },
       "cjr.quadtree.spec.model.valid_contents": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that if rectangle b has width and height width d and quadtree t is valid at depth d within b, then every point in t’s contents lies inside b, including its lower boundaries and excluding its upper boundaries. Contents collects all leaf points; validity allows empty trees, requires leaf points to lie in their assigned rectangle, and requires branches to have positive remaining depth with each subtree valid in its corresponding child rectangle."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.valid_height": {
         "status": "available",
@@ -3072,14 +3203,14 @@
         "description": "The lemma states that width d is strictly positive for every natural number d. Here, width d is defined as the integer 2 raised to the power d, with d converted from a natural number to an integer. There are no additional premises in the supplied declaration; no proof is supplied."
       },
       "cjr.quadtree.spec.model.width_succ": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that increasing a natural-number depth d by one doubles its width: width (S d) = 2 × width d. Here S d means d + 1, and width d is defined as the integer 2 raised to the power d. There are no additional premises."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       },
       "cjr.quadtree.spec.model.width_zero": {
-        "status": "available",
-        "reason": "",
-        "description": "The lemma states that width at depth zero is 1. The supplied definition makes width at a natural-number depth d the integer 2 raised to d, so this is the zero-exponent case, 2⁰ = 1. The statement has no additional premises; no proof is supplied."
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
       }
     }
   }

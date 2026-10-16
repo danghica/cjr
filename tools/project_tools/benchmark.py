@@ -213,43 +213,41 @@ def plot(config_path: Path):
         implementations = sorted({str(r.get("implementation", "")) for r in records})
         workload_of = lambda r: str(r.get("workload") or r.get("case") or "workload")
         workloads = sorted({workload_of(r) for r in records})
-        sizes = sorted({int(r["n"]) for r in records if r.get("n") is not None})
-        width, height = 1040, max(320, 70 + len(workloads) * 52)
+        rows = [(workload, size) for workload in workloads
+                for size in sorted({r.get("n") for r in records if workload_of(r) == workload},
+                                   key=lambda n: (n is not None, int(n or 0)))]
+        row_height = max(76, 30 + 20 * len(implementations))
+        width, height = 1040, 100 + len(rows) * row_height
         colors = ["#176f76", "#de8b37", "#8562a0", "#2776a8", "#b24e52"]
+        max_value = max(1e-9, max(float(r["q3_ns"]) for r in records))
+        time_x = lambda value: 230 + 650 * float(value) / max_value
         parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img">',
                  f'<title>{html.escape(facet)} benchmark medians and IQR</title>',
                  '<style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>',
                  '<rect width="100%" height="100%" fill="white"/>',
                  f'<text x="20" y="24" font-size="17">{html.escape(facet)} · median and IQR</text>']
-        legend_x = 250
         for i, impl in enumerate(implementations):
             color = colors[i % len(colors)]
-            parts.append(f'<circle cx="{legend_x+i*150}" cy="20" r="5" fill="{color}"/><text x="{legend_x+10+i*150}" y="24">{html.escape(impl)}</text>')
-        for wi, workload in enumerate(workloads):
-            y = 65 + wi * 52
-            parts.append(f'<text x="18" y="{y+4}">{html.escape(workload)}</text><path d="M 205 {y} H 990" class="grid"/>')
+            parts.append(f'<circle cx="{250+i*150}" cy="44" r="5" fill="{color}"/><text x="{260+i*150}" y="48">{html.escape(impl)}</text>')
+        bottom = 65 + len(rows) * row_height
+        for tick in range(5):
+            value = max_value * tick / 4
+            x = time_x(value)
+            parts.append(f'<path d="M {x:.1f} 65 V {bottom}" class="grid"/><text x="{x:.1f}" y="{bottom+18}" text-anchor="middle">{value:.2f}</text>')
+        parts.append(f'<text x="555" y="{bottom+36}" text-anchor="middle">Time (ns per operation; lower is faster)</text>')
+        for ri, (workload, size) in enumerate(rows):
+            y = 80 + ri * row_height
+            label = workload if size is None else f"{workload} · n={int(size):,}"
+            parts.append(f'<text x="18" y="{y}">{html.escape(label)}</text>')
             for ii, impl in enumerate(implementations):
-                values = [r for r in records if workload_of(r) == workload and str(r.get("implementation", "")) == impl]
-                if not values:
-                    continue
-                max_value = max(float(r["q3_ns"]) for r in records)
-                min_value = max(1e-9, min(float(r["q1_ns"]) for r in records))
+                values = [r for r in records if workload_of(r) == workload
+                          and r.get("n") == size and str(r.get("implementation", "")) == impl]
                 for r in values:
-                    if r.get("n") is None:
-                        x = 230 + ii * 100
-                    else:
-                        size = int(r["n"])
-                        x = 230 + (sizes.index(size) / max(1, len(sizes)-1)) * 740
-                    scale = 720 / max(1e-9, max_value-min_value)
-                    mid = y + 16 + ii * 6
-                    lo = x
-                    spread = max(2, (float(r["q3_ns"])-float(r["q1_ns"])) * scale)
+                    mid = y + 10 + ii * 20
+                    lo, median, hi = (time_x(r[key]) for key in ("q1_ns", "median_ns", "q3_ns"))
                     color = colors[ii % len(colors)]
-                    parts.append(f'<path d="M {lo-spread/2:.1f} {mid} H {lo+spread/2:.1f}" stroke="{color}" stroke-width="2"/><circle cx="{lo:.1f}" cy="{mid}" r="4" fill="{color}"/>')
-            if sizes:
-                for si, size in enumerate(sizes):
-                    x = 230 + (si / max(1, len(sizes)-1)) * 740
-                    parts.append(f'<text x="{x:.1f}" y="{y+44}" text-anchor="middle">{size:,}</text>')
+                    description = html.escape(f"{impl}: median {r['median_ns']:.4f}, Q1 {r['q1_ns']:.4f}, Q3 {r['q3_ns']:.4f} ns/op")
+                    parts.append(f'<g><title>{description}</title><path d="M {lo:.1f} {mid} H {hi:.1f}" stroke="{color}" stroke-width="2"/><circle cx="{median:.1f}" cy="{mid}" r="4" fill="{color}"/><text x="900" y="{mid+4}">{html.escape(impl)} {r["median_ns"]:.2f} ns/op</text></g>')
         parts.append('</svg>')
         filename = plot_config.get("filename", "{facet}.svg").format(facet=facet.lower().replace(" ", "-").replace("/", "-"))
         (output / filename).write_text("\n".join(parts) + "\n")

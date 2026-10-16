@@ -45,3 +45,30 @@ Examples and their artifacts live under `example/<name>/`. Run `python3 -m tools
 A benchmark config may set `plots.command` to an argv list (with `{root}` and
 `{output}` placeholders) for example-specific charts. The command runs with the
 project working directory and must succeed before report assembly continues.
+
+## Chart semantics and manuscript outputs
+
+The default SVG renderer uses a shared time axis within each facet. Each row
+identifies a workload and input size; colored dots encode the measured median,
+and whisker endpoints encode Q1 and Q3 on that same axis. Lower values are
+faster. Labels show ns/op; the harness defines what counts as an operation.
+The October 16 fix replaced a layout whose dots ignored the median. Existing
+raw samples, numerical summaries, and measurement metadata remain unchanged.
+
+`python3 paper/update_benchmarks.py` (with ReportLab installed) regenerates the
+PDF manuscript figures and LaTeX table from the saved list, array, array-list,
+and hash-map runs. Ratios are computed from CJR/Std samples paired by process
+and trial, then summarized; they need not equal the ratio of individual medians.
+`make cj` rebuilds the tutorial PDF. `make project-report EXPLANATIONS=offline REPORT_FLAGS=--allow-stale`
+refreshes readable specifications and all offline HTML reports without new timings.
+
+Report assembly remains strict by default: source mismatches fail. For a
+documentation-only refresh, `report --allow-stale` explicitly permits saved
+snapshots and adds a prominent source-mismatch notice to the project index.
+The switch never rewrites recorded hashes or dates and still rejects failed
+checks. With Make, use `REPORT_FLAGS=--allow-stale` as shown above.
+
+The shared readable build excludes `theories/verify_assumptions.v`: it contains
+only audit commands and contributes no declaration pages. `make verify` still
+runs that audit; documentation rendering does not need to repeat it through
+coq-lsp.

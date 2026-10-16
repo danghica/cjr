@@ -37,8 +37,13 @@ substitute a local monospace font.
 
 ## Benchmark evidence
 
-Existing list, hash-map and quadtree results are labelled historical and retain
-their measurement dates. The reversal benchmark is new and reproducible:
+The checked-in deck predates the October 16 hashmap hash change and chart fix.
+Its benchmark narrative is a saved presentation snapshot. Current hashmap
+measurements and interpretation are in the [PDF tutorial](../cjr-tutorial.pdf)
+and [hashmap README](../../example/hash_map/README.md). The latest saved list
+and quadtree results retain their historical measurement dates. Rebuilding a
+deck reads the current summaries, so its narrative and notes must also be
+reviewed for consistency. The reversal benchmark is new and reproducible:
 
 ```sh
 make -C example/list_rev benchmark
