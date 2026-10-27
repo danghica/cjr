@@ -28,3 +28,6 @@ __pycache__/
 # Native executables and intermediate objects stay local to each example.
 /example/*/test/results/*-tests
 *.cjo
+# Authenticator runtime-test artifacts (the JSON report remains reviewable).
+/build/authenticator/*-tests
+/build/authenticator/oracle_test.cj

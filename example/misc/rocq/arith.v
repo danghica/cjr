@@ -122,3 +122,21 @@ Example multiplication_noninteger :
   bin_op_eval MulOp (LitV (LitBool true)) (LitV (LitInt 3)) = None ∧
   bin_op_eval MulOp (LitV (LitInt 3)) (LitV (LitFloat 2)) = None.
 Proof. split; reflexivity. Qed.
+
+(** Division follows Cangjie's truncation toward zero, not floor division. *)
+Example division_signs :
+  bin_op_eval DivOp (LitV (LitInt 7)) (LitV (LitInt 3)) = Some (LitV (LitInt 2)) ∧
+  bin_op_eval DivOp (LitV (LitInt (-7))) (LitV (LitInt 3)) = Some (LitV (LitInt (-2))) ∧
+  bin_op_eval DivOp (LitV (LitInt 7)) (LitV (LitInt (-3))) = Some (LitV (LitInt (-2))) ∧
+  bin_op_eval DivOp (LitV (LitInt (-7))) (LitV (LitInt (-3))) = Some (LitV (LitInt 2)).
+Proof. vm_compute. repeat split; reflexivity. Qed.
+Example division_zero n :
+  bin_op_eval DivOp (LitV (LitInt n)) (LitV (LitInt 0)) = None.
+Proof. reflexivity. Qed.
+Example division_noninteger :
+  bin_op_eval DivOp (LitV (LitBool true)) (LitV (LitInt 2)) = None.
+Proof. reflexivity. Qed.
+Definition divide_body : expr :=
+  Let (Some "a") (StructLoad (Var "args") 0)
+    (Let (Some "b") (StructLoad (Var "args") 1)
+      (BinOp DivOp (Var "a") (Var "b"))).

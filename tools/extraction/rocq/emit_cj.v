@@ -38,7 +38,7 @@ Definition int64_opt_c :=
 (** * Straight-line examples *)
 
 Definition sum_one_fn := Fn "sumOne" None None arith.sum_one [] t_int.
-Definition p_arith := Prog [] [] [sum_one_fn; Fn "multiply" None (Some "args") arith.multiply_body [t_int; t_int] t_int] arith.sum_one.
+Definition p_arith := Prog [] [] [sum_one_fn; Fn "multiply" None (Some "args") arith.multiply_body [t_int; t_int] t_int; Fn "divide" None (Some "args") arith.divide_body [t_int; t_int] t_int] arith.sum_one.
 
 Definition p_struct_upd :=
   Prog [] [cell_s]

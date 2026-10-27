@@ -5,6 +5,7 @@ From iris.prelude Require Import options.
 Notation "e1 + e2" := (BinOp PlusOp e1%E e2%E) : expr_scope.
 Notation "e1 - e2" := (BinOp MinusOp e1%E e2%E) : expr_scope.
 Notation "e1 * e2" := (BinOp MulOp e1%E e2%E) : expr_scope.
+Notation "e1 / e2" := (BinOp DivOp e1%E e2%E) (at level 40, left associativity) : expr_scope.
 Notation "e1 % e2" := (BinOp RemOp e1%E e2%E) (at level 40, left associativity) : expr_scope.
 Notation "e1 ≤ e2" := (BinOp LeOp e1%E e2%E) : expr_scope.
 

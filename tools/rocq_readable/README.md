@@ -84,7 +84,9 @@ Codex reuses its saved login and configured model. Each user authenticates on
 their own machine; no credentials are read or copied into source, HTML, reports,
 or caches. Requests run sequentially in temporary directories with a read-only
 sandbox, ephemeral sessions, shell/browser tools, plugins, apps, and hooks disabled,
-and approvals disabled. CLI diagnostics are discarded. The prompts contain the
+and approvals disabled. A bounded tail of CLI diagnostics is inspected privately
+to recognize sandbox startup failures, then discarded; raw diagnostics are never
+included in reports. The prompts contain the
 proof-free declaration, rendered text, section context, and direct dependency
 declarations. These texts are sent to the model provider under the user's Codex
 account. Generated explanations are explanatory prose, not verified translations.
@@ -106,6 +108,14 @@ Failed requests, invalid responses, or cache errors are recorded and return
 status 1 after pages are generated. Offline cache misses and an absent Codex CLI
 are reported omissions rather than failed generation attempts. See the
 `dependencies` and `explanations` sections of `report.json` for per-entry status.
+
+An enclosing agent or OS sandbox can prevent the Codex CLI from initializing its
+local app-server client before any model request. This is reported as a sandbox
+startup failure, and further uncached requests are skipped for that build. Run
+the same command from an environment that permits app-server initialization,
+with authorization to send the declaration text to Codex. Keep the nested CLI's
+read-only sandbox and disabled tools; changing credentials or the model does not
+resolve this startup restriction. Offline rendering remains available.
 
 `--name` accepts a short or qualified name. Ambiguous short names are rejected.
 Single-declaration rendering stops after the declaration, so its proof can be

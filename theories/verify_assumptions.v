@@ -378,3 +378,41 @@ Print Assumptions cjr.aes_ige.composition.ige_call_wp.
 Print Assumptions cjr.aes_ige.composition.ige_implementation_roundtrip.
 Print Assumptions cjr.aes_ige.composition.ige_implementation_chunks.
 Print Assumptions cjr.aes_ige.composition.ige_implementation_empty.
+
+(** Authenticator arithmetic, pure models, and currently proved CJR kernels. *)
+From cjr.authenticator Require Import model base32 accounts refinement.
+Print Assumptions wp_div.
+Print Assumptions model.mask32_word.
+Print Assumptions model.sha_round_words.
+Print Assumptions model.sha_add_int64.
+Print Assumptions model.rotate_product_int64.
+Print Assumptions model.remaining_range.
+Print Assumptions model.time_counter_bounds.
+Print Assumptions model.sha1_empty.
+Print Assumptions model.sha1_abc.
+Print Assumptions model.rfc_hotp_0.
+Print Assumptions model.rfc_totp_59.
+Print Assumptions model.sha1_output_bytes.
+Print Assumptions model.sha1_output_length.
+Print Assumptions model.hmac_output_bytes.
+Print Assumptions model.hmac_output_length.
+Print Assumptions model.hotp_range.
+Print Assumptions model.totp_range.
+Print Assumptions base32.digit_value_range.
+Print Assumptions base32.decode_bytes.
+Print Assumptions accounts.empty_session_valid.
+Print Assumptions accounts.enroll_failure_atomic.
+Print Assumptions accounts.enroll_preserves_validity.
+Print Assumptions accounts.remove_preserves_validity.
+Print Assumptions accounts.removed_account_absent.
+Print Assumptions refinement.rol_wp.
+Print Assumptions refinement.remaining_wp.
+Print Assumptions refinement.round_wp.
+Print Assumptions model.padded_length_arithmetic.
+Print Assumptions refinement.counted_while_wp.
+Print Assumptions refinement.base32_value_wp.
+Print Assumptions refinement.base32_reject_size.
+Print Assumptions refinement.sha1_reject_size.
+Print Assumptions refinement.remaining_reject.
+Print Assumptions refinement.buffer_get_wp.
+Print Assumptions refinement.buffer_put_wp.

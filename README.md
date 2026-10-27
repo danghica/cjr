@@ -101,6 +101,14 @@ extraction drivers. The most-frequent count includes `mf_memory.v`.
 The shared [hm_tactics.v](example/hash_map/rocq/hm_tactics.v) evaluation-context
 automation adds 110 supporting lines outside these counts.
 
+## Authenticator core
+
+The [memory-only authenticator core](example/authenticator/README.md) implements
+SHA-1, HMAC, HOTP/TOTP, Base32 enrollment, and account sessions as extracted CJR.
+Its documentation separates checked pure/kernel proofs from the remaining
+whole-core Iris refinement obligations. No front-end adapters are included.
+Run `make -C example/authenticator test` for independent runtime checks.
+
 ## Integer and bitwise operators
 
 The core supports addition, subtraction, multiplication, signed remainder, integer comparison
@@ -129,6 +137,8 @@ The tutorial includes a detailed subsection for each definition and lemma, compl
 `example/hash_map/rocq/hash_map.v` now proves every operation and its supporting kernels without admissions. A bounded probe wraps indexes safely, searches beyond tombstones for existing keys, and returns a precise finite-map lookup result. Insertion grows only for a missing key at the half-full limit; rehashing preserves every live entry, skips tombstones, and restores placement under doubled capacity. The stored size agrees with the finite map throughout.
 
 The tutorial explains the representation, remainder and probe invariants, array ownership, insertion and removal proofs, rehash induction, and client compositions in detail. The generated implementation uses `ProbeResult` and `Int64Option` value structs. `example/hash_map/test/hash_map_test.cj` contains 18 runtime cases, including collisions, wraparound, negative and extreme Int64 keys, signed remainder, zero-filled allocation, iterative lookup, zero values, tombstone reuse, and repeated growth. `make verify` audits the public contracts and supporting kernels in addition to the existing adequacy and reversal theorems.
+
+Primitive signed division (`DivOp`, printed as `/`) uses `Z.quot`; signed remainder (`RemOp`, printed as `%`) uses `Z.rem`. Both truncate toward zero and require a nonzero divisor. `wp_div` and `wp_rem` expose these primitive contracts. Machine overflow, including minimum `Int64` divided by -1, remains a caller-side obligation.
 
 Primitive signed remainder (`RemOp`, printed as `%`) follows division truncated toward zero. Its WP rule requires a nonzero divisor. HashMap bucket normalization now uses one remainder and at most one addition, with a proof that the result equals mathematical modulo for positive capacity; it no longer iterates in proportion to the key magnitude. HashMap now hashes keys as `((k % 2147483647) * 1000000007) % 2147483647` before bucket normalization. Reducing before multiplication keeps the product within `Int64` for every input key (`hash_product_int64`); capacity-spaced keys no longer systematically collide. Collision chains still use linear probing, and the hash is not adversarially secure.
 

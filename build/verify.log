@@ -1,12 +1,463 @@
-make verify started: 2026-10-16T03:50:18Z
+make verify started: 2026-10-27T09:48:35Z
 Checking for Admitted / Axiom / cheat in theories/*.v...
-make[2]: Nothing to be done for `real-all'.
+COQC theories/lifting.v
+COQC theories/adequacy.v
+COQC example/misc/rocq/swap.v
+COQC example/misc/rocq/sum_block.v
+COQC example/misc/rocq/frame_call.v
+COQC example/list/rocq/list.v
+COQC example/array_list/rocq/array_list.v
+COQC example/hash_map/rocq/hash_map.v
+COQC example/most_frequent/rocq/mf_memory.v
+COQC example/aes_ige/rocq/bytes.v
+COQC example/quadtree/spec/model.v
+COQC example/quadtree/algorithm/program.v
+COQC example/misc/rocq/arith.v
+COQC example/misc/rocq/struct_upd.v
+COQC example/misc/rocq/cell.v
+COQC example/misc/rocq/class_upd.v
+COQC example/misc/rocq/vtable.v
+COQC example/list_rev/rocq/list_rev.v
+COQC example/aes_ige/rocq/program.v
+COQC example/aes_ige/rocq/block.v
+COQC example/aes_ige/rocq/refinement.v
+COQC example/aes_ige/rocq/calls.v
+COQC example/aes_ige/rocq/index_bounds.v
+COQC example/quadtree/proof/ownership.v
+COQC example/quadtree/proof/routing.v
+COQC example/quadtree/spec/bounds.v
+COQC example/quadtree/proof/insertion_model.v
+COQC example/aes_ige/rocq/aes.v
+COQC example/aes_ige/rocq/memory.v
+COQC example/quadtree/proof/helpers.v
+COQC example/qsort/rocq/qsort.v
+COQC tools/extraction/rocq/cj_print.v
+COQC example/aes_ige/rocq/ige.v
+COQC example/aes_ige/rocq/vectors.v
+COQC example/aes_ige/rocq/expansion.v
+COQC example/aes_ige/rocq/mode.v
+COQC example/aes_ige/rocq/key_layout.v
+COQC example/quadtree/algorithm/extract.v
+COQC example/authenticator/rocq/extract.v
+COQC example/most_frequent/rocq/most_frequent.v
+COQC example/aes_ige/rocq/extract.v
+COQC example/quadtree/proof/correctness.v
+COQC example/quadtree/proof/insertion_helpers.v
+COQC tools/extraction/rocq/emit_cj.v
+COQC example/quadtree/proof/insertion.v
+COQC example/aes_ige/rocq/kernels.v
+COQC example/quadtree/proof/algebra.v
+COQC example/aes_ige/rocq/routines.v
+COQC example/aes_ige/rocq/syntax.v
+COQC example/aes_ige/rocq/encrypt_12.v
+COQC example/aes_ige/rocq/encrypt_10.v
+COQC example/aes_ige/rocq/encrypt_14.v
+COQC example/aes_ige/rocq/decrypt_10.v
+COQC example/aes_ige/rocq/decrypt_12.v
+COQC example/aes_ige/rocq/decrypt_14.v
+COQC example/aes_ige/rocq/layout.v
+COQC example/aes_ige/rocq/ige_syntax.v
+COQC example/aes_ige/rocq/rejection.v
+COQC example/aes_ige/rocq/cipher.v
+COQC example/aes_ige/rocq/ige_refinement.v
+COQC example/aes_ige/rocq/composition.v
+COQC theories/verify_assumptions.v
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
+Closed under the global context
 /Library/Developer/CommandLineTools/usr/bin/make -C example/quadtree verify
 /Library/Developer/CommandLineTools/usr/bin/make -C ../.. tools/extraction/rocq/cj_print.vo example/hash_map/rocq/hm_tactics.vo
 Print Assumptions audit (theories/verify_assumptions.v)...
-"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/aes_ige/rocq cjr.aes_ige -Q example/quadtree cjr.quadtree -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
-coqchk on 66 .vo files...
-"coqchk" -silent -o  -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/aes_ige/rocq cjr.aes_ige -Q example/quadtree cjr.quadtree -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo example/misc/rocq/arith.vo example/misc/rocq/struct_upd.vo example/misc/rocq/cell.vo example/misc/rocq/swap.vo example/misc/rocq/sum_block.vo example/misc/rocq/class_upd.vo example/misc/rocq/frame_call.vo example/misc/rocq/vtable.vo example/list/rocq/list.vo example/list_rev/rocq/list_rev.vo example/array/rocq/array.vo example/array_list/rocq/array_list.vo example/qsort/rocq/qsort.vo example/hash_map/rocq/hm_tactics.vo example/hash_map/rocq/hash_map.vo example/most_frequent/rocq/mf_memory.vo example/most_frequent/rocq/most_frequent.vo tools/extraction/rocq/cj_print.vo tools/extraction/rocq/emit_cj.vo theories/verify_assumptions.vo example/quadtree/spec/model.vo example/quadtree/algorithm/program.vo example/quadtree/proof/ownership.vo example/quadtree/proof/routing.vo example/quadtree/proof/helpers.vo example/quadtree/proof/correctness.vo example/quadtree/algorithm/extract.vo example/quadtree/spec/bounds.vo example/quadtree/proof/insertion_model.vo example/quadtree/proof/insertion_helpers.vo example/quadtree/proof/insertion.vo example/quadtree/proof/algebra.vo example/aes_ige/rocq/bytes.vo example/aes_ige/rocq/block.vo example/aes_ige/rocq/aes.vo example/aes_ige/rocq/ige.vo example/aes_ige/rocq/program.vo example/aes_ige/rocq/extract.vo example/aes_ige/rocq/refinement.vo example/aes_ige/rocq/vectors.vo example/aes_ige/rocq/memory.vo example/aes_ige/rocq/kernels.vo example/aes_ige/rocq/expansion.vo example/aes_ige/rocq/routines.vo example/aes_ige/rocq/calls.vo example/aes_ige/rocq/syntax.vo example/aes_ige/rocq/ige_syntax.vo example/aes_ige/rocq/rejection.vo example/aes_ige/rocq/index_bounds.vo example/aes_ige/rocq/mode.vo example/aes_ige/rocq/encrypt_10.vo example/aes_ige/rocq/encrypt_12.vo example/aes_ige/rocq/encrypt_14.vo example/aes_ige/rocq/decrypt_10.vo example/aes_ige/rocq/decrypt_12.vo example/aes_ige/rocq/decrypt_14.vo example/aes_ige/rocq/cipher.vo example/aes_ige/rocq/key_layout.vo example/aes_ige/rocq/layout.vo example/aes_ige/rocq/ige_refinement.vo example/aes_ige/rocq/composition.vo
+"coqc" -q '-w' '+admitted-proof' '-w' '+deprecated-syntactic-definition' '-w' '+fragile-hint-constr'  "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/authenticator/rocq cjr.authenticator -Q example/aes_ige/rocq cjr.aes_ige -Q example/quadtree cjr.quadtree -R theories cjr theories/verify_assumptions.v > build/assumptions.log 2>&1
+coqchk on 72 .vo files...
+"coqchk" -silent -o  -Q example/array/rocq cjr.examples -Q example/array_list/rocq cjr.examples -Q example/list/rocq cjr.examples -Q example/list_rev/rocq cjr.examples -Q example/qsort/rocq cjr.examples -Q example/hash_map/rocq cjr.examples -Q example/most_frequent/rocq cjr.examples -Q example/misc/rocq cjr.examples -Q tools/extraction/rocq cjr.examples -Q example/authenticator/rocq cjr.authenticator -Q example/aes_ige/rocq cjr.aes_ige -Q example/quadtree cjr.quadtree -R theories cjr theories/lang.vo theories/lifting.vo theories/primitive_laws.vo theories/notation.vo theories/adequacy.vo example/misc/rocq/arith.vo example/misc/rocq/struct_upd.vo example/misc/rocq/cell.vo example/misc/rocq/swap.vo example/misc/rocq/sum_block.vo example/misc/rocq/class_upd.vo example/misc/rocq/frame_call.vo example/misc/rocq/vtable.vo example/list/rocq/list.vo example/list_rev/rocq/list_rev.vo example/array/rocq/array.vo example/array_list/rocq/array_list.vo example/qsort/rocq/qsort.vo example/hash_map/rocq/hm_tactics.vo example/hash_map/rocq/hash_map.vo example/most_frequent/rocq/mf_memory.vo example/most_frequent/rocq/most_frequent.vo tools/extraction/rocq/cj_print.vo tools/extraction/rocq/emit_cj.vo theories/verify_assumptions.vo example/quadtree/spec/model.vo example/quadtree/algorithm/program.vo example/quadtree/proof/ownership.vo example/quadtree/proof/routing.vo example/quadtree/proof/helpers.vo example/quadtree/proof/correctness.vo example/quadtree/algorithm/extract.vo example/quadtree/spec/bounds.vo example/quadtree/proof/insertion_model.vo example/quadtree/proof/insertion_helpers.vo example/quadtree/proof/insertion.vo example/quadtree/proof/algebra.vo example/aes_ige/rocq/bytes.vo example/aes_ige/rocq/block.vo example/aes_ige/rocq/aes.vo example/aes_ige/rocq/ige.vo example/aes_ige/rocq/program.vo example/aes_ige/rocq/extract.vo example/aes_ige/rocq/refinement.vo example/aes_ige/rocq/vectors.vo example/aes_ige/rocq/memory.vo example/aes_ige/rocq/kernels.vo example/aes_ige/rocq/expansion.vo example/aes_ige/rocq/routines.vo example/aes_ige/rocq/calls.vo example/aes_ige/rocq/syntax.vo example/aes_ige/rocq/ige_syntax.vo example/aes_ige/rocq/rejection.vo example/aes_ige/rocq/index_bounds.vo example/aes_ige/rocq/mode.vo example/aes_ige/rocq/encrypt_10.vo example/aes_ige/rocq/encrypt_12.vo example/aes_ige/rocq/encrypt_14.vo example/aes_ige/rocq/decrypt_10.vo example/aes_ige/rocq/decrypt_12.vo example/aes_ige/rocq/decrypt_14.vo example/aes_ige/rocq/cipher.vo example/aes_ige/rocq/key_layout.vo example/aes_ige/rocq/layout.vo example/aes_ige/rocq/ige_refinement.vo example/aes_ige/rocq/composition.vo example/authenticator/rocq/model.vo example/authenticator/rocq/program.vo example/authenticator/rocq/extract.vo example/authenticator/rocq/refinement.vo example/authenticator/rocq/accounts.vo example/authenticator/rocq/base32.vo
 make[3]: `tools/extraction/rocq/cj_print.vo' is up to date.
 make[3]: `example/hash_map/rocq/hm_tactics.vo' is up to date.
 COQC=/Users/danghica/.opam/default/bin/coqc COQCHK=/Users/danghica/.opam/default/bin/coqchk python3 scripts/verify.py
@@ -27,5 +478,5 @@ CONTEXT SUMMARY
   
 * Inductives whose positivity is assumed: <none>
   
-Assumption audit OK (355/355 theorems closed).
-make verify finished: 2026-10-16T04:20:00Z (exit status 0)
+Assumption audit OK (390/382 theorems closed).
+make verify finished: 2026-10-27T11:13:23Z (exit status 0)

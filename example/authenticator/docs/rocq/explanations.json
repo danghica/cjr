@@ -1,0 +1,485 @@
+{
+  "entries": {
+    "cjr.authenticator.accounts.account:f2504e048ecc9ab000b758c7853ebad97119a6f03cb2845d859bc7c765fbaab0": {
+      "description": "The declaration defines an account record, constructed with Account, containing an integer ID, label, issuer, and secret stored as lists of integers, and integer fields for digits and period. It imposes no validity constraints on these values; the intended encoding of the lists and the units of the period are not established by the input."
+    },
+    "cjr.authenticator.accounts.account_valid:a7136342838379ed7be9d4b9322ab807ae14f82426b9b8cffa36b648ca19c726": {
+      "description": "An account is valid when its ID is at least 1, its label and secret each contain 1 to 128 elements, its issuer contains at most 128 elements (and may be empty), and every element of the label, issuer, and secret is an integer from 0 to 255. Its digits field must be either 6 or 8, and its period must be between 1 and 2147483647 inclusive. This defines a validity condition; it does not establish that any particular account satisfies it."
+    },
+    "cjr.authenticator.accounts.byte_check_spec:c7a1b1b4dd598558afdec48f3a2fcd06292797ef8a9a575ef911e3d330cd737b": {
+      "description": "The lemma states that checking every element of xs with the Boolean test “0 ≤ x and x < 256” returns true exactly when every element satisfies byte, defined as being at least 0 and strictly less than 256. It has no additional premises; the numeric type is left implicit in the supplied input."
+    },
+    "cjr.authenticator.accounts.code_for:14cadbee1e5206ebcd51dca4eee4e3522a0dd3db1fcdacac9b3c76f3e2d16f5f": {
+      "description": "code_for looks up an account with the given ID in s. If none is found or the timestamp is negative, it returns None; otherwise, it returns Some containing totp computed from the account’s secret, period, and digit count. Here totp calls hotp using the integer quotient of the timestamp by the period as its counter. The definition does not check the period or digit count, and the supplied input does not establish how hotp behaves."
+    },
+    "cjr.authenticator.accounts.empty_session:c0f44f684400cd09a7230dab844d553b97607e9c68f7e3e627a7d566d9eab6af": {
+      "description": "empty_session defines a session whose next_id field is the integer 1 and whose accounts field is an empty list. The supplied record definition establishes these field values, but does not explain how next_id is used or impose any further properties."
+    },
+    "cjr.authenticator.accounts.empty_session_valid:cff0a59b87190fb1ea1fa480f8c6cd317022d0ca35fb5ee23d4568f82274a46b": {
+      "description": "The theorem states, without additional premises, that the empty session, constructed as Session 1 [], satisfies session_valid: it has at most 16 accounts, its next ID lies between 1 and 9223372036854775807, its account IDs have no duplicates, every account is valid, and every account ID is below the next ID. This interpretation assumes the constructor sets the next ID to 1 and the accounts to the empty list; the supplied input does not show the constructor’s definition. For an empty account list, all account-specific conditions hold vacuously."
+    },
+    "cjr.authenticator.accounts.enroll:82b87c1d35b22225a7fe7fca834e27d52ff7e5b067feecf57739cd3e2f6f51df": {
+      "description": "enroll returns an integer and a session. It requires label and secret lengths of 1–128, issuer length at most 128, all entries in these lists between 0 and 255, digits equal to 6 or 8, and period between 1 and 2147483647. If these checks pass, the session has fewer than 16 accounts, and next_id is at most 9223372036854775806, it returns next_id and a new session with that value incremented and the supplied account appended. Otherwise it returns -1 for invalid input, -2 for a full account list, or -3 for an excessive next_id, leaving the session unchanged. No lower bound or uniqueness condition on next_id is checked; no WP contract or verification claim is supplied."
+    },
+    "cjr.authenticator.accounts.enroll_failure_atomic:cdaec1d59b3cbd5ae053a370aff26bc527dda9daa939859b94ac872194b8a87b": {
+      "description": "The theorem states that enrolling an account from a valid session leaves the entire session unchanged if the returned code is negative. Its premises require that enrollment returns the pair (code, s') and that the original session has at most 16 accounts, a next ID between 1 and 9223372036854775807, distinct account IDs, valid accounts, and all account IDs below the next ID. The definition returns negative codes for invalid input, a full account list, or an exhausted ID range; each such branch returns the original session."
+    },
+    "cjr.authenticator.accounts.enroll_preserves_validity:5e4b8344dfacbfd67bf8388dd8591f440c05eeb8ff83ddae633102100f4d57b8": {
+      "description": "The theorem states that if session s is valid and enrollment returns (code, s'), then s' is valid too: it has at most 16 accounts, a next identifier between 1 and 9223372036854775807, distinct account identifiers below that next identifier, and accounts satisfying account_valid, whose full definition is not supplied. Enrollment adds an account and increments the next identifier when the input, capacity, and identifier checks pass; otherwise it returns a negative code and leaves the session unchanged. Successful enrollment is therefore not a premise: the validity guarantee covers both outcomes. No proof is supplied here."
+    },
+    "cjr.authenticator.accounts.find_account:311532a6ce062679291898a8dea5109f94a9bbf97e7306fca42a5c5cd8b91b68": {
+      "description": "find_account takes a session s and an identifier id and applies find to the session’s account list, testing whether each account’s integer account_id equals id using =?. It is intended to look up an account by identifier, but the supplied input does not define find, so its precise selection and no-match behavior are not established here; uniqueness of account identifiers is also not stated."
+    },
+    "cjr.authenticator.accounts.metadata:c00f05666588f0dd3dbe8753c0a6981a6898c06024d68fffa84275fedf2a294c": {
+      "description": "The definition metadata takes an account and returns a tuple containing its ID, label, issuer, digits, and period, in that order, leaving out its secret. The ID, digits, and period are integers, while the label and issuer are lists of integers; the supplied code imposes no further constraints on these values."
+    },
+    "cjr.authenticator.accounts.remove_account:9bdce0d588b7a9479adfbed9c0612521697c05b5d90bf7c5e85be37e2b32db0a": {
+      "description": "remove_account constructs a new session with the same next_id as s and filters its accounts, keeping those whose account_id does not equal id. This removes all matching accounts while preserving the order and contents of the remaining accounts. It states no preconditions and does not require account IDs to be unique."
+    },
+    "cjr.authenticator.accounts.remove_preserves_validity:c4f8417e370c3e53facf0479ba71e6ddff00572ee606f9eb9e53e533ddda8c7d": {
+      "description": "The theorem states that removing all accounts with a given ID from a valid session preserves session validity, while leaving next_id unchanged. Its premise requires at most 16 accounts, next_id between 1 and 9223372036854775807 inclusive, distinct account IDs, every account satisfying account_valid, and every account ID below next_id. The definition of account_valid is not supplied, so its specific requirements are unknown."
+    },
+    "cjr.authenticator.accounts.removed_account_absent:cd23ef8241046345b34982d895ee52110c89561d9ffbeb08d795d4de67fbbd08": {
+      "description": "The theorem states that for any session s and identifier id, looking up id after removing it returns None, meaning no matching account is found. Removal filters out every account with that identifier while preserving the session’s next_id value, so the statement requires no assumption that account identifiers are unique and has no explicit premises."
+    },
+    "cjr.authenticator.accounts.session:8bfb904b3059598d22fcf2d4d88dd9df9cf7b0835c7f8007055741d6b052eae5": {
+      "description": "The declaration defines a session record, constructed with Session, containing an integer next_id and a list of accounts. Each account holds integer fields for its ID, digits, and period, plus lists of integers for its label, issuer, and secret. The declaration imposes no constraints on these values or relationships between them; in particular, it does not establish that next_id is unused or that account IDs are unique."
+    },
+    "cjr.authenticator.accounts.session_valid:14daad4bfbd928252996cc43206d2ccb7f91a880994fda352109b4485e278d32": {
+      "description": "session_valid defines a session as valid when it contains at most 16 accounts, next_id is between 1 and 9223372036854775807 inclusive, and all account IDs are distinct and less than next_id. Each account must also have a positive ID, label and secret lengths from 1 to 128, an issuer length of at most 128, and label, issuer, and secret elements satisfying byte; its digits and period must satisfy valid_parameters. The meanings of byte and valid_parameters are not supplied. This definition states conditions; it does not establish that any session satisfies them."
+    },
+    "cjr.authenticator.accounts.valid_input:49f9dda6c1a6bcc19423dbd65e4fea7dd46f45e2ad4fd2dbdc697d3bfff5e39e": {
+      "description": "valid_input is a Boolean check requiring label and secret to each have 1–128 elements, issuer to have at most 128 elements (and possibly be empty), and every element of all three to lie between 0 and 255 inclusive. It also requires digits to equal 6 or 8 and period to lie between 1 and 2147483647 inclusive. The input leaves the parameter types and the intended units of period unspecified."
+    },
+    "cjr.authenticator.accounts.valid_input_spec:9fb5b9ebf7d20e69f9cc2f314e1ece516f9a2a169c462d3f53be9e06e84138d2": {
+      "description": "The lemma states that if valid_input returns true, then constructing an account from those inputs and any integer ID of at least 1 yields an account satisfying account_valid: the label and secret each contain 1–128 bytes, the issuer contains at most 128 bytes and may be empty, all their elements satisfy the byte predicate, digits is either 6 or 8, and period is between 1 and 2147483647 inclusive. The supplied byte-check lemma relates the byte predicate to integer values from 0 through 255."
+    },
+    "cjr.authenticator.base32.decode:e200b882b8d2809397e1d873e18412701d7d6622652ebf5bcc2a3a2fe06c536e": {
+      "description": "decode attempts to decode an input list into a list of integers, returning Some out on success and None on failure. It requires 2–208 input elements, successful digit conversion with any padding consisting only of trailing values equal to 61, and a digit count whose remainder modulo 8 is not 1, 3, or 6. Padding must either be absent or have length 1–6 with the total input length divisible by 8. It combines digit values in five-bit steps to extract eight-bit units, accepting only 1–128 output integers and a zero leftover accumulator. The missing definition of digit_value leaves the accepted alphabet and digit ranges unspecified, so the input alone does not establish full Base32 compliance."
+    },
+    "cjr.authenticator.base32.decode_bytes:808a339f282cc5d538eae065e2f6d98d16ea4878366383729ade1131b0635469": {
+      "description": "The theorem states that whenever decode chars succeeds with Some out, every integer in out is a byte, meaning it is at least 0 and less than 256. Its only premise is successful decoding; it does not assert that every input is accepted or that the output matches any separate specification of Base32 decoding."
+    },
+    "cjr.authenticator.base32.decode_f:45af67c58c2d9f6be8665598620af4b070c310bd4d0a1e20090172539ddc2564": {
+      "description": "This example states that decoding the integer list [77;89;61;61;61;61;61;61] succeeds and returns [102]. Under an ASCII interpretation, this corresponds to decoding “MY======” to “f”, although the supplied input does not define that character interpretation or the helper functions. The decoder checks input length, symbol parsing, symbol-count remainder, padding, output length, and a zero leftover tail; the example has no explicit premises, and no proof is supplied."
+    },
+    "cjr.authenticator.base32.decode_foobar:998639834298cee7b51ccd56ad73ce3e86cbb7fbc6dd322366037cccf886c77d": {
+      "description": "This example states that decode applied to [77;90;88;87;54;89;84;66;79;73] returns Some [102;111;111;98;97;114], corresponding under ASCII to decoding “MZXW6YTBOI” into “foobar.” It has no explicit premises; the supplied decoder checks input and output lengths, symbol parsing, permitted symbol-count remainders, padding, and a zero leftover tail. The symbol-reading and value-decoding definitions and the example’s proof are not supplied, so this describes the stated result without independently verifying it."
+    },
+    "cjr.authenticator.base32.decode_values:bad968238b5d8dfa7ba122fbf7f40f6fa059eab3cf9bd7351492fc249ff711dc": {
+      "description": "decode_values processes a list of integers, accumulating each value by multiplying the accumulator by 32 and adding the value, while increasing a bit count by five. When the count reaches at least eight, it emits the integer quotient by 2 raised to the excess bit count and continues with the remainder and reduced count; otherwise it continues accumulating. It returns the emitted integers in order and the final accumulator, returning an empty list and the current accumulator when the input is empty. Recursion consumes one list element per step. This suggests unpacking Base32 values into bytes, but the declaration supplies no bounds on the inputs or initial state that would guarantee valid byte outputs."
+    },
+    "cjr.authenticator.base32.decode_values_bytes:0187814a35f5aabb8717b559ba6a8527ef52d1cde90b6892de7ff15b74d7dfca": {
+      "description": "The lemma states that if every input value in ds is between 0 and 31, bits is between 0 and 7, and acc is nonnegative and less than 2^bits, then every integer in the output list returned by decode_values is a byte, meaning it lies between 0 and 255. The function combines five-bit input values with the accumulator and emits values when at least eight bits are available. The conclusion constrains only the output list, not the leftover accumulator; no proof is supplied here."
+    },
+    "cjr.authenticator.base32.digit_value:32f2253930b83419f0b9efb9dfcb94453d565d721d0271e7001cc102c236d5cb": {
+      "description": "digit_value maps a numeric character code ch to an optional integer: codes 65–90 and 97–122 map to 0–25, codes 50–55 map to 26–31, and all other values return None. Interpreting the codes as ASCII, this decodes Base32 letters A–Z case-insensitively and digits 2–7; the input does not explicitly establish the character encoding."
+    },
+    "cjr.authenticator.base32.digit_value_range:13a7765bac87eda1cc1355b02e364ecba6fc0447346e824bb3e09af352ac99ee": {
+      "description": "The lemma states that whenever digit_value ch returns Some d, the integer d is between 0 and 31 inclusive. The supplied definition maps inputs 65–90 and 97–122 to values 0–25, and inputs 50–55 to values 26–31; all other inputs return None and therefore do not satisfy the premise. No proof is supplied."
+    },
+    "cjr.authenticator.base32.read_symbols:f5c8e3571294a786ea6d811eb1c1bea7491a5b096a9e7078a9b1e9199015b2da": {
+      "description": "read_symbols processes a list of numeric character codes, returning either a list of digit values with a trailing padding count, or None on invalid input. Using ASCII interpretations, it maps A–Z and a–z to 0–25 and 2–7 to 26–31, preserving their order. Code 61 (‘=’) starts padding and is accepted only if every remaining code is also 61; any other unrecognized code causes failure. Empty input returns an empty list and zero padding. Recursion proceeds on the remaining list, so it terminates for finite lists; the declaration imposes no further restrictions on symbol counts or padding length."
+    },
+    "cjr.authenticator.base32.read_symbols_range:43ffbc1495516ba0a972a26fc03aeb83b6c601cb461c9524f8d4c312ccfe3c1e": {
+      "description": "The lemma states that if read_symbols successfully returns a list ds and a padding count pad for input chars, then every number in ds lies between 0 and 31 inclusive. The supplied function obtains these numbers through digit_value and accepts padding only as a trailing sequence of values equal to 61. The conclusion places no further restrictions on the padding count and does not assert that every input succeeds; no proof is supplied."
+    },
+    "cjr.authenticator.base32.reject_noncanonical_tail:2131024cf85d52e379a8e5d9731d9030de1f3379f137cbb61f6cbae5d00f9dcf": {
+      "description": "This example states that decode rejects the two-element input [77; 90], returning None. The supplied decoder checks input length, symbol parsing, symbol-count residues, padding, output length, and whether the remaining tail is zero. The name suggests rejection of a noncanonical tail, but without the definitions of read_symbols and decode_values, the supplied input does not establish which check causes rejection; no proof is shown."
+    },
+    "cjr.authenticator.base32.reject_padding_middle:511abf380d7d4d4788cd2a72aca66476d77e63b3ed04824ec48ccd45b2c2cf31": {
+      "description": "This example states that decode returns None (failure) for [77;89;61;65;65;65;65;65], which spells “MY=AAAAA” if interpreted as ASCII. Its name suggests rejection of padding in the middle, but the supplied input omits read_symbols, so the precise reason for rejection is not established. No proof is supplied."
+    },
+    "cjr.authenticator.extract.authenticator_cj:440b3e2bb0cc46221ad6fade7bf11fcd8956e7d065ef38445b8b210040d6fc3a": {
+      "description": "authenticator_cj is defined as the result of applying print_prog to authenticator_program, which describes a program with a five-field ShaState structure and functions named for hashing, authentication codes, Base32 decoding, and managing authenticator entries. The name print_prog suggests producing a textual representation, but its definition is not supplied, so the exact output is uncertain. This declaration has no stated premises or WP contract and establishes no correctness or termination guarantee."
+    },
+    "cjr.authenticator.extract.authenticator_program:fa3a79185290ad71e0c18c08638bedaf5ceb92efe469f0bbfdfefa1efc0bed23": {
+      "description": "This definition assembles an authenticator program with a five-field ShaState structure and 20 named functions covering memory helpers, SHA-1 and HMAC, counter- and time-based one-time passwords, Base32 decoding, and session entry management. It associates each function body with argument and result types, using Int64 and pointers to Int64, and ends with a unit expression. The supplied bodies include input checks, but some helpers and program-constructor semantics are unspecified. This is a program definition, with no stated proof premises or WP contract; it establishes neither correctness nor termination."
+    },
+    "cjr.authenticator.extract.ti:b5f81418763ff7ce6a29eab0f1837872f85a07af9a80ad15b9025a65cbabd48b": {
+      "description": "The definition names the string \"Int64\" as ti. The supplied input does not establish any further meaning for that string, such as whether it represents a 64-bit integer type."
+    },
+    "cjr.authenticator.extract.tp:e3230a68bfe02ed27da9dce70aa107ec33886a066e08c893994736f8b19d46e9": {
+      "description": "The definition tp names the string \"CPointer<Int64>\". The input does not establish any further meaning for this string, such as whether it represents a pointer type in another system."
+    },
+    "cjr.authenticator.model.be_bytes:9f2ad330331b0ff184bad2c84b52b00c1aa808f4c9d02fd3b5db6e34b2cad2e1": {
+      "description": "be_bytes takes a natural number n and an integer x and produces a list of n values by dividing x by descending powers of 256, taking each quotient’s remainder modulo 256. For nonnegative x, this gives its lowest n base-256 digits in big-endian order (most significant first), with leading zeros as needed. For negative x, Rocq’s integer quotient and remainder operations can produce negative entries, so the result need not consist of ordinary byte values; n = 0 gives an empty list."
+    },
+    "cjr.authenticator.model.be_bytes_are_bytes:96ae2cbe9de86d204d6f7447144ece23cda08188ab9f92195d5d52c331bb8e8f": {
+      "description": "The lemma states that for any natural number n and nonnegative integer x, every element of be_bytes n x lies between 0 and 255 inclusive. The definition constructs n entries by dividing x by descending powers of 256 and taking remainders modulo 256. No upper bound on x is required, and the lemma does not assert that these entries reconstruct x."
+    },
+    "cjr.authenticator.model.be_bytes_length:9cdd1017c5a164d1091310dddf0d04f0bb01eae0a8e0885df3a9a4f0a8e7672c": {
+      "description": "The lemma states that for every natural number n and integer x, be_bytes n x produces a list of exactly n elements. Its definition maps an integer quotient-and-remainder calculation over the n indices from 0 to n−1, so the length does not depend on x. No additional premises are stated."
+    },
+    "cjr.authenticator.model.be_word:925ee3e564c9558cd4ab3bdf23c82db5efb833943830c44b961929ac6c6f542e": {
+      "description": "be_word converts a list of integers into one integer by starting at zero and, from left to right, multiplying the accumulated value by 256 and adding the next element. For elements between 0 and 255, this interprets them as bytes in big-endian order; the definition itself imposes no such bounds. An empty list yields zero."
+    },
+    "cjr.authenticator.model.byte:5a6f382e6c5322211aa1ef5f0f37056575150ad5ff5333a888ba242b41f2eabe": {
+      "description": "The definition byte is a predicate saying that x is at least 0 and strictly less than 256. The input leaves the type of x inferred and unspecified, so it does not establish which numeric type is intended."
+    },
+    "cjr.authenticator.model.compress:4e6f7e38acfb0bcf2e62ad63e2843c93b77861910be5c8d0bce50590eb86d086": {
+      "description": "compress takes an initial state and a block, extracts 16 words from consecutive groups of up to four block elements, and extends them with 64 words using XOR and rol32. It then applies sha_round sequentially for round indices 0 through 79, starting from the initial state, and adds the resulting state entries to the original entries, masking each sum to its low 32 bits. Pairing truncates to the shorter state list, so the output has five entries when the initial state has five entries. This resembles SHA-1 compression, but the supplied input does not define all helpers or establish correctness; no block-length or state-length premise is imposed here."
+    },
+    "cjr.authenticator.model.compress_length:debd901fdeccbe199302f9dbc3e53c6fc8b7c757765142f6ea2bae821607f187": {
+      "description": "The lemma states that if the input state st has exactly five elements, then compress st block also has exactly five elements, with no stated restriction on block. The supplied dependency fold_round_length says that folding sha_round preserves a five-element state; compress combines that result with the original state and maps over the pairs. This is a length-preservation claim, not a claim about the output values or cryptographic security."
+    },
+    "cjr.authenticator.model.compress_words:2d596fcbaacef2c1a7671069912b68ab0cc59b2ebd2ae3127c3e310dc2da2bc9": {
+      "description": "The lemma states that, for any state st and block, every element returned by compress st block lies between 0 inclusive and 4294967296 (2^32) exclusive. There are no explicit premises restricting st or block. The definition applies mask32 to each output sum, and the supplied mask32_word lemma states that every such masked value satisfies this range condition."
+    },
+    "cjr.authenticator.model.digest_bytes:8b8bbb064352601346f40e3c03d66ef254cfdb5955c9606bfb1f729c8748f2b9": {
+      "description": "The lemma states that if every element of st is a word—an integer from 0 to 4,294,967,295—then converting each element into four big-endian base-256 components with be_bytes and concatenating the results produces a list whose elements are all bytes, between 0 and 255. The supplied helper lemma guarantees this byte range for be_bytes whenever its input is nonnegative, as every word is."
+    },
+    "cjr.authenticator.model.digest_length:74667c0b9445ab169ee10441afc0a3944c461c5eba782e00b080768f369d1cdb": {
+      "description": "The lemma states that applying be_bytes 4 to each element of the list st and concatenating the resulting lists produces a list whose length is four times the length of st. There are no additional premises: the supplied be_bytes_length lemma states that be_bytes n x always has length n, so each input element contributes exactly four entries."
+    },
+    "cjr.authenticator.model.fold_round_length:e7ee19548cc8e1c29a3710cc6e0fbc0a8ee97b73676fbcfaa96176a2ceb7dd34": {
+      "description": "The lemma states that if the initial state st is a list of exactly five integers, then applying sha_round successively to all entries in rounds using a left fold produces a list of exactly five integers. Each sha_round returns five elements; the initial-length premise also covers the case where rounds is empty and the fold returns st unchanged."
+    },
+    "cjr.authenticator.model.hash_blocks:dd1077f54335911530f6972eae91710add6645a8485d40dac205effcba38ce95": {
+      "description": "hash_blocks applies compress to the state once per unit of fuel, each time using the first 64 message elements and then dropping those elements. With zero fuel it returns the current state; recursion terminates because fuel decreases at every step. It does not stop when the message runs out, so later calls may compress a shorter block or an empty list. The input does not establish that message elements are bytes, that blocks are padded, or that this implements a particular standard hash algorithm."
+    },
+    "cjr.authenticator.model.hash_blocks_length:09b171c115be0d382d213c9b96d0a92640721101f84fd408213fdfad4a12a7b7": {
+      "description": "The lemma states that if the initial state st has exactly five elements, then hash_blocks fuel msg st also has exactly five elements, for any fuel and message. The function returns the state when fuel is zero; otherwise, it compresses the first 64 message elements into the state, skips those elements, and recurses with one less fuel. The supplied compress_length lemma states that compression preserves a five-element state, with no additional premise on the block. This is a length-preservation claim; no proof is supplied."
+    },
+    "cjr.authenticator.model.hash_blocks_words:8ac1869b424019a54dc33737415c21c56461790a8a3f62caed1bfd424b76fb94": {
+      "description": "The lemma states that if every element of the initial state st is a word, meaning it lies between 0 inclusive and 2^32 exclusive, then every element returned by hash_blocks fuel msg st is also a word. The function returns st when fuel is zero; otherwise, it compresses the state with the first 64 message elements, drops those elements, and repeats with one less fuel. The supplied compress_words lemma states that compression always produces words, with no premise on the message or block length. No proof of this lemma is supplied."
+    },
+    "cjr.authenticator.model.hmac_output_bytes:7d4395b4ba85cd7309d395d94a71af4243615c81e3b0975951c33152266074ba": {
+      "description": "The theorem states that, for any key and message, every element of hmac_sha1 key msg is a byte, meaning it lies between 0 and 255 inclusive. It has no explicit premise requiring the key or message elements to be bytes. The definition ends with a SHA-1 application, and the supplied sha1_output_bytes theorem states that every SHA-1 output element is a byte; no proof is supplied here."
+    },
+    "cjr.authenticator.model.hmac_output_length:a1d27f77b1a1bd03f09c2e0e25eb10597634316281055f174d409dd8618da7fb": {
+      "description": "The theorem states that for any key and message, hmac_sha1 returns a list of exactly 20 elements, with no additional premises. Its definition ends with a SHA-1 application, and the supplied sha1_output_length theorem states that every SHA-1 result has length 20. The input does not establish that these elements represent bytes, and no proof is supplied."
+    },
+    "cjr.authenticator.model.hmac_sha1:c96011126e83fced45c1e0808ba4376ef786f6447d75169143cbb2d3b24e74dc": {
+      "description": "hmac_sha1 defines an HMAC-style computation on a key and message: it first hashes the key if its length exceeds 64, then appends zeros using natural-number subtraction to pad the resulting key toward length 64. It hashes the message prefixed by that block with each element XORed with 54, then hashes this inner result prefixed by the block with each element XORed with 92. The supplied sha1 definition uses padding, block hashing, and big-endian byte conversion, but the input does not establish standard SHA-1 behavior, byte-range assumptions, or that a hashed key fits within 64 elements."
+    },
+    "cjr.authenticator.model.hotp:f1dda222909384c8b167b40d9478ea1e51bcd457e8d165751dcf2aef47e1d92b": {
+      "description": "hotp computes an HMAC-SHA1 value using key and an eight-position big-endian encoding of counter, truncates the digest, then takes the integer remainder modulo 10^digits. Truncation uses the low four bits of digest element 19 as an offset, reads four elements there, and masks the resulting word to 31 bits. This defines a numeric result, not a zero-padded string; standard HOTP behavior depends on suitable input ranges and the meanings of sha1 and be_word, which are not supplied."
+    },
+    "cjr.authenticator.model.hotp_range:fcaf8bdf3906053a1ff050830b3eb1884136d1de7d3b7066d049aaeb77293e1e": {
+      "description": "The theorem states that, for any key and counter, if digits is nonnegative, hotp key counter digits is at least zero and strictly less than 10 raised to digits. The supplied definition computes this value as the remainder of a truncated HMAC-SHA1 result modulo 10^digits, and the supplied truncate_range lemma states that the truncated result is nonnegative and below 2,147,483,648. No additional restrictions on the key or counter are stated, and no proof is supplied here."
+    },
+    "cjr.authenticator.model.initial:95154ae8de959faf5555466607d4544cb02b5827ada3f93106722da311e69935": {
+      "description": "The definition `initial` names the five-element list [1732584193; 4023233417; 2562383102; 271733878; 3285377520], in that order. The input provides no premises or context establishing the list’s intended purpose or its element type."
+    },
+    "cjr.authenticator.model.initial_words:164eb1d8c1072baa9421c07acf59cdf774be5308e7ffe9004f73fac05cfad9ee": {
+      "description": "The lemma states that every number in the list initial—1732584193, 4023233417, 2562383102, 271733878, and 3285377520—satisfies word, meaning it is at least 0 and strictly less than 4294967296 (2^32). It has no explicit premises; the supplied input gives the statement and definitions but no proof."
+    },
+    "cjr.authenticator.model.int64:fd1554c7c2631ab070beb5eea818ce554a63c2efd31ff30a82ee546590eeaec2": {
+      "description": "The definition int64 says that x lies between −9223372036854775808 and 9223372036854775807, inclusive—the usual signed 64-bit integer bounds. The input does not explicitly specify the inferred type of x."
+    },
+    "cjr.authenticator.model.mask32:d0efe9f301770e48a5d37c9b98399d343e3ccbb82ac3e243b598e86eb1c259f0": {
+      "description": "mask32 takes an integer x and computes its bitwise AND with 4294967295 (2^32 − 1), keeping only the lowest 32 bits of x and clearing all higher bits."
+    },
+    "cjr.authenticator.model.mask32_word:2ec4b8d36eeb08303975b77649f62a7be481ad803c11ed1d1bde960a06070372": {
+      "description": "The lemma states that for any integer x, masking x with 4294967295 (a mask of 32 one-bits) using bitwise AND produces a value between 0 inclusive and 4294967296 exclusive, satisfying the predicate word. It has no additional premises on x."
+    },
+    "cjr.authenticator.model.message_words:8b9c18f65aae678d241f205d812440fe9b01720709fe51c2df81256286aa3139": {
+      "description": "message_words takes a list of integers and produces 16 integers by selecting up to four entries starting at positions 0, 4, …, 60, then folding each group from zero using a × 256 + x. This gives a big-endian interpretation when the entries are bytes, but no byte-range or input-length restriction is stated. Short groups use only the available entries, empty groups yield zero, and entries beyond the first 64 are ignored."
+    },
+    "cjr.authenticator.model.padded_length_arithmetic:8443891cbd7242c87b2ae0cbab74aa3b485d5ecb7c782d079d1ccd2c5b94f66a": {
+      "description": "This lemma states that for any natural number n at most 2048, the padded length n + 1 + ((119 − (n mod 64)) mod 64) + 8 is at least n + 9, at most 2112, and divisible by 64. Thus, the formula adds at least nine units and rounds the total to a multiple of 64 within the stated bound; the input does not specify what those units represent."
+    },
+    "cjr.authenticator.model.padding:909c145fb1d960846322e7e105a8364957dd9853dfe7de49a76fa90658141d3e": {
+      "description": "The definition padding appends to msg the value 128, then enough zeros to make the length so far congruent to 56 modulo 64, then eight big-endian bytes encoding the original message length in bits. The supplied be_bytes definition extracts these bytes by division and remainder, retaining only the lowest 64 bits if the bit length is too large. This gives a total length divisible by 64; the declaration itself imposes no requirement that the original message elements are valid bytes."
+    },
+    "cjr.authenticator.model.remaining:d4979b1d9d1f830faa6ddd3852f37fbf23b4118f4cc2da89fcb6c410ad0b0d8f": {
+      "description": "The definition `remaining` takes a timestamp and a period and returns the period minus the integer remainder of dividing the timestamp by the period, using `Z.rem`. For a nonnegative timestamp and a positive period, this gives the distance to the next period boundary, returning a full period when the timestamp is already on a boundary. The input states no such sign assumptions or intended interpretation."
+    },
+    "cjr.authenticator.model.remaining_range:ddb72648ab91c4f147bc9a04fd9e9fe2935b2a3878ae3a0f35ea37f28a3d53b3": {
+      "description": "For any nonnegative integer timestamp and strictly positive integer period, this lemma states that remaining timestamp period—defined as the period minus the integer remainder of timestamp divided by period—is at least 1 and at most the period."
+    },
+    "cjr.authenticator.model.rfc_hotp_0:a0bda1d52d4dc5d7db1d51b835f4029c01bf6163670816ef3b65269af6ff88fd": {
+      "description": "This example states that hotp with the supplied RFC key, counter 0, and six digits equals 755224. The hotp definition applies HMAC-SHA1 to the key and be_bytes 8 counter, truncates the result, and takes its integer remainder modulo 10^6. The definitions of the byte encoding, HMAC-SHA1, and truncation are not supplied, nor is a proof of the stated equality."
+    },
+    "cjr.authenticator.model.rfc_key:996988c09d9edf1e907e285d03458cb12d6a40cae799fed0fda580feaebaa572": {
+      "description": "The definition rfc_key names a fixed list of 20 numbers: 49 through 57 followed by 48, repeated twice. If interpreted as ASCII codes, these spell “12345678901234567890”, but the supplied declaration does not establish that encoding or specify the list’s element type."
+    },
+    "cjr.authenticator.model.rfc_totp_59:5f03043c9d78dbd2fc54fa3e83982cec67424a471c2506c4b20271df59b9a072": {
+      "description": "This example states that totp with the supplied 20-number key, timestamp 59, period 30, and digit parameter 8 equals 94287082. The definition computes this by calling hotp with the same key and digit parameter and the integer quotient 59/30, which is 1. The supplied input includes neither the definition of hotp nor a proof, so it does not establish how that result is obtained or whether the example has been verified."
+    },
+    "cjr.authenticator.model.rol32:6a1b12143812882c478f007b709d12ad7799907b3efef867f467320e0d4ae32f": {
+      "description": "rol32 x n adds x times 2^n to the integer quotient of x by 2^(32−n), then keeps only the lowest 32 bits using a bitwise AND with 4294967295. This implements a 32-bit left rotation when x is an unsigned 32-bit value and n is between 0 and 32 inclusive; the supplied definition imposes no such restrictions, so that rotation interpretation is not established for arbitrary inputs."
+    },
+    "cjr.authenticator.model.rol32_word:930e615488649abbbcc283adf3c5d0ffb63816e95476bb3045a80467fdb10ed1": {
+      "description": "The lemma states that for any x and n, rol32 x n lies between 0 inclusive and 4294967296 (2^32) exclusive, with no explicit premises. The definition applies mask32 to x * 2^n + Z.quot x (2^(32-n)), and the supplied mask32_word lemma states that every masked value satisfies this range. This establishes the stated range property, but the input does not establish that the formula implements rotation for every x and n."
+    },
+    "cjr.authenticator.model.rotate_product_int64:387fe11208e4560e9336d6411c3fb0f87a122f81c4e8f1a484df650a36caa20c": {
+      "description": "The lemma states that if x is between 0 (inclusive) and 4,294,967,296 (exclusive), and n is between 0 and 30 inclusive, then x multiplied by 2 to the power n lies within the signed 64-bit range, from −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 inclusive. The supplied declaration states this bound but includes no proof."
+    },
+    "cjr.authenticator.model.schedule_more:21799d0d719ed312302b0c198903603e5ef5794869e27fc93d632db690c563c1": {
+      "description": "schedule_more extends the list ws by exactly fuel entries, returning ws unchanged when fuel is zero. Each new entry applies rol32 with argument 1 to the bitwise XOR of entries at zero-based indices i−3, i−8, i−14, and i−16, where i is the current list length; natural-number subtraction stops at zero, and nth uses 0 for an out-of-range index. Recursion decreases fuel at each step, giving structural termination. No minimum list length is required. rol32 appears intended as a 32-bit left rotation, but its exact interpretation depends on mask32, whose definition is not supplied."
+    },
+    "cjr.authenticator.model.sha1:230a6bd5c9287766c8111dde016f097e9370769a387d5686cd9675aafb8197c2": {
+      "description": "sha1 pads msg by appending 128, enough zeros to reach length 56 modulo 64, and an eight-byte big-endian encoding of its original bit length. Starting from the five specified initial values, it applies compress to each successive 64-element block, then concatenates four-byte big-endian encodings of the final state values. The recursion is bounded by the padded length divided by 64. This describes a SHA-1-style computation, but the input omits compress and establishes neither correctness as standard SHA-1 nor restrictions ensuring that message elements are bytes."
+    },
+    "cjr.authenticator.model.sha1_abc:c771dfb0ad91f0f366119429cd208f7baadee0679b2e10b79de4262c2e091ed1": {
+      "description": "The example sha1_abc states that sha1 applied to the list [97; 98; 99], representing “abc” under ASCII encoding, equals the specified 20-byte list (hexadecimal a9993e364706816aba3e25717850c26c9cd0d89d). The supplied definition pads the message, processes its 64-byte blocks from an initial state, and converts the resulting values to four-byte big-endian sequences. The statement has no explicit premises, and no proof is supplied, so this input alone does not establish that the equality has been verified."
+    },
+    "cjr.authenticator.model.sha1_empty:7c7162be9ce6d079f9b6290eafc740ac8ea287375129fdbcfcf75bbe4955c5d6": {
+      "description": "The example sha1_empty states that sha1 applied to the empty list equals the listed 20 values, corresponding to the usual SHA-1 digest da39a3ee5e6b4b0d3255bfef95601890afd80709. The supplied definition computes sha1 by padding the message, hashing its 64-byte blocks from an initial state, and flattening each result word into four big-endian bytes. There are no explicit premises, but the helper definitions and proof are not supplied, so this input alone does not establish that the example has been verified."
+    },
+    "cjr.authenticator.model.sha1_output_bytes:874d4f60ee52f5a2cf4f05a777b6c12894e9b9d0b284853d31405d3e137cdcc3": {
+      "description": "The theorem states that, for every message msg, every element of sha1 msg lies between 0 and 255 inclusive, with no explicit premise on msg. The supplied dependencies support this by stating that the initial state consists of words, block hashing preserves that property, and converting words with be_bytes 4 produces bytes. This establishes only the stated output-range property; it does not state an output length or cryptographic guarantees, and the supplied input contains no proof to check."
+    },
+    "cjr.authenticator.model.sha1_output_length:16f619be68833f9d3fa231b01cab9d68437cb8d636d5858c8cf1201c51a4dba7": {
+      "description": "The theorem states that for every message msg, sha1 msg has length exactly 20, with no explicit premises. The supplied definition computes a state from the padded message and then flattens each state element using be_bytes 4. The supporting lemmas say this flattening produces four output elements per state element and that hash_blocks preserves a state length of five when given an initial state of that length. The input does not establish that initial has length five or explicitly define the output elements as bytes, and no proof is supplied."
+    },
+    "cjr.authenticator.model.sha_add_int64:2ffb382a2ed1662ffe4ea1126f0407c1152550248ded77553fadcb034d4b5883": {
+      "description": "The lemma states that if each of a, b, c, d, and e is between 0 (inclusive) and 4,294,967,296 (exclusive), then their sum lies within the signed 64-bit range, from −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 inclusive. These bounds are the five premises; the supplied declaration states the claim but includes no proof."
+    },
+    "cjr.authenticator.model.sha_ch:13cafe88a1558d1631cf531229b39a70cc348d4147ff30239dbebdfe0bd39d6d": {
+      "description": "sha_ch takes integers b, c, and d and returns the bitwise XOR of (b AND c) and ((b XOR 4294967295) AND d). Since 4294967295 has its lowest 32 bits set, each of those output bits selects the corresponding bit of c when b’s bit is 1, and of d when it is 0. No 32-bit bounds on the inputs are given, so the definition does not establish that this selection interpretation holds beyond the lowest 32 bits."
+    },
+    "cjr.authenticator.model.sha_f:7c56a3c007a2bb3ee37c0bfc538ab94b615f9cfa74f285554e05bd8584fe8f8c": {
+      "description": "sha_f takes a natural number t and selects a function of three integers: sha_ch for t below 20, sha_parity for 20–39, sha_maj for 40–59, and sha_parity for every t at least 60. These functions use bitwise operations: sha_parity XORs all three inputs, sha_maj computes their bitwise majority, and sha_ch combines b AND c with (b XOR 4294967295) AND d using XOR. The constant flips only the lowest 32 bits of b; no restriction to 32-bit inputs or upper bound on t is stated."
+    },
+    "cjr.authenticator.model.sha_k:892e55cd24bd4d7664de56ea311d65ea5dcd374eb5623ef1f25189604ec6454f": {
+      "description": "sha_k selects a constant based on the natural-number input t: 1518500249 when t is below 20, 1859775393 from 20 through 39, 2400959708 from 40 through 59, and 3395469782 for 60 or above. It imposes no additional premises; the supplied definition does not establish how these constants are used."
+    },
+    "cjr.authenticator.model.sha_maj:a07b78593dc65a0a9254f409092dbe7af98a0879401c0a813dd893808c3c5daf": {
+      "description": "sha_maj defines a function on three integers b, c, and d by XORing their three pairwise bitwise ANDs. At each bit position, the result is 1 exactly when at least two inputs have a 1 there, so it computes bitwise majority. The definition specifies no fixed word width and has no stated premises."
+    },
+    "cjr.authenticator.model.sha_parity:942a6e13236e68a92e9d216689aa529c7c69bfb3e99ae03577523deeedec5652": {
+      "description": "sha_parity defines the bitwise exclusive OR (XOR) of three integers b, c, and d by first XORing c with d, then XORing that result with b. It is a function definition with no stated premises or correctness claims."
+    },
+    "cjr.authenticator.model.sha_round:dd47ffbed8c2ad21cc8744c48781e42d6ab72f878ad2ade5b27fbf667e81ffd8": {
+      "description": "sha_round takes an integer list and a pair containing a natural-number round index t and an integer w, and returns five updated values. It reads the first five list entries as a, b, c, d, e, using zero for missing entries and ignoring extras. The result is [mask32 (rol32 a 5 + sha_f t b c d + e + sha_k t + w); a; rol32 b 30; c; d], where mask32 keeps the low 32 bits and sha_f and sha_k select functions and constants at round boundaries 20, 40, and 60. The formula resembles a SHA-1 round, but the selected Boolean functions are not defined here, and no restrictions on input values or the round index are imposed; interpreting rol32 as ordinary 32-bit rotation requires suitable input assumptions."
+    },
+    "cjr.authenticator.model.sha_round_length:37a2455f089734e609f905f4a066dd9a63fde5f48e40fde79629701a93494a58": {
+      "description": "The lemma states that sha_round always returns a list of exactly five integers, for any input state list st and any pair tw consisting of a natural-number round index and an integer word. No assumption on the length of st is needed: the definition reads its first five entries using zero for missing entries and constructs a five-element output list. The supplied input states the lemma but does not include its proof."
+    },
+    "cjr.authenticator.model.sha_round_words:efe6d55354315dffec551d4ffd3bcb320a4f14420396410e9c4e8ef9121381b4": {
+      "description": "The lemma states that if every integer in the input state list st lies between 0 and 2^32 − 1, then every integer in the five-element list returned by sha_round st tw also lies in that range. It requires no particular length for st (missing entries default to zero) and no additional restriction on the round index or integer carried by tw; the supplied helper lemmas state that masking and rotation produce values in this range."
+    },
+    "cjr.authenticator.model.time_counter_bounds:10b8fc58f8a0620d533869130bff41b83b3a4a7a56a73158f3dccb640d92bbec": {
+      "description": "The lemma states that if timestamp is between 0 and 9223372036854775807 inclusive and period is strictly positive, then their integer quotient, Z.quot timestamp period (division rounded toward zero), is also within that same range."
+    },
+    "cjr.authenticator.model.totp:2feaaedb57429baddc9697ae7cd17e58fdcb325839582a0378433b21d842543d": {
+      "description": "The definition totp computes hotp using the supplied key and digits, with the counter set to the integer quotient of timestamp divided by period, rounded toward zero. The supplied hotp definition applies HMAC-SHA1 to an eight-byte encoding of that counter, truncates the result, and takes its remainder modulo 10 raised to digits. No restrictions on period or digits are stated, and the precise encoding and truncation behavior are not supplied."
+    },
+    "cjr.authenticator.model.totp_range:a61c44b252d5910fbe47de539959c3f0f0d1bd1321239ef18d127e767e82ea25": {
+      "description": "The theorem states that, whenever digits is nonnegative, totp key timestamp period digits is at least zero and strictly less than 10 raised to digits. Here totp is defined as hotp using the integer quotient of timestamp by period as its counter, and the supplied hotp_range theorem states the same bound for any counter. No additional conditions on the key, timestamp, or period appear in the statement."
+    },
+    "cjr.authenticator.model.truncate:234ebd86c9353af4557d7847b43027574c2c864bdfd7e9d8af9bbf050f99d9d0": {
+      "description": "truncate takes a list of integers called digest, extracts the low four bits of its twentieth element (using 0 if that element is missing) as an offset from 0 to 15, and selects up to four elements starting there. It combines these elements by repeatedly multiplying an accumulator by 256 and adding the next element, then masks the result with 2147483647 to keep its low 31 bits. This corresponds to reading a big-endian value when the elements are bytes, but the definition imposes no byte-range or minimum-length requirements."
+    },
+    "cjr.authenticator.model.truncate_range:1fcb6e197e6fc153b9f42a431c6eb37e5678b4526513f525753f6455653dbd60": {
+      "description": "The lemma states that for every digest, truncate digest is nonnegative and strictly less than 2147483648 (2^31), with no explicit premises. The supplied definition selects an offset using the low four bits of the digest’s element at index 19 (defaulting to zero if absent), takes up to four elements starting there, applies be_word, and masks the result with 2147483647. The meaning of be_word is not supplied, and no proof is shown."
+    },
+    "cjr.authenticator.model.valid_parameters:b50772443b2a19a9a06a05631dac4f76a8f25a6f4aefc071e229ad2cd418feec": {
+      "description": "The definition valid_parameters says that digits must equal either 6 or 8, and period must be between 1 and 2147483647 inclusive. It defines a condition on the two parameters; the supplied input does not explicitly state their inferred types."
+    },
+    "cjr.authenticator.model.word:c9f5a134c6fc29c6f4154f7942391013910f829473a4fd2da8f96af7139d94a6": {
+      "description": "The definition word is a predicate that holds when x is at least 0 and strictly less than 4,294,967,296 (2^32). This is the usual range of an unsigned 32-bit integer, though the input does not specify x’s inferred type or establish any machine-integer representation."
+    },
+    "cjr.authenticator.program.add:d0d4588ed303b6217d7c9d3179a868437d9fdc084f0dcf29b6fc0ac675ad1028": {
+      "description": "The definition `add` abbreviates `op PlusOp`; since `op` is defined as `BinOp`, this is `BinOp PlusOp`, apparently a binary-operation expression using the plus operator. The input does not define `BinOp` or `PlusOp`, so it does not establish their precise behavior or any correctness or termination properties."
+    },
+    "cjr.authenticator.program.add_body:614ac86fe0851586ccabd3db17e85064d5735c1814be1483c56fb514a9cb0ee6": {
+      "description": "add_body defines a routine for adding an authenticator entry: it requires 6 or 8 digits, a period of 1–2147483647, label length 1–128, issuer length 0–128, secret length 2–208, and byte-valued label and issuer contents. It decodes the Base32 secret, checks that the session count is at most 15 and the next ID at most 9223372036854775806, then finds the first of 16 slots whose ID is zero, stores the entry, increments the next ID and count, and returns the assigned ID. It returns −1 for validation or decoding failure, −2 for the count limit, and −3 for the ID limit, and clears and frees its temporary decoded buffer after processing. Safe execution relies on valid memory and consistent session state ensuring a free slot exists; these premises are not established here, and this definition supplies no correctness or termination proof."
+    },
+    "cjr.authenticator.program.args:a544c89dda3653eb283f7c81b2cbea62ca1e0e3d2383340401193237c0b861df": {
+      "description": "The definition args builds an expression that binds each name in names to a load from the corresponding zero-based position of the variable \"args\", then continues with body. It pairs the names with indices and folds right to create nested Let expressions, with the first name bound outermost; v is simply an alias for Var. The input does not specify the runtime layout or validity requirements of StructLoad, and this definition itself establishes no correctness or termination guarantee."
+    },
+    "cjr.authenticator.program.band:1ec4635310b71ca09eacc8a711e0f70591727eb831848d7ca5e5b3a2d357131b": {
+      "description": "The definition band abbreviates op BitAndOp. Since op is defined as BinOp, band is BinOp applied to the bitwise-AND operator, rendered as op(&). The input does not specify its operand types or evaluation behavior."
+    },
+    "cjr.authenticator.program.base32_body:f3e87cc66fb47c712271e68cabfba518c28c89ff71acee71c440e3f61f9048ea": {
+      "description": "base32_body defines a Base32 decoder taking source, length, and destination arguments. It accepts lengths from 2 to 208, maps uppercase or lowercase letters and digits 2–7 to five-bit values, and assembles output in temporary storage. It rejects invalid characters or symbols following '=' padding. Success requires 1–128 output bytes, zero leftover value, a symbol count whose remainder modulo 8 is not 1, 3, or 6, and either no padding or 1–6 padding characters with total input length divisible by 8. It then copies the output to the destination and returns its length; failed checks return -1. Temporary storage is freed after processing. The supplied input does not establish memory-access safety or the behavior of the underlying copy routine, and this definition supplies no correctness or termination proof."
+    },
+    "cjr.authenticator.program.base32_value_body:f95b85aa7d8e980fc035bd7bc22a086fb448072fbc43160e5a4bfbdad11c53ec": {
+      "description": "This definition constructs a program body that loads its first argument as ch and checks inclusive numeric ranges: 65–90 yields ch − 65, 97–122 yields ch − 97, and 50–55 yields ch − 24; all other values yield −1. Interpreting ch as an ASCII character code, this maps A–Z and a–z to 0–25 and digits 2–7 to 26–31, as expected for Base32. The input defines the program expression but provides no correctness or termination proof."
+    },
+    "cjr.authenticator.program.both:b42ab27c0acf003032986129003ff327ab0cebe4988b64353accead8639326d1": {
+      "description": "The definition `both` names `op AndOp`. Since `op` is defined as `BinOp`, this is `BinOp AndOp`, rendered as `op(&&)`. It appears to construct a binary AND operation, but the supplied input does not establish its precise semantics."
+    },
+    "cjr.authenticator.program.byte_body:72b8c3175ee968338221f78bd6b64e5243dee338309e95bcbb438020189c0e53": {
+      "description": "byte_body defines a program that reads src and n from the first two argument fields, initializes valid to true, and loops from index 0 through n−1, setting valid to false whenever a loaded source value is outside the inclusive range 0–255. It returns valid after the loop and does not stop early on an invalid value. This describes the intended behavior assuming suitable arithmetic, comparisons, and valid memory accesses; the supplied definitions do not establish memory safety or termination, and this declaration is not a correctness proof or WP contract."
+    },
+    "cjr.authenticator.program.call:29f726562ce33986d3aac1279c1c4524703365cccc0144f8eb728c06f2881545": {
+      "description": "The definition call builds an application of an anonymous function with parameter \"args\" and the supplied body to a structure constructed as Struct [] values. The input does not establish the precise meaning of the structure’s empty-list argument or how values are represented, and it states no correctness or termination contract."
+    },
+    "cjr.authenticator.program.code_body:67e401225ed21faf3e45f48f5b7f980de4e7e11dd51c50b1488ca995bdae8f75": {
+      "description": "code_body defines a program taking session, id, and timestamp. It calls find_body to obtain an entry index; if that index is negative, it returns -1. Otherwise, it locates the entry at session offset 2 + 390 × index and calls totp_body with a key pointer at entry offset 262, a key length from offset 5, the timestamp, a period from offset 2, and a digit count from offset 1. totp_body checks an unspecified parameters condition and that the timestamp is nonnegative before calling hotp_body with timestamp divided by period; otherwise it returns -1. The input does not establish memory validity, the full parameter checks, or the precise behavior of hotp_body, and supplies no correctness or termination contract."
+    },
+    "cjr.authenticator.program.copy:182d51e098a52f5e0fcafdf23c9700795bc53960acb19c54d6fd90cb748ecb41": {
+      "description": "The definition copy src dst n constructs a call to copy_body with src, dst, and n as its arguments. The body names these arguments source, dest, and count, then uses a loop starting at 0 with bound count to read source at index copyI and write that value to dest at the same index. The supplied input does not establish the loop’s precise bounds, memory-safety requirements, behavior for overlapping source and destination, or termination; no correctness contract is provided."
+    },
+    "cjr.authenticator.program.copy_body:0538ea61b81f114ebcdb4a24568415f3f5fc75c5d363b559ef009df9dc5a96c6": {
+      "description": "copy_body defines a program that loads source, dest, and count from argument slots 0, 1, and 2, then starts copyI at zero and, while copyI is at most count minus one, reads the indexed source location, writes that value to the indexed destination location, and increments copyI. This describes a forward copy; the supplied input does not define the pointer indexing or establish memory validity, behavior with overlapping regions, or termination. No correctness or WP contract is supplied."
+    },
+    "cjr.authenticator.program.destroy_body:2da070af28a1ae557c52f5e5b7674a615e79e65449d79ffecd596fa93637b315": {
+      "description": "destroy_body defines a program body that loads session from slot 0 of args, calls zero_body with session and the integer 6242, and then frees session. The call appears intended to clear the session before freeing it, but zero_body’s implementation and the relevant memory requirements are not supplied, so this definition alone establishes neither successful clearing nor memory safety or termination."
+    },
+    "cjr.authenticator.program.div:e42196e937c4ba9f7562d820bbfa522ef4b19ed5bcf24b87c9f7450f0c0fd763": {
+      "description": "The definition div names op applied to DivOp; since op is defined as BinOp, this amounts to BinOp DivOp. The names suggest a division operation, but the supplied input does not establish its behavior, operand types, or handling of division by zero."
+    },
+    "cjr.authenticator.program.emit_be:b7deea5e67baef5fd185ee30abc36fd2d2b88f85fa32f5565627e97ed1bbada9": {
+      "description": "emit_be constructs a program that performs n stores into dst at consecutive offsets starting at start, then returns unit. For each index i from 0 to n−1, it stores the remainder modulo 256 of x divided by 256^(n−1−i), expressing an intended big-endian byte encoding. The supplied definitions do not establish valid destination addresses, suitable bounds on x, or the precise runtime arithmetic semantics, so they alone do not guarantee safe execution or byte-range results. No correctness or termination contract is supplied."
+    },
+    "cjr.authenticator.program.eq:ff5f6837d612d9d3528a8a164e43b31b8ac88a95c239a7278a0cc4ee307ebef0": {
+      "description": "The definition names `eq` as `op EqOp`; since `op` is defined as `BinOp`, this is `BinOp EqOp`, rendered as `op(==)`. It represents the equality binary operator, but the input does not specify its operand types or evaluation behavior."
+    },
+    "cjr.authenticator.program.find_body:3e7387bcbf3c0517d7378f925f19fcc5f6475c5c2553a0410cd5515c190bf34b": {
+      "description": "find_body defines a program that loads session and id from its arguments, initializes found to −1, and scans indices 0 through 15. At each index, it reads offset 0 of the slot located at session offset 2 + 390 × i; if id is at least 1 and the value equals id, it updates found to that index. Thus, under the intended execution semantics and assuming valid memory accesses, it returns the last matching index, or −1 if none matches. The input does not establish memory validity or give a WP contract or verification result."
+    },
+    "cjr.authenticator.program.get:002003a67086f3d5f0dcf317dd693624c31e815afe265041d54a48793446bb44": {
+      "description": "The definition get p i loads a value from the location ptr p i, where ptr is defined as Offset p i—rendered as pointer addition p + i. The rendering marks both the offset and read as unsafe, but the input provides no types, bounds, memory-validity premises, or contract establishing when this access is valid."
+    },
+    "cjr.authenticator.program.hmac_body:2dfdd98e8c6f3db8b569f276382996eebbc44a2b6339892ca91186f540ae87b3": {
+      "description": "hmac_body defines an HMAC-style routine taking a key, message, their lengths, and an output pointer. It returns false if the key length is outside 1–128, the message length is outside 0–1024, or any input element is outside 0–255. Otherwise, it copies keys of at most 64 elements or hashes longer keys, builds inner and outer blocks using XOR with 54 and 92, hashes the inner block plus message, then hashes the outer block plus the 20-element inner digest into dst, frees its temporary buffers, and returns true. Standard HMAC behavior depends on zero-initialized key padding and the hash implementation; the supplied declarations do not fully establish these semantics or memory validity. This is a program definition, not a correctness or termination proof, and no WP contract is supplied."
+    },
+    "cjr.authenticator.program.hotp_body:aec9a9447e28bfd8d820b3d62fbb6921e6227f65e7beeff5df98c11808c650ff": {
+      "description": "hotp_body defines a counter-based one-time-password computation: it checks that the key length is 1–128, the counter is nonnegative, the requested digit count is 6 or 8, and all key entries are bytes, returning −1 if a check fails. Otherwise, it encodes the counter into eight big-endian bytes, calls hmac_body for a 20-entry digest, uses the last entry’s low four bits to select four consecutive entries, combines them into a 31-bit number, and returns its remainder modulo one million or one hundred million after freeing temporary buffers. The result is an integer without leading-zero formatting. The supplied definitions do not establish standard HOTP compatibility, memory safety, or termination; this is a program definition, not a correctness contract or proof."
+    },
+    "cjr.authenticator.program.int:c58ecae33c0db0e6c27cc6a146652da09683e711859e6a3a297294abbfc0d3a3": {
+      "description": "The definition int takes an integer x of type Z and represents it as a value by wrapping it in LitInt, then LitV, then Val. The input provides no further context about these constructors."
+    },
+    "cjr.authenticator.program.le:c86759f2a2ab001e051d8b3d5b65b947690c564d49d37e6e5927de077d65c906": {
+      "description": "The definition names `le` as `op LeOp`; since `op` is defined as `BinOp`, this is the binary-operation constructor applied to `LeOp`, rendered as `<=`. The input suggests a less-than-or-equal operation but does not establish its operand types or evaluation behavior."
+    },
+    "cjr.authenticator.program.lets:80aab4ef86cd42618ee6f606421bd460bbde939404d598a3e9ac069bd9c4ce80": {
+      "description": "The definition `lets` builds nested `Let` expressions from a list of pairs `names`, using `body` as the innermost expression. Each pair supplies a name via its first component, wrapped in `Some`, and a value or expression via its second component. The right fold makes the first list entry the outermost binding; an empty list leaves `body` unchanged. The input does not establish the precise types or evaluation semantics of `Let`."
+    },
+    "cjr.authenticator.program.list_body:31a8bb6d779ed612b048241ebadacd939df3ed32fb59dedf24d6e3f66f73961d": {
+      "description": "list_body defines a program that takes session and dst arguments, starts a count at zero, and visits session slots indexed 0 through 15, whose offsets are 2 + 390 times the index. It reads the first value of each slot and, when that value is at least 1, writes it to the next destination position and increments the count, finally returning the count. Successful execution requires valid source reads and destination writes; pointer semantics and possible overlap between source and destination are not established here. This is a program definition, with no supplied correctness contract or proof of memory safety or termination."
+    },
+    "cjr.authenticator.program.loop:dddb85efad1791e68f961ee9eb6ab41a4eb7ff58e828501c03e5084d2125279d": {
+      "description": "The definition constructs a loop that binds the variable named name to start, then repeatedly executes body followed by increasing that variable’s current value by one, while its value is at most stop minus one. With the usual integer interpretation, this is an exclusive upper bound, but body may change the variable, and stop is an expression used in each condition check. The supplied input gives no correctness contract or termination guarantee and does not fully specify the binding or execution semantics."
+    },
+    "cjr.authenticator.program.mask:b003b7790ec1e9f0e545f914f9f5e8c1d5c6ee4fdae9ab08ba6178fa06533e3b": {
+      "description": "The definition mask takes x and applies the bitwise AND operation to it and the integer literal 4294967295 (2^32 − 1), constructed by int. Under the usual interpretation of integer bitwise AND, this keeps the lowest 32 bits of x and clears higher bits, though the supplied input does not establish the operation’s precise semantics or x’s inferred type."
+    },
+    "cjr.authenticator.program.mul:6ede0f25598aa3b1fa48c56e7d7096ef3c8aba03317e04366a58d3f81cc6a7e5": {
+      "description": "The definition names `mul` as `op MulOp`; since `op` is defined as `BinOp`, this is `BinOp MulOp`, apparently representing a multiplication operation, as suggested by the rendered `op(*)`. The input does not establish its operand types or execution behavior."
+    },
+    "cjr.authenticator.program.new_body:1de3d6f3b6e139cf9b6ee39f134dfb0a635ce841214bfd8de9c5ac4821b16fd6": {
+      "description": "The definition new_body constructs a program expression that allocates 6,242 words, binds the result to “session”, stores the integer 1 at index 0 using put, and then returns session. The supplied input does not define the precise allocation or pointer-indexing semantics, so it does not establish zero-initialization, allocation success, memory safety, or termination; this is a program definition rather than a correctness contract or proof."
+    },
+    "cjr.authenticator.program.no:337bdf9882b52412d573d8dfc629ebc38417dfe3d491cb8050f819852cb07c21": {
+      "description": "The definition names `no` as the Boolean value `false`, represented by the nested constructors `Val (LitV (LitBool false))`. It has no stated premises or correctness contract."
+    },
+    "cjr.authenticator.program.op:e1ea82ad1cf31300b630c5a4b15bbfd380ac98d39622cfad6b19373eba583e9a": {
+      "description": "The definition makes `op` an alias for `BinOp`. The input does not explain what `BinOp` represents or provide its type, premises, or properties."
+    },
+    "cjr.authenticator.program.parameters:ae59c46285298f4aeb93deaae2d286b3004165d0f26991ebd6959a9764a625b0": {
+      "description": "The definition parameters combines two checks: digits must equal 6 or 8, and period must lie between 1 and 2147483647, inclusive. The first check returns true when digits equals 6 and otherwise tests whether it equals 8; the range check uses two comparisons joined by conjunction. This interpretation assumes le denotes less-than-or-equal, since its definition is not supplied. The declaration defines an expression rather than proving that any particular inputs satisfy it."
+    },
+    "cjr.authenticator.program.ptr:6d9d191aa73b22d08357c91769937aa1d5e1a0454c1de55ed4600856cd4cc0c9": {
+      "description": "The definition `ptr p i` is an abbreviation for `Offset p i`, rendered as the unsafe operation `p + i`. This suggests offsetting a pointer `p` by `i`, but the input does not specify their types, the offset’s units, or any conditions that make the operation valid."
+    },
+    "cjr.authenticator.program.put:779a51739c0406009102573d1feaa2027f9d9dc1fd3f1ab48bbe227a6ea1e7bc": {
+      "description": "The definition put takes p, i, and x and stores x at the location ptr p i, where ptr is defined as Offset p i. The rendering presents this as an unsafe write through p + i. The input does not specify the parameter types, offset units, or conditions under which the target location is valid and writable, and supplies no correctness or termination contract."
+    },
+    "cjr.authenticator.program.range:df146ddbb35d982fb9fa5f2d9518b1404096c65d81f491687ddb26ce8bab4aa4": {
+      "description": "The definition range builds an expression combining lo ≤ x and x ≤ hi with &&, embedding the integer bounds lo and hi as literal values. It thus expresses an inclusive range check; the supplied input does not establish how the operators evaluate or prove any correctness or termination property."
+    },
+    "cjr.authenticator.program.read_body:dfcf1b4ea7807b9edefb11c13325c55d94c3213d71a0dc221730283b00944ea4": {
+      "description": "read_body defines a program taking session, id, and dst. It calls find_body to search for an entry whose first field matches id, with id required to be at least 1 for a match. If the returned index is negative, it returns false; otherwise, it locates the entry at session offset 2 + 390 × index, requests three copies into dst, and then returns true: 4 units from entry offset 1 to destination offset 0, the length stored at entry offset 3 from offset 6 to destination offset 4, and the length stored at entry offset 4 from offset 134 to destination offset 132. The supplied input does not define the copy implementation or establish memory validity, bounds safety, or termination; this is a program definition, not a correctness contract or proof."
+    },
+    "cjr.authenticator.program.rem:f92b073d5477798afcf1b712e939af399387a0349e47e0e703f6ff4901435d74": {
+      "description": "The definition names `rem` as `op RemOp`; since `op` is defined as `BinOp`, this is `BinOp RemOp`, rendered as `op(%)`. It appears to represent a remainder operation, but the input does not specify its arithmetic behavior or any conditions on its operands."
+    },
+    "cjr.authenticator.program.remaining_body:4ddfd4635e07970c0e1d2bbfa846c461d8650bbc63c97f3099fc4c7ef35e43fc": {
+      "description": "remaining_body defines a program expression that loads timestamp and period from positions 0 and 1 of args. If period is between 1 and 2147483647 inclusive and timestamp is nonnegative, it computes period minus the remainder of timestamp divided by period; otherwise, it yields -1. This appears intended to calculate the time until the next period boundary, returning a full period at an exact boundary under usual remainder semantics. The input does not establish argument-loading or operator runtime semantics, and supplies no correctness or termination contract."
+    },
+    "cjr.authenticator.program.remove_body:c16d4a858f32aa8f4c990ec2999630d22775b9598d1c4c5e93644ab50e9e3b7d": {
+      "description": "remove_body defines a program taking a session and an identifier. It calls find_body to search for a matching slot with an identifier of at least 1; if the returned index is nonnegative, it calls zero on that slot with length 390, decreases the session’s field at index 1 by one, and returns true; otherwise it returns false. Slots are addressed at offset 2 + 390 × index. The supplied input does not define zero_body or establish valid memory, the meaning of the decremented field, or termination; this is a program definition, not a correctness contract or proof."
+    },
+    "cjr.authenticator.program.rename_body:a72517b175aa00b00cc92ff8321d9127f523bcd5207f5e48d8f13bbd43793e5c": {
+      "description": "rename_body defines a program that takes a session, an ID, and label and issuer buffers with lengths. It checks that the label length is 1–128, the issuer length is 0–128, and their elements are integers from 0 to 255, then searches for an entry matching a positive ID. If found, it calls helpers to clear 256 locations starting at entry offset 6, copy the label there and the issuer at offset 134, store their lengths at offsets 3 and 4, and return true; failed checks or no match return false. The clearing and copying helpers’ implementations and memory-validity assumptions are not supplied. This is a program definition, not a WP contract or proof, so it establishes neither correctness nor termination."
+    },
+    "cjr.authenticator.program.rol:6316f9ce4d6ae6c4461676c78511b7ea1624439e430ed97158ae5e9e8e7a453a": {
+      "description": "rol x n builds an expression that multiplies x by 2^n, adds x divided by 2^(32−n), and masks the result with 4294967295 (2^32−1). This appears intended to represent a 32-bit left rotation by n positions, but the input gives no bounds on x or n and does not fully define the operators’ semantics, so it does not establish when that interpretation is valid."
+    },
+    "cjr.authenticator.program.round_body:c65ef07aa6451080cbc842eae0b109d615ee3e5b5fbc17fefdc4f1ad108dc958": {
+      "description": "round_body defines a program expression for a SHA-style round: it loads t, wt, and a–e from the argument structure, selects a bitwise function f and constant k using the thresholds 19, 39, and 59 for t, and constructs five fields: the masked sum rol(a,5) + f + e + k + wt, then a, rol(b,30), c, and d. Masking uses 4294967295; interpreting rol as 32-bit left rotation depends on suitable input values and arithmetic semantics, which are not fully supplied. This is a definition, with no stated preconditions, correctness proof, or WP contract establishing partial correctness or termination."
+    },
+    "cjr.authenticator.program.seqs:e4ecf4b8537035568f2d1b030c35e8143220818c117e9d13353c49b12e786d3b": {
+      "description": "The definition seqs combines the elements of xs using Seq, associating to the right and using last as the final value: for example, [a; b] becomes Seq a (Seq b last), and an empty list yields last. The input does not specify the parameter types or what Seq means."
+    },
+    "cjr.authenticator.program.session_words:d96c32dd6b1dffacd0b71e1d428e74424bb6ab981c10a10e41a1612013cbba93": {
+      "description": "The definition session_words names the integer 6242, with type Z (Rocq’s integers). The input provides no further context establishing what this value represents."
+    },
+    "cjr.authenticator.program.sha_body:0b211c61f6a8d9781b7ca581439acedb82ba45d836ed3f45f23a598b158ca42d": {
+      "description": "sha_body defines a SHA-1-style routine taking a source, length, and destination. It returns false if the length is outside 0–2048 or the source check finds a value outside 0–255; otherwise it allocates temporary buffers, copies the input, adds a padding marker and big-endian bit length, processes 64-byte blocks, writes five state words as 20 big-endian bytes, frees the buffers, and returns true. Full SHA-1 correctness is not established here: some helper definitions and allocation semantics, including whether padding gaps start at zero, are missing. This is a program definition, with no supplied WP contract or proof establishing correctness or termination."
+    },
+    "cjr.authenticator.program.sha_choose:7f0dd21f15f9e57c5bba8b8d9b234f732935d63326e889cda850a9947d827ef6": {
+      "description": "sha_choose defines an expression that selects a bitwise combination of b, c, and d according to t: for t ≤ 19 it returns (b AND c) XOR ((b XOR 4294967295) AND d); for 19 < t ≤ 39 it returns b XOR c XOR d; for 39 < t ≤ 59 it returns (b AND c) XOR (b AND d) XOR (c AND d); otherwise it returns b XOR c XOR d. The constant 4294967295 flips the low 32 bits of b, acting as a full complement if b is a 32-bit value, but the input establishes no such restriction. This is a definition, with no correctness or termination claim."
+    },
+    "cjr.authenticator.program.sha_compress:7611d4b5d151a5ce13072ad4e3798b9d03bba6cd0f64a1658c49e10871ba1544": {
+      "description": "sha_compress defines a program for a SHA-1-style compression step: it loads 16 words from pad starting at block, combining each group of four bytes in big-endian order, expands them to 80 words using XOR and one-bit rotations, runs 80 rounds on five working values initialized from h0–h4, then adds those values back into h0–h4 and masks each result to 32 bits. This interpretation assumes suitable byte values, valid storage for the input and word array, and the intended arithmetic and structure semantics; some details, including sha_choose and sha_constant, are not supplied. This is a program definition, with no correctness contract or proof supplied, so it establishes neither correctness nor termination."
+    },
+    "cjr.authenticator.program.sha_constant:eed6fe8bb72850f5454f9af1e24d39b00013acbbd50f4fb773a318dfef475c63": {
+      "description": "sha_constant defines a conditional expression that selects an integer according to the variable t: 1518500249 when t ≤ 19, 1859775393 when 19 < t ≤ 39, 2400959708 when 39 < t ≤ 59, and 3395469782 when t > 59. Here, int constructs integer literals, le denotes the ≤ operation, and v denotes a variable reference. The input supplies no restriction on t and no correctness or termination claim."
+    },
+    "cjr.authenticator.program.slot:8e81da06e3910027e2344174d4ee7b3506161b7ec3e58423d31bb87c021e7ac8": {
+      "description": "The definition slot takes session and index and constructs an offset from session by 2 + index × 390, using integer literals, addition, and multiplication. The input does not establish the offset’s units, any bounds on index, or whether the resulting pointer is valid or safe to access."
+    },
+    "cjr.authenticator.program.sub:78b93fa7aaea797142cd762932b91075457a83c73e738f0e1dc46c4e494d46d7": {
+      "description": "The definition `sub` abbreviates `op MinusOp`; since `op` is defined as `BinOp`, this is `BinOp MinusOp`, representing the minus binary operator. The supplied input does not establish its operand types or precise evaluation behavior."
+    },
+    "cjr.authenticator.program.totp_body:6198219d04d75009952ec61889d699692bad2bfbb68dd66b5971617efa7e1929": {
+      "description": "totp_body defines a program that reads key, keyLen, timestamp, period, and digits from its argument structure. If digits is 6 or 8, period passes the range check with bounds 1 and 2147483647, and timestamp is nonnegative, it calls hotp_body with the key, key length, timestamp divided by period as the counter, and digit count; otherwise it returns -1. The supplied input does not define the range check’s precise boundary behavior or division semantics. This is a program definition, with no supplied correctness or termination proof."
+    },
+    "cjr.authenticator.program.unit_e:83f57ba1119b017447003a99a7cfb6af0f7981dbc45be34f3c1b83fb7edf18d2": {
+      "description": "The definition unit_e names the expression Val (LitV LitUnit), rendered as (), which represents the unit value as an expression. It has no stated premises or correctness contract."
+    },
+    "cjr.authenticator.program.v:f5efb0f3068be5522b09cbbe53516bc13a7c8d8510d0f9159193b2978dbcd4d9": {
+      "description": "The definition introduces v as another name for Var. The supplied input does not explain what Var represents or give its type, so no further interpretation is established."
+    },
+    "cjr.authenticator.program.vars:3511ce47dd912753782061baa1bde2382a9f39445b5d9bbfdfc959e675ff2af4": {
+      "description": "The definition vars takes a list names of pairs and a body, then folds the list from right to left, wrapping the accumulated body in VarBind using each pair’s first and second components. The first list entry becomes the outermost binding, and an empty list leaves body unchanged. The input does not establish the components’ types or the precise meaning of VarBind."
+    },
+    "cjr.authenticator.program.xor:d1ca12edfe8d565bb061b5486f69820c19f832ad7e0856aa30bdbfbf0deff2e9": {
+      "description": "The definition names `op BitXorOp` as `xor`. Since `op` is defined as `BinOp`, this selects the binary-operation constructor with the bitwise XOR operator, rendered as `^`. The input does not specify how this operation evaluates or which operand types it accepts."
+    },
+    "cjr.authenticator.program.yes:3dfc36167f34e7433f399da47c967352c37ef7b607d12e180b575c5da0ec5966": {
+      "description": "The definition names `yes` as the program value representing the Boolean literal `true`, wrapped by `LitBool`, `LitV`, and `Val`. It states no premises or correctness contract."
+    },
+    "cjr.authenticator.program.zero:9097466b8ffbdeee954aadc7e4927b64b946793485fb16b8b1079baf1a7cc601": {
+      "description": "The definition zero takes dst and n and calls zero_body with those two arguments, packaged as a structure. The body names them dest and count and describes a loop starting at index 0 toward count, writing integer 0 at each index in dest. This suggests zeroing n entries, but the supplied input does not define the loop bounds or memory-operation semantics, and establishes no safety, correctness, or termination guarantee."
+    },
+    "cjr.authenticator.program.zero_body:50e426dda1cef6ceb78ea2208e58b0ceed9351ed74a8b6919a418c4350939638": {
+      "description": "zero_body defines a program that loads dest and count from fields 0 and 1 of args, initializes zeroI to 0, and repeatedly stores integer 0 at the location ptr(dest, zeroI), incrementing zeroI while it is at most count − 1. Under the usual meanings of the arithmetic and pointer operations, this is intended to zero count consecutive indexed locations. The supplied input does not establish pointer layout, memory validity, or arithmetic semantics, and provides no correctness contract or termination guarantee."
+    },
+    "cjr.authenticator.refinement.base32_reject_size:6106015275cfb547f370250505c94c110817f22e65b40ed3d39e0e71de7bfd2d": {
+      "description": "The theorem states that, under the supplied logical typeclass assumptions, if the integer n is less than 2 or greater than 208, calling base32_body with pointers p and q and size n satisfies a partial-correctness WP contract: if the call returns, its result is the integer -1. This matches the body's initial rejection of sizes outside the inclusive range 2–208. No memory-ownership premises for p or q are stated, and the WP contract does not guarantee termination."
+    },
+    "cjr.authenticator.refinement.base32_value_wp:67755d48787b7acdf1be2c3c247c957ac867d5286b7163c3df87ad87ae157cb9": {
+      "description": "Under the supplied cjrGS and invGS_gen typeclass assumptions, this theorem states that calling base32_value_body with integer ch satisfies a partial-correctness WP contract: if the call returns, its result is the integer ch−65 for 65–90, ch−97 for 97–122, ch−24 for 50–55, and −1 otherwise, exactly matching digit_value with None replaced by −1. Interpreting ch as an ASCII code, these ranges correspond to A–Z and a–z mapping to 0–25 and 2–7 mapping to 26–31. The contract does not establish termination, and the supplied input contains no proof to assess."
+    },
+    "cjr.authenticator.refinement.buffer_get_wp:b6b0dc374fe027712cb3e40aa7e71928e047088ef612f5a770f6bdb40eaa2c32": {
+      "description": "The theorem gives a partial-correctness contract for reading an array: if looking up index i in xs yields x and the resource array.array_cells p xs is available, then get loads from pointer p offset by i, with i converted to an integer; if it returns, its result is the integer literal x and the array resource is preserved. The contract does not guarantee termination. It assumes the listed cjrGS and invariant typeclass contexts; the supplied input does not define the array resource or establish the pointer’s runtime layout."
+    },
+    "cjr.authenticator.refinement.buffer_put_wp:aee5da06589344aca256ef1539d4bd9d8cb8dc466019828dd1147b3ed3e2c2c2": {
+      "description": "The theorem states that, assuming the required logical typeclass instances, if xs contains old at index i and you own the array cells described by array.array_cells p xs, then put writes integer x at offset i from pointer p: if it returns, its result is unit and you obtain ownership of the array cells described by xs with entry i replaced by x. This is a partial-correctness WP contract, so it does not assert termination; the input does not define array.array_cells or establish the precise runtime layout interpretation."
+    },
+    "cjr.authenticator.refinement.counted_while_wp:9e6a9307af942b19560fa5af8b860058965464ff0511bab6db41dd6cecb50b92": {
+      "description": "This theorem states a partial-correctness contract for a loop whose stack counter at l starts at start, runs body while the counter is at most n−1, and increments it after each iteration. It assumes 0 ≤ start ≤ n and that, for every 0 ≤ i < n, body preserves ownership of the counter with value i and advances the resource assertion I from I(i) to I(i+1). Given ownership of the initial counter and I(start), the loop, if it terminates, returns unit with the counter equal to n and I(n) holding. The WP contract does not establish termination."
+    },
+    "cjr.authenticator.refinement.counter_increment:8dfdd3ed48b997b07a2abd6b8254a996d1526f3c7867d79c8d8cb25e190c9cc1": {
+      "description": "counter_increment defines a program expression that loads the value at stack location l, adds the integer literal 1, and assigns the result back to l. It is defined in a context requiring cjrGS and invGS_gen instances. The input does not specify the runtime or layout details of these stack operations, and this definition alone states no correctness or termination guarantee."
+    },
+    "cjr.authenticator.refinement.counter_test:d93f92b9d30547b058b0bd16c02eeaec66711dd0f435de4b7d883f72b7aa91b9": {
+      "description": "counter_test l n defines a program expression that loads a value from the stack location represented by l and tests whether it is less than or equal to the integer n − 1; the helper int embeds an integer as a program value. The surrounding context assumes the cjrGS and invGS_gen typeclass instances. This definition alone does not establish that the stack load is valid, how it behaves at runtime, or whether evaluation terminates."
+    },
+    "cjr.authenticator.refinement.remaining_reject:c1c6b32c814d15880e62f717a988d5ad95ef6719e070014bc33a292b4843299b": {
+      "description": "The theorem states that, in the supplied logical context, calling remaining_body with integer arguments timestamp and period satisfies a partial-correctness WP contract whenever timestamp is negative, period is below 1, or period exceeds 2147483647: if the call terminates, its result is the integer -1. These premises describe inputs that fail the body's validity check; the contract does not establish termination."
+    },
+    "cjr.authenticator.refinement.remaining_wp:5fd6131a0113721178bcdc9b48653d8378725cee63072dfbc608acee3a2b5df8": {
+      "description": "The theorem states that, under the supplied logical typeclass assumptions, if timestamp is nonnegative and period is between 1 and 2147483647 inclusive, calling remaining_body with these integers satisfies a partial-correctness contract: if the call terminates, it returns the integer period minus the remainder of timestamp divided by period, matching remaining timestamp period. These premises ensure the program’s input check succeeds, so its fallback result of −1 is not used. The contract does not assert termination."
+    },
+    "cjr.authenticator.refinement.rol_wp:bd82eaa189f4390ef377a7900ea651488b6c1c845cd95499bbec9b91e825cc60": {
+      "description": "The theorem states that, under the supplied logical typeclass assumptions and for any integer x and n with 0 ≤ n ≤ 30, rol applied to the integer literal x satisfies a partial-correctness WP contract: if it terminates, its result is the integer literal rol32 x n. This model computes x × 2^n plus x divided by 2^(32−n) using integer quotient, then masks the sum with 4294967295 to retain its low 32 bits. The contract does not assert termination, and without a restriction on x the input does not establish that this formula represents the usual 32-bit left rotation for every x."
+    },
+    "cjr.authenticator.refinement.round_wp:fe4a2dd986553d120c220b8b5fbd5ac3f7439db919b4ecf4df11c2e41bb15fae": {
+      "description": "The theorem states that, under the supplied program-logic typeclass assumptions, calling round_body with natural-number round index t converted to an integer, integer w, and state integers a, b, c, d, e satisfies a partial-correctness contract: if it returns, its result is a structure containing exactly the five integer values computed by sha_round [a;b;c;d;e] (t,w). The model combines round-dependent bit operations and constants with the supplied rotation formulas and 32-bit masking. No bounds on t or the state integers are stated, and the contract does not guarantee termination."
+    },
+    "cjr.authenticator.refinement.sha1_reject_size:1edfcc581ba613bccd44eb672d86ce7a50f5ccd84bd0db1f5394d5fe4c0e7438": {
+      "description": "The theorem states that, in the given logical context, calling sha_body with source pointer p, integer size n, and destination pointer q satisfies a partial-correctness contract whenever n is negative or greater than 2048: if the call returns, its result is Boolean false. This corresponds to rejecting sizes outside the inclusive range 0–2048. No memory-ownership premises for p or q are stated, and the WP contract does not guarantee termination."
+    }
+  },
+  "version": 1
+}

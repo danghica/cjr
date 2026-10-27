@@ -8,6 +8,7 @@
 -Q example/most_frequent/rocq cjr.examples
 -Q example/misc/rocq cjr.examples
 -Q tools/extraction/rocq cjr.examples
+-Q example/authenticator/rocq cjr.authenticator
 -Q example/aes_ige/rocq cjr.aes_ige
 -Q example/quadtree cjr.quadtree
 -arg -w
@@ -84,3 +85,10 @@ example/aes_ige/rocq/key_layout.v
 example/aes_ige/rocq/layout.v
 example/aes_ige/rocq/ige_refinement.v
 example/aes_ige/rocq/composition.v
+
+example/authenticator/rocq/model.v
+example/authenticator/rocq/program.v
+example/authenticator/rocq/extract.v
+example/authenticator/rocq/refinement.v
+example/authenticator/rocq/accounts.v
+example/authenticator/rocq/base32.v

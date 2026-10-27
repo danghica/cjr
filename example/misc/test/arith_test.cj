@@ -10,6 +10,16 @@ class ArithTests {
     }
 
     @TestCase
+    func signedDivision(): Unit {
+        @Expect(divide(7, 3), 2)
+        @Expect(divide(-7, 3), -2)
+        @Expect(divide(7, -3), -2)
+        @Expect(divide(-7, -3), 2)
+        @Expect(divide(0, 1), 0)
+        @Expect(divide(9223372036854775807, 30), 307445734561825860)
+    }
+
+    @TestCase
     func sumOneReturnsOne(): Unit {
         @Expect(sumOne(), 1)
     }

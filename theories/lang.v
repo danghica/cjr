@@ -55,7 +55,7 @@ Inductive base_lit :=
   | LitObj (o : loc)
   | LitStack (l : loc).
 
-Inductive bin_op := PlusOp | MinusOp | MulOp | RemOp | LeOp | EqOp | AndOp | BitXorOp | BitAndOp.
+Inductive bin_op := PlusOp | MinusOp | MulOp | DivOp | RemOp | LeOp | EqOp | AndOp | BitXorOp | BitAndOp.
 
 Inductive val :=
   | LitV (l : base_lit)
@@ -225,7 +225,9 @@ Definition bin_op_eval (op : bin_op) (v1 v2 : val) : option val :=
   | PlusOp, LitV (LitInt n1), LitV (LitInt n2) => Some (LitV (LitInt (n1 + n2)))
   | MinusOp, LitV (LitInt n1), LitV (LitInt n2) => Some (LitV (LitInt (n1 - n2)))
   | MulOp, LitV (LitInt n1), LitV (LitInt n2) => Some (LitV (LitInt (n1 * n2)))
-  (* Cangjie remainder uses division truncated toward zero. *)
+  (* Cangjie division and remainder truncate toward zero. *)
+  | DivOp, LitV (LitInt n1), LitV (LitInt n2) =>
+      if decide (n2 = 0)%Z then None else Some (LitV (LitInt (Z.quot n1 n2)))
   | RemOp, LitV (LitInt n1), LitV (LitInt n2) =>
       if decide (n2 = 0)%Z then None else Some (LitV (LitInt (Z.rem n1 n2)))
   | BitXorOp, LitV (LitInt n1), LitV (LitInt n2) => Some (LitV (LitInt (Z.lxor n1 n2)))

@@ -166,6 +166,16 @@ Section laws.
     WP BinOp MulOp (Val (LitV (LitInt a))) (Val (LitV (LitInt b))) @ E {{ Φ }}.
   Proof. apply wp_binop. reflexivity. Qed.
 
+  (** Signed division truncates toward zero; its divisor must be nonzero. *)
+  Lemma wp_div (n d : Z) E Φ :
+    d ≠ 0%Z →
+    ▷ (£ 1 -∗ Φ (LitV (LitInt (Z.quot n d)))) ⊢
+    WP BinOp DivOp (Val (LitV (LitInt n))) (Val (LitV (LitInt d))) @ E {{ Φ }}.
+  Proof.
+    intros Hd. apply wp_binop. simpl.
+    destruct (decide (d = 0)%Z); [contradiction|reflexivity].
+  Qed.
+
   (** Signed remainder is defined only for a nonzero divisor. *)
   Lemma wp_rem (n d : Z) E Φ :
     d ≠ 0%Z →

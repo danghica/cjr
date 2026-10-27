@@ -20,7 +20,7 @@ from tools.rocq_readable.backend import Backend, BackendError, executable
 from tools.rocq_readable.cli import DEFAULT_DICTIONARY, generate, learning, main, prepare
 from tools.rocq_readable.dictionary import Dictionary, DictionaryError, validate
 from tools.rocq_readable.dependencies import Graph, build_graph, root_entries
-from tools.rocq_readable.explanations import Options, explain, query
+from tools.rocq_readable.explanations import Options, StartupBlocked, explain, query
 from tools.rocq_readable.layout import Doc, Token, anchor, leaf
 from tools.rocq_readable.project import Glob, Source, configuration, discover
 
@@ -350,7 +350,7 @@ class DependencyAndExplanationTests(unittest.TestCase):
             self.assertIn("shell_tool", command)
             self.assertEqual(command[command.index("--model") + 1], "model")
             self.assertIn("$(malicious)", kwargs["input"])
-            self.assertEqual(kwargs["stderr"], subprocess.DEVNULL)
+            self.assertTrue(hasattr(kwargs["stderr"], "write"))
             result = Path(command[command.index("--output-last-message") + 1])
             result.write_text('{"description":"<script>text</script>"}')
             return subprocess.CompletedProcess(command, 0)
@@ -361,6 +361,35 @@ class DependencyAndExplanationTests(unittest.TestCase):
         with patch("tools.rocq_readable.explanations.subprocess.run", side_effect=malformed):
             with self.assertRaises(ValueError):
                 query("codex", {}, Options())
+
+    def test_query_identifies_sandbox_startup_failure_without_leaking_diagnostics(self):
+        def blocked(command, **kwargs):
+            kwargs["stderr"].write(b"SECRET\nError: failed to initialize in-process app-server client: Operation not permitted (os error 1)\n")
+            raise subprocess.CalledProcessError(1, command)
+        with patch("tools.rocq_readable.explanations.subprocess.run", side_effect=blocked):
+            with self.assertRaises(StartupBlocked) as caught:
+                query("codex", {}, Options())
+        self.assertIn("enclosing sandbox", str(caught.exception))
+        self.assertNotIn("SECRET", str(caught.exception))
+
+    def test_unrelated_permission_warning_does_not_mask_other_startup_errors(self):
+        def failed(command, **kwargs):
+            kwargs["stderr"].write(b"WARNING: PATH aliases: Operation not permitted\nError: failed to initialize in-process app-server client: connection refused\n")
+            raise subprocess.CalledProcessError(1, command)
+        with patch("tools.rocq_readable.explanations.subprocess.run", side_effect=failed):
+            with self.assertRaises(subprocess.CalledProcessError):
+                query("codex", {}, Options())
+
+    def test_startup_failure_stops_repeated_requests(self):
+        second = Declaration("b", "P.A.b", "definition", {}, "Definition b := 0.")
+        self.source.declarations.append(second)
+        self.documents[self.source.path].append(leaf("b"))
+        self.graph = Graph({"P.A.a": [], "P.A.b": []}, {"P.A.a": [], "P.A.b": []}, [])
+        with patch("tools.rocq_readable.explanations.shutil.which", return_value="codex"), \
+             patch("tools.rocq_readable.explanations.query", side_effect=StartupBlocked("Sandbox startup blocked.")) as model:
+            result = explain(self.sources, self.documents, self.graph, Options("auto"))
+        self.assertEqual(model.call_count, 1)
+        self.assertTrue(all(item["status"] == "failed" for item in result.values()))
 
     def test_generation_failure_still_writes_pages_and_reports(self):
         output = self.root / "html"

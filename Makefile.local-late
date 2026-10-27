@@ -26,7 +26,7 @@ project-tools-test:
 	$(PYTHON) -m unittest discover -s tests -p 'test_project_tools.py' -v
 
 VERIFY_LOG ?= build/verify.log
-VERIFY_THEOREMS := 355
+VERIFY_THEOREMS := 390
 
 .PHONY: verify verify-checks check-proofs check-axioms check-no-cheats
 # A recursive make keeps all build/check output inside the log and preserves
@@ -68,13 +68,15 @@ check-axioms: all
 
 # Aggregate extraction preserves the printer and writes local outputs.
 .PHONY: extract cj test
-extract: tools/extraction/rocq/emit_cj.vo
+extract: tools/extraction/rocq/emit_cj.vo example/authenticator/rocq/extract.vo
 	$(PYTHON) -m tools.project_tools.examples extract
+	$(PYTHON) example/authenticator/scripts/check.py --extract-only
 cj: extract
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper paper/cjr-tutorial.tex
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper paper/cjr-tutorial.tex
 test: extract
 	$(PYTHON) -m tools.project_tools.examples test
+	$(PYTHON) example/authenticator/scripts/check.py --test-only
 
 # Self-contained quadtree example and offline report.
 .PHONY: quadtree quadtree-verify quadtree-report benchmark benchmark-most-frequent project-report

@@ -26,6 +26,10 @@ SCHEMA = {"type": "object", "properties": {"description": {"type": "string"}},
           "required": ["description"], "additionalProperties": False}
 
 
+class StartupBlocked(RuntimeError):
+    """A recognized local startup failure; contains no raw CLI diagnostics."""
+
+
 @dataclass
 class Options:
     mode: str = "offline"
@@ -65,10 +69,26 @@ def query(binary, payload, options):
                    "--output-schema", str(schema), "--output-last-message", str(result), "-"]
         if options.model:
             command[command.index("-"):command.index("-")] = ["--model", options.model]
-        # Do not capture raw CLI output: it can contain account diagnostics.
-        subprocess.run(command, input=INSTRUCTIONS + "\nInput:\n" + json.dumps(payload, ensure_ascii=False),
-                       text=True, cwd=workspace, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                       timeout=options.timeout, check=True)
+        # Inspect a bounded diagnostic tail privately. Never expose raw CLI output:
+        # it can contain account diagnostics. Only emit a fixed, recognized cause.
+        with tempfile.TemporaryFile() as diagnostics:
+            try:
+                subprocess.run(command, input=INSTRUCTIONS + "\nInput:\n" + json.dumps(payload, ensure_ascii=False),
+                               text=True, cwd=workspace, stdout=subprocess.DEVNULL, stderr=diagnostics,
+                               timeout=options.timeout, check=True)
+            except subprocess.CalledProcessError:
+                diagnostics.seek(0, os.SEEK_END)
+                diagnostics.seek(max(0, diagnostics.tell() - 8192))
+                tail = diagnostics.read().decode("utf-8", errors="replace").lower()
+                if any("failed to initialize in-process app-server client" in line
+                       and ("operation not permitted" in line or "permission denied" in line)
+                       for line in tail.splitlines()):
+                    raise StartupBlocked(
+                        "Codex app-server startup was blocked by the enclosing sandbox. "
+                        "Run explanation generation in an environment that permits local "
+                        "app-server initialization, retaining the CLI's read-only sandbox."
+                    ) from None
+                raise
         if result.stat().st_size > 40000:
             raise ValueError("oversized explanation response")
         return description(json.loads(result.read_text(encoding="utf-8")))
@@ -108,6 +128,7 @@ def explain(sources, documents, graph, options):
     by_identity = {d.identity: (s, d, doc) for s in sources for d, doc in zip(s.declarations, documents[s.path])}
     binary = shutil.which("codex") if options.mode == "auto" else None
     results, changed = {}, False
+    startup_failure = None
     for identity in sorted(by_identity):
         source, decl, doc = by_identity[identity]
         context_doc = "\n".join(child.plain() for child in doc.children if child.label.text == "context")
@@ -127,6 +148,8 @@ def explain(sources, documents, graph, options):
             record.update(status="available", description=description(entries[key]))
         elif not binary:
             record["reason"] = "No matching cached explanation (offline mode)." if options.mode == "offline" else "Codex CLI is unavailable; no matching cached explanation."
+        elif startup_failure:
+            record.update(status="failed", reason=startup_failure)
         else:
             print(f"Explaining {identity}", file=sys.stderr, flush=True)
             try:
@@ -136,6 +159,9 @@ def explain(sources, documents, graph, options):
                 changed = True
             except subprocess.TimeoutExpired:
                 record.update(status="failed", reason="Codex explanation request timed out.")
+            except StartupBlocked as exc:
+                startup_failure = str(exc)
+                record.update(status="failed", reason=startup_failure)
             except subprocess.CalledProcessError:
                 record.update(status="failed", reason="Codex explanation request failed; check CLI login and model access.")
             except (OSError, ValueError):

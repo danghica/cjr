@@ -17,6 +17,10 @@ func multiply(a: Int64, b: Int64): Int64 {
     a * b
 }
 
+func divide(a: Int64, b: Int64): Int64 {
+    a / b
+}
+
 main(): Unit {
     sumOne()
 }
