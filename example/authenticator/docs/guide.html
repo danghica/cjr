@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Verified authenticator · Authenticator</title><link rel="stylesheet" href="rocq/style.css"><style>main { line-height: 1.65; } code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; } pre code { font: inherit; } h3 { font-size: 1.05rem; } section:target { scroll-margin-top: 20px; } @media print { nav { display: none; } pre { white-space: pre-wrap; } }</style></head><body><main><header><div class="eyebrow">Rocq Readable · Authenticator</div><nav aria-label="Project"><a href="guide.html">Guide</a> · <a href="cli.html">CLI app</a> · <a href="ui.html">SwiftUI app</a> · <a href="index.html">Core API</a> · <a href="architecture.html">Ports and adapters</a> · <a href="proof-status.html">Proof status</a> · <a href="plan.html">Plan</a> · <a href="rocq/index.html">Rocq documentation</a></nav><h1>Verified authenticator</h1></header><section class="panel"><h2>Contents</h2><nav aria-label="On this page"><ul><li><a href="#status-and-proof-coverage">Status and proof coverage</a></li><li><a href="#build-and-check">Build and check</a></li><li><a href="#run-the-interfaces">Run the interfaces</a></li><li><a href="#core-interface-and-buffer-contract">Core interface and buffer contract</a></li></ul></nav></section>
+<p>A memory-only offline TOTP authenticator with a CJR core, a Cangjie interactive CLI, and a macOS SwiftUI app calling the same extracted core through FFI. The implementation follows <a href="plan.html">the plan</a> and the <a href="architecture.html">ports and adapters</a> dependency boundary.</p>
+<ul>
+<li><code>core/</code>: CJR implementation, specifications, Iris proofs, extraction and native tests.</li>
+<li><code>cli/</code>: command adapter, interactive terminal, clock and URI adapter.</li>
+<li><code>ui/</code>: SwiftUI views, application adapter, C ABI and Cangjie runtime adapter.</li>
+<li><code>scripts/</code>: frontend build composition; <code>test/</code>: shared enrollment fixtures.</li>
+<li><code>docs/</code>: API reference, proof evidence and Rocq-readable pages.</li>
+</ul>
+<p>The <a href="index.html">HTML API reference</a> documents all extracted functions, including their arguments, results, side effects, and current proof links. Readable Rocq documentation, including the declaration dependency graph, is in <a href="rocq/index.html">the generated index</a>. Regenerate it with <code>make -C example/authenticator readable</code> from the repository root. Set <code>EXPLANATIONS=offline</code> to use only cached explanations; the default generates missing explanations through the configured Codex CLI.</p>
+<section class="panel"><h2>Application documentation</h2><ul><li><a href="cli.html">Cangjie CLI app</a> — setup, complete command reference, enrollment examples, session lifetime and C4 hexagonal architecture.</li><li><a href="ui.html">SwiftUI macOS app</a> — setup, enrollment and account controls, FFI ownership and C4 hexagonal architecture.</li></ul></section>
+<section class="panel" aria-labelledby="status-and-proof-coverage">
+<h2 id="status-and-proof-coverage">Status and proof coverage</h2>
+<p>The core is implemented as CJR terms and extracted to compilable Cangjie. Runtime tests exercise SHA-1, HMAC-SHA-1, HOTP, TOTP, Base32, and account sessions. The <a href="proof-status.html">proof-status ledger</a> records the completed proof-first gate: all 69 core modules pass <code>coqchk</code>, all 580 core declarations have closed assumptions, and all 20 extracted functions have mapped implementation contracts. The repository-wide <code>make verify</code> passes with 936/936 declarations closed. All nine native runtime test groups and both frontend integration suites pass.</p>
+<p>No theorem claims cryptographic security, constant-time execution, or guaranteed secret erasure. Compilation/runtime, allocation success, and platform adapters remain outside CJR&#x27;s proof boundary. Inputs to extracted functions must respect the buffer ownership and capacity requirements below.</p>
+</section>
+<section class="panel" aria-labelledby="build-and-check">
+<h2 id="build-and-check">Build and check</h2>
+<p>With the repository&#x27;s Rocq and Cangjie toolchains available:</p>
+<pre><code>make -C example/authenticator build
+make -C example/authenticator extract
+make -C example/authenticator test
+make -C example/authenticator proofs
+make verify</code></pre>
+<p>The <code>proofs</code> target checks all authenticator proof objects with <code>coqchk</code> and audits every declared lemma, theorem, and example. Its source-hashed report is <code>example/authenticator/build/proof-report.json</code>; <code>core/contracts.json</code> maps every export to its implementation theorem. This is functional refinement of the specified program, not a cryptographic security certification.</p>
+<p>The extraction script evaluates <code>print_prog authenticator_program</code> in Rocq; it does not hand-write or patch the generated Cangjie. <code>make extract</code> and <code>make test</code> at the repository root include this core. Runtime artifacts are written to <code>example/authenticator/build/</code>: compiler log, execution log, and JSON report.</p>
+<p>The test runner generates deterministic independent oracles using Python <code>hashlib</code>, <code>hmac</code>, and <code>base64</code>, plus explicit RFC 4226/6238 fixtures. Coverage includes padding boundaries, keys crossing the HMAC block size, six/eight digits, period boundaries, post-2038 and maximum signed timestamps, malformed Base32, capacity, session isolation, identifier exhaustion, and whole-session snapshots on failure. Test inputs contain synthetic secrets only.</p>
+</section>
+<section class="panel" aria-labelledby="run-the-interfaces">
+<h2 id="run-the-interfaces">Run the interfaces</h2>
+<p>Frontend builds require the passed, current core proof and runtime reports above. Use the pinned Cangjie 1.0.5 toolchain. SwiftUI additionally requires a complete Xcode installation; <code>DEVELOPER_DIR</code> overrides <code>/Applications/Xcode.app/Contents/Developer</code>. The bridge uses that Cangjie version&#x27;s runtime header <code>Cangjie.h</code>; set <code>CANGJIE_RUNTIME_INCLUDE</code> if it is outside the sibling runtime source checkout. The current build targets Apple Silicon and has been tested on macOS 26.</p>
+<pre><code>make -C example/authenticator frontend-test
+make -C example/authenticator docs-check
+make -C example/authenticator run-cli
+make -C example/authenticator run-ui</code></pre>
+<p>The CLI supports <code>help</code>, <code>help &lt;command&gt;</code>, <code>add</code>, <code>uri</code>, <code>list</code>, <code>code &lt;id&gt; [unix-seconds]</code>, <code>rename &lt;id&gt;</code>, <code>remove &lt;id&gt;</code>, and <code>quit</code>. Enrollment prompts read secrets from standard input, rather than command-line arguments. For example, enter <code>add</code>, answer the prompts, then <code>code 1 59</code>. EOF and <code>quit</code> destroy the session. A second invocation starts empty.</p>
+<p>The SwiftUI app supports manual or URI enrollment, account list, zero-padded codes, live countdown, copying a code, rename and confirmed removal. Quit the app to discard the session. UI mutations and timer refreshes run on the main actor, and the bridge serializes core access. Each interface has an independent session; accounts do not transfer between processes. Duplicate labels are allowed.</p>
+<p>All authenticator build artifacts are under <code>example/authenticator/build/</code> (<code>build/</code> inside the authenticator directory). Frontend binaries are under <code>example/authenticator/build/frontend/</code>, including <code>Authenticator.app</code> and the CLI <code>authenticator</code>. These are development artifacts linked to the local Cangjie SDK and build paths, not a relocatable distribution. Do not move the bundle independently of its libraries. Packaging for distribution and secure persistence are outside this prototype&#x27;s scope.</p>
+<p>Both enrollment adapters accept <code>otpauth://totp</code> with <code>secret</code>, optional <code>issuer</code>, <code>algorithm=SHA1</code>, <code>digits=6|8</code>, and <code>period=1..2147483647</code>. Defaults are six digits and 30 seconds. They reject unknown/duplicate parameters, HOTP URIs, issuer-prefix mismatches, invalid UTF-8/percent escapes and control characters. Plus signs are literal, so use percent encoding for spaces. The core performs canonical Base32 and parameter validation; neither frontend calculates OTPs.</p>
+<p>Integration tests use five accepted and eighteen rejected shared URI fixtures, RFC codes including leading zeroes, boundary times, independent sessions, capacity rejection, metadata changes, removal, EOF/close, and ABI output-capacity checks. Test secrets are public synthetic fixtures. The app compiles and stays running after desktop launch; visual interaction has not been validated because the desktop automation tool times out.</p>
+</section>
+<section class="panel" aria-labelledby="core-interface-and-buffer-contract">
+<h2 id="core-interface-and-buffer-contract">Core interface and buffer contract</h2>
+<p>All buffers are <code>CPointer&lt;Int64&gt;</code> with <strong>one logical byte per word</strong>, not packed bytes. Byte values must lie in 0..255. Callers own sufficiently large live buffers. The session must be a live <code>authNew</code> result and must not be changed outside these operations. Calls on the same session must be serialized. Never use a destroyed pointer or supply an input/output buffer overlapping session storage. Outputs must have their documented capacity and not overlap inputs. Read-only input buffers may overlap each other.</p>
+<p>Cryptographic operations:</p>
+<ul>
+<li><code>authSha1(src, n, dst)</code>: 0..2048 input bytes, 20 output words; returns <code>Bool</code>.</li>
+<li><code>authHmac(key, keyLen, msg, msgLen, dst)</code>: 1..128 key bytes, 0..1024 message bytes, 20 output words; returns <code>Bool</code>.</li>
+<li><code>authHotp(key, keyLen, counter, digits)</code>: nonnegative signed <code>Int64</code> counter, six or eight digits; returns a numeric code or -1 for invalid arguments.</li>
+<li><code>authTotp(key, keyLen, timestamp, period, digits)</code>: nonnegative Unix seconds, period 1..2147483647; returns a numeric code or -1. The epoch is zero.</li>
+<li><code>authRemaining(timestamp, period)</code>: returns 1..period, including a full period at the boundary, or -1 for invalid arguments.</li>
+<li><code>authBase32(src, n, dst)</code>: 2..208 ASCII input words, 128 output words; returns the decoded length or -1. Accepts upper/lowercase and optional canonical <code>=</code> padding, rejects whitespace and nonzero unused bits, and requires 1..128 decoded bytes. It validates in scratch storage before writing the result.</li>
+</ul>
+<p>Numeric codes retain their configured digit count in account metadata; both adapters zero-pad when displaying them. No algorithm selector is exposed: this version supports SHA-1 only. HMAC/HOTP/TOTP do not call external crypto.</p>
+<p>Session operations:</p>
+<ul>
+<li><code>authNew()</code> / <code>authDestroy(session)</code>: allocate/dispose an independent session. Destruction overwrites session words before freeing in the source program; no platform-level erasure guarantee is made.</li>
+<li>`authAdd(session, label, labelLen, issuer, issuerLen, secret, secretLen, digits, period)`: Base32 secret input; returns a positive identifier, -1 for invalid input, -2 for capacity, or -3 for exhausted identifiers.</li>
+<li><code>authList(session, dst)</code>: capacity 16 words; writes live identifiers and returns their count. Ordering is unspecified.</li>
+<li><code>authRead(session, id, dst)</code>: capacity 260 words; returns <code>Bool</code>. Writes <code>[digits, period, labelLen, issuerLen]</code>, label at offset 4, issuer at offset 132. Only the indicated string lengths are meaningful; it does not expose secret length or secret material.</li>
+<li><code>authRename(session, id, label, labelLen, issuer, issuerLen)</code>: updates display metadata, returning <code>Bool</code>.</li>
+<li><code>authRemove(session, id)</code>: overwrites the slot, returning whether it existed.</li>
+<li><code>authCode(session, id, timestamp)</code>: returns a code or -1. Use <code>authRead</code> for digits/period and <code>authRemaining</code> for the countdown.</li>
+</ul>
+<p>Sessions hold at most 16 accounts. Labels are 1..128 opaque bytes and issuers 0..128 opaque bytes; encoding and URI syntax are adapter concerns. Duplicate labels are allowed. Identifiers are monotonic and are never reused during a session. Failure preservation is proved and covered by runtime tests; the concrete removal proof establishes the exact 390-word slot wipe. This models source-level writes, not guaranteed physical erasure.</p>
+<p>The 6242-word session layout is internal: next identifier and live count in two header words, followed by 16 slots of 390 words. Each slot contains identifier, digits, period, label length, issuer length, secret length, then three 128-word regions for label, issuer, and decoded secret. External consumers must use the operations rather than depending on these offsets.</p>
+</section>
+</main></body></html>

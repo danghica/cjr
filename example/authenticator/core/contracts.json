@@ -1,0 +1,41 @@
+{
+  "application_port": {
+    "authNew": "core_accounts.core_new_wp",
+    "authDestroy": "core_accounts.core_destroy_wp",
+    "authAdd": "core_accounts.core_enroll_wp",
+    "authList": "core_accounts.core_list_wp",
+    "authRead": "core_accounts.core_read_wp",
+    "authRename": "core_accounts.core_rename_wp",
+    "authRemove": "core_accounts.core_remove_wp",
+    "authCode": "core_accounts.core_code_wp",
+    "authRemaining": "refinement.remaining_wp"
+  },
+  "library_operations": {
+    "authSha1": "core_crypto.core_sha1_wp",
+    "authHmac": "core_crypto.core_hmac_wp",
+    "authHotp": "core_crypto.core_hotp_wp",
+    "authTotp": "core_crypto.core_totp_wp",
+    "authBase32": "base32_contracts.base32_decode_wp"
+  },
+  "internal_helpers": {
+    "authCopy": "memory.copy_wp",
+    "authZero": "memory.zero_wp",
+    "authBytes": "memory.bytes_wp",
+    "authRound": "refinement.round_wp",
+    "authBase32Value": "refinement.base32_value_wp",
+    "authFind": "sessions.session_find_wp"
+  },
+  "input_views": "input_memory.input_cells / input_memory.buffer_in",
+  "session_ownership": "core_accounts.session_at, accounts.session_valid, and the allocation block token",
+  "trusted_boundary": [
+    "CJR semantics and primitive rules",
+    "extraction/compiler/runtime",
+    "allocation success"
+  ],
+  "arithmetic_evidence": [
+    "sha_execution_bounds",
+    "otp_execution_bounds",
+    "account_bounds",
+    "base32_stream"
+  ]
+}

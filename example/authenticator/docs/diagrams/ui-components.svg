@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1110" viewBox="0 0 1440 1110" role="img" aria-labelledby="title desc">
+<title id="title">C4 component diagram — SwiftUI application</title><desc id="desc">One macOS app process; Swift and Cangjie share one opaque session. Boxes identify C4 components and their technologies; arrows identify calls or data relationships through named ports. The green component is the proved CJR core.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#526276"/></marker></defs>
+<style>text{font-family:system-ui,sans-serif;fill:#203044} .type{font-size:12px;fill:#586778} .name{font-size:18px;font-weight:700} .tech{font-size:12px;fill:#42716c} .detail{font-size:13px} .edge{font-size:12px;paint-order:stroke;stroke:#f3f5f7;stroke-width:5px;stroke-linejoin:round} .protocol{font-size:11px;font-style:italic}</style>
+<rect width="1440" height="1110" fill="#f3f5f7"/>
+<text x="24" y="35" font-size="25" font-weight="700">C4 component diagram — SwiftUI application</text>
+<text x="24" y="65" font-size="15">One macOS app process; Swift and Cangjie share one opaque session</text>
+<rect x="190" y="100" width="1225" height="865" rx="8" fill="none" stroke="#586778" stroke-dasharray="8 5"/>
+<text x="215" y="125" font-size="14">[Container: native application process]</text>
+<path d="M170 240 H235" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="200" y="150" text-anchor="middle">Uses controls / reads results</text><text class="edge protocol" x="200" y="167" text-anchor="middle">native macOS UI</text>
+<path d="M525 240 H650" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="590" y="350" text-anchor="middle">Invokes actions; observes state</text><text class="edge protocol" x="590" y="367" text-anchor="middle">main-actor Swift calls</text>
+<path d="M380 320 V450" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="380" y="385" text-anchor="middle">Normalizes enrollment</text><text class="edge protocol" x="380" y="402" text-anchor="middle">Swift call</text>
+<path d="M795 320 V650 H380 V740" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="730" y="635" text-anchor="middle">Requests timestamp for refresh</text><text class="edge protocol" x="730" y="652" text-anchor="middle">ClockPort.now()</text>
+<path d="M235 290 H195 V520 H170" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="185" y="405" text-anchor="middle">Copies displayed code</text><text class="edge protocol" x="185" y="422" text-anchor="middle">NSPasteboard</text>
+<path d="M235 800 H170" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="200" y="705" text-anchor="middle">Reads wall clock</text><text class="edge protocol" x="200" y="722" text-anchor="middle">Foundation Date</text>
+<path d="M940 240 H1065" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="1000" y="150" text-anchor="middle">Calls AccountPort</text><text class="edge protocol" x="1000" y="167" text-anchor="middle">Swift protocol</text>
+<path d="M1220 320 V450" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="1220" y="385" text-anchor="middle">Synchronous opaque-handle calls</text><text class="edge protocol" x="1220" y="402" text-anchor="middle">C ABI · fixed Int64 buffers</text>
+<path d="M1220 590 V740" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="1220" y="665" text-anchor="middle">Schedules and waits for invocation</text><text class="edge protocol" x="1220" y="682" text-anchor="middle">RunCJTask → C-callable functions</text>
+<path d="M1065 810 H960" fill="none" stroke="#526276" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text class="edge" x="1010" y="925" text-anchor="middle">Invokes application port</text><text class="edge protocol" x="1010" y="942" text-anchor="middle">direct Cangjie calls</text>
+<rect x="20" y="180" width="150" height="120" rx="5" fill="#e6eaf0" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="95.0" y="200" text-anchor="middle">[Person]</text>
+<text class="name" x="95.0" y="224" text-anchor="middle">App user</text>
+<text class="detail" x="95.0" y="250" text-anchor="middle">Enrolls accounts;</text>
+<text class="detail" x="95.0" y="267" text-anchor="middle">reads/copies codes</text>
+<rect x="20" y="450" width="150" height="140" rx="5" fill="#e6eaf0" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="95.0" y="470" text-anchor="middle">[Software System]</text>
+<text class="name" x="95.0" y="494" text-anchor="middle">Pasteboard</text>
+<text class="tech" x="95.0" y="516" text-anchor="middle">macOS · AppKit</text>
+<text class="detail" x="95.0" y="540" text-anchor="middle">Receives a copied code</text>
+<rect x="20" y="740" width="150" height="120" rx="5" fill="#e6eaf0" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="95.0" y="760" text-anchor="middle">[Software System]</text>
+<text class="name" x="95.0" y="784" text-anchor="middle">OS clock</text>
+<text class="tech" x="95.0" y="806" text-anchor="middle">Operating system</text>
+<text class="detail" x="95.0" y="830" text-anchor="middle">Supplies Unix time</text>
+<rect x="235" y="180" width="290" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="380.0" y="200" text-anchor="middle">[Component]</text>
+<text class="name" x="380.0" y="224" text-anchor="middle">SwiftUI views</text>
+<text class="tech" x="380.0" y="246" text-anchor="middle">Swift · AuthenticatorApp.swift</text>
+<text class="detail" x="380.0" y="270" text-anchor="middle">Driving adapter; enrollment sheets,</text>
+<text class="detail" x="380.0" y="287" text-anchor="middle">account cards, timer, menus and copy</text>
+<rect x="650" y="180" width="290" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="795.0" y="200" text-anchor="middle">[Component]</text>
+<text class="name" x="795.0" y="224" text-anchor="middle">SessionModel</text>
+<text class="tech" x="795.0" y="246" text-anchor="middle">Swift · main actor</text>
+<text class="detail" x="795.0" y="270" text-anchor="middle">Application/presentation adapter;</text>
+<text class="detail" x="795.0" y="287" text-anchor="middle">coordinates requests and refresh</text>
+<rect x="235" y="450" width="290" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="380.0" y="470" text-anchor="middle">[Component]</text>
+<text class="name" x="380.0" y="494" text-anchor="middle">EnrollmentAdapter</text>
+<text class="tech" x="380.0" y="516" text-anchor="middle">Swift · AccountPort.swift</text>
+<text class="detail" x="380.0" y="540" text-anchor="middle">Parses URI/text into Enrollment;</text>
+<text class="detail" x="380.0" y="557" text-anchor="middle">does not calculate OTP</text>
+<rect x="235" y="740" width="290" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="380.0" y="760" text-anchor="middle">[Component]</text>
+<text class="name" x="380.0" y="784" text-anchor="middle">SystemClock</text>
+<text class="tech" x="380.0" y="806" text-anchor="middle">Swift · AccountPort.swift</text>
+<text class="detail" x="380.0" y="830" text-anchor="middle">Implements ClockPort;</text>
+<text class="detail" x="380.0" y="847" text-anchor="middle">supplies Unix seconds</text>
+<rect x="1065" y="180" width="310" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="1220.0" y="200" text-anchor="middle">[Component]</text>
+<text class="name" x="1220.0" y="224" text-anchor="middle">CoreSession</text>
+<text class="tech" x="1220.0" y="246" text-anchor="middle">Swift · CoreSession.swift</text>
+<text class="detail" x="1220.0" y="270" text-anchor="middle">Implements AccountPort; maps values</text>
+<text class="detail" x="1220.0" y="287" text-anchor="middle">to buffers; owns opaque handle</text>
+<rect x="1065" y="450" width="310" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="1220.0" y="470" text-anchor="middle">[Component]</text>
+<text class="name" x="1220.0" y="494" text-anchor="middle">C ABI + runtime adapter</text>
+<text class="tech" x="1220.0" y="516" text-anchor="middle">C · header + runtime.c</text>
+<text class="detail" x="1220.0" y="540" text-anchor="middle">Checks buffers; serializes calls;</text>
+<text class="detail" x="1220.0" y="557" text-anchor="middle">initializes runtime; runs CJ tasks</text>
+<rect x="1065" y="740" width="310" height="140" rx="5" fill="#ffffff" stroke="#9eb0c2" stroke-width="2"/>
+<text class="type" x="1220.0" y="760" text-anchor="middle">[Component]</text>
+<text class="name" x="1220.0" y="784" text-anchor="middle">Cangjie bridge dispatcher</text>
+<text class="tech" x="1220.0" y="806" text-anchor="middle">Cangjie · bridge.cj</text>
+<text class="detail" x="1220.0" y="830" text-anchor="middle">Maps operation codes to the</text>
+<text class="detail" x="1220.0" y="847" text-anchor="middle">unchanged extracted application port</text>
+<rect x="650" y="740" width="310" height="140" rx="5" fill="#e2f3ef" stroke="#006a75" stroke-width="2"/>
+<text class="type" x="805.0" y="760" text-anchor="middle">[Component]</text>
+<text class="name" x="805.0" y="784" text-anchor="middle">Account application core</text>
+<text class="tech" x="805.0" y="806" text-anchor="middle">CJR → extracted Cangjie</text>
+<text class="detail" x="805.0" y="830" text-anchor="middle">Session state, validation, Base32,</text>
+<text class="detail" x="805.0" y="847" text-anchor="middle">SHA-1 / HMAC / HOTP / TOTP</text>
+<text x="24" y="1000" font-size="15" font-weight="700">C4 notation / hexagonal architecture key</text>
+<text x="24" y="1028" font-size="13">White: trusted frontend/runtime adapter · Green: proved core component · Grey: person or external software system.</text>
+<text x="24" y="1052" font-size="13">Dashed boundary: one process/container. Solid arrow: directed call or data relationship; labels identify the port/protocol.</text>
+<text x="24" y="1076" font-size="13">ClockPort and AccountPort are frontend abstractions. The extracted auth* functions form the core application port. No persistence or network service.</text>
+</svg>

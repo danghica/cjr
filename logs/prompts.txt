@@ -756,3 +756,57 @@ Allow sending source to Codex
 [2026-10-27T12:51:55+00:00]
 push to github
 
+[2026-10-27T13:02:54+00:00]
+what is the api of the core? 
+
+[2026-10-27T13:12:31+00:00]
+write a html documentation for the API. for each function describe the purpose, the arguments, the return value and the side-effects. include links to the lemmas that mention it. place it in the example/authenticator/docs directory
+
+[2026-10-27T13:17:43+00:00]
+links to lemmas are broken : file:///Users/danghica/cjr/example/authenticator/docs/rocq/example/authenticator/rocq/accounts.html#symbol-ede488ec21b2fd58bff055fb
+
+[2026-10-27T13:22:10+00:00]
+the links should be to the documentations produced by rocq-readable in the docs/rocq repository
+
+[2026-10-27T13:23:23+00:00]
+links like this seem to not work with error 'cannot open file' file:///Users/danghica/cjr/example/authenticator/docs/rocq/example/authenticator/rocq/accounts.html#symbol-1ec95e7929ba8b7d9b5e891c diagnose and not fix
+
+[2026-10-27T13:24:43+00:00]
+ok. it works now. 
+
+[2026-10-27T13:26:51+00:00]
+use the same graphical visual conventions as rocq-readable so there is a consistent look
+
+[2026-10-27T14:49:24+00:00]
+open the plan
+
+[2026-10-27T14:50:24+00:00]
+add a 'help' command to the cli. do not generate code yet
+
+[2026-10-27T15:04:41+00:00]
+also for the plan: the core of the app should be in a 'core' directory, cli in a 'cli' and ui in a 'ui' directory. drop the cliver interface. 
+
+[2026-10-27T15:06:28+00:00]
+complete the project sticking carefully to the hexagonal architecture, with ports and adapters carefully identified. 
+
+[2026-10-27T15:07:59+00:00]
+Finish all core proofs first
+
+[2026-10-27T16:36:13+00:00]
+Use parallel proof agents
+
+[2026-10-28T08:39:19+00:00]
+file:///Users/danghica/cjr/example/authenticator/docs/architecture.md is markdown and not html so it doesn't render well. all docs html
+
+[2026-10-28T08:44:19+00:00]
+ add documentation entries for cli and ui full apps. these documentations should have user instructions and the description of the architecture (hexagonal) including architectural diagrams in a standard architectural diagrammatic format. 
+
+[2026-10-28T08:52:58+00:00]
+where are the binaries stored? 
+
+[2026-10-28T08:53:51+00:00]
+move the build directory inside the authenticator directory so the app is more self contained. update makefiles and docs
+
+[2026-10-28T08:57:22+00:00]
+push everything to github
+

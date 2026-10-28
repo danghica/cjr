@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-28T08:55:19.806600+00:00",
+  "checks": [
+    "Cangjie CLI build and interactive integration",
+    "SwiftUI development bundle build",
+    "Swift to C to Cangjie real-core integration",
+    "Shared URI fixtures: 5 accepted / 18 rejected",
+    "RFC vectors, leading zeroes, defaults and time boundaries",
+    "Session isolation, rejection, capacity, rename/remove, lifetime",
+    "FFI output capacity rejection"
+  ],
+  "visual_interaction": "not validated: desktop automation timed out",
+  "core_extraction_sha256": "14c4abeb7267d8ab635f32232eb3197502914f6f2aad94ac2f10863e9ed296b4",
+  "sources": {
+    "example/authenticator/cli/enrollment.cj": "3534c58914ddabcf103edb66ce65fe66f7f465d0c71d4d9819426a48bc1c7b4d",
+    "example/authenticator/cli/main.cj": "98e9ecf424139e402af77583fc823a7bee4daf89ec8d948a74e56b2440798ce5",
+    "example/authenticator/cli/ports.cj": "fb37f8d9a92440360a0cf8aa1fdd7a2283a62922c815124567bed5ba5f17db80",
+    "example/authenticator/cli/test/check.py": "38d7dc6ecb7d3e65953c3d1955c5a89fc41100e81162da0e4ec7156563d789fc",
+    "example/authenticator/scripts/check_docs.py": "136751050dd1257e1368145d033a123b738154b959d9ca88a9bbea7404fafc9d",
+    "example/authenticator/scripts/check_frontends.py": "b1a8ce4fbd1bfd04567346ae0999fd6068452106a133119fd9091d29ff732325",
+    "example/authenticator/scripts/frontends.py": "82d8d6bc8c6fa9fa161cdbc8f199a290c7a61c27e2149ff72ddaeb65906d4bfe",
+    "example/authenticator/test/uri-fixtures.json": "be7236fd88416758bbd45a90b9c7bf04e6e74590717b1d205fcdae4a960e09f7",
+    "example/authenticator/ui/AccountPort.swift": "6f2f4e0bfade14f71dc4fc345dcce05347ced0c5c0fa9859f34691a2a902e360",
+    "example/authenticator/ui/AuthenticatorApp.swift": "c4dcd51c6e024961b3ce64b4e4cccda44687d789c13e4826c6012ca37731fa79",
+    "example/authenticator/ui/AuthenticatorBridge.h": "91cb0c970b0567c87ceb021cd945ed537d5e5656729bcc217aa3ab9726656cf7",
+    "example/authenticator/ui/CoreSession.swift": "6303319f82441af26ec446efecfbe2c8ea0cb99933bba08d5124dcfb4ec8bc8a",
+    "example/authenticator/ui/bridge.cj": "1a0090767cc65053ed2a6589731357644aea8cf035038b13b19bea65e4255c4c",
+    "example/authenticator/ui/runtime.c": "7750c089c77d2759d54afaef40f7b2bcd2e56e72e06c236f60c5788f2174833d",
+    "example/authenticator/ui/test/Integration.swift": "4b47ff406acc1da47dcbf605f90d04bf84f8c4766b02ffb79e55034850ba48f4"
+  }
+}

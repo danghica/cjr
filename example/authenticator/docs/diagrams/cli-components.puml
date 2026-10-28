@@ -1,0 +1,26 @@
+@startuml
+!include <C4/C4_Component>
+title C4 component diagram — Cangjie CLI
+LAYOUT_WITH_LEGEND()
+Person(user, "CLI user", "Enters commands; reads codes")
+System_Ext(os, "OS clock", "Supplies Unix time")
+Container_Boundary(app, "One CLI process; independent in-memory session") {
+  Component(loop, "Command loop / terminal", "Cangjie · main.cj", "Driving adapter; prompts, help,; commands and output formatting")
+  Component(parser, "Enrollment adapter", "Cangjie · enrollment.cj", "Parses URI/text into Enrollment;; does not decode secrets or calculate OTP")
+  Component(clock, "SystemClock", "Cangjie · main.cj", "Implements ClockPort.now();; reads UTC Unix seconds")
+  Component(accounts, "CoreAccounts + Words", "Cangjie · ports.cj", "Implements AccountPort; owns session; and temporary Int64 word buffers")
+  Component(core, "Account application core", "CJR → extracted Cangjie", "Application port: authNew/Destroy,; Add/List/Read/Rename/Remove/Code,; Remaining; state + Base32 + OTP")
+  Component(memory, "Primitive memory adapter", "Cangjie runtime + C allocator", "calloc/free; modeled load/store; Allocation success is assumed")
+}
+Rel(user, loop, "Enters commands / reads output", "stdin / stdout")
+Rel(loop, accounts, "Calls AccountPort", "Cangjie interface")
+Rel(loop, parser, "Normalizes enrollment", "Cangjie call")
+Rel(parser, loop, "Returns normalized Enrollment", "Cangjie value")
+Rel(loop, clock, "Requests current timestamp", "ClockPort.now()")
+Rel(clock, os, "Reads wall clock", "DateTime.nowUTC()")
+Rel(accounts, core, "Invokes application port; owns lifetime", "direct Cangjie calls")
+Rel(core, memory, "Allocates, clears and frees buffers", "CJR primitives → runtime")
+note bottom of core
+Proved CJR component. Compiler/extraction/runtime remain trusted.
+end note
+@enduml

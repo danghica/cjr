@@ -1,0 +1,31 @@
+@startuml
+!include <C4/C4_Component>
+title C4 component diagram — SwiftUI application
+LAYOUT_WITH_LEGEND()
+Person(user, "App user", "Enrolls accounts; reads/copies codes")
+System_Ext(pasteboard, "macOS pasteboard", "Receives a copied code")
+System_Ext(os, "OS clock", "Supplies Unix time")
+Container_Boundary(app, "One macOS app process; Swift and Cangjie share one opaque session") {
+  Component(views, "SwiftUI views", "Swift · AuthenticatorApp.swift", "Driving adapter; enrollment sheets,; account cards, timer, menus and copy")
+  Component(model, "SessionModel", "Swift · main actor", "Application/presentation adapter;; coordinates requests and refresh")
+  Component(parser, "EnrollmentAdapter", "Swift · AccountPort.swift", "Parses URI/text into Enrollment;; does not calculate OTP")
+  Component(clock, "SystemClock", "Swift · AccountPort.swift", "Implements ClockPort;; supplies Unix seconds")
+  Component(session, "CoreSession", "Swift · CoreSession.swift", "Implements AccountPort; maps values; to buffers; owns opaque handle")
+  Component(shim, "C ABI + runtime adapter", "C · header + runtime.c", "Checks buffers; serializes calls;; initializes runtime; runs CJ tasks")
+  Component(dispatch, "Cangjie bridge dispatcher", "Cangjie · bridge.cj", "Maps operation codes to the; unchanged extracted application port")
+  Component(core, "Account application core", "CJR → extracted Cangjie", "Session state, validation, Base32,; SHA-1 / HMAC / HOTP / TOTP")
+}
+Rel(user, views, "Uses controls / reads results", "native macOS UI")
+Rel(views, model, "Invokes actions; observes state", "main-actor Swift calls")
+Rel(views, parser, "Normalizes enrollment", "Swift call")
+Rel(model, clock, "Requests timestamp for refresh", "ClockPort.now()")
+Rel(views, pasteboard, "Copies displayed code", "NSPasteboard")
+Rel(clock, os, "Reads wall clock", "Foundation Date")
+Rel(model, session, "Calls AccountPort", "Swift protocol")
+Rel(session, shim, "Synchronous opaque-handle calls", "C ABI · fixed Int64 buffers")
+Rel(shim, dispatch, "Schedules and waits for invocation", "RunCJTask → C-callable functions")
+Rel(dispatch, core, "Invokes application port", "direct Cangjie calls")
+note bottom of core
+Proved CJR component. Compiler/extraction/runtime remain trusted.
+end note
+@enduml

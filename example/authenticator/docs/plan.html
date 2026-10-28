@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Verified authenticator: core first, CLI and SwiftUI · Authenticator</title><link rel="stylesheet" href="rocq/style.css"><style>main { line-height: 1.65; } code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; } pre code { font: inherit; } h3 { font-size: 1.05rem; } section:target { scroll-margin-top: 20px; } @media print { nav { display: none; } pre { white-space: pre-wrap; } }</style></head><body><main><header><div class="eyebrow">Rocq Readable · Authenticator</div><nav aria-label="Project"><a href="guide.html">Guide</a> · <a href="cli.html">CLI app</a> · <a href="ui.html">SwiftUI app</a> · <a href="index.html">Core API</a> · <a href="architecture.html">Ports and adapters</a> · <a href="proof-status.html">Proof status</a> · <a href="plan.html">Plan</a> · <a href="rocq/index.html">Rocq documentation</a></nav><h1>Verified authenticator: core first, CLI and SwiftUI</h1></header><section class="panel"><h2>Contents</h2><nav aria-label="On this page"><ul><li><a href="#1-first-version-scope">1. First-version scope</a></li><li><a href="#2-hexagonal-architecture">2. Hexagonal architecture</a></li><li><a href="#3-implementation-sequence">3. Implementation sequence</a></li><li><a href="#4-verification-and-acceptance">4. Verification and acceptance</a></li><li><a href="#5-proof-boundary-and-later-work">5. Proof boundary and later work</a></li><li><a href="#6-implementation-outcome">6. Implementation outcome</a></li></ul></nav></section>
+<section class="panel" aria-labelledby="1-first-version-scope">
+<h2 id="1-first-version-scope">1. First-version scope</h2>
+<p>Build a memory-only authenticator that manages accounts and generates offline time-based one-time passwords.</p>
+<ul>
+<li>Support adding, listing, renaming, and removing accounts.</li>
+<li>Accept manually entered Base32 secrets and <code>otpauth://totp</code> enrollment URIs.</li>
+<li>Initially support SHA-1, six- or eight-digit codes, and positive configurable periods; default to six digits and 30 seconds.</li>
+<li>Show each account’s current code and time remaining.</li>
+<li>Target a Cangjie CLI and macOS SwiftUI app.</li>
+</ul>
+<p>Defaults: no persistence, synchronization, push approval, passkeys, QR image scanning, or account export in this version. Each running interface owns its own independent session.</p>
+</section>
+<section class="panel" aria-labelledby="2-hexagonal-architecture">
+<h2 id="2-hexagonal-architecture">2. Hexagonal architecture</h2>
+<p><strong>CJR core</strong></p>
+<p>Own account state, parameter validation, Base32 decoding, SHA-1, HMAC, HOTP construction, and TOTP calculation. Develop these as Rocq specifications and CJR implementations with Iris refinement proofs, then extract Cangjie.</p>
+<p>Expose operations for session creation/destruction, account management, and code generation. Code generation takes an explicit Unix timestamp and returns the numeric code, digit count, and remaining validity. Account listings exclude secrets.</p>
+<p>Keep operating-system access, clocks, text presentation, networking, and foreign-language types outside the core. Use explicit status results for invalid input, unknown accounts, and capacity limits.</p>
+<p><strong>Ports and adapters</strong></p>
+<ul>
+<li>A clock adapter supplies timestamps; tests supply deterministic values.</li>
+<li>Enrollment adapters parse URI syntax into normalized fields; the core validates supported parameters and decodes secrets.</li>
+<li>CLI and SwiftUI invoke the same application operations.</li>
+<li>Session construction wires the adapters to the extracted core. No interface implements OTP algorithms.</li>
+</ul>
+<p><strong>Directory structure</strong></p>
+<p>Organize the application under <code>example/authenticator/</code>:</p>
+<ul>
+<li><code>core/</code>: CJR implementation, Rocq specifications and proofs, extracted Cangjie, and core tests. Keep the core independent of both frontends.</li>
+<li><code>cli/</code>: the Cangjie command-line adapter, interactive session, command help, URI enrollment parsing, and CLI tests.</li>
+<li><code>ui/</code>: the macOS SwiftUI frontend, FFI bridge and bindings, UI adapters, and integration tests.</li>
+<li><code>docs/</code>: shared API documentation and generated Rocq-readable documentation.</li>
+</ul>
+<p>Keep the core development in <code>core/</code>, updating build, extraction, verification, and documentation paths together. CLI and UI depend on the core; the core must not depend on either frontend.</p>
+</section>
+<section class="panel" aria-labelledby="3-implementation-sequence">
+<h2 id="3-implementation-sequence">3. Implementation sequence</h2>
+<h3 id="milestone-1-specifications-and-cjr-arithmetic-support">Milestone 1 — Specifications and CJR arithmetic support</h3>
+<ul>
+<li>Add an isolated authenticator development in <code>example/authenticator/core/</code> following the repository’s specification, proof, extraction, and runtime-test conventions.</li>
+<li>Specify SHA-1, HMAC, HOTP, TOTP, account state, and failure behavior.</li>
+<li>Add integer division to CJR semantics, proof rules, and extraction. Use bounded nonnegative arithmetic to implement word shifts and rotations.</li>
+<li>Prove byte ranges, 32-bit word masking, and bounds sufficient to avoid extracted <code>Int64</code> overflow. Do not rely on CJR’s unbounded integers matching machine arithmetic automatically.</li>
+</ul>
+<h3 id="milestone-2-complete-verified-core">Milestone 2 — Complete verified core</h3>
+<ul>
+<li>Implement and prove SHA-1, including padding, message scheduling, compression, and digest encoding.</li>
+<li>Implement and prove HMAC-SHA-1, HOTP truncation, decimal reduction, and TOTP time-counter calculation against the specifications.</li>
+<li>Implement validated Base32 decoding and account operations.</li>
+<li>Define finite input and account-capacity limits in the public contract; reject invalid inputs without changing existing session state.</li>
+<li>Complete extraction and runtime validation before starting production front-end work.</li>
+<li>Gate CLI and UI implementation on completion of all core refinement proofs, as requested. Runtime test success alone does not satisfy this gate.</li>
+</ul>
+<h3 id="milestone-3-cangjie-cli">Milestone 3 — Cangjie CLI</h3>
+<ul>
+<li>Implement the adapter in <code>example/authenticator/cli/</code>, using the extracted core from <code>core/</code>.</li>
+<li>Provide an interactive session so accounts survive successive commands until exit.</li>
+<li>Include a <code>help</code> command listing available commands, their purpose, arguments, and usage examples; support <code>help &lt;command&gt;</code> for detailed command guidance.</li>
+<li>Support account management, URI enrollment, current-code display, and deterministic timestamp input for testing.</li>
+<li>Read enrollment secrets through input rather than command-line arguments; exclude secrets from diagnostic output.</li>
+<li>Expose a narrow command façade for application operations, keeping internal cryptographic functions out of its command surface.</li>
+</ul>
+<h3 id="milestone-4-swiftui-through-ffi">Milestone 4 — SwiftUI through FFI</h3>
+<ul>
+<li>Implement the frontend and its FFI bridge in <code>example/authenticator/ui/</code>, using the same core as the CLI.</li>
+<li>First validate a minimal Cangjie-to-C ABI bridge callable from Swift.</li>
+<li>Expose opaque session handles, fixed-width scalar parameters, explicit buffer lengths, status codes, and destruction functions.</li>
+<li>Document ownership and lifetimes; prevent Cangjie runtime objects or exceptions from crossing the ABI.</li>
+<li>Build account enrollment, account list, code countdown, copy action, and deletion flows.</li>
+<li>Serialize access to each core session. Timer ticks obtain a fresh timestamp and request a new result from the core.</li>
+</ul>
+</section>
+<section class="panel" aria-labelledby="4-verification-and-acceptance">
+<h2 id="4-verification-and-acceptance">4. Verification and acceptance</h2>
+<ul>
+<li>Check SHA-1 and HMAC against published known-answer vectors; check HOTP and TOTP against <a href="https://www.rfc-editor.org/rfc/rfc4226">RFC 4226</a> and <a href="https://www.rfc-editor.org/rfc/rfc6238">RFC 6238</a>.</li>
+<li>Test hash block boundaries, long HMAC keys, leading-zero codes, time-step transitions, timestamps beyond 2038, and supported digit/period combinations.</li>
+<li>Test malformed enrollment data, unsupported algorithms, duplicate account labels, missing account IDs, capacity limits, and unchanged state after rejection.</li>
+<li>Verify that identical secrets, parameters, and timestamps produce identical results through the CLI and SwiftUI adapters.</li>
+<li>Test CLI command help and interactive-session behavior, plus FFI buffer handling and session destruction.</li>
+<li>Run the repository’s proof audit with <code>make verify</code> and the relevant extracted Cangjie runtime suites.</li>
+</ul>
+<p>The core milestone is complete only when its proofs and extracted tests pass. Final prototype acceptance requires both interfaces to enroll an account, display matching codes, and discard accounts when their sessions end.</p>
+</section>
+<section class="panel" aria-labelledby="5-proof-boundary-and-later-work">
+<h2 id="5-proof-boundary-and-later-work">5. Proof boundary and later work</h2>
+<p>Prove functional correctness and modeled memory safety without admissions or new axioms. Treat the compiler/runtime, FFI bridge, clock, URI parser, and operating system as trusted boundaries covered by integration tests.</p>
+<p>Cryptographic security, constant-time execution, and guaranteed secret erasure are separate claims. Persistence and secure storage will be designed after the memory-only prototype is validated.</p>
+</section>
+<section class="panel" aria-labelledby="6-implementation-outcome">
+<h2 id="6-implementation-outcome">6. Implementation outcome</h2>
+<p>Milestones 1 and 2 are complete: the 69-module core passes <code>coqchk</code>, all 580 core declarations have closed assumptions, the 20 exported functions have mapped implementation contracts, and all nine extracted runtime groups pass. The full repository audit passes with 936/936 declarations closed. Frontend implementation started only after the core proof gate passed.</p>
+<p>Milestones 3 and 4 are implemented: the interactive Cangjie CLI includes detailed help, and the SwiftUI app uses the same extraction through a checked C ABI and runtime scheduler adapter. Both integration suites pass with shared enrollment fixtures and matching RFC codes. The development app builds and stays running after desktop launch. Visual UI interaction remains an acceptance limitation: the desktop automation tool times out, so no visual test pass is claimed.</p>
+<p>The directory structure and concrete ports/adapters are documented in <code>example/authenticator/docs/architecture.html</code>. Rocq-readable pages and API proof links are refreshed and validated. Distribution packaging and persistence remain outside the agreed memory-only first-version scope.</p>
+</section>
+</main></body></html>

@@ -83,7 +83,7 @@ class ProjectToolTests(unittest.TestCase):
             identity = module_name(path, configuration(path, ROOT), ROOT)
             if line.startswith('example/aes_ige/rocq/'):
                 self.assertEqual(identity, 'cjr.aes_ige.' + path.stem)
-            elif line.startswith('example/authenticator/rocq/'):
+            elif line.startswith('example/authenticator/core/rocq/'):
                 self.assertEqual(identity, 'cjr.authenticator.' + path.stem)
             elif '/rocq/' in line:
                 self.assertEqual(identity, 'cjr.examples.' + path.stem)

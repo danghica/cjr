@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "compiler": "Cangjie Compiler: 1.0.5 (cjnative)\nTarget: aarch64-apple-darwin",
+  "cases": [
+    "divisionCorrespondence",
+    "invalidCryptoInputs",
+    "aliasedMessageByteFailureIsAtomic",
+    "invalidBase32IsAtomic",
+    "sessionLifecycle",
+    "failurePreservesAllSessionWords",
+    "identifierExhaustionIsAtomic",
+    "failuresPreserveSession",
+    "independentVectors"
+  ],
+  "expected_cases": 9,
+  "source_sha256": "14c4abeb7267d8ab635f32232eb3197502914f6f2aad94ac2f10863e9ed296b4",
+  "oracle": "Python hashlib/hmac/base64 and RFC 4226/6238 fixtures"
+}

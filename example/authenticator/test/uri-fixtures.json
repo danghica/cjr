@@ -1,0 +1,29 @@
+{
+  "valid": [
+    "otpauth://totp/Example:alice?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Example&digits=8",
+    "otpauth://totp/alice?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&digits=8",
+    "otpauth://totp/Example%3Aalice?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Example&digits=8",
+    "otpauth://totp/alice?secret=MY======&digits=8",
+    "otpauth://totp/alice?secret=MY%3D%3D%3D%3D%3D%3D&digits=8"
+  ],
+  "invalid": [
+    "otpauth://hotp/alice?secret=MY",
+    "otpauth://totp/alice?secret=MY&algorithm=SHA256",
+    "otpauth://totp/alice?secret=MY&secret=MY",
+    "otpauth://totp/Example:alice?secret=MY&issuer=Other",
+    "otpauth://totp/alice?secret=MY&counter=1",
+    "otpauth://totp/alice?secret=MY&digits=7",
+    "otpauth://totp/alice?secret=MY&period=0",
+    "otpauth://totp/alice?secret=MY&period=9223372036854775808",
+    "otpauth://totp/alice?secret=MY#fragment",
+    "otpauth://totp/alice?secret=MY&issuer=%FF",
+    "otpauth://totp/alice?secret=MY&issuer=%0A",
+    "otpauth://totp/%GG?secret=MY",
+    "otpauth://totp/?secret=MY",
+    "otpauth://totp/Example:?secret=MY",
+    "otpauth://totp/a:b:c?secret=MY",
+    "otpauth://totp/alice?secret=MZ",
+    "otpauth://totp/alice?secret=MY&&issuer=Example",
+    "otpauth://totp/alice?issuer=Example"
+  ]
+}

@@ -29,5 +29,8 @@ __pycache__/
 /example/*/test/results/*-tests
 *.cjo
 # Authenticator runtime-test artifacts (the JSON report remains reviewable).
-/build/authenticator/*-tests
-/build/authenticator/oracle_test.cj
+/example/authenticator/build/*-tests
+/example/authenticator/build/oracle_test.cj
+
+# Frontend executables, SDK caches, and bundle are reproducible local outputs.
+/example/authenticator/build/frontend/

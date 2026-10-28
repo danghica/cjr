@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>example/authenticator/core/rocq/account_enroll_guard.v — Rocq Readable</title><link rel="stylesheet" href="../../../../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<nav aria-label="Project"><a href="../../../../index.html">Home</a> · <a href="../../../../declarations.html">Index</a></nav>
+<h1>example/authenticator/core/rocq/account_enroll_guard.v</h1><p class="meta">5 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><section class="panel dependency-diagram" data-scope="file" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Shows dependencies between declarations and lemmas on this page. Arrows point toward dependencies. Search to focus on an entry and its direct dependencies and dependents; click a node to jump to the entry.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="all">All declarations in this file</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#b6dfd4">Definitions</span><span style="--swatch:#d7c8ec">Lemmas</span><span style="--swatch:#bed8ee">Types</span><span style="--swatch:#d7dfe5">Other declarations</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Only resolved dependencies between entries on this page are shown. Check individual entry notices for coverage limits.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><script id="dependency-data" type="application/json">{"cjr.authenticator.account_enroll_guard.available_slot": {"dependencies": [], "file": "example/authenticator/core/rocq/account_enroll_guard.v", "href": "#symbol-4fe13864f929fb064d9d1d9b", "kind": "definition", "label": "cjr.authenticator.account_enroll_guard.available_slot", "name": "available_slot"}, "cjr.authenticator.account_enroll_guard.enroll_decoded_body": {"dependencies": [], "file": "example/authenticator/core/rocq/account_enroll_guard.v", "href": "#symbol-6b5ea3a885c225cf0a8fb932", "kind": "definition", "label": "cjr.authenticator.account_enroll_guard.enroll_decoded_body", "name": "enroll_decoded_body"}, "cjr.authenticator.account_enroll_guard.enroll_decoded_result": {"dependencies": [], "file": "example/authenticator/core/rocq/account_enroll_guard.v", "href": "#symbol-e92bcf1c0986600ca363308a", "kind": "definition", "label": "cjr.authenticator.account_enroll_guard.enroll_decoded_result", "name": "enroll_decoded_result"}, "cjr.authenticator.account_enroll_guard.enroll_decoded_words": {"dependencies": [], "file": "example/authenticator/core/rocq/account_enroll_guard.v", "href": "#symbol-2d87a99aee5f58411ff68e4c", "kind": "definition", "label": "cjr.authenticator.account_enroll_guard.enroll_decoded_words", "name": "enroll_decoded_words"}, "cjr.authenticator.account_enroll_guard.enroll_decoded_wp": {"dependencies": ["cjr.authenticator.account_enroll_guard.available_slot", "cjr.authenticator.account_enroll_guard.enroll_decoded_body", "cjr.authenticator.account_enroll_guard.enroll_decoded_result", "cjr.authenticator.account_enroll_guard.enroll_decoded_words"], "file": "example/authenticator/core/rocq/account_enroll_guard.v", "href": "#symbol-0f8d54e9cf7795646a7ba4ab", "kind": "theorem", "label": "cjr.authenticator.account_enroll_guard.enroll_decoded_wp", "name": "enroll_decoded_wp"}}</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><p class="notice">Incomplete rendering: 15 unsupported or unmapped constructs. Original syntax is retained where needed.</p><article id="symbol-4fe13864f929fb064d9d1d9b"><h2>available_slot</h2><p class="meta">cjr.authenticator.account_enroll_guard.available_slot</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition available_slot:
+    parameter(<span id="symbol-4fe13864f929fb064d9d1d9b-binder-512">words</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-4fe13864f929fb064d9d1d9b-binder-512">words</a>, in_scope nat(1))), 15)
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:&#x27;exists&#x27;_x_&#x27;..&#x27;_x_&#x27;,&#x27;_x">exists</span>:
+                binders:
+                    parameter(<span id="symbol-4fe13864f929fb064d9d1d9b-binder-565">i</span>, type(_ (inferred)))
+                <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x">and</span>(in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x">less_than</span>(<a href="#symbol-4fe13864f929fb064d9d1d9b-binder-565">i</a>, 16)), <a href="sessions.html#symbol-33c3f4d8dc13d85ba76eaf05" title="cjr.authenticator.sessions.slot_identifier">slot_identifier</a>(<a href="#symbol-4fe13864f929fb064d9d1d9b-binder-512">words</a>, <a href="#symbol-4fe13864f929fb064d9d1d9b-binder-565">i</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>0)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="sessions.html#symbol-33c3f4d8dc13d85ba76eaf05">cjr.authenticator.sessions.slot_identifier</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition available_slot words :=
+ <span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-4fe13864f929fb064d9d1d9b-binder-512">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>1%nat)<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span>15<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:&#x27;exists&#x27;_x_&#x27;..&#x27;_x_&#x27;,&#x27;_x">exists </span>i<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:&#x27;exists&#x27;_x_&#x27;..&#x27;_x_&#x27;,&#x27;_x">, </span>(<a href="#symbol-4fe13864f929fb064d9d1d9b-binder-565">i</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x">&lt;</span>16)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x"> /\ </span><a href="sessions.html#symbol-33c3f4d8dc13d85ba76eaf05" title="cjr.authenticator.sessions.slot_identifier">slot_identifier</a> <a href="#symbol-4fe13864f929fb064d9d1d9b-binder-512">words</a> <a href="#symbol-4fe13864f929fb064d9d1d9b-binder-565">i</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span>0.</pre></details></article><article id="symbol-e92bcf1c0986600ca363308a"><h2>enroll_decoded_result</h2><p class="meta">cjr.authenticator.account_enroll_guard.enroll_decoded_result</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition enroll_decoded_result:
+    parameter(<span id="symbol-e92bcf1c0986600ca363308a-binder-645">words</span>, type(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>)))
+    parameter(<span id="symbol-e92bcf1c0986600ca363308a-binder-661">n</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+            <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(1, <a href="#symbol-e92bcf1c0986600ca363308a-binder-661">n</a>))
+            <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+                <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a>, in_scope nat(1))), 15))
+                <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+                    <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>:
+                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>:
+                            <span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a>, in_scope nat(0)))
+                            9223372036854775806
+                    <span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a>, in_scope nat(0)))
+                    notation &quot;- _&quot;:
+                        3
+                notation &quot;- _&quot;:
+                    2
+            notation &quot;- _&quot;:
+                1</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><p class="meta">No resolved project dependencies.</p></section><details><summary>Original declaration (proof-free)</summary><pre>Definition enroll_decoded_result (words : <span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>) n :=
+ <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (1<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><a href="#symbol-e92bcf1c0986600ca363308a-binder-661">n</a>)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> then
+ </span><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (<span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>1%nat)<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span>15)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> then
+ </span><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (<span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>0%nat)<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span>9223372036854775806)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">
+ then </span><span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-e92bcf1c0986600ca363308a-binder-645">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>0%nat)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span>-3<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span>-2<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span>-1.</pre></details></article><article id="symbol-2d87a99aee5f58411ff68e4c"><h2>enroll_decoded_words</h2><p class="meta">cjr.authenticator.account_enroll_guard.enroll_decoded_words</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition enroll_decoded_words:
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-910">words</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-916">label</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-922">issuer</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-929">decoded</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-937">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-939">digits</span>, type(_ (inferred)))
+    parameter(<span id="symbol-2d87a99aee5f58411ff68e4c-binder-946">period</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+            <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(1, <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-937">n</a>))
+            <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+                <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>, in_scope nat(1))), 15))
+                <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+                    <span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span>:
+                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>:
+                            <span class="external" title="External or unresolved: stdpp.option.default">default</span>(0, <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>, in_scope nat(0)))
+                            9223372036854775806
+                    <a href="account_enroll.html#symbol-d9601e5856658a6d1e41115f" title="cjr.authenticator.account_enroll.enrolled_words">enrolled_words</a>:
+                        <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>
+                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span>(<a href="account_slots.html#symbol-1c2158304e5280dc41a8752b" title="cjr.authenticator.account_slots.first_free_slot">first_free_slot</a>(<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>, 16))
+                        <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-916">label</a>
+                        <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-922">issuer</a>
+                        <span class="external" title="External or unresolved: stdpp.list_basics.take">take</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span>(<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-937">n</a>), <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-929">decoded</a>)
+                        <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-939">digits</a>
+                        <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-946">period</a>
+                    <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>
+                <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>
+            <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="account_enroll.html#symbol-d9601e5856658a6d1e41115f">cjr.authenticator.account_enroll.enrolled_words</a></li><li><a href="account_slots.html#symbol-1c2158304e5280dc41a8752b">cjr.authenticator.account_slots.first_free_slot</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition enroll_decoded_words words label issuer decoded n digits period :=
+ <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (1<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><a href="#symbol-2d87a99aee5f58411ff68e4c-binder-937">n</a>)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> then
+ </span><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (<span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>1%nat)<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span>15)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> then
+ </span><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><span class="external" title="External or unresolved: stdpp.decidable.bool_decide">bool_decide</span> (<span class="external" title="External or unresolved: stdpp.option.default">default</span> 0 (<a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span>0%nat)<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span>9223372036854775806)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">
+ then </span><a href="account_enroll.html#symbol-d9601e5856658a6d1e41115f" title="cjr.authenticator.account_enroll.enrolled_words">enrolled_words</a> <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span> (<a href="account_slots.html#symbol-1c2158304e5280dc41a8752b" title="cjr.authenticator.account_slots.first_free_slot">first_free_slot</a> <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a> 16)) <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-916">label</a> <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-922">issuer</a>
+   (<span class="external" title="External or unresolved: stdpp.list_basics.take">take</span> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span> <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-937">n</a>) <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-929">decoded</a>) <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-939">digits</a> <a href="#symbol-2d87a99aee5f58411ff68e4c-binder-946">period</a><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span><a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span><a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> else </span><a href="#symbol-2d87a99aee5f58411ff68e4c-binder-910">words</a>.</pre></details></article><article id="symbol-6b5ea3a885c225cf0a8fb932"><h2>enroll_decoded_body</h2><p class="meta">cjr.authenticator.account_enroll_guard.enroll_decoded_body</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition enroll_decoded_body:
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1300">lp</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1303">labelLen</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1312">ip</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1315">issuerLen</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1325">dp</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1328">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1330">digits</span>, type(_ (inferred)))
+    parameter(<span id="symbol-6b5ea3a885c225cf0a8fb932-binder-1337">period</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: cjr.lang.If">if (</span><a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a>(<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(1), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1328">n</a>))<span class="external" title="External or unresolved: cjr.lang.If">) {</span>
+            <span class="external" title="External or unresolved: cjr.lang.If">if (</span><a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a>(<a href="program.html#symbol-2dd2fbce69b3416a6e5d9731" title="cjr.authenticator.program.get">get</a>(<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a>), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(1)), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(15))<span class="external" title="External or unresolved: cjr.lang.If">) {</span>
+                <span class="external" title="External or unresolved: cjr.lang.If">if (</span><a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a>(<a href="program.html#symbol-2dd2fbce69b3416a6e5d9731" title="cjr.authenticator.program.get">get</a>(<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a>), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(0)), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(9223372036854775806))<span class="external" title="External or unresolved: cjr.lang.If">) {</span>
+                    <a href="account_enroll.html#symbol-e77c2f9834f3cbda611f5129" title="cjr.authenticator.account_enroll.enroll_slot_body">enroll_slot_body</a>(<a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1300">lp</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1303">labelLen</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1312">ip</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1315">issuerLen</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1325">dp</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1328">n</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1330">digits</a>, <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1337">period</a>)
+                <span class="external" title="External or unresolved: cjr.lang.If">}</span><span class="external" title="External or unresolved: cjr.lang.If"> else {</span>
+                    <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>:
+                        notation &quot;- _&quot;:
+                            3
+                <span class="external" title="External or unresolved: cjr.lang.If">}</span>
+            <span class="external" title="External or unresolved: cjr.lang.If">}</span><span class="external" title="External or unresolved: cjr.lang.If"> else {</span>
+                <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>:
+                    notation &quot;- _&quot;:
+                        2
+            <span class="external" title="External or unresolved: cjr.lang.If">}</span>
+        <span class="external" title="External or unresolved: cjr.lang.If">}</span><span class="external" title="External or unresolved: cjr.lang.If"> else {</span>
+            <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>:
+                notation &quot;- _&quot;:
+                    1
+        <span class="external" title="External or unresolved: cjr.lang.If">}</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="account_enroll.html#symbol-e77c2f9834f3cbda611f5129">cjr.authenticator.account_enroll.enroll_slot_body</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="program.html#symbol-2dd2fbce69b3416a6e5d9731">cjr.authenticator.program.get</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-9b02816d9090855e64fd9799">cjr.authenticator.program.le</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition enroll_decoded_body p lp labelLen ip issuerLen dp n digits period :=
+ <span class="external" title="External or unresolved: cjr.lang.If">If</span> (<a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a> (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 1) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1328">n</a>))
+  (<span class="external" title="External or unresolved: cjr.lang.If">If</span> (<a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a> (<a href="program.html#symbol-2dd2fbce69b3416a6e5d9731" title="cjr.authenticator.program.get">get</a> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 1)) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 15))
+   (<span class="external" title="External or unresolved: cjr.lang.If">If</span> (<a href="program.html#symbol-9b02816d9090855e64fd9799" title="cjr.authenticator.program.le">le</a> (<a href="program.html#symbol-2dd2fbce69b3416a6e5d9731" title="cjr.authenticator.program.get">get</a> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 0)) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 9223372036854775806))
+    (<a href="account_enroll.html#symbol-e77c2f9834f3cbda611f5129" title="cjr.authenticator.account_enroll.enroll_slot_body">enroll_slot_body</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1298">p</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1300">lp</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1303">labelLen</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1312">ip</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1315">issuerLen</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1325">dp</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1328">n</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1330">digits</a> <a href="#symbol-6b5ea3a885c225cf0a8fb932-binder-1337">period</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (-3))) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (-2))) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (-1)).</pre></details></article><article id="symbol-0f8d54e9cf7795646a7ba4ab"><h2>enroll_decoded_wp</h2><p class="meta">cjr.authenticator.account_enroll_guard.enroll_decoded_wp · proofs</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">theorem enroll_decoded_wp:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjr.primitive_laws.cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.invGS_gen">invGS_gen</span>(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.HasLc">HasLc</span>, <span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1677">lp</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1686">ip</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1709">digits</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-1716">period</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>in_scope nat(6242)
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a>), 128))
+                <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                    in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a>), 128))
+                    <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(1, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>)
+                            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x">and</span>:
+                                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>), 128))
+                                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a>)))
+                        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                            <a href="input_memory.html#symbol-fd358e2f544306f229c3e45b" title="cjr.authenticator.input_memory.buffer_in">buffer_in</a>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1677">lp</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a>)
+                            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                                <a href="input_memory.html#symbol-fd358e2f544306f229c3e45b" title="cjr.authenticator.input_memory.buffer_in">buffer_in</a>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1686">ip</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a>)
+                                <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                                    <a href="#symbol-4fe13864f929fb064d9d1d9b" title="cjr.authenticator.account_enroll_guard.available_slot">available_slot</a>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a>)
+                                    <span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                                        <a href="input_memory.html#symbol-40f2b705c117907ee2e0cd14" title="cjr.authenticator.input_memory.input_cells">input_cells</a>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a>)
+                                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                                            <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a>)
+                                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                                                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a>, <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a>)
+                                                <span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">wp_partial</span>:
+                                                    <a href="#symbol-6b5ea3a885c225cf0a8fb932" title="cjr.authenticator.account_enroll_guard.enroll_decoded_body">enroll_decoded_body</a>:
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a>
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1677">lp</a>
+                                                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a>))
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1686">ip</a>
+                                                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a>))
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a>
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1709">digits</a>
+                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1716">period</a>
+                                                    post binder(<span id="symbol-0f8d54e9cf7795646a7ba4ab-binder-2161">u</span>)
+                                                    postcondition:
+                                                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>:
+                                                                <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-2161">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+                                                                    <a href="#symbol-e92bcf1c0986600ca363308a" title="cjr.authenticator.account_enroll_guard.enroll_decoded_result">enroll_decoded_result</a>:
+                                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a>
+                                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>
+                                                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                                <a href="input_memory.html#symbol-40f2b705c117907ee2e0cd14" title="cjr.authenticator.input_memory.input_cells">input_cells</a>(<a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a>)
+                                                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a>
+                                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a>
+                                                                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                                                        <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a>
+                                                                        <a href="#symbol-2d87a99aee5f58411ff68e4c" title="cjr.authenticator.account_enroll_guard.enroll_decoded_words">enroll_decoded_words</a>:
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1709">digits</a>
+                                                                            <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1716">period</a></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="account_enroll.html#symbol-6d51ac14a08d2862259e40f1">cjr.authenticator.account_enroll.enroll_slot_wp</a></li><li><a href="account_enroll_guard.html#symbol-4fe13864f929fb064d9d1d9b">cjr.authenticator.account_enroll_guard.available_slot</a></li><li><a href="account_enroll_guard.html#symbol-6b5ea3a885c225cf0a8fb932">cjr.authenticator.account_enroll_guard.enroll_decoded_body</a></li><li><a href="account_enroll_guard.html#symbol-e92bcf1c0986600ca363308a">cjr.authenticator.account_enroll_guard.enroll_decoded_result</a></li><li><a href="account_enroll_guard.html#symbol-2d87a99aee5f58411ff68e4c">cjr.authenticator.account_enroll_guard.enroll_decoded_words</a></li><li><a href="input_memory.html#symbol-fd358e2f544306f229c3e45b">cjr.authenticator.input_memory.buffer_in</a></li><li><a href="input_memory.html#symbol-40f2b705c117907ee2e0cd14">cjr.authenticator.input_memory.input_cells</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="program.html#symbol-2dd2fbce69b3416a6e5d9731">cjr.authenticator.program.get</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-9b02816d9090855e64fd9799">cjr.authenticator.program.le</a></li><li><a href="program.html#symbol-3139729acf7ef73f406b91c7">cjr.authenticator.program.op</a></li><li><a href="program.html#symbol-5fc4875bd19ffe651dc5cc6b">cjr.authenticator.program.ptr</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem enroll_decoded_wp heap p words lp label ip issuer dp decoded n digits period :
+ <span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span>6242%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;=</span>128)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;=</span>128)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">(</span>1<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;=</span>128)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x"> /\ </span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.to_nat">Z.to_nat</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;=</span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">) -&gt;
+ </span><a href="input_memory.html#symbol-fd358e2f544306f229c3e45b" title="cjr.authenticator.input_memory.buffer_in">buffer_in</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1677">lp</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><a href="input_memory.html#symbol-fd358e2f544306f229c3e45b" title="cjr.authenticator.input_memory.buffer_in">buffer_in</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1686">ip</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><a href="#symbol-4fe13864f929fb064d9d1d9b" title="cjr.authenticator.account_enroll_guard.available_slot">available_slot</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><a href="input_memory.html#symbol-40f2b705c117907ee2e0cd14" title="cjr.authenticator.input_memory.input_cells">input_cells</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a><span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x"> -∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">WP </span><a href="#symbol-6b5ea3a885c225cf0a8fb932" title="cjr.authenticator.account_enroll_guard.enroll_decoded_body">enroll_decoded_body</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1677">lp</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a>)) <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1686">ip</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a>)) <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1709">digits</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1716">period</a><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">
+ {{</span>u<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">, </span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-2161">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (<a href="#symbol-e92bcf1c0986600ca363308a" title="cjr.authenticator.account_enroll_guard.enroll_decoded_result">enroll_decoded_result</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a>))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗ </span><a href="input_memory.html#symbol-40f2b705c117907ee2e0cd14" title="cjr.authenticator.input_memory.input_cells">input_cells</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1664">heap</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+   </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1696">dp</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1669">p</a> (<a href="#symbol-2d87a99aee5f58411ff68e4c" title="cjr.authenticator.account_enroll_guard.enroll_decoded_words">enroll_decoded_words</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1671">words</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1680">label</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1689">issuer</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1699">decoded</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1707">n</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1709">digits</a> <a href="#symbol-0f8d54e9cf7795646a7ba4ab-binder-1716">period</a>)<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">}}</span>.</pre></details></article></main></body></html>

@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>example/authenticator/core/rocq/encoding.v — Rocq Readable</title><link rel="stylesheet" href="../../../../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<nav aria-label="Project"><a href="../../../../index.html">Home</a> · <a href="../../../../declarations.html">Index</a></nav>
+<h1>example/authenticator/core/rocq/encoding.v</h1><p class="meta">10 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><section class="panel dependency-diagram" data-scope="file" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Shows dependencies between declarations and lemmas on this page. Arrows point toward dependencies. Search to focus on an entry and its direct dependencies and dependents; click a node to jump to the entry.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="all">All declarations in this file</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#b6dfd4">Definitions</span><span style="--swatch:#d7c8ec">Lemmas</span><span style="--swatch:#bed8ee">Types</span><span style="--swatch:#d7dfe5">Other declarations</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Only resolved dependencies between entries on this page are shown. Check individual entry notices for coverage limits.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><script id="dependency-data" type="application/json">{"cjr.authenticator.encoding.emit_be_wp": {"dependencies": ["cjr.authenticator.encoding.encoding_steps_wp", "cjr.authenticator.encoding.encoding_updates_prefix"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-733216ec179c31729762c4c8", "kind": "theorem", "label": "cjr.authenticator.encoding.emit_be_wp", "name": "emit_be_wp"}, "cjr.authenticator.encoding.encoded_byte": {"dependencies": [], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-a6e01c71931af2945cbfc1d2", "kind": "definition", "label": "cjr.authenticator.encoding.encoded_byte", "name": "encoded_byte"}, "cjr.authenticator.encoding.encoded_byte_lookup": {"dependencies": ["cjr.authenticator.encoding.encoded_byte"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-98dea8290810b0afa65efb8f", "kind": "lemma", "label": "cjr.authenticator.encoding.encoded_byte_lookup", "name": "encoded_byte_lookup"}, "cjr.authenticator.encoding.encoding_prefix_write": {"dependencies": [], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-e12a59d7e8037a6d0a25ddb0", "kind": "lemma", "label": "cjr.authenticator.encoding.encoding_prefix_write", "name": "encoding_prefix_write"}, "cjr.authenticator.encoding.encoding_steps": {"dependencies": [], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-ea5e87a4e543dc1434595a07", "kind": "definition", "label": "cjr.authenticator.encoding.encoding_steps", "name": "encoding_steps"}, "cjr.authenticator.encoding.encoding_steps_wp": {"dependencies": ["cjr.authenticator.encoding.encoded_byte", "cjr.authenticator.encoding.encoding_steps", "cjr.authenticator.encoding.encoding_updates"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-34127568f1c187761303de5e", "kind": "theorem", "label": "cjr.authenticator.encoding.encoding_steps_wp", "name": "encoding_steps_wp"}, "cjr.authenticator.encoding.encoding_updates": {"dependencies": ["cjr.authenticator.encoding.encoded_byte"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-75c003dc1f06dea210aef32a", "kind": "definition", "label": "cjr.authenticator.encoding.encoding_updates", "name": "encoding_updates"}, "cjr.authenticator.encoding.encoding_updates_length": {"dependencies": ["cjr.authenticator.encoding.encoding_updates"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-cb57de2958fab909576cb232", "kind": "lemma", "label": "cjr.authenticator.encoding.encoding_updates_length", "name": "encoding_updates_length"}, "cjr.authenticator.encoding.encoding_updates_prefix": {"dependencies": ["cjr.authenticator.encoding.encoded_byte", "cjr.authenticator.encoding.encoded_byte_lookup", "cjr.authenticator.encoding.encoding_prefix_write", "cjr.authenticator.encoding.encoding_updates", "cjr.authenticator.encoding.encoding_updates_snoc"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-bf1e48997424e7f9976740c9", "kind": "lemma", "label": "cjr.authenticator.encoding.encoding_updates_prefix", "name": "encoding_updates_prefix"}, "cjr.authenticator.encoding.encoding_updates_snoc": {"dependencies": ["cjr.authenticator.encoding.encoded_byte", "cjr.authenticator.encoding.encoding_updates"], "file": "example/authenticator/core/rocq/encoding.v", "href": "#symbol-b4a005490f9d7146ea57b51e", "kind": "lemma", "label": "cjr.authenticator.encoding.encoding_updates_snoc", "name": "encoding_updates_snoc"}}</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><p class="notice">Incomplete rendering: 11 unsupported or unmapped constructs. Original syntax is retained where needed.</p><article id="symbol-a6e01c71931af2945cbfc1d2"><h2>encoded_byte</h2><p class="meta">cjr.authenticator.encoding.encoded_byte</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition encoded_byte:
+    parameter(<span id="symbol-a6e01c71931af2945cbfc1d2-binder-468">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a6e01c71931af2945cbfc1d2-binder-474">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a6e01c71931af2945cbfc1d2-binder-476">i</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.rem">Z.rem</span>:
+            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.quot">Z.quot</span>:
+                <a href="#symbol-a6e01c71931af2945cbfc1d2-binder-474">x</a>
+                notation &quot;_ ^ _&quot;:
+                    256
+                    <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">subtract</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-a6e01c71931af2945cbfc1d2-binder-468">width</a>, 1), <a href="#symbol-a6e01c71931af2945cbfc1d2-binder-476">i</a>))
+            256</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><p class="meta">No resolved project dependencies.</p></section><details><summary>Original declaration (proof-free)</summary><pre>Definition encoded_byte width x i := <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.rem">Z.rem</span> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.quot">Z.quot</span> <a href="#symbol-a6e01c71931af2945cbfc1d2-binder-474">x</a> (256<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;^&#x27;_x"> ^ </span><span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<a href="#symbol-a6e01c71931af2945cbfc1d2-binder-468">width</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">-</span>1<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">-</span><a href="#symbol-a6e01c71931af2945cbfc1d2-binder-476">i</a>))) 256.</pre></details></article><article id="symbol-ea5e87a4e543dc1434595a07"><h2>encoding_steps</h2><p class="meta">cjr.authenticator.encoding.encoding_steps</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition encoding_steps:
+    parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-558">p</span>, type(_ (inferred)))
+    parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-560">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-566">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-572">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-574">indices</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: Coq.Lists.List.map">map</span>:
+            lambda:
+                parameter(<span id="symbol-ea5e87a4e543dc1434595a07-binder-595">i</span>, type(_ (inferred)))
+                <a href="program.html#symbol-c0caec83a2dddae1cbc88a54" title="cjr.authenticator.program.put">put</a>:
+                    <a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-ea5e87a4e543dc1434595a07-binder-558">p</a>)
+                    <a href="program.html#symbol-87a340fadf1cdda1326bb70f" title="cjr.authenticator.program.add">add</a>(<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<a href="#symbol-ea5e87a4e543dc1434595a07-binder-560">start</a>)), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<a href="#symbol-ea5e87a4e543dc1434595a07-binder-595">i</a>)))
+                    <a href="program.html#symbol-e3bb6709118df4e8e653b37c" title="cjr.authenticator.program.rem">rem</a>:
+                        <a href="program.html#symbol-f23a6d4b34809b9371db26bf" title="cjr.authenticator.program.div">div</a>:
+                            <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<a href="#symbol-ea5e87a4e543dc1434595a07-binder-572">x</a>)
+                            <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>:
+                                notation &quot;_ ^ _&quot;:
+                                    256
+                                    <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">subtract</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-ea5e87a4e543dc1434595a07-binder-566">width</a>, 1), <a href="#symbol-ea5e87a4e543dc1434595a07-binder-595">i</a>))
+                        <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(256)
+            <a href="#symbol-ea5e87a4e543dc1434595a07-binder-574">indices</a></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="program.html#symbol-87a340fadf1cdda1326bb70f">cjr.authenticator.program.add</a></li><li><a href="program.html#symbol-f23a6d4b34809b9371db26bf">cjr.authenticator.program.div</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-c0caec83a2dddae1cbc88a54">cjr.authenticator.program.put</a></li><li><a href="program.html#symbol-e3bb6709118df4e8e653b37c">cjr.authenticator.program.rem</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition encoding_steps p start width x indices :=
+ <span class="external" title="External or unresolved: Coq.Lists.List.map">map</span> (fun i =&gt; <a href="program.html#symbol-c0caec83a2dddae1cbc88a54" title="cjr.authenticator.program.put">put</a> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-ea5e87a4e543dc1434595a07-binder-558">p</a>) (<a href="program.html#symbol-87a340fadf1cdda1326bb70f" title="cjr.authenticator.program.add">add</a> (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> <a href="#symbol-ea5e87a4e543dc1434595a07-binder-560">start</a>)) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> <a href="#symbol-ea5e87a4e543dc1434595a07-binder-595">i</a>)))
+   (<a href="program.html#symbol-e3bb6709118df4e8e653b37c" title="cjr.authenticator.program.rem">rem</a> (<a href="program.html#symbol-f23a6d4b34809b9371db26bf" title="cjr.authenticator.program.div">div</a> (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> <a href="#symbol-ea5e87a4e543dc1434595a07-binder-572">x</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (256<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;^&#x27;_x"> ^ </span><span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<a href="#symbol-ea5e87a4e543dc1434595a07-binder-566">width</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">-</span>1<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;-&#x27;_x">-</span><a href="#symbol-ea5e87a4e543dc1434595a07-binder-595">i</a>)))) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> 256))) <a href="#symbol-ea5e87a4e543dc1434595a07-binder-574">indices</a>.</pre></details></article><article id="symbol-75c003dc1f06dea210aef32a"><h2>encoding_updates</h2><p class="meta">cjr.authenticator.encoding.encoding_updates</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition encoding_updates:
+    parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-765">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-771">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-777">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-779">indices</span>, type(_ (inferred)))
+    parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-788">words</span>, type(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>)))
+    body:
+        <span class="external" title="External or unresolved: Coq.Lists.List.fold_left">fold_left</span>:
+            lambda:
+                parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-823">words</span>, type(_ (inferred)))
+                parameter(<span id="symbol-75c003dc1f06dea210aef32a-binder-829">i</span>, type(_ (inferred)))
+                apply:
+                    notation &quot;&lt;[ _ := _ ]&gt;&quot;:
+                        in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-75c003dc1f06dea210aef32a-binder-765">start</a>, <a href="#symbol-75c003dc1f06dea210aef32a-binder-829">i</a>))
+                        <a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a>(<a href="#symbol-75c003dc1f06dea210aef32a-binder-771">width</a>, <a href="#symbol-75c003dc1f06dea210aef32a-binder-777">x</a>, <a href="#symbol-75c003dc1f06dea210aef32a-binder-829">i</a>)
+                    <a href="#symbol-75c003dc1f06dea210aef32a-binder-823">words</a>
+            <a href="#symbol-75c003dc1f06dea210aef32a-binder-779">indices</a>
+            <a href="#symbol-75c003dc1f06dea210aef32a-binder-788">words</a></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-a6e01c71931af2945cbfc1d2">cjr.authenticator.encoding.encoded_byte</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition encoding_updates start width x indices (words : <span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>) :=
+ <span class="external" title="External or unresolved: Coq.Lists.List.fold_left">fold_left</span> (fun words i =&gt; <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">&lt;[</span>(<a href="#symbol-75c003dc1f06dea210aef32a-binder-765">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-75c003dc1f06dea210aef32a-binder-829">i</a>)%nat<span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;"> := </span><a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a> <a href="#symbol-75c003dc1f06dea210aef32a-binder-771">width</a> <a href="#symbol-75c003dc1f06dea210aef32a-binder-777">x</a> <a href="#symbol-75c003dc1f06dea210aef32a-binder-829">i</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">]&gt; words</span>) <a href="#symbol-75c003dc1f06dea210aef32a-binder-779">indices</a> <a href="#symbol-75c003dc1f06dea210aef32a-binder-788">words</a>.</pre></details></article><article id="symbol-cb57de2958fab909576cb232"><h2>encoding_updates_length</h2><p class="meta">cjr.authenticator.encoding.encoding_updates_length</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma encoding_updates_length:
+    parameter(<span id="symbol-cb57de2958fab909576cb232-binder-930">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cb57de2958fab909576cb232-binder-936">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cb57de2958fab909576cb232-binder-942">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cb57de2958fab909576cb232-binder-944">indices</span>, type(_ (inferred)))
+    parameter(<span id="symbol-cb57de2958fab909576cb232-binder-952">words</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a>(<a href="#symbol-cb57de2958fab909576cb232-binder-930">start</a>, <a href="#symbol-cb57de2958fab909576cb232-binder-936">width</a>, <a href="#symbol-cb57de2958fab909576cb232-binder-942">x</a>, <a href="#symbol-cb57de2958fab909576cb232-binder-944">indices</a>, <a href="#symbol-cb57de2958fab909576cb232-binder-952">words</a>))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-cb57de2958fab909576cb232-binder-952">words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-75c003dc1f06dea210aef32a">cjr.authenticator.encoding.encoding_updates</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma encoding_updates_length start width x indices words :
+ <span class="external" title="External or unresolved: stdpp.base.length">length</span> (<a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a> <a href="#symbol-cb57de2958fab909576cb232-binder-930">start</a> <a href="#symbol-cb57de2958fab909576cb232-binder-936">width</a> <a href="#symbol-cb57de2958fab909576cb232-binder-942">x</a> <a href="#symbol-cb57de2958fab909576cb232-binder-944">indices</a> <a href="#symbol-cb57de2958fab909576cb232-binder-952">words</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-cb57de2958fab909576cb232-binder-952">words</a>.</pre></details></article><article id="symbol-98dea8290810b0afa65efb8f"><h2>encoded_byte_lookup</h2><p class="meta">cjr.authenticator.encoding.encoded_byte_lookup</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma encoded_byte_lookup:
+    parameter(<span id="symbol-98dea8290810b0afa65efb8f-binder-1212">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-98dea8290810b0afa65efb8f-binder-1218">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-98dea8290810b0afa65efb8f-binder-1220">i</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x">less_than</span>(<a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a>, <a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a>))
+            <span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x">lookup</span>(<a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a>(<a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a>, <a href="#symbol-98dea8290810b0afa65efb8f-binder-1218">x</a>), <a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a>(<a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a>, <a href="#symbol-98dea8290810b0afa65efb8f-binder-1218">x</a>, <a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a>))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-a6e01c71931af2945cbfc1d2">cjr.authenticator.encoding.encoded_byte</a></li><li><a href="model.html#symbol-dcf852236d0fe5c8d8ed524f">cjr.authenticator.model.be_bytes</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma encoded_byte_lookup width x i : (<a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x"> &lt; </span><a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a> <a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a> <a href="#symbol-98dea8290810b0afa65efb8f-binder-1218">x</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:x_&#x27;!!&#x27;_x"> !! </span><a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> (<a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a> <a href="#symbol-98dea8290810b0afa65efb8f-binder-1212">width</a> <a href="#symbol-98dea8290810b0afa65efb8f-binder-1218">x</a> <a href="#symbol-98dea8290810b0afa65efb8f-binder-1220">i</a>).</pre></details></article><article id="symbol-b4a005490f9d7146ea57b51e"><h2>encoding_updates_snoc</h2><p class="meta">cjr.authenticator.encoding.encoding_updates_snoc</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma encoding_updates_snoc:
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1536">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1542">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1548">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1550">indices</span>, type(_ (inferred)))
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1558">i</span>, type(_ (inferred)))
+    parameter(<span id="symbol-b4a005490f9d7146ea57b51e-binder-1560">words</span>, type(_ (inferred)))
+    statement:
+        <a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1536">start</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1542">width</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1548">x</a>, <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1550">indices</a>, <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">list</span>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a>)), <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1560">words</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+            apply:
+                notation &quot;&lt;[ _ := _ ]&gt;&quot;:
+                    in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1536">start</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a>))
+                    <a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1542">width</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1548">x</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a>)
+                <a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1536">start</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1542">width</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1548">x</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1550">indices</a>, <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1560">words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-a6e01c71931af2945cbfc1d2">cjr.authenticator.encoding.encoded_byte</a></li><li><a href="encoding.html#symbol-75c003dc1f06dea210aef32a">cjr.authenticator.encoding.encoding_updates</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma encoding_updates_snoc start width x indices i words :
+ <a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1536">start</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1542">width</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1548">x</a> (<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1550">indices</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">[</span><a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">]</span>) <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1560">words</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> =
+ </span><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">&lt;[</span>(<a href="#symbol-b4a005490f9d7146ea57b51e-binder-1536">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a>)%nat<span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;"> := </span><a href="#symbol-a6e01c71931af2945cbfc1d2" title="cjr.authenticator.encoding.encoded_byte">encoded_byte</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1542">width</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1548">x</a> <a href="#symbol-b4a005490f9d7146ea57b51e-binder-1558">i</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">]&gt; (encoding_updates start width x indices words)</span>.</pre></details></article><article id="symbol-e12a59d7e8037a6d0a25ddb0"><h2>encoding_prefix_write</h2><p class="meta">cjr.authenticator.encoding.encoding_prefix_write</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma encoding_prefix_write:
+    parameter(<span id="symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</span>, <span id="symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</span>, type(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>)))
+    parameter(<span id="symbol-e12a59d7e8037a6d0a25ddb0-binder-1843">x</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x">less_than</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</a>)))
+            apply:
+                notation &quot;&lt;[ _ := _ ]&gt;&quot;:
+                    <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>)
+                    <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1843">x</a>
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>, <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>), <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</a>))
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>, <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">list</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1843">x</a>)), <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.S">S</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>)), <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</a>))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><p class="meta">No resolved project dependencies.</p></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma encoding_prefix_write (prefix words : <span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>) x :
+ (<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x"> &lt; </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">&lt;[</span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;"> := </span><a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1843">x</a><span class="external" title="External or unresolved: stdpp.base.::stdpp_scope:&#x27;&lt;[&#x27;_x_&#x27;:=&#x27;_x_&#x27;]&gt;&#x27;">]&gt; (prefix ++ drop (length prefix) words)</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> =
+ </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">(</span><a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">[</span><a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1843">x</a><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">]</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">) ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.S">S</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1820">prefix</a>)) <a href="#symbol-e12a59d7e8037a6d0a25ddb0-binder-1827">words</a>.</pre></details></article><article id="symbol-bf1e48997424e7f9976740c9"><h2>encoding_updates_prefix</h2><p class="meta">cjr.authenticator.encoding.encoding_updates_prefix</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma encoding_updates_prefix:
+    parameter(<span id="symbol-bf1e48997424e7f9976740c9-binder-2267">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-bf1e48997424e7f9976740c9-binder-2273">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-bf1e48997424e7f9976740c9-binder-2279">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-bf1e48997424e7f9976740c9-binder-2281">words</span>, type(_ (inferred)))
+    parameter(<span id="symbol-bf1e48997424e7f9976740c9-binder-2287">k</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a>))
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>)))
+                <a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2279">x</a>, <span class="external" title="External or unresolved: Coq.Lists.List.seq">seq</span>(0, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>), <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>:
+                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<span class="external" title="External or unresolved: stdpp.list_basics.take">take</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>), <span class="external" title="External or unresolved: stdpp.list_basics.take">take</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>, <a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2279">x</a>)))
+                        <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a>, <a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>), <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-a6e01c71931af2945cbfc1d2">cjr.authenticator.encoding.encoded_byte</a></li><li><a href="encoding.html#symbol-98dea8290810b0afa65efb8f">cjr.authenticator.encoding.encoded_byte_lookup</a></li><li><a href="encoding.html#symbol-e12a59d7e8037a6d0a25ddb0">cjr.authenticator.encoding.encoding_prefix_write</a></li><li><a href="encoding.html#symbol-75c003dc1f06dea210aef32a">cjr.authenticator.encoding.encoding_updates</a></li><li><a href="encoding.html#symbol-b4a005490f9d7146ea57b51e">cjr.authenticator.encoding.encoding_updates_snoc</a></li><li><a href="model.html#symbol-dcf852236d0fe5c8d8ed524f">cjr.authenticator.model.be_bytes</a></li><li><a href="model.html#symbol-f317f0b2621bd6951b235234">cjr.authenticator.model.be_bytes_length</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma encoding_updates_prefix start width x words k :
+ (<a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>(<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2279">x</a> (<span class="external" title="External or unresolved: Coq.Lists.List.seq">seq</span> 0 <a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>) <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> =
+ </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">(</span><span class="external" title="External or unresolved: stdpp.list_basics.take">take</span> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.take">take</span> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a> (<a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2273">width</a> <a href="#symbol-bf1e48997424e7f9976740c9-binder-2279">x</a>)<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">) ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span> (<a href="#symbol-bf1e48997424e7f9976740c9-binder-2267">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-bf1e48997424e7f9976740c9-binder-2287">k</a>) <a href="#symbol-bf1e48997424e7f9976740c9-binder-2281">words</a>.</pre></details></article><article id="symbol-34127568f1c187761303de5e"><h2>encoding_steps_wp</h2><p class="meta">cjr.authenticator.encoding.encoding_steps_wp · proofs</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">theorem encoding_steps_wp:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjr.primitive_laws.cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.invGS_gen">invGS_gen</span>(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.HasLc">HasLc</span>, <span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3406">p</span>, type(_ (inferred)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3408">words</span>, type(_ (inferred)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3414">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3420">width</span>, type(_ (inferred)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3426">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3428">indices</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span>:
+                lambda:
+                    parameter(<span id="symbol-34127568f1c187761303de5e-binder-3451">i</span>, type(_ (inferred)))
+                    in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x">less_than</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3451">i</a>), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a>)))
+                <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a>
+            <span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a>)
+                <span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">wp_partial</span>:
+                    <a href="program.html#symbol-2e886e6e7476365e15d1d6e4" title="cjr.authenticator.program.seqs">seqs</a>(<a href="#symbol-ea5e87a4e543dc1434595a07" title="cjr.authenticator.encoding.encoding_steps">encoding_steps</a>(<a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3420">width</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3426">x</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a>), <a href="program.html#symbol-d366f4f509a4fb79e81e3486" title="cjr.authenticator.program.unit_e">unit_e</a>)
+                    post binder(<span id="symbol-34127568f1c187761303de5e-binder-3589">u</span>)
+                    postcondition:
+                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>(<a href="#symbol-34127568f1c187761303de5e-binder-3589">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: cjr.lang.LitUnit">()</span>)
+                            <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                <a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a>
+                                <a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a>(<a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3420">width</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3426">x</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a>, <a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-a6e01c71931af2945cbfc1d2">cjr.authenticator.encoding.encoded_byte</a></li><li><a href="encoding.html#symbol-ea5e87a4e543dc1434595a07">cjr.authenticator.encoding.encoding_steps</a></li><li><a href="encoding.html#symbol-75c003dc1f06dea210aef32a">cjr.authenticator.encoding.encoding_updates</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="program.html#symbol-87a340fadf1cdda1326bb70f">cjr.authenticator.program.add</a></li><li><a href="program.html#symbol-f23a6d4b34809b9371db26bf">cjr.authenticator.program.div</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-3139729acf7ef73f406b91c7">cjr.authenticator.program.op</a></li><li><a href="program.html#symbol-5fc4875bd19ffe651dc5cc6b">cjr.authenticator.program.ptr</a></li><li><a href="program.html#symbol-c0caec83a2dddae1cbc88a54">cjr.authenticator.program.put</a></li><li><a href="program.html#symbol-e3bb6709118df4e8e653b37c">cjr.authenticator.program.rem</a></li><li><a href="program.html#symbol-2e886e6e7476365e15d1d6e4">cjr.authenticator.program.seqs</a></li><li><a href="program.html#symbol-d366f4f509a4fb79e81e3486">cjr.authenticator.program.unit_e</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem encoding_steps_wp p words start width x indices :
+ <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span> (fun i =&gt; (<a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-34127568f1c187761303de5e-binder-3451">i</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;&#x27;_x"> &lt; </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a>)%nat) <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a> <a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a><span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">WP </span><a href="program.html#symbol-2e886e6e7476365e15d1d6e4" title="cjr.authenticator.program.seqs">seqs</a> (<a href="#symbol-ea5e87a4e543dc1434595a07" title="cjr.authenticator.encoding.encoding_steps">encoding_steps</a> <a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a> <a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a> <a href="#symbol-34127568f1c187761303de5e-binder-3420">width</a> <a href="#symbol-34127568f1c187761303de5e-binder-3426">x</a> <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a>) <a href="program.html#symbol-d366f4f509a4fb79e81e3486" title="cjr.authenticator.program.unit_e">unit_e</a><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">
+ {{</span>u<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">, </span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-34127568f1c187761303de5e-binder-3589">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> <span class="external" title="External or unresolved: cjr.lang.LitUnit">LitUnit</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+   </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-34127568f1c187761303de5e-binder-3406">p</a> (<a href="#symbol-75c003dc1f06dea210aef32a" title="cjr.authenticator.encoding.encoding_updates">encoding_updates</a> <a href="#symbol-34127568f1c187761303de5e-binder-3414">start</a> <a href="#symbol-34127568f1c187761303de5e-binder-3420">width</a> <a href="#symbol-34127568f1c187761303de5e-binder-3426">x</a> <a href="#symbol-34127568f1c187761303de5e-binder-3428">indices</a> <a href="#symbol-34127568f1c187761303de5e-binder-3408">words</a>)<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">}}</span>.</pre></details></article><article id="symbol-733216ec179c31729762c4c8"><h2>emit_be_wp</h2><p class="meta">cjr.authenticator.encoding.emit_be_wp · proofs</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">theorem emit_be_wp:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjr.primitive_laws.cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.invGS_gen">invGS_gen</span>(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.HasLc">HasLc</span>, <span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-733216ec179c31729762c4c8-binder-4593">p</span>, type(_ (inferred)))
+    parameter(<span id="symbol-733216ec179c31729762c4c8-binder-4595">words</span>, type(_ (inferred)))
+    parameter(<span id="symbol-733216ec179c31729762c4c8-binder-4601">start</span>, type(_ (inferred)))
+    parameter(<span id="symbol-733216ec179c31729762c4c8-binder-4607">x</span>, type(_ (inferred)))
+    parameter(<span id="symbol-733216ec179c31729762c4c8-binder-4609">width</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a>, <a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a>), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>)))
+            <span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a>, <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>)
+                <span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">wp_partial</span>:
+                    <a href="program.html#symbol-f45673237764a7b6a1746548" title="cjr.authenticator.program.emit_be">emit_be</a>(<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a>), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a>)), <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>(<a href="#symbol-733216ec179c31729762c4c8-binder-4607">x</a>), <a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a>)
+                    post binder(<span id="symbol-733216ec179c31729762c4c8-binder-4746">u</span>)
+                    postcondition:
+                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4746">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: cjr.lang.LitUnit">()</span>)
+                            <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                <a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a>
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<span class="external" title="External or unresolved: stdpp.list_basics.take">take</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a>, <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>), <a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a>(<a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a>, <a href="#symbol-733216ec179c31729762c4c8-binder-4607">x</a>))
+                                    <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a>, <a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a>), <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="encoding.html#symbol-34127568f1c187761303de5e">cjr.authenticator.encoding.encoding_steps_wp</a></li><li><a href="encoding.html#symbol-bf1e48997424e7f9976740c9">cjr.authenticator.encoding.encoding_updates_prefix</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="model.html#symbol-dcf852236d0fe5c8d8ed524f">cjr.authenticator.model.be_bytes</a></li><li><a href="model.html#symbol-f317f0b2621bd6951b235234">cjr.authenticator.model.be_bytes_length</a></li><li><a href="program.html#symbol-f45673237764a7b6a1746548">cjr.authenticator.program.emit_be</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem emit_be_wp p words start x width :
+ (<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a><span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">WP </span><a href="program.html#symbol-f45673237764a7b6a1746548" title="cjr.authenticator.program.emit_be">emit_be</a> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> <a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a>)) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4607">x</a>) <a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">
+ {{</span>u<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">, </span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-733216ec179c31729762c4c8-binder-4746">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> <span class="external" title="External or unresolved: cjr.lang.LitUnit">LitUnit</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-733216ec179c31729762c4c8-binder-4593">p</a>
+   (<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">(</span><span class="external" title="External or unresolved: stdpp.list_basics.take">take</span> <a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><a href="model.html#symbol-dcf852236d0fe5c8d8ed524f" title="cjr.authenticator.model.be_bytes">model.be_bytes</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a> <a href="#symbol-733216ec179c31729762c4c8-binder-4607">x</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">) ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span> (<a href="#symbol-733216ec179c31729762c4c8-binder-4601">start</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">+</span><a href="#symbol-733216ec179c31729762c4c8-binder-4609">width</a>) <a href="#symbol-733216ec179c31729762c4c8-binder-4595">words</a>)<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">}}</span>.</pre></details></article></main></body></html>

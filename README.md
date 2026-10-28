@@ -103,7 +103,7 @@ automation adds 110 supporting lines outside these counts.
 
 ## Authenticator core
 
-The [memory-only authenticator core](example/authenticator/README.md) implements
+The [memory-only authenticator core](example/authenticator/docs/guide.html) implements
 SHA-1, HMAC, HOTP/TOTP, Base32 enrollment, and account sessions as extracted CJR.
 Its documentation separates checked pure/kernel proofs from the remaining
 whole-core Iris refinement obligations. No front-end adapters are included.

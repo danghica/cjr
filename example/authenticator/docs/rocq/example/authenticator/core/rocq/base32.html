@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>example/authenticator/core/rocq/base32.v — Rocq Readable</title><link rel="stylesheet" href="../../../../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<nav aria-label="Project"><a href="../../../../index.html">Home</a> · <a href="../../../../declarations.html">Index</a></nav>
+<h1>example/authenticator/core/rocq/base32.v</h1><p class="meta">12 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><section class="panel dependency-diagram" data-scope="file" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Shows dependencies between declarations and lemmas on this page. Arrows point toward dependencies. Search to focus on an entry and its direct dependencies and dependents; click a node to jump to the entry.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="all">All declarations in this file</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#b6dfd4">Definitions</span><span style="--swatch:#d7c8ec">Lemmas</span><span style="--swatch:#bed8ee">Types</span><span style="--swatch:#d7dfe5">Other declarations</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Only resolved dependencies between entries on this page are shown. Check individual entry notices for coverage limits.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><script id="dependency-data" type="application/json">{"cjr.authenticator.base32.decode": {"dependencies": ["cjr.authenticator.base32.decode_values", "cjr.authenticator.base32.read_symbols"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-6fc19d69a877d4fc80ba45e3", "kind": "definition", "label": "cjr.authenticator.base32.decode", "name": "decode"}, "cjr.authenticator.base32.decode_bytes": {"dependencies": ["cjr.authenticator.base32.decode", "cjr.authenticator.base32.decode_values", "cjr.authenticator.base32.decode_values_bytes", "cjr.authenticator.base32.read_symbols", "cjr.authenticator.base32.read_symbols_range"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-f644bccbf689477d98597313", "kind": "theorem", "label": "cjr.authenticator.base32.decode_bytes", "name": "decode_bytes"}, "cjr.authenticator.base32.decode_f": {"dependencies": ["cjr.authenticator.base32.decode"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-b36c154b5eb8caab36126a1f", "kind": "example", "label": "cjr.authenticator.base32.decode_f", "name": "decode_f"}, "cjr.authenticator.base32.decode_foobar": {"dependencies": ["cjr.authenticator.base32.decode"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-43f73f6769f01c19fabfa376", "kind": "example", "label": "cjr.authenticator.base32.decode_foobar", "name": "decode_foobar"}, "cjr.authenticator.base32.decode_values": {"dependencies": ["cjr.authenticator.base32.decode_values"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-0b6cca6d4dfbd8d8726c8087", "kind": "recursive function", "label": "cjr.authenticator.base32.decode_values", "name": "decode_values"}, "cjr.authenticator.base32.decode_values_bytes": {"dependencies": ["cjr.authenticator.base32.decode_values"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-a9ae1efa92a9a6a1862b0d38", "kind": "lemma", "label": "cjr.authenticator.base32.decode_values_bytes", "name": "decode_values_bytes"}, "cjr.authenticator.base32.digit_value": {"dependencies": [], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-542547bf716f941a25eaeafc", "kind": "definition", "label": "cjr.authenticator.base32.digit_value", "name": "digit_value"}, "cjr.authenticator.base32.digit_value_range": {"dependencies": ["cjr.authenticator.base32.digit_value"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-7e5d2404edee8757e6aa6f83", "kind": "lemma", "label": "cjr.authenticator.base32.digit_value_range", "name": "digit_value_range"}, "cjr.authenticator.base32.read_symbols": {"dependencies": ["cjr.authenticator.base32.digit_value", "cjr.authenticator.base32.read_symbols"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-0aee9281fa03e444a92d60b3", "kind": "recursive function", "label": "cjr.authenticator.base32.read_symbols", "name": "read_symbols"}, "cjr.authenticator.base32.read_symbols_range": {"dependencies": ["cjr.authenticator.base32.digit_value", "cjr.authenticator.base32.digit_value_range", "cjr.authenticator.base32.read_symbols"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-8768fbb63cf9b20a0289a399", "kind": "lemma", "label": "cjr.authenticator.base32.read_symbols_range", "name": "read_symbols_range"}, "cjr.authenticator.base32.reject_noncanonical_tail": {"dependencies": ["cjr.authenticator.base32.decode"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-1529f7729d175c1dd2b1fa90", "kind": "example", "label": "cjr.authenticator.base32.reject_noncanonical_tail", "name": "reject_noncanonical_tail"}, "cjr.authenticator.base32.reject_padding_middle": {"dependencies": ["cjr.authenticator.base32.decode"], "file": "example/authenticator/core/rocq/base32.v", "href": "#symbol-14d0ae60247f17962b1de210", "kind": "example", "label": "cjr.authenticator.base32.reject_padding_middle", "name": "reject_padding_middle"}}</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><p class="notice">Incomplete rendering: 36 unsupported or unmapped constructs. Original syntax is retained where needed.</p><article id="symbol-542547bf716f941a25eaeafc"><h2>digit_value</h2><p class="meta">cjr.authenticator.base32.digit_value</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">digit_value maps a numeric character code ch to an optional integer: codes 65–90 and 97–122 map to 0–25, codes 50–55 map to 26–31, and all other values return None. Interpreting the codes as ASCII, this decodes Base32 letters A–Z case-insensitively and digits 2–7; the input does not explicitly establish the character encoding.</p><pre class="pseudocode">definition digit_value:
+    parameter(<span id="symbol-542547bf716f941a25eaeafc-binder-236">ch</span>, type(_ (inferred)))
+    type:
+        <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>)
+    body:
+        if:
+            <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                notation &quot;_ &lt;=? _&quot;:
+                    65
+                    <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                notation &quot;_ &lt;=? _&quot;:
+                    <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                    90
+            then:
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>, 65))
+            else:
+                if:
+                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                        notation &quot;_ &lt;=? _&quot;:
+                            97
+                            <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                        notation &quot;_ &lt;=? _&quot;:
+                            <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                            122
+                    then:
+                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>, 97))
+                    else:
+                        if:
+                            <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                                notation &quot;_ &lt;=? _&quot;:
+                                    50
+                                    <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                                notation &quot;_ &lt;=? _&quot;:
+                                    <a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>
+                                    55
+                            then:
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a>, 24))
+                            else:
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><p class="meta">No resolved project dependencies.</p></section><details><summary>Original declaration (proof-free)</summary><pre>Definition digit_value ch : <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span> :=
+ if <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span>65<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>90<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span> then <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> (<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">-</span>65) else
+ if <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span>97<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>122<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span> then <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> (<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">-</span>97) else
+ if <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span>50<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span><a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>55<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span> then <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> (<a href="#symbol-542547bf716f941a25eaeafc-binder-236">ch</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">-</span>24) else <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>.</pre></details></article><article id="symbol-0aee9281fa03e444a92d60b3"><h2>read_symbols</h2><p class="meta">cjr.authenticator.base32.read_symbols</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">read_symbols processes a list of numeric character codes, returning either a list of digit values with a trailing padding count, or None on invalid input. Using ASCII interpretations, it maps A–Z and a–z to 0–25 and 2–7 to 26–31, preserving their order. Code 61 (‘=’) starts padding and is accepted only if every remaining code is also 61; any other unrecognized code causes failure. Empty input returns an empty list and zero padding. Recursion proceeds on the remaining list, so it terminates for finite lists; the declaration imposes no further restrictions on symbol counts or padding length.</p><pre class="pseudocode">recursive function read_symbols:
+    parameter(<span id="symbol-0aee9281fa03e444a92d60b3-binder-444">chars</span>, type(_ (inferred)))
+    type:
+        <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::type_scope:x_&#x27;*&#x27;_x">product_type</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>), <span class="external" title="External or unresolved: Coq.Init.Datatypes.nat">nat</span>))
+    body:
+        match RegularStyle:
+            <a href="#symbol-0aee9281fa03e444a92d60b3-binder-444">chars</a>
+            case:
+                patterns(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">empty_list</span>)
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">empty_list</span>, items(in_scope nat(0))))
+            case:
+                patterns(cons(<span id="symbol-0aee9281fa03e444a92d60b3-binder-523">ch</span>, <span id="symbol-0aee9281fa03e444a92d60b3-binder-527">rest</span>))
+                if:
+                    notation &quot;_ =? _&quot;:
+                        <a href="#symbol-0aee9281fa03e444a92d60b3-binder-523">ch</a>
+                        61
+                    then:
+                        if:
+                            <span class="external" title="External or unresolved: Coq.Lists.List.forallb">forallb</span>:
+                                lambda:
+                                    parameter(<span id="symbol-0aee9281fa03e444a92d60b3-binder-573">x</span>, type(_ (inferred)))
+                                    notation &quot;_ =? _&quot;:
+                                        <a href="#symbol-0aee9281fa03e444a92d60b3-binder-573">x</a>
+                                        61
+                                <a href="#symbol-0aee9281fa03e444a92d60b3-binder-527">rest</a>
+                            then:
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>:
+                                        <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">empty_list</span>
+                                        items(<span class="external" title="External or unresolved: Coq.Init.Datatypes.S">S</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-0aee9281fa03e444a92d60b3-binder-527">rest</a>)))
+                            else:
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+                    else:
+                        match RegularStyle:
+                            <a href="#symbol-542547bf716f941a25eaeafc" title="cjr.authenticator.base32.digit_value">digit_value</a>(<a href="#symbol-0aee9281fa03e444a92d60b3-binder-523">ch</a>)
+                            <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a>(<a href="#symbol-0aee9281fa03e444a92d60b3-binder-527">rest</a>)
+                            case:
+                                patterns:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span id="symbol-0aee9281fa03e444a92d60b3-binder-697">d</span>)
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<span id="symbol-0aee9281fa03e444a92d60b3-binder-706">ds</span>, items(<span id="symbol-0aee9281fa03e444a92d60b3-binder-709">pad</span>)))
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(cons(<a href="#symbol-0aee9281fa03e444a92d60b3-binder-697">d</a>, <a href="#symbol-0aee9281fa03e444a92d60b3-binder-706">ds</a>), items(<a href="#symbol-0aee9281fa03e444a92d60b3-binder-709">pad</a>)))
+                            case:
+                                patterns(_, _)
+                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-542547bf716f941a25eaeafc">cjr.authenticator.base32.digit_value</a></li><li><a href="base32.html#symbol-0aee9281fa03e444a92d60b3">cjr.authenticator.base32.read_symbols</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint read_symbols chars : <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::type_scope:x_&#x27;*&#x27;_x"> * </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.nat">nat</span>) :=
+ match <a href="#symbol-0aee9281fa03e444a92d60b3-binder-444">chars</a> with
+ | <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">[]</span> =&gt; <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">[]</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>0%nat<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span>
+ | ch<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;::&#x27;_x">::</span>rest =&gt; if ch<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;=?&#x27;_x"> =? </span>61 then
+     if <span class="external" title="External or unresolved: Coq.Lists.List.forallb">forallb</span> (fun x =&gt; <a href="#symbol-0aee9281fa03e444a92d60b3-binder-573">x</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;=?&#x27;_x"> =? </span>61) rest then <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">[]</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">, </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.S">S</span> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> rest)<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span> else <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+   else match <a href="#symbol-542547bf716f941a25eaeafc" title="cjr.authenticator.base32.digit_value">digit_value</a> ch, <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a> rest with
+   | <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> d, <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>ds<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>pad<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span> =&gt; <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>d<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;::&#x27;_x">::</span>ds<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>pad<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span>
+   | _,_ =&gt; <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span> end
+ end.</pre></details></article><article id="symbol-0b6cca6d4dfbd8d8726c8087"><h2>decode_values</h2><p class="meta">cjr.authenticator.base32.decode_values</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">decode_values processes a list of integers, accumulating each value by multiplying the accumulator by 32 and adding the value, while increasing a bit count by five. When the count reaches at least eight, it emits the integer quotient by 2 raised to the excess bit count and continues with the remainder and reduced count; otherwise it continues accumulating. It returns the emitted integers in order and the final accumulator, returning an empty list and the current accumulator when the input is empty. Recursion consumes one list element per step. This suggests unpacking Base32 values into bytes, but the declaration supplies no bounds on the inputs or initial state that would guarantee valid byte outputs.</p><pre class="pseudocode">recursive function decode_values:
+    parameter(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-784">ds</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-787">acc</span>, type(_ (inferred)))
+    parameter(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-791">bits</span>, type(_ (inferred)))
+    type:
+        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::type_scope:x_&#x27;*&#x27;_x">product_type</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>), <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>)
+    body:
+        match RegularStyle:
+            <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-784">ds</a>
+            case:
+                patterns(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">empty_list</span>)
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">empty_list</span>, items(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-787">acc</a>))
+            case:
+                patterns(cons(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-848">d</span>, <span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-851">rest</span>))
+                let:
+                    <span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</span>
+                    <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;+&#x27;_x">add</span>(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;*&#x27;_x">multiply</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-787">acc</a>, 32), <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-848">d</a>)
+                    let:
+                        <span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</span>
+                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;+&#x27;_x">add</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-791">bits</a>, 5)
+                        if:
+                            notation &quot;_ &lt;? _&quot;:
+                                <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a>
+                                8
+                            then:
+                                <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-851">rest</a>, <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a>, <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a>)
+                            else:
+                                let:
+                                    <span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-970">factor</span>
+                                    notation &quot;_ ^ _&quot;:
+                                        2
+                                        <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a>, 8)
+                                    match LetPatternStyle:
+                                        <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a>:
+                                            <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-851">rest</a>
+                                            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.rem">Z.rem</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a>, <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-970">factor</a>)
+                                            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">subtract</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a>, 8)
+                                        case:
+                                            patterns:
+                                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-1004">out</span>, items(<span id="symbol-0b6cca6d4dfbd8d8726c8087-binder-1008">tail</span>))
+                                            <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>:
+                                                cons(<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.quot">Z.quot</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a>, <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-970">factor</a>), <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-1004">out</a>)
+                                                items(<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-1008">tail</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-0b6cca6d4dfbd8d8726c8087">cjr.authenticator.base32.decode_values</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Fixpoint decode_values ds acc bits : <span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::type_scope:x_&#x27;*&#x27;_x"> * </span><span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span> :=
+ match <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-784">ds</a> with
+ | <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">[]</span> =&gt; <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_&#x27;]&#x27;">[]</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span><a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-787">acc</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span>
+ | d<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;::&#x27;_x">::</span>rest =&gt; let next := <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-787">acc</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;*&#x27;_x">*</span>32<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;+&#x27;_x">+</span>d in let width := <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-791">bits</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;+&#x27;_x">+</span>5 in
+   if <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;?&#x27;_x"> &lt;? </span>8 then <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a> rest <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a> <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a> else
+   let factor := 2<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;^&#x27;_x">^(</span><a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">-</span>8<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;^&#x27;_x">)</span> in
+   let &#x27;<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>out<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>tail<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span> := <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a> rest (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.rem">Z.rem</span> <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a> <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-970">factor</a>) (<a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-887">width</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;-&#x27;_x">-</span>8) in
+   <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span><span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.quot">Z.quot</span> <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-863">next</a> <a href="#symbol-0b6cca6d4dfbd8d8726c8087-binder-970">factor</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;::&#x27;_x"> :: </span>out<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>tail<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span>
+ end.</pre></details></article><article id="symbol-6fc19d69a877d4fc80ba45e3"><h2>decode</h2><p class="meta">cjr.authenticator.base32.decode</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">decode attempts to decode an input list into a list of integers, returning Some out on success and None on failure. It requires 2–208 input elements, successful digit conversion with any padding consisting only of trailing values equal to 61, and a digit count whose remainder modulo 8 is not 1, 3, or 6. Padding must either be absent or have length 1–6 with the total input length divisible by 8. It combines digit values in five-bit steps to extract eight-bit units, accepting only 1–128 output integers and a zero leftover accumulator. The missing definition of digit_value leaves the accepted alphabet and digit ranges unspecified, so the input alone does not establish full Base32 compliance.</p><pre class="pseudocode">definition decode:
+    parameter(<span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</span>, type(_ (inferred)))
+    type:
+        <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span>(<span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>))
+    body:
+        if:
+            in_scope nat:
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                    notation &quot;_ &lt;=? _&quot;:
+                        2
+                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a>)
+                    notation &quot;_ &lt;=? _&quot;:
+                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a>)
+                        208
+            then:
+                match RegularStyle:
+                    <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a>)
+                    case:
+                        patterns(<span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>)
+                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+                    case:
+                        patterns(<span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1274">ds</span>, items(<span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1277">pad</span>))))
+                        let:
+                            <span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</span>
+                            in_scope nat:
+                                notation &quot;_ mod _&quot;:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1274">ds</a>)
+                                    8
+                            if:
+                                in_scope nat:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">boolean_or</span>:
+                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">boolean_or</span>:
+                                            notation &quot;_ =? _&quot;:
+                                                <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a>
+                                                1
+                                            notation &quot;_ =? _&quot;:
+                                                <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a>
+                                                3
+                                        notation &quot;_ =? _&quot;:
+                                            <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a>
+                                            6
+                                then:
+                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+                                else:
+                                    if:
+                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">boolean_or</span>:
+                                            in_scope nat:
+                                                notation &quot;_ =? _&quot;:
+                                                    <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1277">pad</a>
+                                                    0
+                                            in_scope nat:
+                                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                                                        notation &quot;_ =? _&quot;:
+                                                            notation &quot;_ mod _&quot;:
+                                                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a>)
+                                                                8
+                                                            0
+                                                        notation &quot;_ &lt;=? _&quot;:
+                                                            1
+                                                            <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1277">pad</a>
+                                                    notation &quot;_ &lt;=? _&quot;:
+                                                        <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1277">pad</a>
+                                                        6
+                                        then:
+                                            match LetPatternStyle:
+                                                <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1274">ds</a>, 0, 0)
+                                                case:
+                                                    patterns:
+                                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>:
+                                                            <span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1508">out</span>
+                                                            items(<span id="symbol-6fc19d69a877d4fc80ba45e3-binder-1512">tail</span>)
+                                                    if:
+                                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                                                            in_scope nat:
+                                                                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">boolean_and</span>:
+                                                                    notation &quot;_ &lt;=? _&quot;:
+                                                                        1
+                                                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1508">out</a>)
+                                                                    notation &quot;_ &lt;=? _&quot;:
+                                                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1508">out</a>)
+                                                                        128
+                                                            notation &quot;_ =? _&quot;:
+                                                                <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1512">tail</a>
+                                                                0
+                                                        then:
+                                                            <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1508">out</a>)
+                                                        else:
+                                                            <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+                                        else:
+                                            <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+            else:
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-0b6cca6d4dfbd8d8726c8087">cjr.authenticator.base32.decode_values</a></li><li><a href="base32.html#symbol-0aee9281fa03e444a92d60b3">cjr.authenticator.base32.read_symbols</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition decode chars : <span class="external" title="External or unresolved: Coq.Init.Datatypes.option">option</span> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.list">list</span> <span class="external" title="External or unresolved: Coq.Numbers.BinNums.Z">Z</span>) :=
+ if (<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span>2<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a><span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>208<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span>)%nat then
+ match <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a> <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a> with
+ | <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span> =&gt; <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+ | <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>ds<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>pad<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span> =&gt;
+   let residue := (<span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> ds<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;mod&#x27;_x"> mod </span>8)%nat in
+   if (<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">(</span><a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a><span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;=?&#x27;_x"> =? </span>1<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">) || (</span><a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a><span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;=?&#x27;_x"> =? </span>3<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">)</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x"> || (</span><a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1292">residue</a><span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;=?&#x27;_x"> =? </span>6<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">)</span>)%nat then <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span> else
+   if (pad<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;=?&#x27;_x"> =? </span>0)%nat<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x"> || (</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> <a href="#symbol-6fc19d69a877d4fc80ba45e3-binder-1129">chars</a><span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;mod&#x27;_x"> mod </span>8<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;=?&#x27;_x"> =? </span>0<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span>1<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>pad<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x"> &amp;&amp; (</span>pad<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>6<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span>)%nat<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;||&#x27;_x">)</span> then
+   let &#x27;<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>out<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span>tail<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span> := <a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a> ds 0 0 in
+   if (<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">(</span>1<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> out<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">) &amp;&amp; (</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.length">length</span> out<span class="external" title="External or unresolved: Coq.Arith.PeanoNat.::nat_scope:x_&#x27;&lt;=?&#x27;_x"> &lt;=? </span>128<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span>)%nat<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x"> &amp;&amp; (</span>tail<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;=?&#x27;_x"> =? </span>0<span class="external" title="External or unresolved: Coq.Init.Datatypes.::bool_scope:x_&#x27;&amp;&amp;&#x27;_x">)</span> then <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> out else <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+   else <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>
+ end else <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>.</pre></details></article><article id="symbol-7e5d2404edee8757e6aa6f83"><h2>digit_value_range</h2><p class="meta">cjr.authenticator.base32.digit_value_range</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">The lemma states that whenever digit_value ch returns Some d, the integer d is between 0 and 31 inclusive. The supplied definition maps inputs 65–90 and 97–122 to values 0–25, and inputs 50–55 to values 26–31; all other inputs return None and therefore do not satisfy the premise. No proof is supplied.</p><pre class="pseudocode">lemma digit_value_range:
+    parameter(<span id="symbol-7e5d2404edee8757e6aa6f83-binder-1692">ch</span>, type(_ (inferred)))
+    parameter(<span id="symbol-7e5d2404edee8757e6aa6f83-binder-1695">d</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <a href="#symbol-542547bf716f941a25eaeafc" title="cjr.authenticator.base32.digit_value">digit_value</a>(<a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1692">ch</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1695">d</a>)
+            notation &quot;_ &lt;= _ &lt; _&quot;:
+                0
+                <a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1695">d</a>
+                32</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-542547bf716f941a25eaeafc">cjr.authenticator.base32.digit_value</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma digit_value_range ch d : <a href="#symbol-542547bf716f941a25eaeafc" title="cjr.authenticator.base32.digit_value">digit_value</a> <a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1692">ch</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1695">d</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>0<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt;= </span><a href="#symbol-7e5d2404edee8757e6aa6f83-binder-1695">d</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt; </span>32.</pre></details></article><article id="symbol-8768fbb63cf9b20a0289a399"><h2>read_symbols_range</h2><p class="meta">cjr.authenticator.base32.read_symbols_range</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">The lemma states that if read_symbols successfully returns a list ds and a padding count pad for input chars, then every number in ds lies between 0 and 31 inclusive. The supplied function obtains these numbers through digit_value and accepts padding only as a trailing sequence of values equal to 61. The conclusion places no further restrictions on the padding count and does not assert that every input succeeds; no proof is supplied.</p><pre class="pseudocode">lemma read_symbols_range:
+    parameter(<span id="symbol-8768fbb63cf9b20a0289a399-binder-2260">chars</span>, type(_ (inferred)))
+    parameter(<span id="symbol-8768fbb63cf9b20a0289a399-binder-2266">ds</span>, type(_ (inferred)))
+    parameter(<span id="symbol-8768fbb63cf9b20a0289a399-binder-2269">pad</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a>(<a href="#symbol-8768fbb63cf9b20a0289a399-binder-2260">chars</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>(<a href="#symbol-8768fbb63cf9b20a0289a399-binder-2266">ds</a>, items(<a href="#symbol-8768fbb63cf9b20a0289a399-binder-2269">pad</a>)))
+            <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span>:
+                lambda:
+                    parameter(<span id="symbol-8768fbb63cf9b20a0289a399-binder-2325">d</span>, type(_ (inferred)))
+                    notation &quot;_ &lt;= _ &lt; _&quot;:
+                        0
+                        <a href="#symbol-8768fbb63cf9b20a0289a399-binder-2325">d</a>
+                        32
+                <a href="#symbol-8768fbb63cf9b20a0289a399-binder-2266">ds</a></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-542547bf716f941a25eaeafc">cjr.authenticator.base32.digit_value</a></li><li><a href="base32.html#symbol-7e5d2404edee8757e6aa6f83">cjr.authenticator.base32.digit_value_range</a></li><li><a href="base32.html#symbol-0aee9281fa03e444a92d60b3">cjr.authenticator.base32.read_symbols</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma read_symbols_range chars ds pad : <a href="#symbol-0aee9281fa03e444a92d60b3" title="cjr.authenticator.base32.read_symbols">read_symbols</a> <a href="#symbol-8768fbb63cf9b20a0289a399-binder-2260">chars</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span><a href="#symbol-8768fbb63cf9b20a0289a399-binder-2266">ds</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span><a href="#symbol-8768fbb63cf9b20a0289a399-binder-2269">pad</a><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span> (fun d =&gt; 0<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt;= </span><a href="#symbol-8768fbb63cf9b20a0289a399-binder-2325">d</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt; </span>32) <a href="#symbol-8768fbb63cf9b20a0289a399-binder-2266">ds</a>.</pre></details></article><article id="symbol-a9ae1efa92a9a6a1862b0d38"><h2>decode_values_bytes</h2><p class="meta">cjr.authenticator.base32.decode_values_bytes</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">The lemma states that if every input value in ds is between 0 and 31, bits is between 0 and 7, and acc is nonnegative and less than 2^bits, then every integer in the output list returned by decode_values is a byte, meaning it lies between 0 and 255. The function combines five-bit input values with the accumulator and emits values when at least eight bits are available. The conclusion constrains only the output list, not the leftover accumulator; no proof is supplied here.</p><pre class="pseudocode">lemma decode_values_bytes:
+    parameter(<span id="symbol-a9ae1efa92a9a6a1862b0d38-binder-2851">ds</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a9ae1efa92a9a6a1862b0d38-binder-2854">acc</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span>:
+                lambda:
+                    parameter(<span id="symbol-a9ae1efa92a9a6a1862b0d38-binder-2877">d</span>, type(_ (inferred)))
+                    notation &quot;_ &lt;= _ &lt; _&quot;:
+                        0
+                        <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2877">d</a>
+                        32
+                <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2851">ds</a>
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                notation &quot;_ &lt;= _ &lt; _&quot;:
+                    0
+                    <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a>
+                    8
+                <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                    notation &quot;_ &lt;= _ &lt; _&quot;:
+                        0
+                        <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2854">acc</a>
+                        notation &quot;_ ^ _&quot;:
+                            2
+                            <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a>
+                    <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span>(<a href="model.html#symbol-fa4b28f057ca4030d67f2148" title="cjr.authenticator.model.byte">byte</a>, <span class="external" title="External or unresolved: Coq.Init.Datatypes.fst">fst</span>(<a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a>(<a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2851">ds</a>, <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2854">acc</a>, <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a>)))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-0b6cca6d4dfbd8d8726c8087">cjr.authenticator.base32.decode_values</a></li><li><a href="model.html#symbol-fa4b28f057ca4030d67f2148">cjr.authenticator.model.byte</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma decode_values_bytes ds acc bits : <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span> (fun d =&gt; 0<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt;= </span><a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2877">d</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt; </span>32) <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2851">ds</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span>0<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt;= </span><a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt; </span>8<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>0<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt;= </span><a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2854">acc</a><span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;&#x27;_x"> &lt; </span>2<span class="external" title="External or unresolved: Coq.ZArith.BinInt.::Z_scope:x_&#x27;^&#x27;_x">^</span><a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span> <a href="model.html#symbol-fa4b28f057ca4030d67f2148" title="cjr.authenticator.model.byte">byte</a> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.fst">fst</span> (<a href="#symbol-0b6cca6d4dfbd8d8726c8087" title="cjr.authenticator.base32.decode_values">decode_values</a> <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2851">ds</a> <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2854">acc</a> <a href="#symbol-a9ae1efa92a9a6a1862b0d38-binder-2858">bits</a>)).</pre></details></article><article id="symbol-f644bccbf689477d98597313"><h2>decode_bytes</h2><p class="meta">cjr.authenticator.base32.decode_bytes</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">The theorem states that whenever decode chars succeeds with Some out, every integer in out is a byte, meaning it is at least 0 and less than 256. Its only premise is successful decoding; it does not assert that every input is accepted or that the output matches any separate specification of Base32 decoding.</p><pre class="pseudocode">theorem decode_bytes:
+    parameter(<span id="symbol-f644bccbf689477d98597313-binder-4020">chars</span>, type(_ (inferred)))
+    parameter(<span id="symbol-f644bccbf689477d98597313-binder-4026">out</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>(<a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a>(<a href="#symbol-f644bccbf689477d98597313-binder-4020">chars</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<a href="#symbol-f644bccbf689477d98597313-binder-4026">out</a>), <span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span>(<a href="model.html#symbol-fa4b28f057ca4030d67f2148" title="cjr.authenticator.model.byte">byte</a>, <a href="#symbol-f644bccbf689477d98597313-binder-4026">out</a>))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li><li><a href="base32.html#symbol-0b6cca6d4dfbd8d8726c8087">cjr.authenticator.base32.decode_values</a></li><li><a href="base32.html#symbol-a9ae1efa92a9a6a1862b0d38">cjr.authenticator.base32.decode_values_bytes</a></li><li><a href="base32.html#symbol-0aee9281fa03e444a92d60b3">cjr.authenticator.base32.read_symbols</a></li><li><a href="base32.html#symbol-8768fbb63cf9b20a0289a399">cjr.authenticator.base32.read_symbols_range</a></li><li><a href="model.html#symbol-fa4b28f057ca4030d67f2148">cjr.authenticator.model.byte</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem decode_bytes chars out : <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a> <a href="#symbol-f644bccbf689477d98597313-binder-4020">chars</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <a href="#symbol-f644bccbf689477d98597313-binder-4026">out</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span><span class="external" title="External or unresolved: Coq.Lists.List.Forall">Forall</span> <a href="model.html#symbol-fa4b28f057ca4030d67f2148" title="cjr.authenticator.model.byte">byte</a> <a href="#symbol-f644bccbf689477d98597313-binder-4026">out</a>.</pre></details></article><article id="symbol-b36c154b5eb8caab36126a1f"><h2>decode_f</h2><p class="meta">cjr.authenticator.base32.decode_f</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">This example states that decoding the integer list [77;89;61;61;61;61;61;61] succeeds and returns [102]. Under an ASCII interpretation, this corresponds to decoding “MY======” to “f”, although the supplied input does not define that character interpretation or the helper functions. The decoder checks input length, symbol parsing, symbol-count remainder, padding, output length, and a zero leftover tail; the example has no explicit premises, and no proof is supplied.</p><pre class="pseudocode">example decode_f:
+    statement:
+        <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>(77, items(89, 61, 61, 61, 61, 61, 61)))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">list</span>(102))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Example decode_f : <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span>77<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>89<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">[</span>102<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">]</span>.</pre></details></article><article id="symbol-43f73f6769f01c19fabfa376"><h2>decode_foobar</h2><p class="meta">cjr.authenticator.base32.decode_foobar</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">This example states that decode applied to [77;90;88;87;54;89;84;66;79;73] returns Some [102;111;111;98;97;114], corresponding under ASCII to decoding “MZXW6YTBOI” into “foobar.” It has no explicit premises; the supplied decoder checks input and output lengths, symbol parsing, permitted symbol-count remainders, padding, and a zero leftover tail. The symbol-reading and value-decoding definitions and the example’s proof are not supplied, so this describes the stated result without independently verifying it.</p><pre class="pseudocode">example decode_foobar:
+    statement:
+        <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>(77, items(90, 88, 87, 54, 89, 84, 66, 79, 73)))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+            <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>(102, items(111, 111, 98, 97, 114)))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Example decode_foobar : <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span>77<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>90<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>88<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>87<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>54<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>89<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>84<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>66<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>79<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>73<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span>102<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>111<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>111<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>98<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>97<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>114<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span>.</pre></details></article><article id="symbol-1529f7729d175c1dd2b1fa90"><h2>reject_noncanonical_tail</h2><p class="meta">cjr.authenticator.base32.reject_noncanonical_tail</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">This example states that decode rejects the two-element input [77; 90], returning None. The supplied decoder checks input length, symbol parsing, symbol-count residues, padding, output length, and whether the remaining tail is zero. The name suggests rejection of a noncanonical tail, but without the definitions of read_symbols and decode_values, the supplied input does not establish which check causes rejection; no proof is shown.</p><pre class="pseudocode">example reject_noncanonical_tail:
+    statement:
+        <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>(77, items(90)))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Example reject_noncanonical_tail : <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span>77<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>90<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>.</pre></details></article><article id="symbol-14d0ae60247f17962b1de210"><h2>reject_padding_middle</h2><p class="meta">cjr.authenticator.base32.reject_padding_middle</p><div class="explanation-label">AI-generated explanation</div><p class="explanation">This example states that decode returns None (failure) for [77;89;61;65;65;65;65;65], which spells “MY=AAAAA” if interpreted as ASCII. Its name suggests rejection of padding in the middle, but the supplied input omits read_symbols, so the precise reason for rejection is not established. No proof is supplied.</p><pre class="pseudocode">example reject_padding_middle:
+    statement:
+        <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a>(<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>(77, items(89, 61, 65, 65, 65, 65, 65)))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span></pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Example reject_padding_middle : <a href="#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">decode</a> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span>77<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>89<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>61<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>65<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>65<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>65<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>65<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">;</span>65<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>.</pre></details></article></main></body></html>

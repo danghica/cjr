@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>example/authenticator/core/rocq/base32_decoder.v — Rocq Readable</title><link rel="stylesheet" href="../../../../style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable · specification reference</div>
+<nav aria-label="Project"><a href="../../../../index.html">Home</a> · <a href="../../../../declarations.html">Index</a></nav>
+<h1>example/authenticator/core/rocq/base32_decoder.v</h1><p class="meta">4 declarations · proofs omitted</p>
+<p class="notice">Indentation determines multiline scope. Brackets delimit scope only within a line.
+WP contracts express partial correctness, without a termination guarantee. Unlinked names may belong to external libraries or remain unresolved.
+Rendering rules are presentation choices reviewed by their authors.</p></header><section class="panel dependency-diagram" data-scope="file" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Shows dependencies between declarations and lemmas on this page. Arrows point toward dependencies. Search to focus on an entry and its direct dependencies and dependents; click a node to jump to the entry.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="all">All declarations in this file</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#b6dfd4">Definitions</span><span style="--swatch:#d7c8ec">Lemmas</span><span style="--swatch:#bed8ee">Types</span><span style="--swatch:#d7dfe5">Other declarations</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Only resolved dependencies between entries on this page are shown. Check individual entry notices for coverage limits.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><script id="dependency-data" type="application/json">{"cjr.authenticator.base32_decoder.base32_application_valid_size_wp": {"dependencies": ["cjr.authenticator.base32_decoder.commit_e", "cjr.authenticator.base32_decoder.commit_wp"], "file": "example/authenticator/core/rocq/base32_decoder.v", "href": "#symbol-541205c218ec378453d49f5e", "kind": "theorem", "label": "cjr.authenticator.base32_decoder.base32_application_valid_size_wp", "name": "base32_application_valid_size_wp"}, "cjr.authenticator.base32_decoder.commit_e": {"dependencies": [], "file": "example/authenticator/core/rocq/base32_decoder.v", "href": "#symbol-a25aafe0f8707301b7cba32f", "kind": "definition", "label": "cjr.authenticator.base32_decoder.commit_e", "name": "commit_e"}, "cjr.authenticator.base32_decoder.commit_wp": {"dependencies": ["cjr.authenticator.base32_decoder.commit_e", "cjr.authenticator.base32_decoder.validation_output_bounds"], "file": "example/authenticator/core/rocq/base32_decoder.v", "href": "#symbol-24233873a8be63569d330c91", "kind": "theorem", "label": "cjr.authenticator.base32_decoder.commit_wp", "name": "commit_wp"}, "cjr.authenticator.base32_decoder.validation_output_bounds": {"dependencies": [], "file": "example/authenticator/core/rocq/base32_decoder.v", "href": "#symbol-c2cf9f2a51cc8413a252c2f0", "kind": "lemma", "label": "cjr.authenticator.base32_decoder.validation_output_bounds", "name": "validation_output_bounds"}}</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><p class="notice">Incomplete rendering: 12 unsupported or unmapped constructs. Original syntax is retained where needed.</p><article id="symbol-a25aafe0f8707301b7cba32f"><h2>commit_e</h2><p class="meta">cjr.authenticator.base32_decoder.commit_e</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">definition commit_e:
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-539">valid</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-545">padding</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-553">symbols</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-561">acc</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-565">out</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-569">scratch</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-577">dst</span>, type(_ (inferred)))
+    parameter(<span id="symbol-a25aafe0f8707301b7cba32f-binder-581">n</span>, type(_ (inferred)))
+    body:
+        <span class="external" title="External or unresolved: cjr.lang.If">if (</span><a href="base32_refinement.html#symbol-a6e93d6bdcf12087239a5fec" title="cjr.authenticator.base32_refinement.validation_e">validation_e</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a>, <a href="#symbol-a25aafe0f8707301b7cba32f-binder-545">padding</a>, <a href="#symbol-a25aafe0f8707301b7cba32f-binder-553">symbols</a>, <a href="#symbol-a25aafe0f8707301b7cba32f-binder-561">acc</a>, <a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a>, <a href="#symbol-a25aafe0f8707301b7cba32f-binder-581">n</a>)<span class="external" title="External or unresolved: cjr.lang.If">) {</span>
+            <a href="program.html#symbol-713c6cc0a7c9d25bec1c34a7" title="cjr.authenticator.program.copy">copy</a>(<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-569">scratch</a>), <a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-577">dst</a>), <a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a>))
+        <span class="external" title="External or unresolved: cjr.lang.If">}</span><span class="external" title="External or unresolved: cjr.lang.If"> else {</span>
+            <span class="external" title="External or unresolved: cjr.lang.StackAssign">CJR StackAssign [requires runtime or layout metadata]</span>(<a href="base32_refinement.html#symbol-9c1f655c412df597728fd0a3" title="cjr.authenticator.base32_refinement.stack_e">stack_e</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a>), <a href="program.html#symbol-bc40ae6ddcf3db72c24f74b8" title="cjr.authenticator.program.no">no</a>)
+        <span class="external" title="External or unresolved: cjr.lang.If">}</span>
+        <a href="program.html#symbol-6eaa7eb42a440f6ca2b42ffd" title="cjr.authenticator.program.lets">lets</a>:
+            <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">list</span>:
+                <span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">tuple_with_tail_items</span>:
+                    &quot;result&quot;
+                    items:
+                        <span class="external" title="External or unresolved: cjr.lang.If">if (</span><a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a>)<span class="external" title="External or unresolved: cjr.lang.If">) {</span>
+                            <a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a>)
+                        <span class="external" title="External or unresolved: cjr.lang.If">}</span><span class="external" title="External or unresolved: cjr.lang.If"> else {</span>
+                            <a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a>:
+                                notation &quot;- _&quot;:
+                                    1
+                        <span class="external" title="External or unresolved: cjr.lang.If">}</span>
+            <span class="external" title="External or unresolved: cjr.lang.Free">unsafe {</span><span class="external" title="External or unresolved: cjr.lang.Free"> free(CPointer&lt;Unit&gt;(</span><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a>(<a href="#symbol-a25aafe0f8707301b7cba32f-binder-569">scratch</a>)<span class="external" title="External or unresolved: cjr.lang.Free">)) }</span>
+            <a href="program.html#symbol-7ec53fb8790c366569c0d1a4" title="cjr.authenticator.program.v">v</a>(&quot;result&quot;)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32_refinement.html#symbol-9c1f655c412df597728fd0a3">cjr.authenticator.base32_refinement.stack_e</a></li><li><a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a">cjr.authenticator.base32_refinement.stack_get</a></li><li><a href="base32_refinement.html#symbol-a6e93d6bdcf12087239a5fec">cjr.authenticator.base32_refinement.validation_e</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="program.html#symbol-713c6cc0a7c9d25bec1c34a7">cjr.authenticator.program.copy</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-6eaa7eb42a440f6ca2b42ffd">cjr.authenticator.program.lets</a></li><li><a href="program.html#symbol-bc40ae6ddcf3db72c24f74b8">cjr.authenticator.program.no</a></li><li><a href="program.html#symbol-7ec53fb8790c366569c0d1a4">cjr.authenticator.program.v</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Definition commit_e valid padding symbols acc out scratch dst n :=
+ <span class="external" title="External or unresolved: cjr.lang.Seq">Seq</span> (<span class="external" title="External or unresolved: cjr.lang.If">If</span> (<a href="base32_refinement.html#symbol-a6e93d6bdcf12087239a5fec" title="cjr.authenticator.base32_refinement.validation_e">validation_e</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-545">padding</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-553">symbols</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-561">acc</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-581">n</a>)
+       (<a href="program.html#symbol-713c6cc0a7c9d25bec1c34a7" title="cjr.authenticator.program.copy">copy</a> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-569">scratch</a>) (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-577">dst</a>) (<a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a>))
+       (<span class="external" title="External or unresolved: cjr.lang.StackAssign">StackAssign</span> (<a href="base32_refinement.html#symbol-9c1f655c412df597728fd0a3" title="cjr.authenticator.base32_refinement.stack_e">stack_e</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a>) <a href="program.html#symbol-bc40ae6ddcf3db72c24f74b8" title="cjr.authenticator.program.no">no</a>))
+ (<a href="program.html#symbol-6eaa7eb42a440f6ca2b42ffd" title="cjr.authenticator.program.lets">lets</a> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">[</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">(</span>&quot;result&quot;<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">,</span><span class="external" title="External or unresolved: cjr.lang.If">If</span> (<a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-539">valid</a>) (<a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a" title="cjr.authenticator.base32_refinement.stack_get">stack_get</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-565">out</a>) (<a href="program.html#symbol-9d875133a3712c4f1807a927" title="cjr.authenticator.program.int">int</a> (-1))<span class="external" title="External or unresolved: Coq.Init.Datatypes.::core_scope:&#x27;(&#x27;_x_&#x27;,&#x27;_x_&#x27;,&#x27;_&#x27;..&#x27;_&#x27;,&#x27;_x_&#x27;)&#x27;">)</span><span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;]&#x27;">]</span>
+   (<span class="external" title="External or unresolved: cjr.lang.Seq">Seq</span> (<span class="external" title="External or unresolved: cjr.lang.Free">Free</span> (<a href="memory.html#symbol-d61e9ed2165fa6ebd610b948" title="cjr.authenticator.memory.pv">pv</a> <a href="#symbol-a25aafe0f8707301b7cba32f-binder-569">scratch</a>)) (<a href="program.html#symbol-7ec53fb8790c366569c0d1a4" title="cjr.authenticator.program.v">v</a> &quot;result&quot;))).</pre></details></article><article id="symbol-c2cf9f2a51cc8413a252c2f0"><h2>validation_output_bounds</h2><p class="meta">cjr.authenticator.base32_decoder.validation_output_bounds</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">lemma validation_output_bounds:
+    parameter(<span id="symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</span>, type(_ (inferred)))
+    parameter(<span id="symbol-c2cf9f2a51cc8413a252c2f0-binder-881">n</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            <a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a>(<a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a>, <a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-881">n</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.true">true</span>
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x">and</span>:
+                <a href="base32_stream.html#symbol-9c351a6e08b11123ea00b93d" title="cjr.authenticator.base32_stream.scan_valid">scan_valid</a>(<a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a>)<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.Init.Datatypes.true">true</span>
+                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x">ordered_inclusive</span>(1, <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a>))), 128))</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c">cjr.authenticator.base32_refinement.validation_result</a></li><li><a href="base32_stream.html#symbol-8219ccfcb28d350db84d5fdf">cjr.authenticator.base32_stream.bit_state</a></li><li><a href="base32_stream.html#symbol-d18b6e0d4be69f02b9965500">cjr.authenticator.base32_stream.scan_state</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Lemma validation_output_bounds st n : <a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a> <a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a> <a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-881">n</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.true">true</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><a href="base32_stream.html#symbol-9c351a6e08b11123ea00b93d" title="cjr.authenticator.base32_stream.scan_valid">scan_valid</a> <a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: Coq.Init.Datatypes.true">true</span><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;/\&#x27;_x"> /\ </span>(1<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-c2cf9f2a51cc8413a252c2f0-binder-878">st</a>))<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x"> &lt;= </span>128)%nat.</pre></details></article><article id="symbol-24233873a8be63569d330c91"><h2>commit_wp</h2><p class="meta">cjr.authenticator.base32_decoder.commit_wp · proofs</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">theorem commit_wp:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjr.primitive_laws.cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.invGS_gen">invGS_gen</span>(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.HasLc">HasLc</span>, <span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1770">valid</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1776">padding</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1784">symbols</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1792">acc</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1796">bits</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1801">out</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1805">scratch</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1813">dst</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1817">n</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1819">st</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1822">tail</span>, type(_ (inferred)))
+    parameter(<span id="symbol-24233873a8be63569d330c91-binder-1827">dst_words</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x">add</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))), <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1822">tail</a>))<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>130)
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(128, <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>)))
+                <span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                    <a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9" title="cjr.authenticator.base32_refinement.scan_cells">scan_cells</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1796">bits</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)
+                    <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                        <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a>, <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>(<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)), <a href="#symbol-24233873a8be63569d330c91-binder-1822">tail</a>))
+                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                            <span class="external" title="External or unresolved: cjr.primitive_laws.::bi_scope:x_&#x27;↦ᵦ&#x27;_x">owns_block</span>(<span class="external" title="External or unresolved: cjr.lang.RawId">RawId</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a>), in_scope nat(130))
+                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>)
+                                <span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">wp_partial</span>:
+                                    <a href="#symbol-a25aafe0f8707301b7cba32f" title="cjr.authenticator.base32_decoder.commit_e">commit_e</a>:
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a>
+                                        <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a>
+                                    post binder(<span id="symbol-24233873a8be63569d330c91-binder-2187">u</span>)
+                                    postcondition:
+                                        <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                            <a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9" title="cjr.authenticator.base32_refinement.scan_cells">scan_cells</a>:
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a>
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a>
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a>
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a>
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1796">bits</a>
+                                                <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a>
+                                                <a href="base32_stream.html#symbol-6aa145c1e6dcb6256d47dadb" title="cjr.authenticator.base32_stream.Scan">Scan</a>:
+                                                    <a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a>)
+                                                    <a href="base32_stream.html#symbol-1e188465439964e1bce1f7bd" title="cjr.authenticator.base32_stream.scan_padding">scan_padding</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)
+                                                    <a href="base32_stream.html#symbol-c44278581698f0efb2d388b5" title="cjr.authenticator.base32_stream.scan_symbols">scan_symbols</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)
+                                                    <a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)
+                                            <span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if_then_else</span>:
+                                                <a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a>)
+                                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                    <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>:
+                                                        <a href="#symbol-24233873a8be63569d330c91-binder-2187">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+                                                            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>:
+                                                                <span class="external" title="External or unresolved: stdpp.base.length">length</span>:
+                                                                    <a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))
+                                                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                                        <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a>
+                                                        <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>:
+                                                            <a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))
+                                                            <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>:
+                                                                <span class="external" title="External or unresolved: stdpp.base.length">length</span>:
+                                                                    <a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a>(<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a>(<a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))
+                                                                <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>
+                                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                    <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>:
+                                                        <a href="#symbol-24233873a8be63569d330c91-binder-2187">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+                                                            notation &quot;- _&quot;:
+                                                                1
+                                                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a>, <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32_decoder.html#symbol-a25aafe0f8707301b7cba32f">cjr.authenticator.base32_decoder.commit_e</a></li><li><a href="base32_decoder.html#symbol-c2cf9f2a51cc8413a252c2f0">cjr.authenticator.base32_decoder.validation_output_bounds</a></li><li><a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9">cjr.authenticator.base32_refinement.scan_cells</a></li><li><a href="base32_refinement.html#symbol-9c1f655c412df597728fd0a3">cjr.authenticator.base32_refinement.stack_e</a></li><li><a href="base32_refinement.html#symbol-53abb73e88dd6be9a0753d8a">cjr.authenticator.base32_refinement.stack_get</a></li><li><a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c">cjr.authenticator.base32_refinement.validation_result</a></li><li><a href="base32_refinement.html#symbol-092594ddc2d16ddd95b98fd9">cjr.authenticator.base32_refinement.validation_wp</a></li><li><a href="base32_stream.html#symbol-8219ccfcb28d350db84d5fdf">cjr.authenticator.base32_stream.bit_state</a></li><li><a href="base32_stream.html#symbol-d18b6e0d4be69f02b9965500">cjr.authenticator.base32_stream.scan_state</a></li><li><a href="memory.html#symbol-8d4c91cfbc003f784251cc49">cjr.authenticator.memory.buffer_free_wp</a></li><li><a href="memory.html#symbol-d61e9ed2165fa6ebd610b948">cjr.authenticator.memory.pv</a></li><li><a href="memory_application.html#symbol-264a24e42d561f1603dc6765">cjr.authenticator.memory_application.copy_reduced_wp</a></li><li><a href="program.html#symbol-c17c8e45e3538c148ccf24ee">cjr.authenticator.program.call</a></li><li><a href="program.html#symbol-713c6cc0a7c9d25bec1c34a7">cjr.authenticator.program.copy</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-6eaa7eb42a440f6ca2b42ffd">cjr.authenticator.program.lets</a></li><li><a href="program.html#symbol-bc40ae6ddcf3db72c24f74b8">cjr.authenticator.program.no</a></li><li><a href="program.html#symbol-7ec53fb8790c366569c0d1a4">cjr.authenticator.program.v</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem commit_wp valid padding symbols acc bits out scratch dst n st tail dst_words :
+ (<span class="external" title="External or unresolved: stdpp.base.length">length</span> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;+&#x27;_x"> + </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-24233873a8be63569d330c91-binder-1822">tail</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span>130)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span>(128<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9" title="cjr.authenticator.base32_refinement.scan_cells">scan_cells</a> <a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a> <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a> <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a> <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a> <a href="#symbol-24233873a8be63569d330c91-binder-1796">bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a><span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><a href="#symbol-24233873a8be63569d330c91-binder-1822">tail</a>)<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗ </span><span class="external" title="External or unresolved: cjr.lang.RawId">RawId</span> <a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a><span class="external" title="External or unresolved: cjr.primitive_laws.::bi_scope:x_&#x27;↦ᵦ&#x27;_x"> ↦ᵦ </span>130%nat<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a> <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">WP </span><a href="#symbol-a25aafe0f8707301b7cba32f" title="cjr.authenticator.base32_decoder.commit_e">commit_e</a> <a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a> <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a> <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a> <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a> <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a> <a href="#symbol-24233873a8be63569d330c91-binder-1805">scratch</a> <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a> <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">
+ {{</span>u<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">, </span><a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9" title="cjr.authenticator.base32_refinement.scan_cells">scan_cells</a> <a href="#symbol-24233873a8be63569d330c91-binder-1770">valid</a> <a href="#symbol-24233873a8be63569d330c91-binder-1776">padding</a> <a href="#symbol-24233873a8be63569d330c91-binder-1784">symbols</a> <a href="#symbol-24233873a8be63569d330c91-binder-1792">acc</a> <a href="#symbol-24233873a8be63569d330c91-binder-1796">bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1801">out</a>
+   (<a href="base32_stream.html#symbol-6aa145c1e6dcb6256d47dadb" title="cjr.authenticator.base32_stream.Scan">Scan</a> (<a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a> <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a>) (<a href="base32_stream.html#symbol-1e188465439964e1bce1f7bd" title="cjr.authenticator.base32_stream.scan_padding">scan_padding</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>) (<a href="base32_stream.html#symbol-c44278581698f0efb2d388b5" title="cjr.authenticator.base32_stream.scan_symbols">scan_symbols</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>) (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+ </span><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">if </span><a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c" title="cjr.authenticator.base32_refinement.validation_result">validation_result</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a> <a href="#symbol-24233873a8be63569d330c91-binder-1817">n</a><span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x"> then
+   </span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-24233873a8be63569d330c91-binder-2187">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)))))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+   </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>)<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> (<a href="base32_stream.html#symbol-bf0eb39e4d987333b46648e9" title="cjr.authenticator.base32_stream.emitted">emitted</a> (<a href="base32_stream.html#symbol-fdff4290a47cc1692d71820a" title="cjr.authenticator.base32_stream.scan_bits">scan_bits</a> <a href="#symbol-24233873a8be63569d330c91-binder-1819">st</a>))) <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a>)<span class="external" title="External or unresolved: Coq.ssr.ssreflect.::general_if_scope:&#x27;if&#x27;_x_&#x27;then&#x27;_x_&#x27;else&#x27;_x">
+ else </span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-24233873a8be63569d330c91-binder-2187">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (-1))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-24233873a8be63569d330c91-binder-1813">dst</a> <a href="#symbol-24233873a8be63569d330c91-binder-1827">dst_words</a><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">}}</span>.</pre></details></article><article id="symbol-541205c218ec378453d49f5e"><h2>base32_application_valid_size_wp</h2><p class="meta">cjr.authenticator.base32_decoder.base32_application_valid_size_wp · proofs</p><div class="explanation-label">AI-generated explanation</div><p class="notice">Explanation unavailable: No matching cached explanation (offline mode).</p><pre class="pseudocode">theorem base32_application_valid_size_wp:
+    context:
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: cjr.primitive_laws.cjrGS">cjrGS</span>(<span class="external" title="External or unresolved: Σ">Σ</span>)))
+        typeclass maximal implicit !(_, type(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.invGS_gen">invGS_gen</span>(<span class="external" title="External or unresolved: iris.base_logic.lib.fancy_updates.HasLc">HasLc</span>, <span class="external" title="External or unresolved: Σ">Σ</span>)))
+    parameter(<span id="symbol-541205c218ec378453d49f5e-binder-4403">src</span>, type(_ (inferred)))
+    parameter(<span id="symbol-541205c218ec378453d49f5e-binder-4407">chars</span>, type(_ (inferred)))
+    parameter(<span id="symbol-541205c218ec378453d49f5e-binder-4413">dst</span>, type(_ (inferred)))
+    parameter(<span id="symbol-541205c218ec378453d49f5e-binder-4417">dst_words</span>, type(_ (inferred)))
+    statement:
+        <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+            in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x">ordered_inclusive</span>(2, <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>), 208))
+            <span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x">arrow</span>:
+                in_scope nat(<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x">less_or_equal</span>(128, <span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)))
+                <span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a>, <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>)
+                    <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x">consuming_implies</span>:
+                        <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a>, <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)
+                        <span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">wp_partial</span>:
+                            (
+                                <span class="external" title="External or unresolved: cjr.lang.RecV">{</span><span class="external" title="External or unresolved: cjr.lang.RecV"> </span><span id="symbol-541205c218ec378453d49f5e-cangjie-binder-4598">args</span><span class="external" title="External or unresolved: cjr.lang.RecV"> =&gt;</span>
+                                    <a href="program.html#symbol-6a9b05a1210cda43ab67d2a8" title="cjr.authenticator.program.base32_body">base32_body</a>
+                                <span class="external" title="External or unresolved: cjr.lang.RecV">}</span>
+                            )
+                            <span class="external" title="External or unresolved: cjr.lang.App">(</span>
+                                <span class="external" title="External or unresolved: cjr.lang.StructV">CJR StructV [requires runtime or layout metadata]</span>:
+                                    <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">list_with_tail_items</span>:
+                                        <span class="external" title="External or unresolved: cjr.lang.LitPtr">CJR LitPtr [requires runtime or layout metadata]</span>:
+                                            <a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a>
+                                        items:
+                                            <span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>))
+                                            <span class="external" title="External or unresolved: cjr.lang.LitPtr">CJR LitPtr [requires runtime or layout metadata]</span>:
+                                                <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a>
+                            <span class="external" title="External or unresolved: cjr.lang.App">)</span>
+                            post binder(<span id="symbol-541205c218ec378453d49f5e-binder-4722">u</span>)
+                            postcondition:
+                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                    <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a>, <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>)
+                                    match RegularStyle:
+                                        <a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">base32.decode</a>(<a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>)
+                                        case:
+                                            patterns(<span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span>)
+                                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>:
+                                                    <a href="#symbol-541205c218ec378453d49f5e-binder-4722">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span>
+                                                        notation &quot;- _&quot;:
+                                                            1
+                                                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a>, <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)
+                                        case:
+                                            patterns(<span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span>(<span id="symbol-541205c218ec378453d49f5e-binder-4879">decoded</span>))
+                                            <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x">separately</span>:
+                                                <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">pure</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4722">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x">=</span><span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4879">decoded</a>)))
+                                                <span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span>:
+                                                    <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a>
+                                                    <span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x">append</span>:
+                                                        <a href="#symbol-541205c218ec378453d49f5e-binder-4879">decoded</a>
+                                                        <span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span>(<span class="external" title="External or unresolved: stdpp.base.length">length</span>(<a href="#symbol-541205c218ec378453d49f5e-binder-4879">decoded</a>), <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)</pre><section aria-label="Direct dependencies"><h3>Depends on</h3><ul><li><a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3">cjr.authenticator.base32.decode</a></li><li><a href="base32_decoder.html#symbol-a25aafe0f8707301b7cba32f">cjr.authenticator.base32_decoder.commit_e</a></li><li><a href="base32_decoder.html#symbol-24233873a8be63569d330c91">cjr.authenticator.base32_decoder.commit_wp</a></li><li><a href="base32_refinement.html#symbol-805e435ff2c95b8685b0e3e9">cjr.authenticator.base32_refinement.scan_cells</a></li><li><a href="base32_refinement.html#symbol-1eeaf2f8539c389be1c5e296">cjr.authenticator.base32_refinement.scan_loop</a></li><li><a href="base32_refinement.html#symbol-2fd96084d7967032b5bdedb7">cjr.authenticator.base32_refinement.scan_loop_wp</a></li><li><a href="base32_refinement.html#symbol-c0b3f91d885485eeb3ecf138">cjr.authenticator.base32_refinement.validation_finish</a></li><li><a href="base32_refinement.html#symbol-41702da6a12dfa3ce979299c">cjr.authenticator.base32_refinement.validation_result</a></li><li><a href="base32_stream.html#symbol-6e5919cc1255807136933c67">cjr.authenticator.base32_stream.initial_scan</a></li><li><a href="base32_stream.html#symbol-e0b5603d43460a289d5b6b47">cjr.authenticator.base32_stream.scan</a></li><li><a href="base32_stream.html#symbol-a5d3c2c9f6ca2f4880757037">cjr.authenticator.base32_stream.scan_decode</a></li><li><a href="memory.html#symbol-027c9959f30ef0186e75b7ab">cjr.authenticator.memory.buffer_alloc_wp</a></li><li><a href="program.html#symbol-c8132c005248110f26a0d5d3">cjr.authenticator.program.args</a></li><li><a href="program.html#symbol-6a9b05a1210cda43ab67d2a8">cjr.authenticator.program.base32_body</a></li><li><a href="program.html#symbol-2817d16294453a820ababa8d">cjr.authenticator.program.both</a></li><li><a href="program.html#symbol-9d875133a3712c4f1807a927">cjr.authenticator.program.int</a></li><li><a href="program.html#symbol-9b02816d9090855e64fd9799">cjr.authenticator.program.le</a></li><li><a href="program.html#symbol-3139729acf7ef73f406b91c7">cjr.authenticator.program.op</a></li><li><a href="program.html#symbol-a188c18e09669a0ae6175b50">cjr.authenticator.program.range</a></li></ul></section><details><summary>Original declaration (proof-free)</summary><pre>Theorem base32_application_valid_size_wp src chars dst dst_words :
+ (2<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a><span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x_&#x27;&lt;=&#x27;_x"> &lt;= </span>208)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt; </span>(128<span class="external" title="External or unresolved: Coq.Init.Peano.::nat_scope:x_&#x27;&lt;=&#x27;_x"> &lt;= </span><span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)%nat<span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;-&gt;&#x27;_x"> -&gt;
+ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a> <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a><span class="external" title="External or unresolved: iris.bi.interface.::stdpp_scope:x_&#x27;-∗&#x27;_x"> -∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a> <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;-∗&#x27;_x"> -∗
+ </span><span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">WP </span><span class="external" title="External or unresolved: cjr.lang.App">App</span> (<span class="external" title="External or unresolved: cjr.lang.Val">Val</span> (<span class="external" title="External or unresolved: cjr.lang.RecV">RecV</span> <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span> (<span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> &quot;args&quot;) <a href="program.html#symbol-6a9b05a1210cda43ab67d2a8" title="cjr.authenticator.program.base32_body">base32_body</a>))
+   (<span class="external" title="External or unresolved: cjr.lang.Val">Val</span> (<span class="external" title="External or unresolved: cjr.lang.StructV">StructV</span> <span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">[</span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitPtr">LitPtr</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a>)<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">; </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a>)))<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">; </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitPtr">LitPtr</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a>)<span class="external" title="External or unresolved: Coq.Lists.List.ListNotations.::list_scope:&#x27;[&#x27;_x_&#x27;;&#x27;_x_&#x27;;&#x27;_&#x27;..&#x27;_&#x27;;&#x27;_x_&#x27;]&#x27;">]</span>))<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">
+ {{</span>u<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">, </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4403">src</a> <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+   </span>match <a href="base32.html#symbol-6fc19d69a877d4fc80ba45e3" title="cjr.authenticator.base32.decode">base32.decode</a> <a href="#symbol-541205c218ec378453d49f5e-binder-4407">chars</a> with
+   | <span class="external" title="External or unresolved: Coq.Init.Datatypes.None">None</span> =&gt; <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-541205c218ec378453d49f5e-binder-4722">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (-1))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗ </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a> <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>
+   | <span class="external" title="External or unresolved: Coq.Init.Datatypes.Some">Some</span> decoded =&gt; <span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌜</span><a href="#symbol-541205c218ec378453d49f5e-binder-4722">u</a><span class="external" title="External or unresolved: Coq.Init.Logic.::type_scope:x_&#x27;=&#x27;_x"> = </span><span class="external" title="External or unresolved: cjr.lang.LitV">LitV</span> (<span class="external" title="External or unresolved: cjr.lang.LitInt">LitInt</span> (<span class="external" title="External or unresolved: Coq.ZArith.BinInt.Z.of_nat">Z.of_nat</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> decoded)))<span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:&#x27;⌜&#x27;_x_&#x27;⌝&#x27;">⌝</span><span class="external" title="External or unresolved: iris.bi.interface.::bi_scope:x_&#x27;∗&#x27;_x"> ∗
+     </span><span class="external" title="External or unresolved: cjr.examples.array.array_cells">array.array_cells</span> <a href="#symbol-541205c218ec378453d49f5e-binder-4413">dst</a> (decoded<span class="external" title="External or unresolved: Coq.Init.Datatypes.::list_scope:x_&#x27;++&#x27;_x"> ++ </span><span class="external" title="External or unresolved: stdpp.list_basics.drop">drop</span> (<span class="external" title="External or unresolved: stdpp.base.length">length</span> decoded) <a href="#symbol-541205c218ec378453d49f5e-binder-4417">dst_words</a>)
+   end<span class="external" title="External or unresolved: iris.bi.weakestpre.::bi_scope:&#x27;WP&#x27;_x_&#x27;{{&#x27;_x_&#x27;,&#x27;_x_&#x27;}&#x27;_&#x27;}&#x27;">}}</span>.</pre></details></article></main></body></html>
