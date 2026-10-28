@@ -810,3 +810,15 @@ move the build directory inside the authenticator directory so the app is more s
 [2026-10-28T08:57:22+00:00]
 push everything to github
 
+[2026-10-28T09:37:10+00:00]
+how can i serve a html page directly from github without cloning? 
+
+[2026-10-28T09:39:24+00:00]
+what setting? github has so many 'settings' 
+
+[2026-10-28T09:40:50+00:00]
+what is the url to the served authenticator/docs/index.html now? 
+
+[2026-10-28T09:41:53+00:00]
+not found 404
+
