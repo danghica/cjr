@@ -97,9 +97,9 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-core/build/verify.log": "75a7145c97a00a34834f8c8b03280f258898b6ccd08475c0552c28db31317e77",
-        "cjr-collections/build/verify.log": "75a7145c97a00a34834f8c8b03280f258898b6ccd08475c0552c28db31317e77",
-        "cjr-crypto/build/verify.log": "75a7145c97a00a34834f8c8b03280f258898b6ccd08475c0552c28db31317e77"
+        "cjr-core/build/verify.log": "2d8371270e5115436459a5930151000f9fcc534035947437a9af301dbdf36d44",
+        "cjr-collections/build/verify.log": "42ed82374c9a19b6f6bf35dcfb48fc9dac5fe66f5b2de59ca065b37c07e715e6",
+        "cjr-crypto/build/verify.log": "2a3cf026a935a518bd0a3b207b932a25f460e1d31e463fa4526f93cf4235ea73"
       }
     },
     {
@@ -110,7 +110,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-core/coq-cjr.opam": "a961f97dfd9422353ce5866b0d382a14409e7fe07ac973339a087ffb7ca33a21"
+        "cjr-core/coq-cjr.opam": "564ccea27b2563c82b13c4498ad2c912e26d63b62262646cac4cbaedf8dbdd0a"
       }
     },
     {
@@ -715,7 +715,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-crypto/example/aes_ige/index.html": "b55881830e7c7a5ff81df7b3424322209ee8e5f662eb62d57519492a32338af9"
+        "cjr-crypto/example/aes_ige/index.html": "d0a6a60e4b9628f12c62f32033398776df87debd1a4238927a460806f7cb3345"
       }
     },
     {
@@ -737,7 +737,7 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-crypto/example/aes_ige/proof/results/verification.json": "a52b1807a5e435886ad37a5190c5559d25c39c589cdcd8df339669eb53d9b993"
+        "cjr-crypto/example/aes_ige/proof/results/verification.json": "6e5121386b332d0c4420702810c51251063e342bec0b09d7d9dc6f0dcf7daf3a"
       }
     },
     {
@@ -1122,7 +1122,7 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-crypto/example/aes_ige/scripts/verification.py": "67b95abe29bf65e647cfc65488604c32b22c189110b10358c9ec22a6491ff94e"
+        "cjr-crypto/example/aes_ige/scripts/verification.py": "d4919f469ba6e7060ebcb456abffcfead26c4a7b654ac5d3e5a260782aa8bef4"
       }
     },
     {
@@ -1419,7 +1419,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/array/index.html": "1a1c3db3e3f596370190a138ebc5e2a1dba21828855ca4aadd1d8719a0bd0cc3"
+        "cjr-collections/example/array/index.html": "6e461d31f124a262a4d746644809db4e120ea1f071591931e5f34c6feff1f4be"
       }
     },
     {
@@ -1804,7 +1804,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/array_list/index.html": "58464e740f16155e4ceb5e35c9eea5b6f908caccc5531f487f57bc0311112015"
+        "cjr-collections/example/array_list/index.html": "d864583a313c8344c4a1c0e2ab51ba8b53be67c9b959d0d2dd4d11b9bff06733"
       }
     },
     {
@@ -1903,7 +1903,7 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-crypto/example/authenticator/build/proof-report.json": "f21a85bb90ad6a15ee03b110765c5bd81e69cf84739aba44458f0d8d7a944b89"
+        "cjr-crypto/example/authenticator/build/proof-report.json": "61ba11d45f7fb6a205bb890eae5ae00a5c3abc1d9fe6c142ec44c901d421d19b"
       }
     },
     {
@@ -2750,7 +2750,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-crypto/example/authenticator/core/scripts/check.py": "1bcbd5bc54af41c23a61e2527e91381daa0c7f26912a37d732e723671d86bf90"
+        "cjr-crypto/example/authenticator/core/scripts/check.py": "64793ace3b0cae84b92a1466db3cfdcf72dcab7e7574a34fb03bdbe93c2f7f3b"
       }
     },
     {
@@ -2772,7 +2772,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-crypto/example/authenticator/core/scripts/verify.py": "02670bd294500011622b2fcd0968d012cbe352d6e47c0ca81698fab1c2d2f819"
+        "cjr-crypto/example/authenticator/core/scripts/verify.py": "ded1c4112a9bf24887638ab498f2064b372e8436fa930fb4337931f9de641f97"
       }
     },
     {
@@ -4070,7 +4070,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-core/example/generics/index.html": "751555abce6c997efbeb034836ac01b7116c1ee2539301860c7372358c077bdb"
+        "cjr-core/example/generics/index.html": "fee297350a083796aecf77a99ea8b741d400c83481a43e466ae42364f0f94ad8"
       }
     },
     {
@@ -4169,7 +4169,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/hash_map/_CoqProject": "0ee613db937e95d4c3ab8f8f2b34c3f56c323a8a03178df273c610c075f01e96"
+        "cjr-collections/example/hash_map/_CoqProject": "0a263d018aff4291f258693d69272829adfeaaa18f5f3a73ccbe3924abdedfc0"
       }
     },
     {
@@ -4521,7 +4521,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/hash_map/index.html": "77b41eb3e71b70b82d0ff6fa601a210c4c6e2b59049b398c2604dc1a4933cfc7"
+        "cjr-collections/example/hash_map/index.html": "7ab6cfaffe01666fb19c7bbea72cd8995b0b7806872b46e291de5ac34a0d2bcb"
       }
     },
     {
@@ -4539,33 +4539,33 @@
       "source": "example/hash_map/rocq/_prog.v",
       "sha256": "6693f3445af5d7c872c52e875f1e5b18c704ae75aa4af21ffa3f574509f876f8",
       "destinations": [
-        "cjr-collections/example/hash_map/rocq/_prog.v"
+        "cjr-collections/example/hash_map/archive/_prog.v.txt"
       ],
-      "disposition": "migrated",
+      "disposition": "archived unchanged historical fragment; maintained hash_map.v proofs validated",
       "destination_sha256": {
-        "cjr-collections/example/hash_map/rocq/_prog.v": "6693f3445af5d7c872c52e875f1e5b18c704ae75aa4af21ffa3f574509f876f8"
+        "cjr-collections/example/hash_map/archive/_prog.v.txt": "6693f3445af5d7c872c52e875f1e5b18c704ae75aa4af21ffa3f574509f876f8"
       }
     },
     {
       "source": "example/hash_map/rocq/_upd.v",
       "sha256": "48fd65656162fe4871e927c1e93e04370a3f5ac8e9332256c1f75e809f9e9a02",
       "destinations": [
-        "cjr-collections/example/hash_map/rocq/_upd.v"
+        "cjr-collections/example/hash_map/archive/_upd.v.txt"
       ],
-      "disposition": "migrated",
+      "disposition": "archived unchanged historical fragment; maintained hash_map.v proofs validated",
       "destination_sha256": {
-        "cjr-collections/example/hash_map/rocq/_upd.v": "48fd65656162fe4871e927c1e93e04370a3f5ac8e9332256c1f75e809f9e9a02"
+        "cjr-collections/example/hash_map/archive/_upd.v.txt": "48fd65656162fe4871e927c1e93e04370a3f5ac8e9332256c1f75e809f9e9a02"
       }
     },
     {
       "source": "example/hash_map/rocq/_wf.v",
       "sha256": "8107842ee4e3b9383dc04ec6d45826f22b98a9b0939b40b4d6ad97ca64daa55d",
       "destinations": [
-        "cjr-collections/example/hash_map/rocq/_wf.v"
+        "cjr-collections/example/hash_map/archive/_wf.v.txt"
       ],
-      "disposition": "migrated",
+      "disposition": "archived unchanged historical fragment; maintained hash_map.v proofs validated",
       "destination_sha256": {
-        "cjr-collections/example/hash_map/rocq/_wf.v": "8107842ee4e3b9383dc04ec6d45826f22b98a9b0939b40b4d6ad97ca64daa55d"
+        "cjr-collections/example/hash_map/archive/_wf.v.txt": "8107842ee4e3b9383dc04ec6d45826f22b98a9b0939b40b4d6ad97ca64daa55d"
       }
     },
     {
@@ -4884,7 +4884,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/list/index.html": "d344871515b6b245d8eebe187feaa3df5bcc74c39d442d65349ac1c2ca7651e0"
+        "cjr-collections/example/list/index.html": "3dd8e26cc1b504e73eb8351a48d81dc2b77b6371100c7fcbf38eb6d6a534bd5e"
       }
     },
     {
@@ -5203,7 +5203,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/list_rev/index.html": "0c71a4d060c5aae671458a87f3f50de13bb48d8a5e9fe16014fd0c9543e91dc6"
+        "cjr-collections/example/list_rev/index.html": "6b55bf89a7fb9da5917b3697e9bdca1b8eedf3da98573684e7f7d5284a60109d"
       }
     },
     {
@@ -5654,7 +5654,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-core/example/misc/index.html": "dd09fc3121873d9434f2e2abc689fa087229cc44af18eff8a4bd1b773d860304"
+        "cjr-core/example/misc/index.html": "778d6c33cb3109f56fdfe9bdddd501331597384fa3164540876a52fb281cb1da"
       }
     },
     {
@@ -6226,7 +6226,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/most_frequent/index.html": "a8038fd87dd3bc86433feb81144686e6da50a8c96ee853cb82a576187ea5b78e"
+        "cjr-collections/example/most_frequent/index.html": "873be09533f33b18b2ca909f3f5bd7076a0201785f06368a46d1dc706ff637b8"
       }
     },
     {
@@ -6600,7 +6600,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/poly_array/index.html": "7f0bd656dcf93c494c0fe4b7b0e7fef83e61427f68fe1aa219a37ce6418871f7"
+        "cjr-collections/example/poly_array/index.html": "c61257d1777adbc58d66ca53fe83f753ae1b7cdd96a94f5b58e0b3d804affad2"
       }
     },
     {
@@ -6842,7 +6842,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/qsort/index.html": "44b629db92d79c8d135489a0ad9da12120c646b68ac61c0eabf231a670c91c38"
+        "cjr-collections/example/qsort/index.html": "b1d7403fa148005d3674bde022415376bfd7f13debc9897acc42d3250032fd7a"
       }
     },
     {
@@ -7612,7 +7612,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/quadtree/index.html": "4c523cfa7b9f3c6d24a8e88994b152051a95623311c26137232d8c3647a50366"
+        "cjr-collections/example/quadtree/index.html": "16fc88b6d4741c8a76bdf90237ddc741f7985092c3f7130203d865eee10e135b"
       }
     },
     {
@@ -7722,7 +7722,7 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-collections/example/quadtree/proof/results/verification.json": "f8d5fd97a749d2f1c01ab1fb5236679b9bd4b89aa291a44410a67aa730fca3a0"
+        "cjr-collections/example/quadtree/proof/results/verification.json": "c78f44d4124b07536c779fe04687251aae6275820e1c09ad7aa3a589906e1f69"
       }
     },
     {
@@ -7744,7 +7744,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/quadtree/scripts/extract.py": "cbb8bbfd3757465e4ab7f2b82ac7ad1c19e2cadf528747d8dc860b6f53181dc5"
+        "cjr-collections/example/quadtree/scripts/extract.py": "1a9e175cb10a503224407aa5de06a0e7562172ebdf4222659fac3cb3ca16a651"
       }
     },
     {
@@ -7766,7 +7766,7 @@
       ],
       "disposition": "migrated and adapted",
       "destination_sha256": {
-        "cjr-collections/example/quadtree/scripts/verify.py": "557a140d8f188afcd016dc3ef67664f447383c502cf5249793d4c2a25ca23bc9"
+        "cjr-collections/example/quadtree/scripts/verify.py": "8dfdd525cacac7d138b841a563312563b95b2c66f913959e627e109da0bfaacd"
       }
     },
     {
@@ -8054,9 +8054,9 @@
       ],
       "disposition": "migrated",
       "destination_sha256": {
-        "cjr-core/logs/prompts.txt": "10f243c14a3369a1adb1e884085d27961850839dfac9b6be83c7fb60a1da1354",
-        "cjr-collections/logs/prompts.txt": "10f243c14a3369a1adb1e884085d27961850839dfac9b6be83c7fb60a1da1354",
-        "cjr-crypto/logs/prompts.txt": "10f243c14a3369a1adb1e884085d27961850839dfac9b6be83c7fb60a1da1354"
+        "cjr-core/logs/prompts.txt": "d40a43d70215ff54624a15475a2a543fec3c30794bcacb1c5f8832af29077df6",
+        "cjr-collections/logs/prompts.txt": "d40a43d70215ff54624a15475a2a543fec3c30794bcacb1c5f8832af29077df6",
+        "cjr-crypto/logs/prompts.txt": "d40a43d70215ff54624a15475a2a543fec3c30794bcacb1c5f8832af29077df6"
       }
     },
     {

@@ -990,3 +990,6 @@ make github remotes (public) and push
 [2026-10-29T14:46:06+00:00]
 add a prominent note to the README of the old cjr repo saying that new developments are in the new repos, with links
 
+[2026-10-29T14:48:20+00:00]
+validate all the proofs and push the proof record and update the readmes 
+
