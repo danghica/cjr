@@ -987,3 +987,6 @@ what are the github repos?
 [2026-10-29T14:38:28+00:00]
 make github remotes (public) and push
 
+[2026-10-29T14:46:06+00:00]
+add a prominent note to the README of the old cjr repo saying that new developments are in the new repos, with links
+

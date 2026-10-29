@@ -1,5 +1,12 @@
 # CJR workspace
 
+> [!IMPORTANT]
+> **New development has moved to three repositories.** This repository preserves the original CJR history and serves as a migration record. Follow the repositories below for all new work:
+>
+> - [**cjr-core**](https://github.com/danghica/cjr-core) — the CJR framework, shared tools, and introductory examples.
+> - [**cjr-collections**](https://github.com/danghica/cjr-collections) — data structures and algorithms.
+> - [**cjr-crypto**](https://github.com/danghica/cjr-crypto) — AES/IGE and the authenticator application.
+
 The development is now three independent local Git repositories:
 
 - [CJR Core documentation](cjr-core/docs/index.html): semantics, Iris logic, generic source layer, extraction printers, misc examples, and introductory generics. The only copy of rocq_readable lives here.
