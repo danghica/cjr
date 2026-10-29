@@ -6,7 +6,7 @@ The development is now three independent local Git repositories:
 - [CJR Collections documentation](cjr-collections/docs/index.html): arrays, polymorphic arrays, array lists, linked lists/reversal, quicksort, hash maps, most-frequent, and quadtrees.
 - [CJR Crypto documentation](cjr-crypto/docs/index.html): AES/IGE and the authenticator core, CLI, and macOS UI.
 
-Each directory is a separate Git repository with its own README, offline HTML documentation, paper/tutorial.pdf and editable LaTeX, runtime tests, and benchmarks. They are ignored by this parent repository; commit work inside the relevant child. No remote repositories have been created or pushed.
+Each directory is a separate Git repository with its own README, offline HTML documentation, paper/tutorial.pdf and editable LaTeX, runtime tests, and benchmarks. They are ignored by this parent repository; commit work inside the relevant child. The three repositories are public on GitHub under [danghica](https://github.com/danghica).
 
 Collections pins core; crypto pins both core and collections. Dependency versions are in each dependencies.lock.json. Sibling directories are the default; CJR_CORE_DIR and CJR_COLLECTIONS_DIR can select other checkouts at the pinned versions.
 

@@ -8,7 +8,7 @@
   "repositories": [
     {
       "name": "cjr-core",
-      "commit": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66",
+      "commit": "5e38c366e37c052d391fdeaa70e111bfe1fc33ec",
       "dependencies": {},
       "validation": {
         "proofs_revalidated": false,
@@ -18,13 +18,15 @@
         "html_links": "passed",
         "pdf": "compiled twice; representative pages visually inspected",
         "benchmarks": "168 normalized checksum-validated samples"
-      }
+      },
+      "github_url": "https://github.com/danghica/cjr-core",
+      "visibility": "public"
     },
     {
       "name": "cjr-collections",
-      "commit": "70a20e793f5ac6b23a2735ff885e733b183d3982",
+      "commit": "5c5684d8a9e1efb852429b90bd3f4e0d4c9442ab",
       "dependencies": {
-        "cjr-core": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66"
+        "cjr-core": "5e38c366e37c052d391fdeaa70e111bfe1fc33ec"
       },
       "validation": {
         "proofs_revalidated": false,
@@ -33,14 +35,16 @@
         "html_links": "passed",
         "pdf": "compiled twice; representative pages visually inspected",
         "benchmarks": "6552 normalized checksum-validated samples across eight suites"
-      }
+      },
+      "github_url": "https://github.com/danghica/cjr-collections",
+      "visibility": "public"
     },
     {
       "name": "cjr-crypto",
-      "commit": "11b2264238138750be583882bcd71d4271031ab2",
+      "commit": "5443917ff121fc2bb5edb817b91a850a5a04b09f",
       "dependencies": {
-        "cjr-core": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66",
-        "cjr-collections": "70a20e793f5ac6b23a2735ff885e733b183d3982"
+        "cjr-core": "5e38c366e37c052d391fdeaa70e111bfe1fc33ec",
+        "cjr-collections": "5c5684d8a9e1efb852429b90bd3f4e0d4c9442ab"
       },
       "validation": {
         "proofs_revalidated": false,
@@ -50,9 +54,11 @@
         "html_links": "117 pages; zero broken links",
         "pdf": "compiled twice; representative pages visually inspected",
         "benchmarks": "1008 normalized checksum-validated samples across AES and authenticator suites"
-      }
+      },
+      "github_url": "https://github.com/danghica/cjr-crypto",
+      "visibility": "public"
     }
   ],
-  "remotes_created": false,
-  "pushed": false
+  "remotes_created": true,
+  "pushed": true
 }
