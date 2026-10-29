@@ -1,0 +1,58 @@
+{
+  "checkpoint": "e07ccfb365e019f440480d6357d0251187acc8da",
+  "proofs_revalidated": false,
+  "runtime_test_cases_passed": 119,
+  "benchmark_samples": 7728,
+  "html_pages_checked": 254,
+  "broken_html_links": 0,
+  "repositories": [
+    {
+      "name": "cjr-core",
+      "commit": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66",
+      "dependencies": {},
+      "validation": {
+        "proofs_revalidated": false,
+        "runtime_cases": 21,
+        "tooling_tests": 48,
+        "proof_backend_tests_skipped": 9,
+        "html_links": "passed",
+        "pdf": "compiled twice; representative pages visually inspected",
+        "benchmarks": "168 normalized checksum-validated samples"
+      }
+    },
+    {
+      "name": "cjr-collections",
+      "commit": "70a20e793f5ac6b23a2735ff885e733b183d3982",
+      "dependencies": {
+        "cjr-core": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66"
+      },
+      "validation": {
+        "proofs_revalidated": false,
+        "runtime_cases": 74,
+        "historical_benchmark_test": "passed",
+        "html_links": "passed",
+        "pdf": "compiled twice; representative pages visually inspected",
+        "benchmarks": "6552 normalized checksum-validated samples across eight suites"
+      }
+    },
+    {
+      "name": "cjr-crypto",
+      "commit": "11b2264238138750be583882bcd71d4271031ab2",
+      "dependencies": {
+        "cjr-core": "17ec9c2c502e5aff94e8c23118e6ea2c44f0ec66",
+        "cjr-collections": "70a20e793f5ac6b23a2735ff885e733b183d3982"
+      },
+      "validation": {
+        "proofs_revalidated": false,
+        "runtime_cases": 24,
+        "authenticator_frontends": "CLI, SwiftUI, Swift/C/Cangjie integration passed with historical proof gates retained",
+        "authenticator_documentation": "84 pages; 30969 HTML links and fragments checked",
+        "html_links": "117 pages; zero broken links",
+        "pdf": "compiled twice; representative pages visually inspected",
+        "benchmarks": "1008 normalized checksum-validated samples across AES and authenticator suites"
+      }
+    }
+  ],
+  "remotes_created": false,
+  "pushed": false
+}

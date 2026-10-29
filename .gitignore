@@ -1,36 +1,5 @@
-Makefile
-!/example/*/Makefile
-Makefile.conf
-.coqdeps.d
-.Makefile.d
-*.log
-!build/verify.log
-*.out
-*.toc
-*.fls
-*.fdb_latexmk
-*.synctex.gz
-*.vo
-*.vos
-*.vok
-*.glob
-*.aux
-.lia.cache
-*.crashcoqide
-/html
-.coq-native
-*.timing
+/cjr-core/
+/cjr-collections/
+/cjr-crypto/
 .DS_Store
-.nia.cache
 __pycache__/
-*.egg-info/
-/build/lib/
-# Native executables and intermediate objects stay local to each example.
-/example/*/test/results/*-tests
-*.cjo
-# Authenticator runtime-test artifacts (the JSON report remains reviewable).
-/example/authenticator/build/*-tests
-/example/authenticator/build/oracle_test.cj
-
-# Frontend executables, SDK caches, and bundle are reproducible local outputs.
-/example/authenticator/build/frontend/
