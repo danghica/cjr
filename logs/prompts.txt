@@ -822,3 +822,162 @@ what is the url to the served authenticator/docs/index.html now?
 [2026-10-28T09:41:53+00:00]
 not found 404
 
+[2026-10-28T09:43:20+00:00]
+do not run the proof validations again
+
+[2026-10-28T13:37:04+00:00]
+extend cjr, the formalisation of cjr, the iris framework with parametric polymorphism which can be extracted into cangjie generics. 
+
+[2026-10-28T13:37:04+00:00]
+
+# Selected text:
+
+## Selection 1: /Users/danghica/.codex/plans/01a182b4-2f2e-72a1-b16d-c694a9445c15/01a182b4-ddb3-79c1-97ef-0d694367f013/PLAN.md (line 25)
+## Validation
+
+
+## Selection 2: /Users/danghica/.codex/plans/01a182b4-2f2e-72a1-b16d-c694a9445c15/01a182b4-ddb3-79c1-97ef-0d694367f013/PLAN.md (line 25)
+Validation
+
+## My request:
+will the extended cjr and logic be a superset of the existing logic? will existing examples still compile ?
+
+[2026-10-28T13:37:04+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Parametric polymorphism for CJR
+
+## Summary
+
+Add an explicitly parameterised source language that supports generic functions, classes, structs, and methods. Erase it into the existing CJR operational language for Iris verification, and print it directly as Cangjie generics.
+
+Demonstrate the extension with generic identity, `Pair<A, B>`, and `Box<T>` with `map<U>`.
+
+## Implementation
+
+- Add structured source types for primitives, type variables, named type applications, and function types. Define scoped type parameters, substitution, instantiation, and well-formedness checks.
+- Add generic declarations and source expressions with explicit declaration references, constructor names, receiver types, and type arguments. Support rank-one polymorphism and callbacks with monomorphic function types.
+- Define erasure into existing CJR expressions: type arguments disappear, named calls resolve to existing function terms, and constructors and fields resolve to their declared layouts. Preserve evaluation order and existing recursive-function behavior.
+- Prove that type instantiation preserves erasure and that erasure commutes with supported term substitution. Express generic weakest preconditions through erasure and derive safety using existing CJR adequacy.
+- Extend extraction with a structured generic printing path. Use explicit references rather than body equality or field-count heuristics. Reject unresolved names, unbound type variables, incorrect arities, and unsupported forms with actionable diagnostics.
+- Preserve existing extraction interfaces and monomorphic examples. Add the generic example to aggregate extraction, runtime testing, documentation, and the assumption audit.
+
+## Examples and proof obligations
+
+- **Identity:** prove that the same implementation returns its input uniformly for any element representation.
+- **Pair:** prove construction and projections for independently parameterised components.
+- **Box:** prove construction, reading, and `map<U>`, with a callback contract relating input and output representations. State ownership requirements explicitly; do not assume arbitrary Iris resources can be duplicated.
+- Instantiate examples with `Int64`, `Bool`, and nested generic values. Include a method whose own type parameter differs from its class parameter.
+
+## Validation
+
+- Check substitution, nested instantiation, type-parameter scoping, and erasure laws in Rocq.
+- Test extraction failures for invalid references and arities, and disambiguation of declarations with identical bodies or layouts.
+- Compile and execute generated generic examples using the repository’s Cangjie 1.0.5 toolchain.
+- Run existing runtime suites and extraction regressions, then `make verify`; audit the new public proof results without admissions or added axioms.
+- Update the README and tutorial to explain generic syntax, Iris contracts, erasure, and extraction’s remaining trust boundary.
+
+## Assumptions and boundaries
+
+- Keep the current untyped runtime and existing proofs stable. This extension provides uniform Iris specifications, not a general typing-soundness or relational-parametricity theorem.
+- Defer interface bounds, inheritance, higher-rank polymorphism, generic raw-memory allocation, and migration of existing containers.
+- During implementation, record outstanding human prompts exactly through the repository logging helper, without duplicating existing entries. Preserve existing log changes and refresh the verification log.
+
+[2026-10-29T08:26:11+00:00]
+did you update the pdf tutorial? 
+
+[2026-10-29T08:30:00+00:00]
+
+# Diff comments:
+
+## User Comment 1
+File: pdf:cjr-tutorial.pdf
+Side: R
+Lines: 1
+PDF path: /Users/danghica/cjr/paper/cjr-tutorial.pdf
+PDF page: 8/223
+PDF annotation: region at top-left (77, 82) sized 392x12 on 612x792 page; coordinates use top-left page origin; bottom-left PDF drawing rect is (77, 698) sized 392x12; selection kind: text; selected text: "// types used below: Int64, Float64, Bool, Unit, struct, class, CPointer<T>"
+Annotated PDF screenshot: attached as a labeled image for Comment 1
+Comment:
+the figure on page 8 does not show any generics in the types. make sure it does.
+
+## My request:
+
+The next image shows PDF page 8 at the time of Comment 1. The selected region is outlined in blue and marked by comment marker 1.
+
+[2026-10-29T08:31:55+00:00]
+i have noticed several points int he tutorial pdf where generic types should be discussed but they are not. revise the pdf tutorial carefully to make sure generics are discussed, including their logical treatment and examples. 
+
+[2026-10-29T09:00:54+00:00]
+explain section 6.3 in more detail in the pdf. illustrate the concepts with simple examples. give more intuition. 
+
+[2026-10-29T09:16:42+00:00]
+keep the arrays example in place. add polymorphic arrays as a separate example. specify and prove correct by adapting the definition of monomorphic arrays. benchmark against the monomorphic array example. 
+
+[2026-10-29T10:33:31+00:00]
+continue
+
+[2026-10-29T11:20:41+00:00]
+in section 13.6 comparison with monomorphic, why is polymorphic faster? 
+
+[2026-10-29T11:25:48+00:00]
+reorganize the polymorphic array example so that the functions are methods of the polyarray class. keep everything else the same but refresh the proofs. 
+
+[2026-10-29T13:57:36+00:00]
+this repo is too large, we need to refactor it as follows: 1. the cjr framework and the small examples in misc. 2. arrays, array lists, polymorphic arrays, qsort,  most_frequent, hash_maps, quadtrees. 3. aes encryption-decryption and the authenticator app.  
+For each repo create a separate documentation (HTML) and tutorial paper (PDF) and benchmarks. Locally they should be in 3 separate directories matching the repositories, housed int he current cjr directory. 
+
+[2026-10-29T13:57:36+00:00]
+rocq_readable stays only in cjr-core
+
+[2026-10-29T13:57:36+00:00]
+PLEASE IMPLEMENT THIS PLAN:
+# Split CJR into three local repositories
+
+## Summary
+
+Create three new Git repositories under `/Users/danghica/cjr`:
+
+- **cjr-core**: framework, extraction printers, shared development tools, `rocq_readable`, `misc`, and introductory generics.
+- **cjr-collections**: arrays, array lists, polymorphic arrays, linked lists, list reversal, quicksort, most-frequent, hash maps, and quadtrees.
+- **cjr-crypto**: AES encryption/decryption and IGE, plus the authenticator core, CLI, and macOS UI.
+
+Each repository gets offline HTML documentation, a PDF tutorial, and runtime benchmarks. Skip proof validation throughout the migration.
+
+## Preserve and separate
+
+- Record outstanding exact human prompts using the existing logging script, without duplicate entries.
+- First commit the current repository, including new source work, prompt history, and the existing verification log. Do not run proof validation or refresh that log.
+- Initialize three fresh Git repositories and record the original checkpoint commit in their migration notes. Do not create remotes or push.
+- Preserve source files, fixtures, extracted Cangjie, benchmark history, and required documentation assets; exclude compiled objects, binaries, and caches.
+- After confirming migration completeness, remove the original working-tree copies from the parent repository. Retain a lightweight workspace guide, migration records, and historical logs. The checkpoint preserves the monolith.
+
+## Dependencies and tooling
+
+- Retain `example/<name>` within each child repository to reduce path changes.
+- Collections depends on core; crypto depends on core and collections. Pin dependency commit IDs, use sibling checkouts by default, and support `CJR_CORE_DIR` and `CJR_COLLECTIONS_DIR` overrides.
+- **Keep `rocq_readable` exclusively in cjr-core**, including its implementation, launcher, packaging, renderer resources, and tests. Collections and crypto invoke that copy through their core dependency; neither contains a copied or vendored renderer.
+- Keep other shared development tooling and extraction printers in core. Make tooling accept the consuming repository’s root and example inventory.
+- Keep arrays and their shared proof tactics in collections. Split extraction drivers and assumption audits by repository, removing circular dependencies and preserving logical module names where possible.
+- Provide consistent `build`, `extract`, `test`, `verify`, `docs`, `paper`, `benchmark`, and `report` targets. Separate runtime and document tasks from proof compilation.
+
+## Documentation and benchmarks
+
+- Each repository owns its documentation content, configuration, generated HTML, and explanation caches. Give each a `docs/index.html` linking setup instructions, specifications, tests, benchmarks, and its PDF tutorial.
+- Split the tutorial into three independently readable papers with editable LaTeX sources and `paper/tutorial.pdf` outputs. Add missing quadtree and authenticator explanations; preserve qualifications about proof coverage and target-language limitations.
+- During migration, relocate existing specification HTML and caches, repair navigation, and avoid invoking proof-checking renderer backends. Future regeneration uses the renderer in core.
+- Preserve historical benchmark measurements and provenance. Run fresh collections and AES benchmarks.
+- Add core benchmarks for arithmetic, swap, block summation, and generic callbacks against equivalent handwritten Cangjie.
+- Add authenticator benchmarks for SHA-1, HMAC, HOTP/TOTP, Base32 decoding, and account-session operations using deterministic synthetic inputs.
+- Produce raw samples, medians/IQR, provenance, charts, and HTML reports. Generate each paper’s benchmark material from its repository’s results.
+
+## Validation and completion
+
+- Confirm every original source and fixture has a destination, including uncommitted generics work.
+- Check that only core contains the `rocq_readable` implementation and that consumers resolve it through their pinned dependency.
+- Run applicable tooling tests, Cangjie runtime tests, benchmark correctness checks, and frontend checks that do not trigger proof validation.
+- Build and visually inspect all three PDFs; check HTML links, offline navigation, dependency resolution, and execution without the former monolithic layout.
+- Do not run proof compilation, `coqchk`, assumption audits, or proof-checking documentation backends. Preserve existing frontend proof gates and report any validation they prevent.
+- Commit each completed child repository and record its commit ID in the parent workspace.
+
+Acceptance requires three separate repositories with complete HTML documentation, PDF tutorials, and reproducible runtime benchmark reports. Migration notes explicitly state that proofs were not revalidated.
+

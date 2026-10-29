@@ -14,6 +14,13 @@ The machine was an Apple M4 Mac mini, with ten cores (four performance and
 six efficiency), 16 GB RAM, and macOS 26.6.2.  These measurements compare
 the actual printed programs with the SDK's standard types; they do not
 establish the performance-parity claim for all CJR programs.
+The new generic identity, pair, and box examples are covered by functional
+tests, not by these saved benchmarks. Adding their source language and
+erasure does not generalize the measured integer containers or establish
+performance claims for arbitrary type instances. A new, separate paired
+comparison of the unchanged integer array with \texttt{PolyArray<Int64>}
+appears in Section~\ref{sec:poly-array-benchmark}; it does not replace
+these historical measurements.
 
 \subsection{Method and comparable workloads}
 

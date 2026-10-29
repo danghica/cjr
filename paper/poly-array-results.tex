@@ -1,0 +1,19 @@
+The 29 October 2026 run used Cangjie 1.0.5 with \texttt{-O2}. The
+table shows median nanoseconds per operation, with the interquartile
+range in parentheses. A Poly/Mono ratio above one means that the
+polymorphic implementation took longer in this run.
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Workload & $n$ & Mono ns/op & Poly ns/op & Poly/Mono \\
+\hline
+Read & 256 & 1.01 (0.01) & 0.67 (0.00) & 0.668 \\
+Read & 4,096 & 0.98 (0.01) & 0.66 (0.00) & 0.667 \\
+Read & 65,536 & 1.00 (0.00) & 0.74 (0.08) & 0.747 \\
+Write/read & 256 & 0.79 (0.10) & 0.55 (0.01) & 0.698 \\
+Write/read & 4,096 & 0.87 (0.01) & 0.53 (0.00) & 0.610 \\
+Write/read & 65,536 & 0.97 (0.11) & 0.58 (0.02) & 0.600 \\
+\hline
+\end{tabular}
+\end{center}

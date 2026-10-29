@@ -13,10 +13,10 @@ from . import benchmark, docs
 from .support import toolchain, metadata
 
 ROOT = Path(__file__).resolve().parents[2]
-NAMES = ('quadtree', 'array', 'array_list', 'list', 'list_rev', 'qsort', 'hash_map', 'most_frequent', 'misc', 'aes_ige')
+NAMES = ('quadtree', 'array', 'array_list', 'list', 'list_rev', 'qsort', 'hash_map', 'most_frequent', 'misc', 'aes_ige', 'generics', 'poly_array')
 PROGRAMS = ('arith', 'struct_upd', 'cell', 'swap', 'sum_block', 'class_upd', 'frame_call',
             'vtable', 'list', 'list_rev', 'array', 'array_list', 'hash_map',
-            'qsort_array', 'qsort_array_list', 'most_frequent', 'aes_ige')
+            'qsort_array', 'qsort_array_list', 'most_frequent', 'aes_ige', 'generics', 'poly_array')
 
 
 def owner(program):

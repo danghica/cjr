@@ -12,6 +12,60 @@
       "declarations": 4
     },
     {
+      "file": "theories/buffer.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: symbolic identifier or binder"
+      ],
+      "declarations": 8
+    },
+    {
+      "file": "theories/buffer_laws.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 3367",
+        "unclassified arrow at byte 3383",
+        "unclassified arrow at byte 978"
+      ],
+      "declarations": 4
+    },
+    {
+      "file": "theories/generic_laws.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
+        "unclassified arrow at byte 1859",
+        "unclassified arrow at byte 2237",
+        "unclassified arrow at byte 318",
+        "unclassified arrow at byte 428",
+        "unmapped notation _ ⊣⊢ _"
+      ],
+      "declarations": 8
+    },
+    {
+      "file": "theories/generics.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR FieldLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR New [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR Struct [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
+        "Cangjie unavailable: symbolic identifier or binder",
+        "unclassified arrow at byte 11180",
+        "unclassified arrow at byte 11188",
+        "unclassified arrow at byte 7136",
+        "unclassified arrow at byte 7299",
+        "unmapped notation _ ++ _"
+      ],
+      "declarations": 33
+    },
+    {
       "file": "theories/lang.v",
       "errors": [],
       "unsupported": [
@@ -31,63 +85,63 @@
         "Cangjie unavailable: CJR StructStore [requires runtime or layout metadata]",
         "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
         "Cangjie unavailable: symbolic identifier or binder",
-        "unclassified arrow at byte 11601",
-        "unclassified arrow at byte 11706",
-        "unclassified arrow at byte 11811",
-        "unclassified arrow at byte 11924",
-        "unclassified arrow at byte 12069",
-        "unclassified arrow at byte 12147",
-        "unclassified arrow at byte 12286",
-        "unclassified arrow at byte 12319",
-        "unclassified arrow at byte 12356",
-        "unclassified arrow at byte 15767",
-        "unclassified arrow at byte 15920",
-        "unclassified arrow at byte 16159",
-        "unclassified arrow at byte 16215",
-        "unclassified arrow at byte 16838",
-        "unclassified arrow at byte 17164",
-        "unclassified arrow at byte 17285",
-        "unclassified arrow at byte 17637",
-        "unclassified arrow at byte 17898",
-        "unclassified arrow at byte 18026",
-        "unclassified arrow at byte 18679",
-        "unclassified arrow at byte 18826",
-        "unclassified arrow at byte 19057",
-        "unclassified arrow at byte 19320",
-        "unclassified arrow at byte 19642",
-        "unclassified arrow at byte 19684",
-        "unclassified arrow at byte 19705",
-        "unclassified arrow at byte 19908",
-        "unclassified arrow at byte 20657",
-        "unclassified arrow at byte 20692",
-        "unclassified arrow at byte 21202",
-        "unclassified arrow at byte 21451",
-        "unclassified arrow at byte 21692",
-        "unclassified arrow at byte 21941",
-        "unclassified arrow at byte 22436",
-        "unclassified arrow at byte 23061",
-        "unclassified arrow at byte 23288",
-        "unclassified arrow at byte 23328",
-        "unclassified arrow at byte 23689",
-        "unclassified arrow at byte 23725",
-        "unclassified arrow at byte 24364",
-        "unclassified arrow at byte 24405",
-        "unclassified arrow at byte 24751",
-        "unclassified arrow at byte 26827",
-        "unclassified arrow at byte 27212",
-        "unclassified arrow at byte 27256",
-        "unclassified arrow at byte 28618",
-        "unclassified arrow at byte 29325",
-        "unclassified arrow at byte 29995",
-        "unclassified arrow at byte 30284",
-        "unclassified arrow at byte 30595",
-        "unclassified arrow at byte 30987",
-        "unclassified arrow at byte 31428",
-        "unclassified arrow at byte 31650",
-        "unclassified arrow at byte 31884",
-        "unclassified arrow at byte 32152",
-        "unclassified arrow at byte 32166",
-        "unclassified arrow at byte 8665",
+        "unclassified arrow at byte 11734",
+        "unclassified arrow at byte 11839",
+        "unclassified arrow at byte 11944",
+        "unclassified arrow at byte 12057",
+        "unclassified arrow at byte 12202",
+        "unclassified arrow at byte 12280",
+        "unclassified arrow at byte 12419",
+        "unclassified arrow at byte 12452",
+        "unclassified arrow at byte 12489",
+        "unclassified arrow at byte 15900",
+        "unclassified arrow at byte 16053",
+        "unclassified arrow at byte 16292",
+        "unclassified arrow at byte 16348",
+        "unclassified arrow at byte 16971",
+        "unclassified arrow at byte 17297",
+        "unclassified arrow at byte 17418",
+        "unclassified arrow at byte 17770",
+        "unclassified arrow at byte 18031",
+        "unclassified arrow at byte 18159",
+        "unclassified arrow at byte 18812",
+        "unclassified arrow at byte 18959",
+        "unclassified arrow at byte 19190",
+        "unclassified arrow at byte 19453",
+        "unclassified arrow at byte 19775",
+        "unclassified arrow at byte 19817",
+        "unclassified arrow at byte 19838",
+        "unclassified arrow at byte 20041",
+        "unclassified arrow at byte 20790",
+        "unclassified arrow at byte 20825",
+        "unclassified arrow at byte 21335",
+        "unclassified arrow at byte 21584",
+        "unclassified arrow at byte 21825",
+        "unclassified arrow at byte 22074",
+        "unclassified arrow at byte 22569",
+        "unclassified arrow at byte 23194",
+        "unclassified arrow at byte 23421",
+        "unclassified arrow at byte 23461",
+        "unclassified arrow at byte 23822",
+        "unclassified arrow at byte 23858",
+        "unclassified arrow at byte 24497",
+        "unclassified arrow at byte 24538",
+        "unclassified arrow at byte 24884",
+        "unclassified arrow at byte 26960",
+        "unclassified arrow at byte 27345",
+        "unclassified arrow at byte 27389",
+        "unclassified arrow at byte 28751",
+        "unclassified arrow at byte 29458",
+        "unclassified arrow at byte 30128",
+        "unclassified arrow at byte 30417",
+        "unclassified arrow at byte 30728",
+        "unclassified arrow at byte 31120",
+        "unclassified arrow at byte 31561",
+        "unclassified arrow at byte 31783",
+        "unclassified arrow at byte 32017",
+        "unclassified arrow at byte 32285",
+        "unclassified arrow at byte 32299",
+        "unclassified arrow at byte 8673",
         "unmapped notation (=)",
         "unmapped notation <[ _ := _ ]>",
         "unmapped notation _ ##ₘ _",
@@ -118,7 +172,7 @@
       "unsupported": [
         "unsupported declaration not"
       ],
-      "declarations": 7
+      "declarations": 8
     },
     {
       "file": "theories/primitive_laws.v",
@@ -137,20 +191,21 @@
         "Cangjie unavailable: CJR StructLoad [requires runtime or layout metadata]",
         "Cangjie unavailable: CJR StructV [requires runtime or layout metadata]",
         "Cangjie unavailable: symbolic identifier or binder",
-        "unclassified arrow at byte 11142",
-        "unclassified arrow at byte 14515",
+        "unclassified arrow at byte 11523",
+        "unclassified arrow at byte 14896",
         "unclassified arrow at byte 2813",
         "unclassified arrow at byte 2838",
         "unclassified arrow at byte 2877",
         "unclassified arrow at byte 2909",
         "unclassified arrow at byte 5115",
-        "unclassified arrow at byte 5841",
-        "unclassified arrow at byte 7250",
+        "unclassified arrow at byte 5853",
+        "unclassified arrow at byte 6222",
+        "unclassified arrow at byte 7631",
         "unmapped notation True",
         "unmapped notation £ _",
         "unsupported declaration not"
       ],
-      "declarations": 44
+      "declarations": 45
     },
     {
       "file": "tools/extraction/rocq/cj_print.v",
@@ -184,13 +239,24 @@
         "unmapped notation _ ++ _"
       ],
       "declarations": 47
+    },
+    {
+      "file": "tools/extraction/rocq/generic_print.v",
+      "errors": [],
+      "unsupported": [
+        "CFix",
+        "unclassified arrow at byte 14904",
+        "unmapped notation _ ++ _"
+      ],
+      "declarations": 31
     }
   ],
   "dependencies": {
     "complete": false,
     "roots": [
-      "cjr.adequacy.cjr_adequacy",
       "cjr.adequacy.subG_cjrGpreS",
+      "cjr.buffer.closed_lit",
+      "cjr.buffer_laws.wp_buffer_make",
       "cjr.examples.cj_print.bulk_copy_arbitrary_loop_disabled",
       "cjr.examples.cj_print.bulk_copy_get_disabled",
       "cjr.examples.cj_print.bulk_copy_grow_enabled",
@@ -198,6 +264,17 @@
       "cjr.examples.cj_print.val_beq",
       "cjr.examples.cj_print.z_string_machine_bounds",
       "cjr.examples.emit_cj.cj_bundle",
+      "cjr.examples.generic_print.extracted_program_checked",
+      "cjr.examples.generic_print.type_args",
+      "cjr.generic_laws.generic_adequacy",
+      "cjr.generic_laws.generic_wp_instantiate",
+      "cjr.generic_laws.generic_wp_legacy",
+      "cjr.generic_laws.wp_generic_call_args",
+      "cjr.generic_laws.wp_generic_new_step",
+      "cjr.generics.GFunction",
+      "cjr.generics.GStaticFunction",
+      "cjr.generics.erase_legacy",
+      "cjr.generics.erase_subst",
       "cjr.lang.expr_cjr",
       "cjr.lang.expr_inhabited",
       "cjr.lang.fill_item_not_val",
@@ -212,7 +289,6 @@
       "cjr.lang.stack_id_eq_dec",
       "cjr.lang.stack_id_inj",
       "cjr.lang.state_inhabited",
-      "cjr.lang.subst_val",
       "cjr.lang.subst_var_val",
       "cjr.lang.ty",
       "cjr.lang.val_inhabited",
@@ -223,45 +299,43 @@
       "cjr.notation.::expr_scope:x_'-'_x",
       "cjr.notation.::expr_scope:x_'.&'_x",
       "cjr.notation.::expr_scope:x_'.^'_x",
+      "cjr.notation.::expr_scope:x_'/'_x",
       "cjr.notation.::expr_scope:x_'≤'_x",
       "cjr.primitive_laws.cjr_irisGS",
       "cjr.primitive_laws.raw_mapsto_exclusive",
       "cjr.primitive_laws.stack_mapsto_exclusive",
-      "cjr.primitive_laws.wp_alloc",
       "cjr.primitive_laws.wp_alloc_one",
-      "cjr.primitive_laws.wp_app",
       "cjr.primitive_laws.wp_bitand",
       "cjr.primitive_laws.wp_bitxor",
+      "cjr.primitive_laws.wp_div",
       "cjr.primitive_laws.wp_field_load",
       "cjr.primitive_laws.wp_field_store",
       "cjr.primitive_laws.wp_free_one",
-      "cjr.primitive_laws.wp_if_false",
-      "cjr.primitive_laws.wp_if_true",
-      "cjr.primitive_laws.wp_let",
       "cjr.primitive_laws.wp_load",
       "cjr.primitive_laws.wp_mul",
       "cjr.primitive_laws.wp_new",
-      "cjr.primitive_laws.wp_offset",
       "cjr.primitive_laws.wp_rec",
       "cjr.primitive_laws.wp_rem",
       "cjr.primitive_laws.wp_seq",
       "cjr.primitive_laws.wp_stack_assign",
       "cjr.primitive_laws.wp_stack_field",
       "cjr.primitive_laws.wp_stack_load",
-      "cjr.primitive_laws.wp_store",
-      "cjr.primitive_laws.wp_struct_done",
-      "cjr.primitive_laws.wp_struct_load",
       "cjr.primitive_laws.wp_var_bind",
       "cjr.primitive_laws.wp_while"
     ],
     "source_issues": {
       "theories/adequacy.v": [],
+      "theories/buffer.v": [],
+      "theories/buffer_laws.v": [],
+      "theories/generic_laws.v": [],
+      "theories/generics.v": [],
       "theories/lang.v": [],
       "theories/lifting.v": [],
       "theories/notation.v": [],
       "theories/primitive_laws.v": [],
       "tools/extraction/rocq/cj_print.v": [],
-      "tools/extraction/rocq/emit_cj.v": []
+      "tools/extraction/rocq/emit_cj.v": [],
+      "tools/extraction/rocq/generic_print.v": []
     },
     "declarations": {
       "cjr.adequacy.cjrGpreS": {
@@ -301,6 +375,137 @@
         "depends_on": [
           "cjr.adequacy.cjrGpreS",
           "cjr.adequacy.cjrΣ"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_fill_body": {
+        "depends_on": [
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op",
+          "cjr.lang.expr",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_fill_closed": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_body",
+          "cjr.buffer.buffer_fill_val",
+          "cjr.buffer.closed_val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_fill_val": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_body",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_make_body": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_val",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_make_closed": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_closed",
+          "cjr.buffer.buffer_fill_val",
+          "cjr.buffer.buffer_make_body",
+          "cjr.buffer.buffer_make_val",
+          "cjr.buffer.closed_val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.buffer_make_val": {
+        "depends_on": [
+          "cjr.buffer.buffer_make_body",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.closed_lit": {
+        "depends_on": [
+          "cjr.buffer.closed_val",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer.closed_val": {
+        "depends_on": [
+          "cjr.lang.subst_val",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.buffer_laws.buffer_cells": {
+        "depends_on": [
+          "cjr.lang.raw_id",
+          "cjr.lang.val",
+          "cjr.primitive_laws.::bi_scope:x_'↦ᵣ'_x",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.buffer_laws.buffer_zero_cells": {
+        "depends_on": [
+          "cjr.buffer_laws.buffer_cells",
+          "cjr.lang.base_lit",
+          "cjr.lang.raw_id",
+          "cjr.lang.val",
+          "cjr.primitive_laws.::bi_scope:x_'↦ᵣ'_x",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.buffer_laws.wp_buffer_fill": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_val",
+          "cjr.buffer.closed_val",
+          "cjr.buffer_laws.buffer_cells",
+          "cjr.generic_laws.wp_generic_pack_acc",
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op_eval",
+          "cjr.lang.ectx_item",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_app",
+          "cjr.primitive_laws.wp_bind",
+          "cjr.primitive_laws.wp_binop",
+          "cjr.primitive_laws.wp_if_false",
+          "cjr.primitive_laws.wp_if_true",
+          "cjr.primitive_laws.wp_let",
+          "cjr.primitive_laws.wp_offset",
+          "cjr.primitive_laws.wp_store",
+          "cjr.primitive_laws.wp_struct_load"
+        ],
+        "issues": []
+      },
+      "cjr.buffer_laws.wp_buffer_make": {
+        "depends_on": [
+          "cjr.buffer.buffer_fill_closed",
+          "cjr.buffer.buffer_fill_val",
+          "cjr.buffer.buffer_make_val",
+          "cjr.buffer.closed_val",
+          "cjr.buffer_laws.buffer_cells",
+          "cjr.buffer_laws.buffer_zero_cells",
+          "cjr.buffer_laws.wp_buffer_fill",
+          "cjr.generic_laws.wp_generic_pack_acc",
+          "cjr.lang.base_lit",
+          "cjr.lang.ectx_item",
+          "cjr.lang.expr",
+          "cjr.lang.raw_id",
+          "cjr.lang.val",
+          "cjr.primitive_laws.::bi_scope:x_'↦ᵦ'_x",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_alloc",
+          "cjr.primitive_laws.wp_app",
+          "cjr.primitive_laws.wp_bind",
+          "cjr.primitive_laws.wp_let",
+          "cjr.primitive_laws.wp_struct_load"
         ],
         "issues": []
       },
@@ -991,7 +1196,8 @@
           "cjr.examples.cj_print.cat_all",
           "cjr.examples.cj_print.nl",
           "cjr.examples.cj_print.print_prog",
-          "cjr.examples.emit_cj.cj_files"
+          "cjr.examples.emit_cj.cj_files",
+          "cjr.examples.generic_print.generic_source"
         ],
         "issues": []
       },
@@ -1325,6 +1531,637 @@
           "cjr.examples.emit_cj.unit_e",
           "cjr.lang.expr"
         ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.check_expr": {
+        "depends_on": [
+          "cjr.examples.generic_print.check_expr",
+          "cjr.examples.generic_print.function_env",
+          "cjr.examples.generic_print.local_identifier",
+          "cjr.examples.generic_print.member",
+          "cjr.examples.generic_print.require",
+          "cjr.examples.generic_print.type_errors",
+          "cjr.generics.gexpr",
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.layout_env",
+          "cjr.generics.method_key",
+          "cjr.generics.nominal",
+          "cjr.generics.owner_name",
+          "cjr.lang.base_lit",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.check_function": {
+        "depends_on": [
+          "cjr.examples.generic_print.check_expr",
+          "cjr.examples.generic_print.distinct",
+          "cjr.examples.generic_print.gty_beq",
+          "cjr.examples.generic_print.identifier",
+          "cjr.examples.generic_print.local_identifier",
+          "cjr.examples.generic_print.member",
+          "cjr.examples.generic_print.owner_parameters",
+          "cjr.examples.generic_print.require",
+          "cjr.examples.generic_print.type_errors",
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.gty",
+          "cjr.generics.layout_env"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.check_functions": {
+        "depends_on": [
+          "cjr.examples.generic_print.check_function",
+          "cjr.examples.generic_print.check_functions"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.check_layout": {
+        "depends_on": [
+          "cjr.examples.generic_print.distinct",
+          "cjr.examples.generic_print.identifier",
+          "cjr.examples.generic_print.require",
+          "cjr.examples.generic_print.type_errors",
+          "cjr.generics.glayout"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.check_program": {
+        "depends_on": [
+          "cjr.examples.generic_print.check_expr",
+          "cjr.examples.generic_print.check_functions",
+          "cjr.examples.generic_print.check_layout",
+          "cjr.examples.generic_print.distinct",
+          "cjr.examples.generic_print.member",
+          "cjr.examples.generic_print.require",
+          "cjr.generics.function_key",
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout",
+          "cjr.generics.gprogram"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.digit": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.generic_print.distinct": {
+        "depends_on": [
+          "cjr.examples.generic_print.distinct",
+          "cjr.examples.generic_print.member"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.extracted_program_checked": {
+        "depends_on": [
+          "cjr.examples.generic_print.check_program",
+          "cjr.examples.generic_print.extraction_result",
+          "cjr.examples.generic_print.print_generic_program"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.extraction_result": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.generic_print.function_env": {
+        "depends_on": [
+          "cjr.generics.function_key",
+          "cjr.generics.gfunction"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.generic_source": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.generic_print.extraction_result",
+          "cjr.examples.generic_print.print_generic_program"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.gty_beq": {
+        "depends_on": [
+          "cjr.generics.gty"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.examples.generic_print.gty_beq:3"
+        ]
+      },
+      "cjr.examples.generic_print.identifier": {
+        "depends_on": [
+          "cjr.examples.cj_print.keywords",
+          "cjr.examples.generic_print.identifier_tail",
+          "cjr.examples.generic_print.letter",
+          "cjr.examples.generic_print.member"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.identifier_tail": {
+        "depends_on": [
+          "cjr.examples.generic_print.digit",
+          "cjr.examples.generic_print.identifier_tail",
+          "cjr.examples.generic_print.letter"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.letter": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.generic_print.local_identifier": {
+        "depends_on": [
+          "cjr.examples.generic_print.identifier",
+          "cjr.examples.generic_print.member",
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.member": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.generic_print.owner_parameters": {
+        "depends_on": [
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.layout_env"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_expr": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.cj_print.lit",
+          "cjr.examples.cj_print.nl",
+          "cjr.examples.cj_print.sym",
+          "cjr.examples.generic_print.print_expr",
+          "cjr.examples.generic_print.print_field_name",
+          "cjr.examples.generic_print.print_type",
+          "cjr.examples.generic_print.print_types",
+          "cjr.examples.generic_print.typed_receiver",
+          "cjr.generics.gexpr",
+          "cjr.generics.gty",
+          "cjr.lang.bin_op",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_field_name": {
+        "depends_on": [
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.layout_env",
+          "cjr.generics.owner_name"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_function": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.cj_print.nl",
+          "cjr.examples.generic_print.print_expr",
+          "cjr.examples.generic_print.print_parameter",
+          "cjr.examples.generic_print.print_parameters",
+          "cjr.examples.generic_print.print_type",
+          "cjr.generics.gfunction"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_generic_program": {
+        "depends_on": [
+          "cjr.examples.cj_print.cat_all",
+          "cjr.examples.cj_print.nl",
+          "cjr.examples.generic_print.check_program",
+          "cjr.examples.generic_print.extraction_result",
+          "cjr.examples.generic_print.print_expr",
+          "cjr.examples.generic_print.print_function",
+          "cjr.examples.generic_print.print_layout",
+          "cjr.generics.gfunction",
+          "cjr.generics.gprogram"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_layout": {
+        "depends_on": [
+          "cjr.examples.cj_print.cat_all",
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.cj_print.nl",
+          "cjr.examples.generic_print.print_function",
+          "cjr.examples.generic_print.print_parameter",
+          "cjr.examples.generic_print.print_parameters",
+          "cjr.examples.generic_print.print_type",
+          "cjr.generics.gfunction",
+          "cjr.generics.gkind",
+          "cjr.generics.glayout"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_parameter": {
+        "depends_on": [
+          "cjr.examples.generic_print.print_type",
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_parameters": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_type": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.generic_print.print_type",
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.print_types": {
+        "depends_on": [
+          "cjr.examples.cj_print.comma",
+          "cjr.examples.generic_print.print_type"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.require": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.generic_print.type_args": {
+        "depends_on": [
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.type_errors": {
+        "depends_on": [
+          "cjr.examples.generic_print.require",
+          "cjr.generics.gty_wf"
+        ],
+        "issues": []
+      },
+      "cjr.examples.generic_print.typed_receiver": {
+        "depends_on": [
+          "cjr.examples.generic_print.print_type"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.generic_adequacy": {
+        "depends_on": [
+          "cjr.adequacy.cjrGpreS",
+          "cjr.adequacy.cjr_adequacy",
+          "cjr.generic_laws.generic_wp",
+          "cjr.generics.erase_program",
+          "cjr.generics.gprogram",
+          "cjr.generics.link_functions",
+          "cjr.lang.state_init",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.generic_wp": {
+        "depends_on": [
+          "cjr.generics.erase",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.generic_wp_instantiate": {
+        "depends_on": [
+          "cjr.generic_laws.generic_wp",
+          "cjr.generics.erase_instantiate",
+          "cjr.generics.ginstantiate",
+          "cjr.generics.nominal_owners",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.generic_wp_legacy": {
+        "depends_on": [
+          "cjr.generic_laws.generic_wp",
+          "cjr.generics.gexpr",
+          "cjr.primitive_laws.cjrGS"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.wp_generic_call_args": {
+        "depends_on": [
+          "cjr.generic_laws.wp_generic_pack_acc",
+          "cjr.generics.glookup",
+          "cjr.generics.gpack",
+          "cjr.generics.resolve",
+          "cjr.lang.ectx_item",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_bind"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.wp_generic_new_step": {
+        "depends_on": [
+          "cjr.lang.base_step",
+          "cjr.lang.expr",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_pure_step"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.wp_generic_pack_acc": {
+        "depends_on": [
+          "cjr.generic_laws.wp_generic_struct_step",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_struct_done"
+        ],
+        "issues": []
+      },
+      "cjr.generic_laws.wp_generic_struct_step": {
+        "depends_on": [
+          "cjr.lang.base_step",
+          "cjr.lang.expr",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_pure_step"
+        ],
+        "issues": []
+      },
+      "cjr.generics.GFunction": {
+        "depends_on": [
+          "cjr.generics.gfunction"
+        ],
+        "issues": []
+      },
+      "cjr.generics.GStaticFunction": {
+        "depends_on": [
+          "cjr.generics.gfunction"
+        ],
+        "issues": []
+      },
+      "cjr.generics.bind_parameters": {
+        "depends_on": [
+          "cjr.generics.bind_parameters",
+          "cjr.generics.gty",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase": {
+        "depends_on": [
+          "cjr.buffer.buffer_make_val",
+          "cjr.generics.erase",
+          "cjr.generics.gexpr",
+          "cjr.generics.glayout",
+          "cjr.generics.gpack",
+          "cjr.generics.is_class",
+          "cjr.generics.method_key",
+          "cjr.generics.owner_name",
+          "cjr.generics.resolve",
+          "cjr.lang.expr",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase_function": {
+        "depends_on": [
+          "cjr.generics.bind_parameters",
+          "cjr.generics.erase",
+          "cjr.generics.function_key",
+          "cjr.generics.gfunction",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase_instantiate": {
+        "depends_on": [
+          "cjr.generics.erase",
+          "cjr.generics.ginstantiate",
+          "cjr.generics.gpack",
+          "cjr.generics.is_class",
+          "cjr.generics.nominal_owners",
+          "cjr.generics.owner_name",
+          "cjr.generics.owner_subst"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase_legacy": {
+        "depends_on": [
+          "cjr.generics.erase",
+          "cjr.generics.gexpr"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase_program": {
+        "depends_on": [
+          "cjr.generics.erase",
+          "cjr.generics.gprogram",
+          "cjr.generics.link_functions"
+        ],
+        "issues": []
+      },
+      "cjr.generics.erase_subst": {
+        "depends_on": [
+          "cjr.buffer.buffer_make_closed",
+          "cjr.buffer.buffer_make_val",
+          "cjr.generics.erase",
+          "cjr.generics.gsubst",
+          "cjr.generics.is_class",
+          "cjr.generics.owner_name",
+          "cjr.generics.referenced_names",
+          "cjr.generics.resolve",
+          "cjr.generics.string_eqb_decide",
+          "cjr.lang.binds",
+          "cjr.lang.expr",
+          "cjr.lang.subst",
+          "cjr.lang.subst_val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.function_key": {
+        "depends_on": [
+          "cjr.generics.gfunction",
+          "cjr.generics.method_key"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gexpr": {
+        "depends_on": [
+          "cjr.generics.gty",
+          "cjr.lang.bin_op",
+          "cjr.lang.binder",
+          "cjr.lang.expr",
+          "cjr.lang.val"
+        ],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.generics.gexpr:32"
+        ]
+      },
+      "cjr.generics.gfunction": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.generics.ginstantiate": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.ginstantiate",
+          "cjr.generics.gty",
+          "cjr.generics.gty_subst"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gkind": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.generics.glayout": {
+        "depends_on": [
+          "cjr.generics.gkind",
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.generics.glookup": {
+        "depends_on": [
+          "cjr.generics.glookup"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gpack": {
+        "depends_on": [
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gprogram": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.gfunction",
+          "cjr.generics.glayout"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gsubst": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.gsubst",
+          "cjr.lang.binds",
+          "cjr.lang.subst",
+          "cjr.lang.subst_val",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gty": {
+        "depends_on": [],
+        "issues": [
+          "Project reference has no rendered declaration: cjr.generics.gty:1"
+        ]
+      },
+      "cjr.generics.gty_subst": {
+        "depends_on": [
+          "cjr.generics.glookup",
+          "cjr.generics.gty",
+          "cjr.generics.gty_subst"
+        ],
+        "issues": []
+      },
+      "cjr.generics.gty_wf": {
+        "depends_on": [
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.gty",
+          "cjr.generics.gty_wf",
+          "cjr.generics.layout_env"
+        ],
+        "issues": []
+      },
+      "cjr.generics.is_class": {
+        "depends_on": [
+          "cjr.generics.gkind",
+          "cjr.generics.glayout",
+          "cjr.generics.glookup",
+          "cjr.generics.layout_env"
+        ],
+        "issues": []
+      },
+      "cjr.generics.layout_env": {
+        "depends_on": [
+          "cjr.generics.glayout"
+        ],
+        "issues": []
+      },
+      "cjr.generics.link_functions": {
+        "depends_on": [
+          "cjr.generics.erase_function",
+          "cjr.generics.function_key",
+          "cjr.generics.gfunction",
+          "cjr.generics.link_functions",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.method_key": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.generics.nominal": {
+        "depends_on": [
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.generics.nominal_owners": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.nominal",
+          "cjr.generics.nominal_owners"
+        ],
+        "issues": []
+      },
+      "cjr.generics.owner_name": {
+        "depends_on": [
+          "cjr.generics.gty"
+        ],
+        "issues": []
+      },
+      "cjr.generics.owner_subst": {
+        "depends_on": [
+          "cjr.generics.gty_subst",
+          "cjr.generics.nominal",
+          "cjr.generics.owner_name"
+        ],
+        "issues": []
+      },
+      "cjr.generics.referenced_names": {
+        "depends_on": [
+          "cjr.generics.gexpr",
+          "cjr.generics.method_key",
+          "cjr.generics.owner_name",
+          "cjr.generics.referenced_names"
+        ],
+        "issues": []
+      },
+      "cjr.generics.resolve": {
+        "depends_on": [
+          "cjr.generics.glookup",
+          "cjr.lang.expr",
+          "cjr.lang.val"
+        ],
+        "issues": []
+      },
+      "cjr.generics.string_eqb_decide": {
+        "depends_on": [],
         "issues": []
       },
       "cjr.lang.base_lit": {
@@ -2134,6 +2971,13 @@
         ],
         "issues": []
       },
+      "cjr.notation.::expr_scope:x_'/'_x": {
+        "depends_on": [
+          "cjr.lang.bin_op",
+          "cjr.lang.expr"
+        ],
+        "issues": []
+      },
       "cjr.notation.::expr_scope:x_'≤'_x": {
         "depends_on": [
           "cjr.lang.bin_op",
@@ -2342,6 +3186,17 @@
         "issues": []
       },
       "cjr.primitive_laws.wp_bitxor": {
+        "depends_on": [
+          "cjr.lang.base_lit",
+          "cjr.lang.bin_op",
+          "cjr.lang.expr",
+          "cjr.lang.val",
+          "cjr.primitive_laws.cjrGS",
+          "cjr.primitive_laws.wp_binop"
+        ],
+        "issues": []
+      },
+      "cjr.primitive_laws.wp_div": {
         "depends_on": [
           "cjr.lang.base_lit",
           "cjr.lang.bin_op",
@@ -2649,6 +3504,66 @@
         "description": null
       },
       "cjr.adequacy.subG_cjrGpreS": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_fill_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_fill_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_fill_val": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_make_body": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_make_closed": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.buffer_make_val": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.closed_lit": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer.closed_val": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer_laws.buffer_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer_laws.buffer_zero_cells": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer_laws.wp_buffer_fill": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.buffer_laws.wp_buffer_make": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null
@@ -3258,6 +4173,366 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.examples.generic_print.check_expr": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.check_function": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.check_functions": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.check_layout": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.check_program": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.digit": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.distinct": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.extracted_program_checked": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.extraction_result": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.function_env": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.generic_source": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.gty_beq": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.identifier": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.identifier_tail": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.letter": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.local_identifier": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.member": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.owner_parameters": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_expr": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_field_name": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_function": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_generic_program": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_layout": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_parameter": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_parameters": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_type": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.print_types": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.require": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.type_args": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.type_errors": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.generic_print.typed_receiver": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.generic_adequacy": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.generic_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.generic_wp_instantiate": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.generic_wp_legacy": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.wp_generic_call_args": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.wp_generic_new_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.wp_generic_pack_acc": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generic_laws.wp_generic_struct_step": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.GFunction": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.GStaticFunction": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.bind_parameters": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase_function": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase_instantiate": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase_legacy": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase_program": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.erase_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.function_key": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gexpr": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gfunction": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.ginstantiate": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gkind": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.glayout": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.glookup": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gpack": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gprogram": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gsubst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gty_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.gty_wf": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.is_class": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.layout_env": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.link_functions": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.method_key": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.nominal": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.nominal_owners": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.owner_name": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.owner_subst": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.referenced_names": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.resolve": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.generics.string_eqb_decide": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.lang.base_lit": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3768,6 +5043,11 @@
         "reason": "No matching cached explanation (offline mode).",
         "description": null
       },
+      "cjr.notation.::expr_scope:x_'/'_x": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
       "cjr.notation.::expr_scope:x_'≤'_x": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
@@ -3879,6 +5159,11 @@
         "description": null
       },
       "cjr.primitive_laws.wp_bitxor": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.primitive_laws.wp_div": {
         "status": "unavailable",
         "reason": "No matching cached explanation (offline mode).",
         "description": null

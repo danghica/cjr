@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img">
+<title>array_read benchmark medians and IQR</title>
+<style>text{font:12px system-ui;fill:#26333a}.axis{stroke:#9aa7aa}.grid{stroke:#e4e9e9}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="24" font-size="17">array_read · median and IQR</text>
+<circle cx="250" cy="44" r="5" fill="#176f76"/><text x="260" y="48">Mono</text>
+<circle cx="400" cy="44" r="5" fill="#de8b37"/><text x="410" y="48">Poly</text>
+<path d="M 230.0 65 V 293" class="grid"/><text x="230.0" y="311" text-anchor="middle">0.00</text>
+<path d="M 392.5 65 V 293" class="grid"/><text x="392.5" y="311" text-anchor="middle">0.25</text>
+<path d="M 555.0 65 V 293" class="grid"/><text x="555.0" y="311" text-anchor="middle">0.50</text>
+<path d="M 717.5 65 V 293" class="grid"/><text x="717.5" y="311" text-anchor="middle">0.76</text>
+<path d="M 880.0 65 V 293" class="grid"/><text x="880.0" y="311" text-anchor="middle">1.01</text>
+<text x="555" y="329" text-anchor="middle">Time (ns per operation; lower is faster)</text>
+<text x="18" y="80">array_read · n=256</text>
+<g><title>Mono: median 1.0065, Q1 1.0026, Q3 1.0081 ns/op</title><path d="M 876.5 90 H 880.0" stroke="#176f76" stroke-width="2"/><circle cx="879.0" cy="90" r="4" fill="#176f76"/><text x="900" y="94">Mono 1.01 ns/op</text></g>
+<g><title>Poly: median 0.6720, Q1 0.6711, Q3 0.6759 ns/op</title><path d="M 662.7 110 H 665.8" stroke="#de8b37" stroke-width="2"/><circle cx="663.3" cy="110" r="4" fill="#de8b37"/><text x="900" y="114">Poly 0.67 ns/op</text></g>
+<text x="18" y="156">array_read · n=4,096</text>
+<g><title>Mono: median 0.9827, Q1 0.9714, Q3 0.9851 ns/op</title><path d="M 856.3 166 H 865.1" stroke="#176f76" stroke-width="2"/><circle cx="863.6" cy="166" r="4" fill="#176f76"/><text x="900" y="170">Mono 0.98 ns/op</text></g>
+<g><title>Poly: median 0.6556, Q1 0.6526, Q3 0.6571 ns/op</title><path d="M 650.8 186 H 653.7" stroke="#de8b37" stroke-width="2"/><circle cx="652.7" cy="186" r="4" fill="#de8b37"/><text x="900" y="190">Poly 0.66 ns/op</text></g>
+<text x="18" y="232">array_read · n=65,536</text>
+<g><title>Mono: median 0.9971, Q1 0.9938, Q3 0.9982 ns/op</title><path d="M 870.8 242 H 873.6" stroke="#176f76" stroke-width="2"/><circle cx="872.9" cy="242" r="4" fill="#176f76"/><text x="900" y="246">Mono 1.00 ns/op</text></g>
+<g><title>Poly: median 0.7446, Q1 0.7426, Q3 0.8187 ns/op</title><path d="M 708.8 262 H 757.9" stroke="#de8b37" stroke-width="2"/><circle cx="710.1" cy="262" r="4" fill="#de8b37"/><text x="900" y="266">Poly 0.74 ns/op</text></g>
+</svg>

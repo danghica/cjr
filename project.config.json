@@ -54,6 +54,14 @@
     {
       "label": "aes_ige",
       "path": "example/aes_ige/index.html"
+    },
+    {
+      "label": "generics",
+      "path": "example/generics/index.html"
+    },
+    {
+      "label": "poly_array",
+      "path": "example/poly_array/index.html"
     }
   ],
   "name": "CJR",

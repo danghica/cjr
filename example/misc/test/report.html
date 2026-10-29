@@ -1,6 +1,7 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test report</title><link rel="stylesheet" href="../docs/report.css"><main><header><h1>Runtime test report</h1><a href="../index.html">Project index</a></header><p><span class="badge">passed</span> 10 reported test cases.</p><ul><li><span class="badge">passed</span> arith.signedMultiplication</li><li><span class="badge">passed</span> arith.sumOneReturnsOne</li><li><span class="badge">passed</span> cell.cellAllocatesWritesReadsAndFrees</li><li><span class="badge">passed</span> class_upd.classBumpReturnsTheRawWord</li><li><span class="badge">passed</span> frame_call.writeTouchesOnlyThePassedPointer</li><li><span class="badge">passed</span> struct_upd.bumpWritesTheField</li><li><span class="badge">passed</span> struct_upd.bumpKeepLeavesTheRawWord</li><li><span class="badge">passed</span> sum_block.sumAtReadsTheWrittenWord</li><li><span class="badge">passed</span> swap.swapExchangesTwoCells</li><li><span class="badge">passed</span> vtable.runAppliesTheStoredClosure</li></ul><h2>Run metadata</h2><pre>{
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test report</title><link rel="stylesheet" href="../docs/report.css"><main><header><h1>Runtime test report</h1><a href="../index.html">Project index</a></header><p><span class="badge">passed</span> 11 reported test cases.</p><ul><li><span class="badge">passed</span> arith.signedMultiplication</li><li><span class="badge">passed</span> arith.signedDivision</li><li><span class="badge">passed</span> arith.sumOneReturnsOne</li><li><span class="badge">passed</span> cell.cellAllocatesWritesReadsAndFrees</li><li><span class="badge">passed</span> class_upd.classBumpReturnsTheRawWord</li><li><span class="badge">passed</span> frame_call.writeTouchesOnlyThePassedPointer</li><li><span class="badge">passed</span> struct_upd.bumpWritesTheField</li><li><span class="badge">passed</span> struct_upd.bumpKeepLeavesTheRawWord</li><li><span class="badge">passed</span> sum_block.sumAtReadsTheWrittenWord</li><li><span class="badge">passed</span> swap.swapExchangesTwoCells</li><li><span class="badge">passed</span> vtable.runAppliesTheStoredClosure</li></ul><h2>Run metadata</h2><pre>{
   &quot;cases&quot;: [
     &quot;arith.signedMultiplication&quot;,
+    &quot;arith.signedDivision&quot;,
     &quot;arith.sumOneReturnsOne&quot;,
     &quot;cell.cellAllocatesWritesReadsAndFrees&quot;,
     &quot;class_upd.classBumpReturnsTheRawWord&quot;,
@@ -27,74 +28,75 @@
   &quot;sdk&quot;: &quot;macOS TAPI compatibility copy: arm64e.x1 removed, arm64e labels normalized to arm64&quot;,
   &quot;status&quot;: &quot;passed&quot;
 }</pre><h2>Execution output</h2><pre>--------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 417000 ns, RESULT:
-    TCS: ArithTests, time elapsed: 404000 ns, RESULT:
-    [ PASSED ] CASE: signedMultiplication (177000 ns)
-    [ PASSED ] CASE: sumOneReturnsOne (5000 ns)
+TP: default, time elapsed: 266000 ns, RESULT:
+    TCS: ArithTests, time elapsed: 258000 ns, RESULT:
+    [ PASSED ] CASE: signedMultiplication (117000 ns)
+    [ PASSED ] CASE: signedDivision (4000 ns)
+    [ PASSED ] CASE: sumOneReturnsOne (1000 ns)
+Summary: TOTAL: 3
+    PASSED: 3, SKIPPED: 0, ERROR: 0
+    FAILED: 0
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+TP: default, time elapsed: 313000 ns, RESULT:
+    TCS: CellTests, time elapsed: 312000 ns, RESULT:
+    [ PASSED ] CASE: cellAllocatesWritesReadsAndFrees (142000 ns)
+Summary: TOTAL: 1
+    PASSED: 1, SKIPPED: 0, ERROR: 0
+    FAILED: 0
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+TP: default, time elapsed: 307000 ns, RESULT:
+    TCS: ClassUpdTests, time elapsed: 306000 ns, RESULT:
+    [ PASSED ] CASE: classBumpReturnsTheRawWord (140000 ns)
+Summary: TOTAL: 1
+    PASSED: 1, SKIPPED: 0, ERROR: 0
+    FAILED: 0
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+TP: default, time elapsed: 316000 ns, RESULT:
+    TCS: FrameCallTests, time elapsed: 316000 ns, RESULT:
+    [ PASSED ] CASE: writeTouchesOnlyThePassedPointer (145000 ns)
+Summary: TOTAL: 1
+    PASSED: 1, SKIPPED: 0, ERROR: 0
+    FAILED: 0
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+TP: default, time elapsed: 318000 ns, RESULT:
+    TCS: StructUpdTests, time elapsed: 317000 ns, RESULT:
+    [ PASSED ] CASE: bumpWritesTheField (136000 ns)
+    [ PASSED ] CASE: bumpKeepLeavesTheRawWord (4000 ns)
 Summary: TOTAL: 2
     PASSED: 2, SKIPPED: 0, ERROR: 0
     FAILED: 0
 --------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 538000 ns, RESULT:
-    TCS: CellTests, time elapsed: 537000 ns, RESULT:
-    [ PASSED ] CASE: cellAllocatesWritesReadsAndFrees (246000 ns)
+TP: default, time elapsed: 312000 ns, RESULT:
+    TCS: SumBlockTests, time elapsed: 312000 ns, RESULT:
+    [ PASSED ] CASE: sumAtReadsTheWrittenWord (142000 ns)
 Summary: TOTAL: 1
     PASSED: 1, SKIPPED: 0, ERROR: 0
     FAILED: 0
 --------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 572000 ns, RESULT:
-    TCS: ClassUpdTests, time elapsed: 571000 ns, RESULT:
-    [ PASSED ] CASE: classBumpReturnsTheRawWord (264000 ns)
+TP: default, time elapsed: 333000 ns, RESULT:
+    TCS: SwapTests, time elapsed: 332000 ns, RESULT:
+    [ PASSED ] CASE: swapExchangesTwoCells (151000 ns)
 Summary: TOTAL: 1
     PASSED: 1, SKIPPED: 0, ERROR: 0
     FAILED: 0
 --------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 538000 ns, RESULT:
-    TCS: FrameCallTests, time elapsed: 537000 ns, RESULT:
-    [ PASSED ] CASE: writeTouchesOnlyThePassedPointer (252000 ns)
-Summary: TOTAL: 1
-    PASSED: 1, SKIPPED: 0, ERROR: 0
-    FAILED: 0
---------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 399000 ns, RESULT:
-    TCS: StructUpdTests, time elapsed: 398000 ns, RESULT:
-    [ PASSED ] CASE: bumpWritesTheField (172000 ns)
-    [ PASSED ] CASE: bumpKeepLeavesTheRawWord (5000 ns)
-Summary: TOTAL: 2
-    PASSED: 2, SKIPPED: 0, ERROR: 0
-    FAILED: 0
---------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 538000 ns, RESULT:
-    TCS: SumBlockTests, time elapsed: 537000 ns, RESULT:
-    [ PASSED ] CASE: sumAtReadsTheWrittenWord (248000 ns)
-Summary: TOTAL: 1
-    PASSED: 1, SKIPPED: 0, ERROR: 0
-    FAILED: 0
---------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 578000 ns, RESULT:
-    TCS: SwapTests, time elapsed: 577000 ns, RESULT:
-    [ PASSED ] CASE: swapExchangesTwoCells (270000 ns)
-Summary: TOTAL: 1
-    PASSED: 1, SKIPPED: 0, ERROR: 0
-    FAILED: 0
---------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------
-TP: default, time elapsed: 551000 ns, RESULT:
-    TCS: VTableTests, time elapsed: 550000 ns, RESULT:
-    [ PASSED ] CASE: runAppliesTheStoredClosure (241000 ns)
+TP: default, time elapsed: 308000 ns, RESULT:
+    TCS: VTableTests, time elapsed: 308000 ns, RESULT:
+    [ PASSED ] CASE: runAppliesTheStoredClosure (146000 ns)
 Summary: TOTAL: 1
     PASSED: 1, SKIPPED: 0, ERROR: 0
     FAILED: 0

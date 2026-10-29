@@ -39,6 +39,8 @@ Syntax, Semantics, and Separation Logic}
   literate={Σ}{{$\Sigma$}}1
            {↦ₛ}{{$\mapsto_s$}}2
            {↦ₒ}{{$\mapsto_o$}}2
+           {λ}{{$\lambda$}}1
+           {↦ₒ}{{$\mapsto_o$}}2
            {→}{{$\rightarrow$}}1
            {∀}{{$\forall$}}1
            {∃}{{$\exists$}}1
@@ -76,9 +78,11 @@ Syntax, Semantics, and Separation Logic}
 \newcommand{\ptsb}{\mathrel{\mapsto_{b}}}
 \newcommand{\ptso}{\mathrel{\mapsto_{o}}}
 \newcommand{\sep}{\mathbin{*}}
+\newcommand{\bigsep}{\mathop{\scalebox{1.4}{$\ast$}}}
 \newcommand{\wand}{\mathbin{-\!\!*}}
 \newcommand{\later}{\mathop{\triangleright}}
 \newcommand{\Wpre}{\mathsf{wp}}
+\newcommand{\GWpre}{\mathsf{gwp}}
 \newcommand{\pure}[1]{\ulcorner #1 \urcorner}
 
 \begin{document}
@@ -86,9 +90,15 @@ Syntax, Semantics, and Separation Logic}
 
 \begin{abstract}
 We present \cjr{} (Cangjie Radical), the performance-parity core of a Cangjie-like language: unboxed structs, word-addressed \texttt{CPointer} blocks, and final classes, together with \texttt{func}, \texttt{if}, and \texttt{while}.
+An explicit rank-one source layer adds generic functions, structs, classes,
+and methods. Its type arguments erase for execution in the core and remain
+explicit when printed as native Cangjie generics.
 This note is a reading guide to the Coq/Iris mechanization.
 We give every concept twice---once as the definition that is actually checked, and once as ordinary mathematics with the same content---and we follow each program-logic rule by an account of what it is for.
-Finally, we walk through the examples that exercise the rules in order: linked lists, arrays, resizable arrays, sorting, and hash maps, followed by AES encryption and IGE chaining. The AES example separates checked cipher algebra and kernel refinement from the outstanding refinement of complete executable routines.
+We work through generic identity, heterogeneous pairs, and boxes with
+type-changing callbacks, including their resource ownership contracts.
+The larger examples cover linked lists, arrays, resizable arrays, sorting,
+and hash maps, followed by AES encryption and IGE chaining. The AES example separates checked cipher algebra and kernel refinement from the outstanding refinement of complete executable routines.
 \end{abstract}
 
 \clearpage
@@ -98,15 +108,26 @@ Finally, we walk through the examples that exercise the rules in order: linked l
 \section{What this development is}
 
 We take as our starting point a deliberately small core.
-\cjr{} is sequential, monomorphic, and first-order; it has code pointers, so that a vtable can be written by hand.
-It has no generics, no inheritance, no \texttt{enum}/\texttt{match}, and no concurrency.
+\cjr{} has a sequential untyped operational core and code pointers, so that a vtable can be written by hand.
+An explicit rank-one generic source layer erases to that same core and extracts to native Cangjie generics.
+Inheritance, interface bounds, higher-rank polymorphism, \texttt{enum}/\texttt{match}, and concurrency are outside this fragment.
 Features of a larger source language that fall outside this cut are treated as sugar that must lower into the core at the same time and space cost.
-What follows defines that core.
-We do not define the lowering, a garbage collector, or byte-level layout.
+What follows defines both the core and the explicit generic layer.
+The function \texttt{erase} defines the latter's translation to the core.
+There is no general Cangjie parser or lowering pass, garbage collector,
+or byte-level layout model.
 
 Safety, in this development, is not a type system.
-The grammar \texttt{ty} records the types one intends to use, but the operational semantics is untyped.
+The legacy grammar \texttt{ty} documents core representations. The separate
+grammar \texttt{gty} records structured source types, including type variables
+and named applications such as \texttt{Box<Pair<Int64, Bool>>}.
+The generic checker validates names, scopes, and arities; it is not a complete
+typing judgment. The operational semantics remains untyped.
 A program is safe when a weakest-precondition proof exists; adequacy then says that, from the empty machine, execution does not get stuck.
+Generic specifications quantify over Iris predicates describing element
+representations. They prove uniform behavior of the supplied implementations;
+they do not establish a general relational-parametricity theorem for all
+well-typed Cangjie programs.
 
 The Coq sources live under \texttt{theories/}.
 The language is an Iris evaluation-context language~\cite{iris-ground-up,iris-essence}, so the frame rule and the bind rule are Iris's, rather than those of a separate Hoare calculus.
@@ -132,6 +153,11 @@ connecting that model to the CJR heap, executable CJR expression trees for
 the operations, and specifications stated as weakest preconditions.  The
 translation is a proposal that must be reviewed: informal text does not
 become a theorem until its meaning has been made explicit in Rocq/Coq.
+For generic programs, the executable definitions are \texttt{gexpr} trees
+with explicit declaration references and type arguments. Their specifications
+use the same Iris logic after erasure to \texttt{expr}; a declaration such as
+\texttt{Box<T>.map<U>} is proved once against arbitrary input and output
+representation predicates.
 
 The proofs use Iris's separation logic over the small-step semantics of CJR.
 The Iris weakest-precondition rules describe how each operation transforms
@@ -152,6 +178,10 @@ serializes the program definitions.  A disciplined build runs
 to emit the programs.  Passing the proof check establishes the stated CJR
 properties; by itself it does not prove that the printer's output preserves
 the CJR semantics.
+The original printing interface remains available for existing programs.
+The generic path in \path{tools/extraction/rocq/generic_print.v} prints the
+structured source directly, retaining type parameters and named layouts.
+It does not try to reconstruct generic types from erased terms.
 
 Finally, Cangjie unit tests compile and execute representative cases of the
 generated code.  They are valuable sanity checks for the printer, compiler,
@@ -179,16 +209,16 @@ at that boundary.
   restores the original structure};
 \node[process, below=11mm of $(informal.south)!0.5!(facts.south)$] (formal) {
   \textbf{Formalization in Gallina / CJR}\\
-  Abstract model, representation predicate, CJR program definitions,
-  and explicit theorem statements};
+  Abstract model and representation predicates; core or generic source
+  programs, and explicit theorem statements};
 \node[process, below=8mm of formal] (proof) {
   \textbf{Rocq/Coq proof checking with Iris}\\
-  Weakest-precondition proofs over the CJR operational semantics;
-  the kernel checks implementation specifications and client laws};
+  Weakest-precondition proofs over the CJR core; generic source is erased
+  for these proofs. The kernel checks specifications and client laws};
 \node[process, below=8mm of proof] (printer) {
   \textbf{Custom Gallina printer: \texttt{emit\_cj.v}}\\
-  On the verified build path, serialize CJR program definitions into
-  standalone Cangjie source};
+  Serialize core programs through the legacy path, or structured generic
+  source with its explicit type arguments};
 \node[box, below=8mm of printer, xshift=-32mm] (generated) {
   \textbf{Generated Cangjie}\\
   \texttt{example/*/extracted/*.cj}};
@@ -204,12 +234,15 @@ at that boundary.
 \draw[arrow] (generated) -- (tests);
 \end{tikzpicture}
 \caption{The intended specification-to-test workflow and the components
-implemented in this repository.  The LLM-assisted formalization is a human
+implemented in this repository. Generic source supplies both the erased
+program being proved and the typed source being printed.
+The LLM-assisted formalization is a human
 review point; proof checking validates CJR theorems, while unit tests sample
 the separately printed Cangjie program.}
 \label{fig:tool-workflow}
 \end{figure}
 
+\clearpage
 \section{Syntax}
 
 \subsection{Concrete syntax}
@@ -221,8 +254,15 @@ A multi-argument \texttt{func} lowers to a single argument---a struct of the arg
 A class that is not marked \texttt{open} cannot be inherited; that is the final class of the core.
 \texttt{CPointer} reads, writes, and offsets are the \texttt{unsafe} methods \texttt{read}, \texttt{write}, and \texttt{+} from the standard library, and allocation is the \texttt{foreign} function \texttt{malloc} from the Cangjie--C interoperability chapter.
 
+\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}
-// types used below: Int64, Float64, Bool, Unit, struct, class, CPointer<T>
+// Core types: Int64, Float64, Bool, Unit, CPointer<Int64>
+// Generic types: T, Pair<A, B>, Box<T>, (T) -> U
+// Pair and Box declarations follow this overview.
+
+func genericId<T>(x: T): T { x }
+let answer: Int64 = genericId<Int64>(42)
+let flag: Bool = genericId<Bool>(true)
 
 func add(a: Int64, b: Int64): Int64 {
     a + b
@@ -253,14 +293,51 @@ class Counter {          // not open, so it has no subclasses
 foreign func malloc(size: UIntNative): CPointer<Unit>
 foreign func free(ptr: CPointer<Unit>): Unit
 \end{lstlisting}
+\end{minipage}
 
 \texttt{let} is immutable, and in the core it is substitution.
 \texttt{var} is mutable, and it is a stack slot.
 The last expression of a block is its value, and \texttt{()} is unit.
+Generic calls supply explicit type arguments. Below, \texttt{Pair<A, B>}
+has two parameters, and \texttt{Box<T>.map<U>} adds a method parameter.
+The callback type \texttt{(T) -> U} is monomorphic at each call.
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+struct Pair<A, B> {
+    public let first: A
+    public let second: B
+    public init(first: A, second: B) {
+        this.first = first
+        this.second = second
+    }
+}
+class Box<T> {
+    public let value: T
+    public init(value: T) { this.value = value }
+    public func get(): T { value }
+    public func map<U>(f: (T) -> U): Box<U> {
+        Box<U>(f(value))
+    }
+}
+let pair = Pair<Int64, Bool>(7, true)
+let boxed = Box<Pair<Int64, Bool>>(pair)
+let truth: Box<Bool> = Box<Int64>(5).map<Bool>(
+    { x: Int64 => 0 <= x })
+\end{lstlisting}
+\end{minipage}
+
+These are readable surface forms of the checked generic examples.
+Section~\ref{sec:generics} gives their source definitions, proofs, and the
+generated code. The generic layer currently supports immutable bindings,
+typed callbacks, conditionals, calls, struct construction/projection, and
+class allocation/read, and initialized managed buffers with indexed reads
+and writes (Section~\ref{sec:poly-arrays}). The mutable and raw-memory forms above remain
+available through the original language and printer.
 
 \subsection{From Cangjie to the Coq core}
 
-We summarise the correspondence in the table below.
+We summarise the original core correspondence in the table below.
 Each row pairs one Cangjie form with the constructor in \texttt{theories/lang.v} to which it lowers.
 Field names become positions: the first field of a \texttt{struct} or \texttt{class} is index \(0\).
 A call \texttt{f(a, b)} is \texttt{App} of \texttt{f} to a \texttt{StructV} of the arguments, because \texttt{App} takes one argument.
@@ -346,7 +423,15 @@ no Cangjie spelling; introduced for a \texttt{var} slot
 \end{tabular}
 \end{center}
 
-The rest of this section defines those constructors and the machine on which they run.
+Generic programs first pass through the explicit source layer. A call
+\texttt{genericId<Int64>(42)} is a \texttt{GECall} containing a declaration
+name, the type argument \texttt{GTInt}, and an argument expression.
+\texttt{Pair<Int64, Bool>(a, b)} and \texttt{Box<Int64>(a)} use
+\texttt{GEConstruct} with the named owner types; they erase to \texttt{Struct}
+and \texttt{New}, respectively. A field access uses \texttt{GEField} with its
+receiver type and declared index. A method call uses \texttt{GEMethod} and
+passes the receiver as the first internal argument.
+Section~\ref{sec:generic-erasure} gives the translation and its laws.
 
 \subsection{Locations, identifiers, and types}
 
@@ -368,7 +453,7 @@ Inductive ty :=
 \end{lstlisting}
 
 Informally, locations are \(\mathbb{Z}\), and the three identifier sorts are the tagged copies \(\mathsf{StackId}(\ell)\), \(\mathsf{RawId}(\ell)\), and \(\mathsf{ObjId}(\ell)\).
-The type grammar is
+The legacy core type grammar is
 \[
 \begin{aligned}
 \tau ::=\;&
@@ -385,6 +470,42 @@ The type grammar is
 Here \(\mathsf{class}_{n}\) means a final class with \(n\) fields.
 Nothing in the semantics consults \(\tau\).
 The type is documentation of the fragment; the theorems that follow do not assume it.
+
+The generic source has a separate, structured grammar in
+\path{theories/generics.v}:
+\begin{lstlisting}
+Inductive gty :=
+| GTInt | GTBool | GTUnit
+| GTVar (name : string)
+| GTNamed (name : string) (args : list gty)
+| GTArrow (arg ret : gty)
+| GTBuffer (element : gty).
+\end{lstlisting}
+Writing \(\alpha\) for a scoped type variable and \(N\) for a declared
+struct or class name, its mathematical grammar is
+\[
+\begin{aligned}
+  t ::=\;& \mathsf{Int64}\mid\mathsf{Bool}\mid\mathsf{Unit}\mid\alpha\\
+        &\mid N\langle t_1,\ldots,t_n\rangle\mid t\to t
+         \mid\mathsf{Buffer}\langle t\rangle.
+\end{aligned}
+\]
+Thus \texttt{Box<Pair<Int64, Bool>>} is a nested named application, and
+\texttt{(T) -> U} is an arrow whose endpoints can be in-scope variables.
+There is no universal quantifier inside \texttt{gty}: polymorphism is
+rank one and belongs to declarations. There are no generic pointer or float
+constructors in this source grammar; their legacy core forms are unchanged.
+The buffer constructor supports managed indexed storage for the separate
+polymorphic-array example in Section~\ref{sec:poly-arrays}.
+
+\texttt{gty\_wf ds scope t} checks that every variable occurs in
+\texttt{scope}, every named type has a layout in \texttt{ds}, and its number
+of arguments matches that layout's parameter list. It recursively checks
+nested arguments, buffer elements, and both sides of an arrow. This is a well-formedness
+check on types, not a proof that a term has that type.
+Type substitution \texttt{gty\_subst} replaces variables simultaneously:
+\(\{T\mapsto U,U\mapsto\mathsf{Int64}\}(T)=U\), not
+\(\mathsf{Int64}\). Nested applications are traversed recursively.
 
 \subsection{Values and expressions}
 
@@ -482,6 +603,63 @@ Definition to_val (e : expr) : option val :=
 
 So the values of the language, as Iris sees them, are exactly the expressions \(\mathsf{Val}\,v\).
 
+\subsection{Generic declarations and source expressions}
+\label{sec:generic-source}
+
+A \texttt{glayout} names a struct or class, gives its type-parameter list,
+and fixes the ordered field names and types. A \texttt{gfunction} records
+a name, an optional owning layout for methods, a static-method flag, its own type parameters,
+ordinary parameters, result type, and \texttt{gexpr} body. A \texttt{gprogram}
+combines layouts, functions, and a main expression. The example definitions
+include
+\begin{lstlisting}
+Definition pair_layout :=
+  GLayout "Pair" GStruct ["A"; "B"]
+    [("first", GTVar "A"); ("second", GTVar "B")].
+Definition box_layout :=
+  GLayout "Box" GClass ["T"] [("value", GTVar "T")].
+\end{lstlisting}
+The scope of a method body is its owner's parameters followed by its own.
+For \texttt{Box<T>.map<U>}, this is \([T,U]\); rebinding \texttt{T} as a
+method parameter is rejected. The first ordinary parameter of an instance method is
+an explicit receiver of its owning type, such as \texttt{self: Box<T>}.
+The printer renders this parameter as \texttt{this}. A static method has
+no receiver; \texttt{GStaticFunction} declares it and \texttt{GEStaticCall}
+calls it through an explicit owner type, as in
+\texttt{PolyArray<Bool>.make(3, false)} (Section~\ref{sec:poly-arrays}).
+
+The source constructors preserve the information that erasure discards:
+\begin{lstlisting}
+GECall name type_arguments arguments
+GEMethod receiver_type receiver method type_arguments arguments
+GEStaticCall owner_type method type_arguments arguments
+GEConstruct named_type arguments
+GEField receiver_type receiver field_index
+GELam parameter argument_type result_type body
+GEBufferMake element_type size seed
+GEBufferGet element_type buffer index
+GEBufferSet element_type buffer index value
+\end{lstlisting}
+These schematic applications accompany \texttt{GEVar}, \texttt{GEVal},
+\texttt{GEApp}, \texttt{GELet}, \texttt{GEIf}, and \texttt{GEBinOp}.
+\texttt{GEField} carries an index into the explicitly named layout; its
+field spelling is recovered from that declaration, not from its size.
+For example, the body of \texttt{Box<T>.map<U>} is
+\begin{lstlisting}
+GEConstruct (GTNamed "Box" [GTVar "U"])
+  [GEApp (GEVar "f")
+    (GEField (GTNamed "Box" [GTVar "T"]) (GEVar "self") 0)]
+\end{lstlisting}
+
+A callback has a fixed argument and result type at each call site.
+There is no argument whose type is itself universally quantified.
+To pass a generic function as a callback, write a typed lambda that calls
+it with explicit type arguments. The generic printer rejects bare
+\texttt{GERef} function values. It also rejects \texttt{GECore}, which is
+an exact embedding of old core terms for proofs, rather than a printable
+generic source form. This distinction preserves all legacy specifications
+without claiming the new printer handles every old expression.
+
 \subsection{Two kinds of binding}
 
 We begin from a distinction that is already present in the surface language and then explain how the core encodes it.
@@ -549,6 +727,70 @@ What is striking about this split is that it is the whole model of ``locals do n
 An immutable binding disappears into the syntax.
 A mutable binding is a cell, and the cell has an owner.
 
+\subsection{Generic instantiation, substitution, and erasure}
+\label{sec:generic-erasure}
+
+Type instantiation is separate from term substitution.
+\texttt{ginstantiate s e} applies \texttt{gty\_subst s} to every type
+annotation and explicit type argument in \texttt{e}. It leaves term
+variables and values alone. \texttt{gsubst x v e} replaces free occurrences
+of the term variable \texttt{x} by the core value \texttt{v}, respecting
+lambda and immutable-let binders. It leaves the type annotations alone.
+
+Let \(D\) be the layout declarations, \(F\) an environment of linked
+function values, and \(E(e)=\mathsf{erase}\;D\;F\;e\).
+Representative erasure equations are
+\[
+\begin{aligned}
+E(\mathsf{GECall}\;n\;\bar t\;\bar e)
+ &= \mathsf{App}\;(\mathsf{resolve}\;F\;n)
+       \;(\mathsf{Struct}\;[]\;\overline{E(e)}),\\
+E(\mathsf{GEConstruct}\;(\mathsf{Pair}\langle a,b\rangle)\;\bar e)
+ &= \mathsf{Struct}\;[]\;\overline{E(e)},\\
+E(\mathsf{GEConstruct}\;(\mathsf{Box}\langle t\rangle)\;[e])
+ &= \mathsf{New}\;[]\;[E(e)],\\
+E(\mathsf{GEField}\;(\mathsf{Box}\langle t\rangle)\;e\;0)
+ &= \mathsf{FieldLoad}\;(E(e))\;0.
+\end{aligned}
+\]
+Here \texttt{Pair} and \texttt{Box} have the declarations above.
+A struct projection similarly becomes \texttt{StructLoad}.
+A method call resolves the key \texttt{Box.map} and packs the receiver
+before its ordinary arguments. A typed lambda becomes
+\texttt{Rec None (Some x)} with its erased body, and uses ordinary unary
+application. No type argument becomes a runtime value or heap field.
+
+\texttt{link\_functions} processes declarations in order. Previously
+declared functions resolve to core recursive values. A function's own name
+remains a variable in its body and is bound by its \texttt{RecV}, preserving
+direct recursion. The checker rejects other forward references and mutual
+recursion. Parameter unpacking uses internal struct projections; argument
+expressions evaluate from left to right before the body runs.
+
+Two kernel-checked equalities justify the connection between source
+reasoning and the old substitution rules:
+\begin{lstlisting}
+Lemma erase_instantiate ds fs e s : nominal_owners e = true ->
+  erase ds fs (ginstantiate s e) = erase ds fs e.
+
+Lemma erase_subst ds fs e x v :
+  (forall n, In n (referenced_names e) ->
+    subst x v (resolve fs n) = resolve fs n) ->
+  erase ds fs (gsubst x v e) = subst x v (erase ds fs e).
+\end{lstlisting}
+The first premise requires constructor and receiver annotations to be
+named applications, not bare variables. Substitution can change the
+arguments in \texttt{Box<T>} but cannot change \texttt{Box} into a struct.
+Without that restriction, instantiation could change allocation into tuple
+construction. The second premise says that named declarations are stable
+under substitution for the local variable; globals must not accidentally
+be treated as local occurrences. Both laws are proved by structural
+recursion, using the corresponding laws for lists of arguments.
+
+The legacy embedding satisfies the unconditional equation
+\(E(\mathsf{GECore}\;e)=e\), proved by \texttt{erase\_legacy}.
+Consequently the extension includes every old core program exactly.
+
 \section{Machine state}
 
 \subsection{Three regions, one counter}
@@ -558,6 +800,11 @@ Locals and unboxed structs that are stored in \texttt{var} slots live in the sta
 \texttt{CPointer} words live in the raw map, and each allocated block records its length in a second map on the same addresses.
 Final class fields live in a map from \((\mathsf{ObjId}(\ell), i)\) to a value.
 A single counter \(\mathsf{next}\) hands out fresh addresses for all three regions.
+Generic instances use these same representations: a \texttt{Pair<A, B>}
+is a two-value struct, and a \texttt{Box<T>} is an object whose field zero
+stores its element value. A nested box contains the inner object's reference,
+not a copy of the inner heap. Type arguments introduce neither runtime type
+tags nor a new region in this model.
 
 \begin{lstlisting}
 Record state := MkState {
@@ -660,6 +907,12 @@ Class allocation at \(o=\mathsf{next}(\sigma)\) inserts the fields \((\mathsf{Ob
 Those keys are fresh because every old object address is below \(o\).
 
 \section{Small-step semantics}
+
+The relation in this section executes core expressions. Execution of a
+generic program \(p\) means execution of \texttt{erase\_program p} with
+these same rules. There is no additional type-instantiation reduction:
+the erased code is already independent of type arguments. This definition
+does not assert that the Cangjie compiler uses the same runtime representation.
 
 \subsection{Head reduction}
 
@@ -899,6 +1152,241 @@ The later and the credit are discharged by the step.
 In the example proofs they are thrown away with an introduction \(\mathtt{iIntros\ "> \_"}\).
 They do not change the memory reasoning.
 
+\subsection{Weakest preconditions for generic source}
+\label{sec:generic-logic}
+
+Consider the function \texttt{genericId<T>(x: T): T \{ x \}}.
+We want one proof explaining why it returns its input, whether that input
+is an integer, a Boolean, or a reference to an object whose fields we own.
+The generic logic lets us state that proof against the generic source
+program while using the existing rules for the code it executes.
+
+\paragraph{Reading the definition.}
+The definition in \path{theories/generic_laws.v} is
+\begin{lstlisting}
+Definition generic_wp ds fs e (Phi : val -> iProp Σ) : iProp Σ :=
+  WP erase ds fs e {{ Phi }}.
+\end{lstlisting}
+There are four inputs. The layout environment \texttt{ds} tells us, for
+example, that \texttt{Pair} is a struct with two fields and \texttt{Box}
+is a class with one field. The linked function environment \texttt{fs}
+supplies the executable values of named functions and methods. The
+expression \texttt{e} is generic source syntax. Finally, \texttt{Phi}
+describes the result we want, together with any resources we want back.
+The type \texttt{iProp} means an Iris assertion: it can describe both a
+mathematical fact and ownership of memory. The parameter \(\Sigma\)
+fixes the available ghost-state resources.
+
+We write the definition mathematically as
+\[
+\GWpre_{D,F}\,e\,\{\Phi\}
+\;\triangleq\;
+\Wpre\,(\mathsf{erase}\;D\;F\;e)\,\{\Phi\}.
+\]
+Read it as: execute the erased program safely, and if it returns \(v\),
+establish \(\Phi(v)\). This is the same partial-correctness reading as
+in Section~6.2; it does not promise termination. In a specification
+\(P\vdash\GWpre\,e\,\{\Phi\}\), the assertion \(P\) supplies
+enough initial facts and resources to justify that execution. A proof of
+such an entailment need not calculate the smallest possible precondition.
+
+The result \(v\) is a core value, not a pair of a value and a runtime
+type tag. All four ghost maps and the state interpretation remain the
+same. The proof begins by unfolding \texttt{generic\_wp}; thereafter
+the usual allocation, projection, load, bind, and frame rules apply.
+Erasure removes annotations, not the memory accesses that need justification.
+For the examples below, \(D,F\) contain the declarations of
+\texttt{genericId}, \texttt{Pair}, and \texttt{Box}; we omit these
+subscripts when they are fixed. Source-like calls in formulas abbreviate
+the corresponding explicit \texttt{gexpr} constructors.
+
+\paragraph{Following a simple call.}
+For \texttt{genericId<Int64>(7)}, take
+\(\Phi(w)=\pure{w=7}\). Here and below, numerals abbreviate core
+integer values, and the corners \(\pure{\cdot}\) embed an ordinary
+proposition into Iris. The proof establishes
+\[
+\top\;\vdash\;
+\GWpre\,(\mathsf{genericId}\langle\mathsf{Int64}\rangle(7))
+  \,\{w.\;\pure{w=7}\}.
+\]
+No memory ownership is required for this call. Its source expression is
+\begin{lstlisting}
+GECall "genericId" [GTInt] [GEVal (LitV (LitInt 7))]
+\end{lstlisting}
+Erasure resolves \texttt{genericId} to its linked function value and
+places the argument in the internal one-element tuple. Execution evaluates
+that tuple, enters the function, projects argument zero into \texttt{x},
+and returns \texttt{x}. None of these steps reads or allocates a heap cell.
+They are the same pure steps already used for ordinary calls. Replacing
+the source instance by \texttt{genericId<Bool>(true)} uses the same
+function implementation and proves that its result is \texttt{true}.
+
+\paragraph{A type annotation and a representation predicate.}
+The source annotation \texttt{Int64} tells the native compiler which
+type instance is intended. It does not say that the value is 7, positive,
+or equal to some earlier result. Likewise, \texttt{Box<Int64>} does not
+by itself supply a permission to read a particular object's field in Iris.
+Those facts belong in the specification.
+
+We express them with a predicate
+\(R:\mathsf{val}\to\mathsf{iProp}\,\Sigma\). For example,
+\(R_7(w)=\pure{w=7}\) describes precisely the integer 7, whereas
+\(R_{\geq 0}(w)=\exists n.\;\pure{w=n\ \wedge\ 0\leq n}\)
+describes a nonnegative integer. Both can be useful for the same source
+type \texttt{Int64}. The implementation does not automatically derive
+\(R\) from a type annotation: the client chooses a predicate appropriate
+to the property being proved.
+
+The uniform identity theorem, \texttt{identity\_spec}, says that for
+every \(R\), every source type argument \(t\), and every input value \(v\),
+\[
+R(v)\;\vdash\;
+\GWpre\,(\mathsf{genericId}\langle t\rangle(v))
+  \,\{w.\;\pure{w=v}\sep R(w)\}.
+\]
+Its English reading is: give identity an input with its representation
+assertion; get exactly that input back, with the same assertion. Taking
+\(R=R_7\) gives the integer example above. Taking
+\(R(w)=\pure{w=\mathsf{true}}\) gives the Boolean example. Taking
+\(R=R_{\geq 0}\) preserves nonnegativity for any qualifying input.
+The proof works because identity never inspects or changes the input.
+The generic declaration alone does not prove this contract; the body
+and its Iris proof are essential. Section~\ref{sec:generics} displays
+the checked proof script.
+
+\paragraph{Using the same theorem with an owned box.}
+Now let the input be an object reference. Define
+\[
+R_{\mathsf{box7}}(p)\;\triangleq\;
+\exists o.\;\pure{p=\mathsf{obj}(o)}\sep o\ptso[0]7.
+\]
+This says that \(p\) names an object and that we own its field zero,
+which contains 7. Unlike \(R_7\), it includes a memory resource.
+Instantiate the identity theorem with \(t=\mathsf{Box}\langle
+\mathsf{Int64}\rangle\) and \(R=R_{\mathsf{box7}}\). Its postcondition
+then gives the same object reference and the same field ownership.
+Identity neither allocates a fresh box nor copies its contents.
+
+This explains the proof of a small client:
+\begin{lstlisting}
+let b = Box<Int64>(7)
+let same = genericId<Box<Int64>>(b)
+same.get()
+\end{lstlisting}
+Construction creates a fresh object \(o\) and supplies
+\(o\ptso[0]7\). The identity contract carries that assertion to
+\texttt{same} and establishes that \texttt{same} equals \texttt{b}.
+The \texttt{get} contract uses the field assertion to justify the read
+and returns 7 together with the field assertion. These are applications
+of \texttt{box\_construct\_spec}, \texttt{identity\_spec}, and
+\texttt{box\_get\_spec}; composing them uses the bind rule in the next
+subsection. The type argument determines the native instance, while the
+points-to assertion explains why the memory access is safe.
+
+\paragraph{Why an alias is not another ownership permission.}
+After that call, both \texttt{b} and \texttt{same} name the same object.
+There are two names, but only one field-ownership resource. The contract
+returns \(R_{\mathsf{box7}}(\mathit{same})\) and an equality allowing
+us to use either name. It does not return
+\[
+R_{\mathsf{box7}}(b)\sep R_{\mathsf{box7}}(\mathit{same}).
+\]
+Under the equality, this would require two full permissions for field zero
+of the same object, which the ghost-map algebra forbids. One may read the
+field through \texttt{b}, recover the permission, and then read through
+\texttt{same}; sequential reuse is different from having two independent
+permissions. In the proof, returning a resource means preserving the
+right to use it. It is not an extra operation performed by the program.
+
+Pure assertions such as \(R_7\) can be duplicated. An arbitrary
+predicate \(R\) need not have that property, so a theorem quantified
+over all \(R\) must not silently assume it. This is why the identity
+postcondition contains a pure equality and one copy of \(R\).
+
+\paragraph{Changing the result type changes the callback obligation.}
+A slightly richer client is
+\begin{lstlisting}
+let b = Box<Int64>(7)
+let c = b.map<Bool>({ x: Int64 => 0 <= x })
+c.get()
+\end{lstlisting}
+The receiver fixes \texttt{T = Int64}; the method chooses
+\texttt{U = Bool}. For this call, choose an input predicate
+\(R(a)=\pure{a=7}\) and an output predicate
+\(S(w)=\pure{w=\mathsf{true}}\). The callback obligation is
+\[
+\forall a.\;R(a)\wand\Wpre\,(f\,a)\,\{S\}.
+\]
+The wand \(\wand\) means that supplying \(R(a)\) is enough to
+establish the callback's weakest precondition. Here that proof is just
+the arithmetic fact \(0\leq7\); the callback is also closed, as
+required by \texttt{box\_map\_spec}.
+
+The method's proof reads the old field, uses the callback contract to
+obtain \(S\), and puts the resulting Boolean into a newly allocated
+box. It preserves the old box's field ownership while the element
+assertion passes through the callback. In this example the element
+assertions are pure, so retaining them is harmless. In the general map
+theorem, \(R\) can own memory and the callback can consume it: the
+postcondition retains the old field and the new box's \(S\), without
+promising another copy of the old \(R\). Section~\ref{sec:generic-map}
+gives the precise contract and proof. The point of the two predicates is
+to describe this change in knowledge and ownership, not merely the change
+from the type name \texttt{Int64} to \texttt{Bool}.
+
+\paragraph{What type-instantiation invariance buys us.}
+For fixed \(D,F\) and a fixed postcondition \(\Phi\), the lemma
+\path{generic_wp_instantiate} states
+\[
+\GWpre_{D,F}\,(\mathsf{ginstantiate}\;s\;e)\,\{\Phi\}
+\;\dashv\vdash\;
+\GWpre_{D,F}\,e\,\{\Phi\}.
+\]
+The symbol \(\dashv\vdash\) means that either assertion entails the
+other. The proof is simply to unfold \texttt{generic\_wp} and rewrite
+by \texttt{erase\_instantiate}: both sides ask about exactly the same
+core expression and postcondition.
+
+For example, start with the source call
+\texttt{GECall "genericId" [GTVar "T"] [GEVar "x"]}.
+Instantiating \texttt{T} changes its type argument but leaves its erased
+call and the term variable \texttt{x} unchanged. The hypothesis
+\texttt{nominal\_owners e = true} similarly ensures that a receiver
+annotation such as \texttt{Box<T>} keeps its outer layout name
+\texttt{Box}. Substitution may change the element type; it cannot turn
+an object allocation into struct construction. A bare type variable in
+place of the layout name would not meet this condition.
+
+This law removes a repeated proof obligation about type annotations.
+It does not identify calls with different input data:
+\texttt{genericId<Int64>(7)} and \texttt{genericId<Bool>(true)} have
+different erased arguments and different results. They share an
+implementation and an instance of the uniform identity theorem.
+Similarly, instantiation does not automatically replace one chosen
+representation predicate by another; the theorem must quantify over the
+predicates needed by the client.
+
+\paragraph{Why old proofs still apply.}
+The embedding lemma \path{generic_wp_legacy} is unconditional:
+\[
+\GWpre_{D,F}\,(\mathsf{GECore}\;e)\,\{\Phi\}
+\;\dashv\vdash\;
+\Wpre\,e\,\{\Phi\}.
+\]
+\texttt{GECore} wraps an old core expression, and erasure returns that
+expression exactly. For example, an existing proof that a core addition
+of 2 and 3 returns 5 is immediately a proof of its \texttt{GECore}
+embedding with the same postcondition. There are no new heap resources
+or extra type premises to supply. The embedding is an interface for
+logical reuse; its extraction continues to use the legacy printer.
+
+Thus a generic proof has a concrete task: show that the erased computation
+uses the supplied resources safely and establishes the stated result.
+Well-formed annotations help construct and print the source, but are not
+a substitute for that proof. Adequacy connects the proved weakest
+precondition to safe execution in Section~\ref{sec:generic-adequacy}.
+
 \subsection{Structural rules}
 
 These three rules are why the logic is a separation logic rather than a Hoare logic with an explicit frame side-condition.
@@ -952,13 +1440,18 @@ It is not proved by induction on \cjr{} expressions.
 A stronger postcondition can be weakened.
 The examples use this when a lemma such as \texttt{bump\_wp} returns both a pure result and a framed cell, and the continuation only needs one of them.
 In Coq it is \texttt{wp\_wand} or \texttt{wp\_mono}.
+The same rules apply to \(\GWpre\) by unfolding erasure. For example,
+\(P\sep\GWpre\,e\,\{\Phi\}\vdash
+\GWpre\,e\,\{v.\;P\sep\Phi(v)\}\).
+A callback specification must supply every resource it uses; the caller
+can frame unrelated resources, including a box's own field, around that call.
 
 \subsection{Pure rules}
 
 A pure head step is one that is defined in every state, does not change the state, and has exactly one successor.
-The generic lemma is \texttt{wp\_pure\_step}.
+The general-purpose lemma is \texttt{wp\_pure\_step}.
 Each concrete rule below is an instance.
-Where the step produces a value immediately, the postcondition is under a later, because that is how the generic lemma returns the credit.
+Where the step produces a value immediately, the postcondition is under a later, because that is how this lemma returns the credit.
 Where the step produces another expression, the rule simply asks for a weakest precondition of that expression.
 
 \paragraph{Closures and application.}\mbox{}\par
@@ -1247,6 +1740,11 @@ The machine might still have a single cell there; the logic refuses to pretend t
 
 The same algebra applies to block facts and to object fields.
 The development records the stack and raw cases because those are the ones the examples need to point at.
+It also constrains generic representations. Copying a \texttt{Pair} value
+or returning the element of a \texttt{Box} does not duplicate resources
+owned through the values it contains. In particular, a map callback may
+consume an element predicate even though the original box still stores
+the same runtime reference. Its postcondition must record that distinction.
 
 \section{Main theorems}
 
@@ -1304,12 +1802,39 @@ If the postcondition is only ``the result is unit'', adequacy says the program r
 The closed examples \texttt{sum\_one}, \texttt{bump\_keep}, \texttt{cell}, \texttt{class\_bump}, and \texttt{vtable\_prog} are instantiated at this theorem.
 The other examples are open: their hypotheses are points-to facts, so they are stated as weakest preconditions rather than as runs from \(\sigma_0\).
 
+\subsection{Generic adequacy and conservative extension}
+\label{sec:generic-adequacy}
+
+For a generic program \(p\), let \(D=\mathsf{gp\_layouts}(p)\),
+\(F=\mathsf{link\_functions}\;D\;[]\;(\mathsf{gp\_functions}(p))\), and
+\(e=\mathsf{gp\_main}(p)\). The theorem \texttt{generic\_adequacy} says
+that a proof of \(\GWpre_{D,F}\,e\,\{v.\;\pure{\varphi(v)}\}\)
+in every Iris instantiation implies
+\[
+\mathsf{adequate}\;\mathsf{NotStuck}\;
+  (\mathsf{erase\_program}\;p)\;\sigma_0\;(\lambda v\,\_.\;\varphi(v)).
+\]
+Its proof unfolds \texttt{generic\_wp} and applies \texttt{cjr\_adequacy}.
+For the closed identity client, \path{generic_main_adequate} establishes
+that the erased call \texttt{genericId<Int64>(42)} is safe and every final
+value is \texttt{LitV (LitInt 42)}. The native program's \texttt{main}
+separately returns exit status zero after evaluating that call.
+
+Together, \texttt{erase\_legacy} and \texttt{generic\_wp\_legacy} establish
+conservative inclusion of the original operational language and logic.
+Existing proofs and monomorphic extraction interfaces are retained.
+The structural source checker alone is not a safety proof: adequacy still
+requires a weakest-precondition proof. Nor does this theorem establish
+preservation by the printer or the native compiler.
+
 \section{The examples}
 
 Each example uses a feature that the previous one does not.
 The files appear below in tutorial order.
 The programs are written in the Cangjie fragment above.
-The Coq definitions are the core \texttt{expr} terms those files actually prove.
+The elementary examples in this section prove core \texttt{expr} terms.
+Section~\ref{sec:generics} follows them with generic \texttt{gexpr}
+definitions and proofs about their erasures, before the larger data structures.
 
 \subsection{Arithmetic: \texttt{arith.v}}
 
@@ -1520,10 +2045,17 @@ All three regions of the story meet: a stack-free unboxed struct of code, a code
 The raw heap is not used.
 The earlier examples already showed that leaving it unused is safe.
 
+% example/generics/extracted/generics.cj is listed in the included section below.
+\input{paper/generics.tex}
+
 \section{A linked list}
 
 The file \texttt{example/list/rocq/list.v} is a self-contained implementation of a singly linked list, together with the equations that say the implementation really is a list.
 It is larger than the earlier examples because the specification is not a single pure result: it is a predicate on the object heap, and the programs are functions that allocate and read nodes.
+This existing list stores integers. The generic \texttt{Pair} and
+\texttt{Box} examples do not automatically make it a \texttt{List<T>}:
+that would require a parameterised node declaration and a list
+representation predicate carrying an element predicate at every node.
 
 \subsection{Why a node is an object with a boolean tag}
 
@@ -2338,6 +2870,10 @@ closed using an admitted obligation or an added axiom.
 \label{sec:arrays}
 
 The file \texttt{example/array/rocq/array.v} is a library, in the same sense as the list: the language has no array type, and the library builds one from a final class and a raw block.
+It remains an integer library. Section~\ref{sec:poly-arrays} adds a separate
+polymorphic array by adapting this representation and its proofs. That
+example uses managed native storage for arbitrary element types; it does
+not change this raw integer implementation.
 An array of \(n\) integers is an object with two fields and a contiguous block of \(n\) words.
 Field \(0\) holds \(n\).
 Field \(1\) holds the base pointer of the block.
@@ -2540,13 +3076,16 @@ What this development does not prove is an arbitrary loop over the array, such a
 The cells are already a separating conjunction indexed by the mathematical list, which is the induction hypothesis such a loop would use.
 The equations above are the base: read and write agree with list update, and they do not disturb the length or the other cells.
 
+% example/poly_array/extracted/poly_array.cj is discussed in the included section.
+\input{paper/poly-array.tex}
+
 \section{Array lists}
 \label{sec:array-lists}
 
 The file \texttt{example/array\_list/rocq/array\_list.v} lowers the resizable-buffer core of Cangjie's \texttt{ArrayList}: a default constructor, the live length, the capacity, emptiness, reading and writing an index, append, removal at an index, growth, and the version counter.
 The source class continues past that core, with an iterator, the \texttt{Collection} interface, ranges, higher-order methods, and an embedded sort.
 Those stay out.
-The core is monomorphic in \texttt{Int64}, and it uses the array library already proved: a final object, a raw block, and a word-by-word copy.
+This array-list example is monomorphic in \texttt{Int64}, and it uses the array library already proved: a final object, a raw block, and a word-by-word copy.
 
 \texttt{Alloc} of zero words is stuck, so the only constructor is the default one, at capacity \(16\).
 There is no shift, so growth doubles by adding the capacity to itself.
@@ -2564,7 +3103,7 @@ Iris is affine, and the proof simply does not use them again.
 \subsection{The library}
 
 In Cangjie the value is a non-\texttt{open} class.
-Field \(0\) is the buffer, itself the array of the previous section.
+Field \(0\) is the buffer, itself the integer array of Section~\ref{sec:arrays}.
 Field \(1\) is the live length.
 Field \(2\) is the version.
 The buffer's own field \(0\) is the capacity, and its field \(1\) is the base pointer of a block of that many words.
@@ -2595,7 +3134,7 @@ The outer one is the list.
 
 \begin{definition}[Array-list representation]
 Write \(\mathsf{slots}(xs, c)\) for \(xs\) followed by \(c - \lvert xs \rvert\) zeroes, which is defined only for \(\lvert xs \rvert \le c\).
-\(\mathsf{isBuf}(\mathit{slots}, b)\) is the array predicate of the previous section with the whole capacity in place of the live prefix: field \(0\) holds \(\lvert \mathit{slots} \rvert\), field \(1\) holds the base pointer, and the block owns every word of \(\mathit{slots}\).
+\(\mathsf{isBuf}(\mathit{slots}, b)\) is the integer-array predicate of Section~\ref{sec:arrays} with the whole capacity in place of the live prefix: field \(0\) holds \(\lvert \mathit{slots} \rvert\), field \(1\) holds the base pointer, and the block owns every word of \(\mathit{slots}\).
 \(\mathsf{isArrayList}(xs, c, v, a)\) holds when \(0 < c\), \(\lvert xs \rvert \le c\), \(a = \mathsf{obj}(o)\), and
 \[
 \begin{aligned}
@@ -3146,7 +3685,11 @@ Lemma slice_sorted_join xs lo p hi pivot :
 
 \subsection{The length, get, and set interface}
 
-The core language has no interfaces and no generics, so the shared program is a Coq section.
+This existing raw-memory example remains monomorphic and has no interface constraints, so its shared program is a Coq section.
+Its Coq parameters express proof-level abstraction over two integer
+containers, rather than a Cangjie generic declaration. Rank-one generics
+do not by themselves provide the comparator and storage contracts needed
+to turn this algorithm into a sort of arbitrary element types.
 Its parameters are a ghost type \(G\), a representation \(R\), and three expression bodies.
 
 \begin{lstlisting}
@@ -3967,13 +4510,32 @@ Objects are not collected.
 Pointer arithmetic is word-addressed.
 Null, a freed address, and an address with no points-to fact are stuck rather than given a defined error value.
 
-The type grammar is not enforced.
-The adequacy theorem is the safety theorem for those programs whose specifications have been proved.
+The core type grammar is not enforced at runtime. The generic source layer
+does check names, scoped type variables, named layouts, and arities, but
+does not prove a complete term-typing judgment. Native compilation checks
+ordinary argument and result types. The adequacy theorem is the safety
+theorem for programs whose Iris specifications have been proved.
+
+Generic functions, structs, classes, and methods are implemented, with
+erasure laws and the representation-polymorphic contracts developed in
+Section~\ref{sec:generics}. Section~\ref{sec:poly-arrays} adds managed
+polymorphic arrays with uniform ownership contracts. Interface bounds, inheritance, higher-rank
+callbacks, generic raw-memory allocation, and migration of the older
+integer containers remain outside that extension. A relational theorem
+characterising every program of a polymorphic type is also future work.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 This experiment made substantially more progress than expected, largely because of the power and usability of Iris. In less than one week of work, conducted at varying levels of intensity with several models, we developed a formal language fragment, its operational semantics and program logic, and verified examples ranging from elementary operations to a HashMap. Iris made it practical to reason compositionally about mutable state and to connect algorithmic correctness arguments to executable implementations.
+
+The generic extension illustrates reuse of this foundation. Explicit
+rank-one source types erase to the same operational language, and generic
+weakest preconditions reuse the same Iris instance. Identity, pairs, and
+boxes are specified uniformly over element predicates; the map example
+also relates distinct input and output representations. The erasure and
+legacy-embedding laws make compatibility precise, while the native generic
+printer retains the source annotations for Cangjie compilation.
 
 Does this mean that we can generate code and use it without inspecting it? Perhaps, within carefully established boundaries. Formal verification shifts much of the inspection effort towards the specification: does the formal statement actually express the intended informal requirement? An agent can help make that correspondence accessible by presenting the Coq specification alongside an equivalent mathematical formulation and an English readout. These presentations give reviewers several ways to examine what has been proved, although their agreement with the formal statement also requires scrutiny.
 
@@ -3983,7 +4545,7 @@ Those boundaries still require human judgement. As discussed in Appendix~\ref{se
 
 Array-list access operations rely on valid-index preconditions rather than runtime checks. The proofs establish safe memory access for calls covered by those preconditions. Calls that violate them and discrepancies in target behavior remain outside that guarantee.
 
-The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Modest language extensions could improve the situation; each extension, however, requires corresponding operational semantics, Iris rules and supporting proofs. Richer exceptional control, resumable effects, and concurrency are plausible next steps, with established Iris developments providing foundations rather than ready-made proofs for CJR.
+The performance gap has related causes. The benchmark discussion and Appendix~\ref{sec:limitations} explain how algorithm choices and the restricted language fragment affect the results. Better algorithms can be specified explicitly and verified, but some limitations are inherent in the available operations and representations. Source extensions such as generics can reuse the core through a proved erasure interface; extensions that introduce new runtime behavior need corresponding operational rules and Iris proofs. Richer exceptional control, resumable effects, and concurrency are plausible next steps, with established Iris developments providing foundations rather than ready-made proofs for CJR.
 
 Proving that invalid inputs raise a specified exception, and reasoning about recovery, would require defined exceptional outcomes, propagation through calls, and specifications for both normal and exceptional results. Cleanup and the ownership available to a handler would have to be included.
 
@@ -4002,7 +4564,11 @@ The formal bibliography follows the same order.
 
 \paragraph{The language.}
 The Cangjie 1.0 documentation~\cite{cangjie-docs} is the surface syntax from which this fragment is cut: \texttt{func}, \texttt{let} and \texttt{var}, \texttt{if} and \texttt{while}, \texttt{struct}, non-\texttt{open} \texttt{class}, and \texttt{CPointer}.
-The current cut keeps unboxed structs, word-addressed raw blocks, and final classes. Generics and inheritance require lowering into that cut; concurrency is currently excluded and would require the semantic and logical extensions discussed in the conclusion.
+The current cut keeps unboxed structs, word-addressed raw blocks, and final
+classes. Explicit rank-one generic functions, structs, classes, and methods
+have a defined erasure into that core and a native printing path, exercised
+with Cangjie 1.0.5. Inheritance and concurrency are excluded; the latter
+would require the semantic and logical extensions discussed in the conclusion.
 
 \paragraph{Separation logic.}
 Reynolds~\cite{reynolds-lics02} is the logic of disjoint ownership of mutable structure, which is the reading of \(\ptss\), \(\ptsr\), \(\ptsb\), and \(\ptso\) in this development.
@@ -4037,6 +4603,28 @@ semantics.  The following cases identify concrete places where that gap
 matters.  They should be read alongside the earlier specifications: some are
 documented limitations of the examples, while others describe repairs and remaining boundaries between
 the formal allocation model and the generated runtime code.
+
+\subsection{Generic source, erasure, and native typing}
+\label{sec:generic-boundary}
+
+The generic erasure laws concern the translation from structured source
+expressions to CJR core expressions. They do not prove that the printed
+Cangjie has the same behavior. The printer preserves explicit declaration
+names, type arguments, and receiver annotations, and compilation rejects
+ordinary type mismatches. Its structural checks are not a proved static
+type system. In particular, a successful \texttt{check\_program} result
+is neither an Iris proof nor an adequacy theorem.
+
+The native representation of a type instance is also outside the core
+model: the model erases type arguments and records object fields as CJR
+values, without asserting a byte layout or a compiler specialization
+strategy. The generic tests exercise both primitive and nested instances,
+including intentionally invalid annotations, but are finite tests of this
+boundary. The uniform identity, pair, box, and polymorphic-array contracts are proved for
+their erased implementations; they do not imply a relational-parametricity
+theorem for arbitrary Cangjie generics. See
+Sections~\ref{sec:generic-erasure}, \ref{sec:generic-logic}, and
+\ref{sec:generic-extraction} for the separate obligations.
 
 \subsection{Zero-filled native allocation and its remaining boundary}
 \label{sec:uninitialized-allocation}
@@ -4203,5 +4791,6 @@ A relational separation logic for effect handlers.
 Rocq formalization: \url{https://github.com/DeVilhena-Paulo/blaze}.
 
 \end{thebibliography}
+
 
 \end{document}

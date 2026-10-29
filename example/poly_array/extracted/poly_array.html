@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>poly_array.cj</title><link rel="stylesheet" href="../docs/report.css"><main><header><div class="eyebrow">poly_array</div><h1>poly_array.cj</h1><a href="../index.html">Report index</a></header><pre>// Generated from checked CJR generic source; do not edit.
+import std.core.Array as CjrBuffer
+public class PolyArray&lt;T&gt; {
+public let len: Int64
+public let data: CjrBuffer&lt;T&gt;
+public init(len: Int64, data: CjrBuffer&lt;T&gt;) {
+this.len = len
+this.data = data
+}
+public static func make(n: Int64, seed: T): PolyArray&lt;T&gt; {
+return ({ =&gt; 
+let p = CjrBuffer&lt;T&gt;(n, repeat: seed)
+PolyArray&lt;T&gt;(n, p)
+})()
+}
+public func length(): Int64 {
+let arr = this
+return (({ cjrTypedValue: PolyArray&lt;T&gt; =&gt; cjrTypedValue })(arr)).len
+}
+public func get(i: Int64): T {
+let arr = this
+return (({ cjrTypedValue: CjrBuffer&lt;T&gt; =&gt; cjrTypedValue })((({ cjrTypedValue: PolyArray&lt;T&gt; =&gt; cjrTypedValue })(arr)).data))[i]
+}
+public func set(i: Int64, x: T): Unit {
+let arr = this
+return ({ cjrBuf: CjrBuffer&lt;T&gt;, cjrIndex: Int64, cjrValue: T =&gt; cjrBuf[cjrIndex] = cjrValue; () })((({ cjrTypedValue: PolyArray&lt;T&gt; =&gt; cjrTypedValue })(arr)).data, i, x)
+}
+}
+main() {
+PolyArray&lt;Bool&gt;.make(3, false)
+0
+}
+</pre><footer>Offline report. Links and assets stay within this project.</footer></main></html>

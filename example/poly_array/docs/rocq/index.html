@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project specifications — Rocq Readable</title><link rel="stylesheet" href="style.css"></head>
+<body><main><header><div class="eyebrow">Rocq Readable</div><h1>Project specifications</h1>
+<nav aria-label="Project"><a href="index.html">Home</a> · <a href="declarations.html">Index</a></nav>
+<p class="meta">2 source files · 57 declarations · proofs omitted</p>
+<p class="notice">Sources are discovered beneath the invocation directory. Symbol links remain within these generated files; library references are unlinked.</p></header>
+<section class="panel dependency-diagram" data-scope="project" aria-labelledby="graph-heading">
+<h2 id="graph-heading">Dependency graph</h2>
+<p class="notice">Arrows point toward dependencies. The overview groups files containing declarations and shows cross-file links. Choose a declaration to see its direct dependencies and dependents. Click a node to open its documentation.</p>
+<div class="graph-controls">
+<label>View<select id="graph-view"><option value="files">Source files</option><option value="all">All declarations</option><option value="focus">Focused declaration</option></select></label>
+<label>Find a declaration<input id="graph-focus" type="search" list="graph-choices" placeholder="Name or qualified identity" autocomplete="off"></label>
+<datalist id="graph-choices"></datalist>
+<div class="graph-zoom"><button type="button" id="graph-out" aria-label="Zoom out">−</button><button type="button" id="graph-in" aria-label="Zoom in">+</button><button type="button" id="graph-fit">Fit</button></div>
+</div>
+<p id="graph-status" class="meta" aria-live="polite"></p>
+<div class="graph-viewport"><svg id="dependency-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Dependency graph"></svg></div>
+<div class="graph-legend"><span style="--swatch:#bed8ee">Specifications</span><span style="--swatch:#b6dfd4">Algorithms</span><span style="--swatch:#d7c8ec">Proofs</span><span style="--swatch:#d7dfe5">Other sources</span></div>
+<p class="notice">Drag the background to pan. Use the buttons or mouse wheel to zoom. With the graph focused, use arrow keys to pan, +/− to zoom, and 0 to fit. Coverage limits are the same as in the hierarchy.</p>
+<noscript><p>The interactive graph requires JavaScript. Use the direct dependency links in each declaration entry.</p></noscript>
+</section><section class="panel"><h2>Dependency hierarchy</h2><p class="notice">Expand an entry to see what it depends on. Shared dependencies appear under each parent. The <a href="declarations.html">Index</a> lists every declaration.</p><ul class="dependency-tree"><li><details data-identity="cjr.examples.poly_array.poly_fresh_get" data-path="[&quot;cjr.examples.poly_array.poly_fresh_get&quot;]"><summary><a href="rocq/poly_array.html#symbol-3fa28df87d7361e88fc4eb4a">cjr.examples.poly_array.poly_fresh_get</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_get_owned_spec" data-path="[&quot;cjr.examples.poly_array.poly_get_owned_spec&quot;]"><summary><a href="rocq/poly_array.html#symbol-c243c8b4d3348301511d9477">cjr.examples.poly_array.poly_get_owned_spec</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_int_adaptation" data-path="[&quot;cjr.examples.poly_array.poly_int_adaptation&quot;]"><summary><a href="rocq/poly_array.html#symbol-ae2055457cef2b6802fcd4de">cjr.examples.poly_array.poly_int_adaptation</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_main_adequate" data-path="[&quot;cjr.examples.poly_array.poly_main_adequate&quot;]"><summary><a href="rocq/poly_array.html#symbol-0774c49f82d1b72013e898bd">cjr.examples.poly_array.poly_main_adequate</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_make_persistent_spec" data-path="[&quot;cjr.examples.poly_array.poly_make_persistent_spec&quot;]"><summary><a href="rocq/poly_array.html#symbol-43fc88ac530c08ed64895686">cjr.examples.poly_array.poly_make_persistent_spec</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_program_checked" data-path="[&quot;cjr.examples.poly_array.poly_program_checked&quot;]"><summary><a href="rocq/poly_array.html#symbol-5d6c1f1bbeaa654282bcfe53">cjr.examples.poly_array.poly_program_checked</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_set_get_other" data-path="[&quot;cjr.examples.poly_array.poly_set_get_other&quot;]"><summary><a href="rocq/poly_array.html#symbol-d413c09ffb63bfb86791c1d8">cjr.examples.poly_array.poly_set_get_other</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_set_length" data-path="[&quot;cjr.examples.poly_array.poly_set_length&quot;]"><summary><a href="rocq/poly_array.html#symbol-87f239743ede506742a7615f">cjr.examples.poly_array.poly_set_length</a></summary></details></li><li><details data-identity="cjr.examples.poly_array.poly_set_owned_spec" data-path="[&quot;cjr.examples.poly_array.poly_set_owned_spec&quot;]"><summary><a href="rocq/poly_array.html#symbol-530c14d1f7b0c372f1742825">cjr.examples.poly_array.poly_set_owned_spec</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_all_operations_owned" data-path="[&quot;cjr.examples.poly_array_tests.poly_all_operations_owned&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-1e01270a7d600ad100ae64f6">cjr.examples.poly_array_tests.poly_all_operations_owned</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_bool_roundtrip" data-path="[&quot;cjr.examples.poly_array_tests.poly_bool_roundtrip&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-76215a4b7934166fe7544008">cjr.examples.poly_array_tests.poly_bool_roundtrip</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-f3d402c271bc9d59cebdc590">cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform" data-path="[&quot;cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-63d605c217613b510777100a">cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_factory_call_substitution" data-path="[&quot;cjr.examples.poly_array_tests.poly_factory_call_substitution&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-c261b2bb346abaa3e0aeb95b">cjr.examples.poly_array_tests.poly_factory_call_substitution</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-3c2228488cd37b79aa714e78">cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_factory_print" data-path="[&quot;cjr.examples.poly_array_tests.poly_factory_print&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-bc84621b2e9d1d1e50561bcb">cjr.examples.poly_array_tests.poly_factory_print</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_get_erasure_uniform" data-path="[&quot;cjr.examples.poly_array_tests.poly_get_erasure_uniform&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-78991cd10038fcd2e4802cd1">cjr.examples.poly_array_tests.poly_get_erasure_uniform</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_instance_static_call_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_instance_static_call_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-987fc8561365bfcad75317ba">cjr.examples.poly_array_tests.poly_instance_static_call_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_int_roundtrip" data-path="[&quot;cjr.examples.poly_array_tests.poly_int_roundtrip&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-ab160d6b2a0f86499dc3d282">cjr.examples.poly_array_tests.poly_int_roundtrip</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_make_erasure_uniform" data-path="[&quot;cjr.examples.poly_array_tests.poly_make_erasure_uniform&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-6976b67ebe96d18181f78e11">cjr.examples.poly_array_tests.poly_make_erasure_uniform</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_make_substitution" data-path="[&quot;cjr.examples.poly_array_tests.poly_make_substitution&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-34d7853f32ed6da24c28e8c6">cjr.examples.poly_array_tests.poly_make_substitution</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_method_type_arity_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_method_type_arity_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-c5f072ecd4ea640e63767c2e">cjr.examples.poly_array_tests.poly_method_type_arity_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_nested_print" data-path="[&quot;cjr.examples.poly_array_tests.poly_nested_print&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-ab7d1097fce122271fe64be0">cjr.examples.poly_array_tests.poly_nested_print</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_nested_singleton_spec" data-path="[&quot;cjr.examples.poly_array_tests.poly_nested_singleton_spec&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-adac94a0c7b87b042469ad3e">cjr.examples.poly_array_tests.poly_nested_singleton_spec</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_nested_type_substitution" data-path="[&quot;cjr.examples.poly_array_tests.poly_nested_type_substitution&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-d0b3314d15598fbae9383e37">cjr.examples.poly_array_tests.poly_nested_type_substitution</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_nested_wf" data-path="[&quot;cjr.examples.poly_array_tests.poly_nested_wf&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-c0ac539187ceba09ed6c478b">cjr.examples.poly_array_tests.poly_nested_wf</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_set_erasure_uniform" data-path="[&quot;cjr.examples.poly_array_tests.poly_set_erasure_uniform&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-222b117d83b9db18be6e0211">cjr.examples.poly_array_tests.poly_set_erasure_uniform</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_set_substitution" data-path="[&quot;cjr.examples.poly_array_tests.poly_set_substitution&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-19f9fc82edab385c11a67b66">cjr.examples.poly_array_tests.poly_set_substitution</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_static_instance_call_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_static_instance_call_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-ed4e02523dfd52da1cc6ee4e">cjr.examples.poly_array_tests.poly_static_instance_call_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_static_unknown_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_static_unknown_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-c25bb49584b2a7c46dd52085">cjr.examples.poly_array_tests.poly_static_unknown_rejected</a></summary></details></li><li><a href="rocq/poly_array_tests.html#symbol-f9d06dd8ff8064356dbb95a9">cjr.examples.poly_array_tests.poly_storage_name_reserved</a></li><li><details data-identity="cjr.examples.poly_array_tests.poly_unbound_element_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_unbound_element_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-5c07603b3b01e51b9c5a860b">cjr.examples.poly_array_tests.poly_unbound_element_rejected</a></summary></details></li><li><details data-identity="cjr.examples.poly_array_tests.poly_wrong_arity_rejected" data-path="[&quot;cjr.examples.poly_array_tests.poly_wrong_arity_rejected&quot;]"><summary><a href="rocq/poly_array_tests.html#symbol-382bc737c189244de3a6ca4a">cjr.examples.poly_array_tests.poly_wrong_arity_rejected</a></summary></details></li></ul><noscript><p>Enable JavaScript to expand the hierarchy. Every declaration page also lists direct dependencies.</p></noscript></section><script id="dependency-data" type="application/json">{"cjr.examples.poly_array.is_poly_array": {"dependencies": [], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-0b5d4582a0356409ba440e30", "kind": "definition", "label": "cjr.examples.poly_array.is_poly_array", "name": "is_poly_array"}, "cjr.examples.poly_array.poly_array_rep": {"dependencies": ["cjr.examples.poly_array.is_poly_array"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-b40abda3e1badc9ce9f6f143", "kind": "definition", "label": "cjr.examples.poly_array.poly_array_rep", "name": "poly_array_rep"}, "cjr.examples.poly_array.poly_fresh_get": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_get_spec", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_make_spec", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-3fa28df87d7361e88fc4eb4a", "kind": "lemma", "label": "cjr.examples.poly_array.poly_fresh_get", "name": "poly_fresh_get"}, "cjr.examples.poly_array.poly_functions": {"dependencies": ["cjr.examples.poly_array.poly_get_fn", "cjr.examples.poly_array.poly_length_fn", "cjr.examples.poly_array.poly_make_fn", "cjr.examples.poly_array.poly_set_fn"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-c922709c3040b69a7ba283e1", "kind": "definition", "label": "cjr.examples.poly_array.poly_functions", "name": "poly_functions"}, "cjr.examples.poly_array.poly_get": {"dependencies": ["cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-f1d4a1027da11e073c89db77", "kind": "definition", "label": "cjr.examples.poly_array.poly_get", "name": "poly_get"}, "cjr.examples.poly_array.poly_get_fn": {"dependencies": ["cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-d60457a36f4b1984cf257873", "kind": "definition", "label": "cjr.examples.poly_array.poly_get_fn", "name": "poly_get_fn"}, "cjr.examples.poly_array.poly_get_owned_spec": {"dependencies": ["cjr.examples.poly_array.poly_array_rep", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_get_spec", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-c243c8b4d3348301511d9477", "kind": "lemma", "label": "cjr.examples.poly_array.poly_get_owned_spec", "name": "poly_get_owned_spec"}, "cjr.examples.poly_array.poly_get_spec": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-700cf82ca8ad82071fbcf88b", "kind": "lemma", "label": "cjr.examples.poly_array.poly_get_spec", "name": "poly_get_spec"}, "cjr.examples.poly_array.poly_int_adaptation": {"dependencies": ["cjr.examples.poly_array.is_poly_array"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-ae2055457cef2b6802fcd4de", "kind": "lemma", "label": "cjr.examples.poly_array.poly_int_adaptation", "name": "poly_int_adaptation"}, "cjr.examples.poly_array.poly_layout": {"dependencies": ["cjr.examples.poly_array.poly_t"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-644def1a71019a534f8f48b2", "kind": "definition", "label": "cjr.examples.poly_array.poly_layout", "name": "poly_layout"}, "cjr.examples.poly_array.poly_layouts": {"dependencies": ["cjr.examples.poly_array.poly_layout"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-47c3e4bbb2bbc1a7a5520f90", "kind": "definition", "label": "cjr.examples.poly_array.poly_layouts", "name": "poly_layouts"}, "cjr.examples.poly_array.poly_length": {"dependencies": ["cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-58e05bd1eb3f7b7b3c1c7aa2", "kind": "definition", "label": "cjr.examples.poly_array.poly_length", "name": "poly_length"}, "cjr.examples.poly_array.poly_length_fn": {"dependencies": ["cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-1827b8dd60a0edf3d911f98e", "kind": "definition", "label": "cjr.examples.poly_array.poly_length_fn", "name": "poly_length_fn"}, "cjr.examples.poly_array.poly_length_spec": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_length", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-b82b607f0bb43363d4fd57f9", "kind": "lemma", "label": "cjr.examples.poly_array.poly_length_spec", "name": "poly_length_spec"}, "cjr.examples.poly_array.poly_main_adequate": {"dependencies": ["cjr.examples.poly_array.poly_main_wp", "cjr.examples.poly_array.poly_program"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-0774c49f82d1b72013e898bd", "kind": "lemma", "label": "cjr.examples.poly_array.poly_main_adequate", "name": "poly_main_adequate"}, "cjr.examples.poly_array.poly_main_wp": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make_spec", "cjr.examples.poly_array.poly_program", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-e984be24ecad6723e4b0f616", "kind": "lemma", "label": "cjr.examples.poly_array.poly_main_wp", "name": "poly_main_wp"}, "cjr.examples.poly_array.poly_make": {"dependencies": ["cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-d92e9c6d733c05989dc2c405", "kind": "definition", "label": "cjr.examples.poly_array.poly_make", "name": "poly_make"}, "cjr.examples.poly_array.poly_make_fn": {"dependencies": ["cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-a2c37b71628a7a82ae109d44", "kind": "definition", "label": "cjr.examples.poly_array.poly_make_fn", "name": "poly_make_fn"}, "cjr.examples.poly_array.poly_make_owned_spec": {"dependencies": ["cjr.examples.poly_array.poly_array_rep", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_make_spec", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-eedd6d27e0cfd1b906691959", "kind": "lemma", "label": "cjr.examples.poly_array.poly_make_owned_spec", "name": "poly_make_owned_spec"}, "cjr.examples.poly_array.poly_make_persistent_spec": {"dependencies": ["cjr.examples.poly_array.poly_array_rep", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_make_owned_spec", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-43fc88ac530c08ed64895686", "kind": "lemma", "label": "cjr.examples.poly_array.poly_make_persistent_spec", "name": "poly_make_persistent_spec"}, "cjr.examples.poly_array.poly_make_spec": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_runtime"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-552f9c0b867fe05ba7f30956", "kind": "lemma", "label": "cjr.examples.poly_array.poly_make_spec", "name": "poly_make_spec"}, "cjr.examples.poly_array.poly_program": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-a1b8fc82836f143f5478243a", "kind": "definition", "label": "cjr.examples.poly_array.poly_program", "name": "poly_program"}, "cjr.examples.poly_array.poly_program_checked": {"dependencies": ["cjr.examples.poly_array.poly_program"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-5d6c1f1bbeaa654282bcfe53", "kind": "example", "label": "cjr.examples.poly_array.poly_program_checked", "name": "poly_program_checked"}, "cjr.examples.poly_array.poly_runtime": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-0dabfc9f0763a7218d5a22eb", "kind": "definition", "label": "cjr.examples.poly_array.poly_runtime", "name": "poly_runtime"}, "cjr.examples.poly_array.poly_set": {"dependencies": ["cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-6a278340dc87a0b8061183a2", "kind": "definition", "label": "cjr.examples.poly_array.poly_set", "name": "poly_set"}, "cjr.examples.poly_array.poly_set_fn": {"dependencies": ["cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-af9b87c83f0de88a16e02e18", "kind": "definition", "label": "cjr.examples.poly_array.poly_set_fn", "name": "poly_set_fn"}, "cjr.examples.poly_array.poly_set_get_other": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_get_spec", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_spec"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-d413c09ffb63bfb86791c1d8", "kind": "lemma", "label": "cjr.examples.poly_array.poly_set_get_other", "name": "poly_set_get_other"}, "cjr.examples.poly_array.poly_set_get_same": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_get_spec", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_spec"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-333cd37df3188d2406ae68af", "kind": "lemma", "label": "cjr.examples.poly_array.poly_set_get_same", "name": "poly_set_get_same"}, "cjr.examples.poly_array.poly_set_length": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_length", "cjr.examples.poly_array.poly_length_spec", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_spec"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-87f239743ede506742a7615f", "kind": "lemma", "label": "cjr.examples.poly_array.poly_set_length", "name": "poly_set_length"}, "cjr.examples.poly_array.poly_set_owned_spec": {"dependencies": ["cjr.examples.poly_array.poly_array_rep", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_spec"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-530c14d1f7b0c372f1742825", "kind": "lemma", "label": "cjr.examples.poly_array.poly_set_owned_spec", "name": "poly_set_owned_spec"}, "cjr.examples.poly_array.poly_set_spec": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set"], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-59a68d6a0e9bd03255efeed5", "kind": "lemma", "label": "cjr.examples.poly_array.poly_set_spec", "name": "poly_set_spec"}, "cjr.examples.poly_array.poly_t": {"dependencies": [], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-0a7b72e7709db8c67e0c6f84", "kind": "definition", "label": "cjr.examples.poly_array.poly_t", "name": "poly_t"}, "cjr.examples.poly_array.poly_ty": {"dependencies": [], "file": "rocq/poly_array.v", "href": "rocq/poly_array.html#symbol-bb8655f668f9de0d3e8d0d89", "kind": "definition", "label": "cjr.examples.poly_array.poly_ty", "name": "poly_ty"}, "cjr.examples.poly_array_tests.poly_all_operations_owned": {"dependencies": ["cjr.examples.poly_array.poly_functions"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-1e01270a7d600ad100ae64f6", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_all_operations_owned", "name": "poly_all_operations_owned"}, "cjr.examples.poly_array_tests.poly_bool_roundtrip": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_get_same"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-76215a4b7934166fe7544008", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_bool_roundtrip", "name": "poly_bool_roundtrip"}, "cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-f3d402c271bc9d59cebdc590", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected", "name": "poly_factory_argument_arity_rejected"}, "cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_t"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-63d605c217613b510777100a", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform", "name": "poly_factory_call_erasure_uniform"}, "cjr.examples.poly_array_tests.poly_factory_call_substitution": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-c261b2bb346abaa3e0aeb95b", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_factory_call_substitution", "name": "poly_factory_call_substitution"}, "cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-3c2228488cd37b79aa714e78", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected", "name": "poly_factory_owner_arity_rejected"}, "cjr.examples.poly_array_tests.poly_factory_print": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-bc84621b2e9d1d1e50561bcb", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_factory_print", "name": "poly_factory_print"}, "cjr.examples.poly_array_tests.poly_get_erasure_uniform": {"dependencies": ["cjr.examples.poly_array.poly_get_fn", "cjr.examples.poly_array.poly_layouts"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-78991cd10038fcd2e4802cd1", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_get_erasure_uniform", "name": "poly_get_erasure_uniform"}, "cjr.examples.poly_array_tests.poly_instance_static_call_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-987fc8561365bfcad75317ba", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_instance_static_call_rejected", "name": "poly_instance_static_call_rejected"}, "cjr.examples.poly_array_tests.poly_int_roundtrip": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_get", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_set", "cjr.examples.poly_array.poly_set_get_same"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-ab160d6b2a0f86499dc3d282", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_int_roundtrip", "name": "poly_int_roundtrip"}, "cjr.examples.poly_array_tests.poly_make_erasure_uniform": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make_fn"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-6976b67ebe96d18181f78e11", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_make_erasure_uniform", "name": "poly_make_erasure_uniform"}, "cjr.examples.poly_array_tests.poly_make_substitution": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make_fn"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-34d7853f32ed6da24c28e8c6", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_make_substitution", "name": "poly_make_substitution"}, "cjr.examples.poly_array_tests.poly_method_type_arity_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-c5f072ecd4ea640e63767c2e", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_method_type_arity_rejected", "name": "poly_method_type_arity_rejected"}, "cjr.examples.poly_array_tests.poly_nested_print": {"dependencies": ["cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-ab7d1097fce122271fe64be0", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_nested_print", "name": "poly_nested_print"}, "cjr.examples.poly_array_tests.poly_nested_singleton_spec": {"dependencies": ["cjr.examples.poly_array.is_poly_array", "cjr.examples.poly_array.poly_array_rep", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_make", "cjr.examples.poly_array.poly_make_owned_spec", "cjr.examples.poly_array.poly_runtime", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-adac94a0c7b87b042469ad3e", "kind": "lemma", "label": "cjr.examples.poly_array_tests.poly_nested_singleton_spec", "name": "poly_nested_singleton_spec"}, "cjr.examples.poly_array_tests.poly_nested_type_substitution": {"dependencies": ["cjr.examples.poly_array.poly_t", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-d0b3314d15598fbae9383e37", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_nested_type_substitution", "name": "poly_nested_type_substitution"}, "cjr.examples.poly_array_tests.poly_nested_wf": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-c0ac539187ceba09ed6c478b", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_nested_wf", "name": "poly_nested_wf"}, "cjr.examples.poly_array_tests.poly_set_erasure_uniform": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_set_fn"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-222b117d83b9db18be6e0211", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_set_erasure_uniform", "name": "poly_set_erasure_uniform"}, "cjr.examples.poly_array_tests.poly_set_substitution": {"dependencies": ["cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_set_fn"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-19f9fc82edab385c11a67b66", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_set_substitution", "name": "poly_set_substitution"}, "cjr.examples.poly_array_tests.poly_static_instance_call_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-ed4e02523dfd52da1cc6ee4e", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_static_instance_call_rejected", "name": "poly_static_instance_call_rejected"}, "cjr.examples.poly_array_tests.poly_static_unknown_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-c25bb49584b2a7c46dd52085", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_static_unknown_rejected", "name": "poly_static_unknown_rejected"}, "cjr.examples.poly_array_tests.poly_storage_name_reserved": {"dependencies": [], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-f9d06dd8ff8064356dbb95a9", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_storage_name_reserved", "name": "poly_storage_name_reserved"}, "cjr.examples.poly_array_tests.poly_unbound_element_rejected": {"dependencies": ["cjr.examples.poly_array.poly_t"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-5c07603b3b01e51b9c5a860b", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_unbound_element_rejected", "name": "poly_unbound_element_rejected"}, "cjr.examples.poly_array_tests.poly_wrong_arity_rejected": {"dependencies": ["cjr.examples.poly_array.poly_functions", "cjr.examples.poly_array.poly_layouts", "cjr.examples.poly_array.poly_ty"], "file": "rocq/poly_array_tests.v", "href": "rocq/poly_array_tests.html#symbol-382bc737c189244de3a6ca4a", "kind": "example", "label": "cjr.examples.poly_array_tests.poly_wrong_arity_rejected", "name": "poly_wrong_arity_rejected"}}</script><script>
+(() => {
+  const graph = JSON.parse(document.getElementById('dependency-data').textContent);
+  const tree = document.querySelector('.dependency-tree');
+  function entry(identity, path) {
+    const node = graph[identity];
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = node.href;
+    link.textContent = node.label;
+    const recursive = path.includes(identity);
+    if (node.dependencies.length && !recursive) {
+      const details = document.createElement('details');
+      details.dataset.identity = identity;
+      details.dataset.path = JSON.stringify([...path, identity]);
+      const summary = document.createElement('summary');
+      summary.append(link);
+      details.append(summary);
+      li.append(details);
+    } else {
+      li.append(link);
+      if (recursive) li.append(document.createTextNode(' (recursive reference)'));
+    }
+    return li;
+  }
+  tree.addEventListener('toggle', event => {
+    const details = event.target;
+    if (details.tagName !== 'DETAILS' || !details.open || details.dataset.loaded) return;
+    const children = document.createElement('ul');
+    const path = JSON.parse(details.dataset.path);
+    for (const child of graph[details.dataset.identity].dependencies) children.append(entry(child, path));
+    details.append(children);
+    details.dataset.loaded = 'true';
+  }, true);
+})();
+</script><script>
+(() => {
+  const data = JSON.parse(document.getElementById('dependency-data').textContent);
+  const ids = Object.keys(data).sort();
+  const svg = document.getElementById('dependency-svg');
+  const mode = document.getElementById('graph-view');
+  const local = document.querySelector('.dependency-diagram').dataset.scope === 'file';
+  const search = document.getElementById('graph-focus');
+  const status = document.getElementById('graph-status');
+  const choices = document.getElementById('graph-choices');
+  const reverse = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids) {
+    for (const dependency of data[id].dependencies) reverse[dependency].push(id);
+    const option = document.createElement('option'); option.value = id;
+    option.label = data[id].name + ' · ' + data[id].file; choices.append(option);
+  }
+  const ns = 'http://www.w3.org/2000/svg';
+  let width = 244, height = 90, columnGap = 100, rowGap = 26;
+  let bounds = {width: 1, height: 1}, viewport = {x: 0, y: 0, width: 1, height: 1};
+  let focused = null;
+  function element(tag, attrs = {}, text = null) {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    if (text !== null) node.textContent = text;
+    return node;
+  }
+  function applyViewport() {
+    svg.setAttribute('viewBox', [viewport.x, viewport.y, viewport.width, viewport.height].join(' '));
+  }
+  function fit() {
+    const aspect = svg.clientWidth / Math.max(svg.clientHeight, 1);
+    const w = Math.max(bounds.width + 48, (bounds.height + 48) * aspect);
+    const h = w / aspect;
+    viewport = {x: (bounds.width - w) / 2, y: (bounds.height - h) / 2, width: w, height: h};
+    applyViewport();
+  }
+  function zoom(factor, x = .5, y = .5) {
+    if (viewport.width * factor < 100 || viewport.width * factor > Math.max(bounds.width, bounds.height) * 30) return;
+    viewport.x += viewport.width * (1 - factor) * x;
+    viewport.y += viewport.height * (1 - factor) * y;
+    viewport.width *= factor; viewport.height *= factor; applyViewport();
+  }
+  // Condense cycles before assigning layers. Shared nodes are drawn once.
+  function layout(nodes, edges) {
+    const keys = Object.keys(nodes).sort(), adjacency = {}, incoming = {};
+    for (const id of keys) { adjacency[id] = []; incoming[id] = []; }
+    for (const [a, b] of edges) { adjacency[a].push(b); incoming[b].push(a); }
+    const seen = new Set(), order = [];
+    for (const root of keys) {
+      const stack = [[root, false]];
+      while (stack.length) {
+        const [id, finished] = stack.pop();
+        if (finished) order.push(id);
+        else if (!seen.has(id)) {
+          seen.add(id); stack.push([id, true]);
+          for (const child of adjacency[id]) if (!seen.has(child)) stack.push([child, false]);
+        }
+      }
+    }
+    const component = new Map(), groups = [];
+    for (const root of order.reverse()) {
+      if (component.has(root)) continue;
+      const index = groups.length, members = [], stack = [root];
+      while (stack.length) {
+        const id = stack.pop();
+        if (!component.has(id)) { component.set(id, index); members.push(id); stack.push(...incoming[id]); }
+      }
+      groups.push(members.sort());
+    }
+    const outgoing = groups.map(() => new Set()), degree = groups.map(() => 0), rank = groups.map(() => 0);
+    for (const [a, b] of edges) {
+      const from = component.get(a), to = component.get(b);
+      if (from !== to && !outgoing[from].has(to)) { outgoing[from].add(to); degree[to]++; }
+    }
+    const queue = degree.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+    for (let next = 0; next < queue.length; next++) {
+      const from = queue[next];
+      for (const to of outgoing[from]) { rank[to] = Math.max(rank[to], rank[from] + 1); if (--degree[to] === 0) queue.push(to); }
+    }
+    const columns = [];
+    for (const id of keys) { const r = rank[component.get(id)]; (columns[r] ||= []).push(id); }
+    // A few barycentric sweeps reduce crossings without nondeterministic forces.
+    const positions = new Map();
+    for (let pass = 0; pass < 4; pass++) {
+      columns.forEach(column => column.forEach((id, i) => positions.set(id, i)));
+      const sequence = pass % 2 ? [...columns].reverse() : columns;
+      for (const column of sequence) {
+        const neighbors = pass % 2 ? adjacency : incoming;
+        const average = id => neighbors[id].length ? neighbors[id].reduce((sum, n) => sum + positions.get(n), 0) / neighbors[id].length : positions.get(id);
+        column.sort((a, b) => average(a) - average(b) || (a < b ? -1 : a > b ? 1 : 0));
+      }
+    }
+    const maxRows = Math.max(1, ...columns.map(c => c.length)), points = {};
+    columns.forEach((column, col) => column.forEach((id, row) => {
+      points[id] = {x: col * (width + columnGap), y: ((maxRows - column.length) / 2 + row) * (height + rowGap)};
+    }));
+    return {points, width: Math.max(1, columns.length) * (width + columnGap) - columnGap, height: maxRows * (height + rowGap) - rowGap};
+  }
+  function sourceColor(file) {
+    const parts = file.split('/');
+    if (parts.includes('spec')) return ['#edf5fc', '#bed8ee'];
+    if (parts.includes('algorithm')) return ['#edf8f4', '#b6dfd4'];
+    if (parts.includes('proof')) return ['#f5f0fb', '#d7c8ec'];
+    return ['#f3f6f8', '#d7dfe5'];
+  }
+  function declarationColor(kind) {
+    if (['lemma','theorem','corollary','proposition','fact','remark','example'].includes(kind)) return ['#f5f0fb','#d7c8ec'];
+    if (['inductive','coinductive','record','structure','class','variant','finite','cofinite','bifinite'].includes(kind)) return ['#edf5fc','#bed8ee'];
+    if (['definition','let','recursive function','corecursive function','instance'].includes(kind)) return ['#edf8f4','#b6dfd4'];
+    return ['#f3f6f8','#d7dfe5'];
+  }
+  function labelLines(label) {
+    const limit = mode.value === 'files' ? 18 : 29;
+    if (label.length <= limit) return [label];
+    const split = Math.max(label.lastIndexOf('_', limit - 1), label.lastIndexOf('/', limit - 1), limit - 8);
+    const remainder = label.slice(split);
+    return [label.slice(0, split), remainder.length > limit ? remainder.slice(0, limit - 3) + '…' : remainder];
+  }
+  function render() {
+    let nodes = {}, edges = [], counts = new Map();
+    width = mode.value === 'files' ? 156 : local ? 220 : 244;
+    columnGap = mode.value === 'files' ? 36 : local ? 60 : 100;
+    if (mode.value === 'files') {
+      for (const id of ids) {
+        const d = data[id], file = d.file;
+        if (!nodes[file]) nodes[file] = {name: file.split('/').pop(), file, href: d.href.split('#')[0], count: 0};
+        nodes[file].count++;
+        for (const dependency of d.dependencies) {
+          const other = data[dependency].file;
+          if (file !== other) { const key = JSON.stringify([file, other]); counts.set(key, (counts.get(key) || 0) + 1); }
+        }
+      }
+      edges = [...counts.keys()].map(key => JSON.parse(key));
+    } else {
+      const selected = mode.value === 'focus' && focused ? new Set([focused, ...data[focused].dependencies, ...reverse[focused]]) : new Set(ids);
+      for (const id of selected) nodes[id] = data[id];
+      for (const id of selected) for (const dependency of data[id].dependencies) {
+        if (selected.has(dependency)) edges.push([id, dependency]);
+      }
+    }
+    const drawing = layout(nodes, edges);
+    const padding = mode.value === 'files' ? 32 : 80;
+    for (const point of Object.values(drawing.points)) { point.x += padding; point.y += padding; }
+    bounds = {width:drawing.width + padding * 2,height:drawing.height + padding * 2};
+    svg.replaceChildren();
+    svg.setAttribute('tabindex', '0');
+    const defs = element('defs'), marker = element('marker', {id:'graph-arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'});
+    marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#869bae'})); defs.append(marker); svg.append(defs);
+    const edgeGroup = element('g', {'aria-label':'Dependency arrows'}); svg.append(edgeGroup);
+    for (const [a, b] of edges) {
+      const from = drawing.points[a], to = drawing.points[b];
+      let d;
+      if (a === b) d = `M ${from.x + width - 30} ${from.y} C ${from.x + width + 40} ${from.y - 65}, ${from.x + width + 40} ${from.y + 55}, ${from.x + width} ${from.y + 30}`;
+      else if (to.x > from.x) {
+        const x1 = from.x + width, y1 = from.y + height / 2, x2 = to.x, y2 = to.y + height / 2, mid = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`;
+      } else {
+        const x = Math.max(from.x, to.x) + width + 50;
+        d = `M ${from.x + width} ${from.y + height / 2} C ${x} ${from.y + height / 2}, ${x} ${to.y + height / 2}, ${to.x + width} ${to.y + height / 2}`;
+      }
+      const edge = element('path',{d,class:'graph-edge','marker-end':'url(#graph-arrow)'});
+      const count = counts.get(JSON.stringify([a,b]));
+      edge.append(element('title',{},a + ' depends on ' + b + (count ? ' · ' + count + ' declaration links' : ''))); edgeGroup.append(edge);
+    }
+    for (const [id, node] of Object.entries(nodes)) {
+      const p = drawing.points[id], [fill, stroke] = local ? declarationColor(node.kind) : sourceColor(node.file);
+      const kind = ['finite','cofinite','bifinite'].includes(node.kind) ? 'type' : node.kind;
+      const link = element('a',{href:node.href,class:'graph-node' + (id === focused ? ' graph-selected' : ''),transform:`translate(${p.x},${p.y})`,'aria-label':id});
+      link.append(element('title',{},id + (kind ? ' · ' + kind : '')));
+      link.append(element('rect',{width,height,rx:'10',fill,stroke}));
+      labelLines(node.name).forEach((line, i) => link.append(element('text',{x:'15',y:String(26 + i * 17),style:mode.value === 'files' ? 'font-size:14px' : ''},line)));
+      const caption = node.count ? node.count + ' declarations' : local ? kind : node.file;
+      link.append(element('text',{x:'15',y:'73',class:'graph-caption'},caption.length > 34 ? caption.slice(0,31) + '…' : caption));
+      svg.append(link);
+    }
+    status.textContent = Object.keys(nodes).length + (mode.value === 'files' ? ' source files' : ' declarations') + ' · ' + edges.length + ' dependency links' + (mode.value === 'focus' && focused ? ' · ' + data[focused].name : '');
+    if (!ids.length) status.textContent = 'No declarations available to diagram.';
+    svg.parentElement.classList.toggle('graph-empty', !ids.length);
+    fit();
+  }
+  search.addEventListener('input', () => {
+    const value = search.value.trim();
+    const matches = ids.filter(id => id === value || data[id].name === value);
+    if (matches.length === 1) { focused = matches[0]; mode.value = 'focus'; render(); }
+    else if (!value) { focused = null; mode.value = local ? 'all' : 'files'; render(); }
+  });
+  mode.addEventListener('change', () => {
+    if (mode.value === 'focus' && !focused && ids.length) { focused = ids[0]; search.value = focused; }
+    render();
+  });
+  document.getElementById('graph-in').addEventListener('click', () => zoom(.8));
+  document.getElementById('graph-out').addEventListener('click', () => zoom(1.25));
+  document.getElementById('graph-fit').addEventListener('click', fit);
+  svg.addEventListener('wheel', event => {
+    event.preventDefault(); const box = svg.getBoundingClientRect();
+    zoom(event.deltaY < 0 ? .9 : 1.1, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
+  }, {passive:false});
+  let drag = null;
+  svg.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('a')) return;
+    drag = {x:event.clientX,y:event.clientY,startX:viewport.x,startY:viewport.y}; svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove', event => {
+    if (!drag) return;
+    const scale = viewport.width / svg.clientWidth;
+    viewport.x = drag.startX - (event.clientX - drag.x) * scale;
+    viewport.y = drag.startY - (event.clientY - drag.y) * scale; applyViewport();
+  });
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) svg.addEventListener(type, () => {drag = null;});
+  svg.addEventListener('keydown', event => {
+    if (!['+','=','-','0','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === '+' || event.key === '=') zoom(.8);
+    else if (event.key === '-') zoom(1.25);
+    else if (event.key === '0') fit();
+    else { const step = viewport.width * .08; viewport.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; viewport.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; applyViewport(); }
+  });
+  new ResizeObserver(fit).observe(svg);
+  render();
+})();
+</script><section class="panel"><h2>Source files</h2><ul class="files"><li><a href="rocq/poly_array.html">rocq/poly_array.v</a> <span class="count">33 declarations</span></li><li><a href="rocq/poly_array_tests.html">rocq/poly_array_tests.v</a> <span class="count">24 declarations</span></li></ul></section></main></body></html>

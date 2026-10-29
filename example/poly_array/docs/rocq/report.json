@@ -1,0 +1,824 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "rocq/poly_array.v",
+      "errors": [],
+      "unsupported": [
+        "Cangjie unavailable: CJR LitObj [requires runtime or layout metadata]",
+        "Cangjie unavailable: CJR LitPtr [requires runtime or layout metadata]",
+        "unclassified arrow at byte 10515",
+        "unclassified arrow at byte 10527",
+        "unclassified arrow at byte 10550",
+        "unclassified arrow at byte 10571",
+        "unclassified arrow at byte 11165",
+        "unclassified arrow at byte 11188",
+        "unclassified arrow at byte 11884",
+        "unclassified arrow at byte 11900",
+        "unclassified arrow at byte 11916",
+        "unclassified arrow at byte 3268",
+        "unclassified arrow at byte 3284",
+        "unclassified arrow at byte 5127",
+        "unclassified arrow at byte 6243",
+        "unclassified arrow at byte 6266",
+        "unclassified arrow at byte 7789",
+        "unclassified arrow at byte 8448",
+        "unclassified arrow at byte 8471",
+        "unclassified arrow at byte 9054",
+        "unclassified arrow at byte 9070",
+        "unclassified arrow at byte 9480",
+        "unclassified arrow at byte 9496",
+        "unclassified arrow at byte 9876",
+        "unclassified arrow at byte 9899",
+        "unmapped notation <[ _ := _ ]>",
+        "unmapped notation _ ⊣⊢ _"
+      ],
+      "declarations": 33
+    },
+    {
+      "file": "rocq/poly_array_tests.v",
+      "errors": [],
+      "unsupported": [
+        "unclassified arrow at byte 3447"
+      ],
+      "declarations": 24
+    }
+  ],
+  "dependencies": {
+    "complete": true,
+    "roots": [
+      "cjr.examples.poly_array.poly_fresh_get",
+      "cjr.examples.poly_array.poly_get_owned_spec",
+      "cjr.examples.poly_array.poly_int_adaptation",
+      "cjr.examples.poly_array.poly_main_adequate",
+      "cjr.examples.poly_array.poly_make_persistent_spec",
+      "cjr.examples.poly_array.poly_program_checked",
+      "cjr.examples.poly_array.poly_set_get_other",
+      "cjr.examples.poly_array.poly_set_length",
+      "cjr.examples.poly_array.poly_set_owned_spec",
+      "cjr.examples.poly_array_tests.poly_all_operations_owned",
+      "cjr.examples.poly_array_tests.poly_bool_roundtrip",
+      "cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected",
+      "cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform",
+      "cjr.examples.poly_array_tests.poly_factory_call_substitution",
+      "cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected",
+      "cjr.examples.poly_array_tests.poly_factory_print",
+      "cjr.examples.poly_array_tests.poly_get_erasure_uniform",
+      "cjr.examples.poly_array_tests.poly_instance_static_call_rejected",
+      "cjr.examples.poly_array_tests.poly_int_roundtrip",
+      "cjr.examples.poly_array_tests.poly_make_erasure_uniform",
+      "cjr.examples.poly_array_tests.poly_make_substitution",
+      "cjr.examples.poly_array_tests.poly_method_type_arity_rejected",
+      "cjr.examples.poly_array_tests.poly_nested_print",
+      "cjr.examples.poly_array_tests.poly_nested_singleton_spec",
+      "cjr.examples.poly_array_tests.poly_nested_type_substitution",
+      "cjr.examples.poly_array_tests.poly_nested_wf",
+      "cjr.examples.poly_array_tests.poly_set_erasure_uniform",
+      "cjr.examples.poly_array_tests.poly_set_substitution",
+      "cjr.examples.poly_array_tests.poly_static_instance_call_rejected",
+      "cjr.examples.poly_array_tests.poly_static_unknown_rejected",
+      "cjr.examples.poly_array_tests.poly_storage_name_reserved",
+      "cjr.examples.poly_array_tests.poly_unbound_element_rejected",
+      "cjr.examples.poly_array_tests.poly_wrong_arity_rejected"
+    ],
+    "source_issues": {
+      "rocq/poly_array.v": [],
+      "rocq/poly_array_tests.v": []
+    },
+    "declarations": {
+      "cjr.examples.poly_array.is_poly_array": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_array_rep": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_fresh_get": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_get_spec",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_make_spec",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_functions": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_get_fn",
+          "cjr.examples.poly_array.poly_length_fn",
+          "cjr.examples.poly_array.poly_make_fn",
+          "cjr.examples.poly_array.poly_set_fn"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_get": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_get_fn": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_get_owned_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_array_rep",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_get_spec",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_get_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_int_adaptation": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_layout": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_layouts": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layout"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_length": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_length_fn": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_length_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_length",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_main_adequate": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_main_wp",
+          "cjr.examples.poly_array.poly_program"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_main_wp": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make_spec",
+          "cjr.examples.poly_array.poly_program",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_make": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_make_fn": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_make_owned_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_array_rep",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_make_spec",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_make_persistent_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_array_rep",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_make_owned_spec",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_make_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_runtime"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_program": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_program_checked": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_program"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_runtime": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_fn": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_get_other": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_get_spec",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_get_same": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_get_spec",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_length": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_length",
+          "cjr.examples.poly_array.poly_length_spec",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_owned_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_array_rep",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_spec"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_set_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_t": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.poly_array.poly_ty": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_all_operations_owned": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_bool_roundtrip": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_get_same"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_t"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_factory_call_substitution": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_factory_print": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_get_erasure_uniform": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_get_fn",
+          "cjr.examples.poly_array.poly_layouts"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_instance_static_call_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_int_roundtrip": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_get",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_set",
+          "cjr.examples.poly_array.poly_set_get_same"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_make_erasure_uniform": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make_fn"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_make_substitution": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make_fn"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_method_type_arity_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_nested_print": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_nested_singleton_spec": {
+        "depends_on": [
+          "cjr.examples.poly_array.is_poly_array",
+          "cjr.examples.poly_array.poly_array_rep",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_make",
+          "cjr.examples.poly_array.poly_make_owned_spec",
+          "cjr.examples.poly_array.poly_runtime",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_nested_type_substitution": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_nested_wf": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_set_erasure_uniform": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_set_fn"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_set_substitution": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_set_fn"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_static_instance_call_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_static_unknown_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_storage_name_reserved": {
+        "depends_on": [],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_unbound_element_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_t"
+        ],
+        "issues": []
+      },
+      "cjr.examples.poly_array_tests.poly_wrong_arity_rejected": {
+        "depends_on": [
+          "cjr.examples.poly_array.poly_functions",
+          "cjr.examples.poly_array.poly_layouts",
+          "cjr.examples.poly_array.poly_ty"
+        ],
+        "issues": []
+      }
+    }
+  },
+  "explanations": {
+    "model_selection": "CLI configured model",
+    "failures": 0,
+    "declarations": {
+      "cjr.examples.poly_array.is_poly_array": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_array_rep": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_fresh_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_functions": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_get": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_get_fn": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_get_owned_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_get_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_int_adaptation": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_layout": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_layouts": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_length_fn": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_length_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_main_adequate": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_main_wp": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_make": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_make_fn": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_make_owned_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_make_persistent_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_make_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_program": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_program_checked": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_runtime": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_fn": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_get_other": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_get_same": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_length": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_owned_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_set_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_t": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array.poly_ty": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_all_operations_owned": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_bool_roundtrip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_factory_argument_arity_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_factory_call_erasure_uniform": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_factory_call_substitution": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_factory_owner_arity_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_factory_print": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_get_erasure_uniform": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_instance_static_call_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_int_roundtrip": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_make_erasure_uniform": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_make_substitution": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_method_type_arity_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_nested_print": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_nested_singleton_spec": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_nested_type_substitution": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_nested_wf": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_set_erasure_uniform": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_set_substitution": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_static_instance_call_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_static_unknown_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_storage_name_reserved": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_unbound_element_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      },
+      "cjr.examples.poly_array_tests.poly_wrong_arity_rejected": {
+        "status": "unavailable",
+        "reason": "No matching cached explanation (offline mode).",
+        "description": null
+      }
+    }
+  }
+}

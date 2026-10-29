@@ -974,3 +974,76 @@ Print Assumptions cjr.authenticator.sha_execution_bounds.allocated_hash_state_br
 Print Assumptions cjr.authenticator.sha_execution_bounds.allocated_block_bridge.
 Print Assumptions cjr.authenticator.sha_execution_bounds.reachable_native_cursor_bounds.
 Print Assumptions cjr.authenticator.sha_execution_bounds.reachable_load_index_bounds.
+
+(** Conservative generic source extension and its uniform resource contracts. *)
+From cjr Require Import generic_laws.
+From cjr.examples Require Import generic_print generic_examples generic_tests.
+Print Assumptions erase_legacy.
+Print Assumptions erase_instantiate.
+Print Assumptions erase_subst.
+Print Assumptions generic_wp_legacy.
+Print Assumptions generic_wp_instantiate.
+Print Assumptions generic_adequacy.
+Print Assumptions extracted_program_checked.
+Print Assumptions generic_program_valid.
+Print Assumptions identity_spec.
+Print Assumptions pair_construct_spec.
+Print Assumptions pair_first_spec.
+Print Assumptions pair_second_spec.
+Print Assumptions box_construct_spec.
+Print Assumptions box_get_spec.
+Print Assumptions box_map_spec.
+Print Assumptions generic_main_wp.
+Print Assumptions generic_main_adequate.
+
+(** Value-polymorphic arrays and their derived initialized storage. *)
+From cjr Require Import buffer buffer_laws.
+From cjr.examples Require Import poly_array poly_array_tests.
+Print Assumptions buffer.buffer_fill_closed.
+Print Assumptions buffer.buffer_make_closed.
+Print Assumptions buffer.closed_lit.
+Print Assumptions buffer_laws.buffer_zero_cells.
+Print Assumptions buffer_laws.wp_buffer_fill.
+Print Assumptions buffer_laws.wp_buffer_make.
+Print Assumptions poly_array.poly_program_checked.
+Print Assumptions poly_array.poly_int_adaptation.
+Print Assumptions poly_array.poly_make_spec.
+Print Assumptions poly_array.poly_length_spec.
+Print Assumptions poly_array.poly_get_spec.
+Print Assumptions poly_array.poly_set_spec.
+Print Assumptions poly_array.poly_get_owned_spec.
+Print Assumptions poly_array.poly_set_owned_spec.
+Print Assumptions poly_array.poly_make_owned_spec.
+Print Assumptions poly_array.poly_make_persistent_spec.
+Print Assumptions poly_array.poly_set_get_same.
+Print Assumptions poly_array.poly_set_get_other.
+Print Assumptions poly_array.poly_set_length.
+Print Assumptions poly_array.poly_fresh_get.
+Print Assumptions poly_array.poly_main_wp.
+Print Assumptions poly_array.poly_main_adequate.
+Print Assumptions poly_array_tests.poly_nested_type_substitution.
+Print Assumptions poly_array_tests.poly_nested_wf.
+Print Assumptions poly_array_tests.poly_unbound_element_rejected.
+Print Assumptions poly_array_tests.poly_wrong_arity_rejected.
+Print Assumptions poly_array_tests.poly_storage_name_reserved.
+Print Assumptions poly_array_tests.poly_nested_print.
+Print Assumptions poly_array_tests.poly_make_erasure_uniform.
+Print Assumptions poly_array_tests.poly_get_erasure_uniform.
+Print Assumptions poly_array_tests.poly_set_erasure_uniform.
+Print Assumptions poly_array_tests.poly_make_substitution.
+Print Assumptions poly_array_tests.poly_set_substitution.
+Print Assumptions poly_array_tests.poly_bool_roundtrip.
+Print Assumptions poly_array_tests.poly_int_roundtrip.
+Print Assumptions poly_array_tests.poly_nested_singleton_spec.
+
+(** Polymorphic array instance methods and static factory. *)
+Print Assumptions poly_array_tests.poly_all_operations_owned.
+Print Assumptions poly_array_tests.poly_factory_print.
+Print Assumptions poly_array_tests.poly_factory_owner_arity_rejected.
+Print Assumptions poly_array_tests.poly_static_instance_call_rejected.
+Print Assumptions poly_array_tests.poly_instance_static_call_rejected.
+Print Assumptions poly_array_tests.poly_method_type_arity_rejected.
+Print Assumptions poly_array_tests.poly_static_unknown_rejected.
+Print Assumptions poly_array_tests.poly_factory_argument_arity_rejected.
+Print Assumptions poly_array_tests.poly_factory_call_erasure_uniform.
+Print Assumptions poly_array_tests.poly_factory_call_substitution.

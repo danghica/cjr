@@ -1,0 +1,64 @@
+{
+  "compiler": "cjc",
+  "group_by": [
+    "case",
+    "n",
+    "implementation"
+  ],
+  "jobs": [
+    {
+      "compile": [
+        "python3",
+        "{root}/example/poly_array/benchmark/compile.py",
+        "{cjc}",
+        "{root}",
+        "{binary}"
+      ],
+      "expected_rows_per_process": 84,
+      "harness_sources": [
+        "tools/project_tools/benchmark_common.cj",
+        "example/poly_array/benchmark/poly_array_bench.cj",
+        "example/poly_array/benchmark/compile.py"
+      ],
+      "name": "poly_array",
+      "pattern": "BENCH,(?P<case>[a-z_]+),(?P<implementation>Mono|Poly),(?P<n>\\d+),(?P<trial>\\d+),(?P<elapsed_ns>\\d+),(?P<operations>\\d+),(?P<checksum>-?\\d+)",
+      "run": [
+        "{binary}"
+      ],
+      "sources": [
+        "example/array/extracted/array.cj",
+        "example/poly_array/extracted/poly_array.cj",
+        "tools/project_tools/benchmark_common.cj",
+        "example/poly_array/benchmark/poly_array_bench.cj",
+        "example/poly_array/benchmark/compile.py"
+      ]
+    }
+  ],
+  "output": "example/poly_array/benchmark/results",
+  "plots": {
+    "facet": "case",
+    "filename": "{facet}.svg"
+  },
+  "processes": 3,
+  "project_root": "../../..",
+  "protocol": {
+    "flags": [
+      "--test",
+      "-O2"
+    ],
+    "processes": 3,
+    "samples_per_process": 7,
+    "comparison": "Unchanged raw Int64 array versus managed PolyArray<Int64>; allocations excluded, checked native indexing retained. Not an isolated measure of type-parameter overhead."
+  },
+  "report_css": "../../docs/report.css",
+  "report_index": "../../index.html",
+  "required_compiler_version": "1.0.5",
+  "timeout_seconds": 600,
+  "workloads": {
+    "Comparison": "Mono is the unchanged raw Int64 CJR array; Poly is PolyArray<Int64> using managed storage with bounds checks. Ratios include representation and compiler differences, not just type parameters.",
+    "array_read": "One permuted indexed read per element, initialized before timing.",
+    "array_write_read": "One permuted write plus one sequential read per element; reported ns/op divides by twice the length.",
+    "Protocol": "Three processes, seven alternating samples each, independently calibrated towards 20 ms; checksums checked. Allocation, initialization and cleanup are excluded."
+  },
+  "provenance_root": "example/poly_array"
+}

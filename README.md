@@ -3,7 +3,7 @@
 This is a mechanization of a performance-parity Cangjie fragment (called Cangjie Radical) in Coq with [Iris](https://iris-project.org/). 
 This allows the formal specification and proof of cjr programs using Iris.  
 
-The language is sequential and monomorphic. Mutable `var` bindings are stack slots, `CPointer` blocks are a raw word heap, and final class fields live on a separate object heap. The program logic is Iris's weakest precondition over an evaluation-context semantics.
+The operational language is sequential and untyped. An explicit generic source layer supports rank-one parametric polymorphism, erases to this same runtime for Iris proofs, and extracts to Cangjie generics. Mutable `var` bindings are stack slots, `CPointer` blocks are a raw word heap, and final class fields live on a separate object heap. The program logic is Iris's weakest precondition over an evaluation-context semantics.
 
 Actual compilable and executable Cangjie code is extracted from the the verification files using a Galina printer. 
 
@@ -62,12 +62,44 @@ assumptions, rebuild this development with `make -B`.
 - `theories/lang.v` — syntax, three-region state, small-step semantics
 - `theories/primitive_laws.v` — points-to facts and weakest-precondition rules
 - `theories/adequacy.v` — a proved specification does not get stuck
-- `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, aes_ige, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
+- `theories/generics.v`, `theories/generic_laws.v` — generic source, erasure laws, and conservative Iris interface
+- `example/` — self-contained example directories: quadtree, array, array_list, list, list_rev, qsort, hash_map, most_frequent, aes_ige, generics, poly_array, and misc. Each owns its Rocq sources, generated code, tests, available benchmarks, and offline reports.
 - `tools/extraction/rocq/` — shared printer and aggregate extraction driver
 
 Open [all example reports](example/index.html). `make readable EXPLANATIONS=offline` regenerates the example and shared-library pages using existing explanation caches; `make project-report EXPLANATIONS=offline REPORT_FLAGS=--allow-stale` also assembles reports. `make test` runs the runtime suites; `make benchmark` explicitly runs timed benchmarks.
 
-Generics, inheritance, `enum`/`match`, concurrency, garbage collection, and a translation from full Cangjie are out of scope.
+Interface bounds, higher-rank polymorphism, generic raw-memory allocation, inheritance, `enum`/`match`, concurrency, garbage collection, and a translation from full Cangjie are out of scope.
+
+## Parametric polymorphism
+
+The [generic example](example/generics/README.md) proves and extracts
+`genericId<T>`, `Pair<A, B>`, and `Box<T>` with `map<U>`. Iris contracts quantify
+over element representations, including predicates that own resources.
+The original language, logic, examples, and extraction interfaces remain
+available; `erase_legacy` and `generic_wp_legacy` formalise that inclusion.
+
+The source layer uses structured types, explicit declaration names, and explicit
+type arguments. Erasure commutes with type instantiation and supported term
+substitution. Its separate printer checks scope, layouts, and arities, then
+emits native generic declarations. Cangjie compilation checks ordinary type
+compatibility. These results are uniform program specifications, not a general
+type-soundness or relational-parametricity theorem; the printer and native
+toolchain remain within the translation trust boundary.
+
+Run `make -C example/generics test` for the native tests, including nested types,
+callbacks, and recursion. The generic proofs and extraction regressions are
+included in `make verify`.
+
+The separate [polymorphic array example](example/poly_array/README.md) adapts
+`array.v` to lists of arbitrary values, with seeded initialization and uniform
+instance-method length/get/set proofs and a static `PolyArray<T>.make` factory.
+Its ownership-aware contracts account for element
+resources without duplication. It extracts `PolyArray<T>` using managed native
+storage; the original raw `Int64` array and its clients remain unchanged.
+`make -C example/poly_array test` runs its tests, and
+`make -C example/poly_array benchmark` compares its `Int64` instance with the
+original array using the same workloads. The tutorial includes a separate
+chapter explaining the adaptation, ownership, and measured comparison.
 
 ## Extracted Cangjie
 
@@ -96,10 +128,15 @@ extraction drivers. The most-frequent count includes `mf_memory.v`.
 | [most_frequent](example/most_frequent/README.md) | [rocq/](example/most_frequent/rocq/) | 2395 | [most_frequent.cj](example/most_frequent/extracted/most_frequent.cj) | 143 | 16.7 |
 | [quadtree](example/quadtree/README.md) | [spec/](example/quadtree/spec/), [algorithm/](example/quadtree/algorithm/), [proof/](example/quadtree/proof/) | 1471 | [quadtree.cj](example/quadtree/extracted/quadtree.cj) | 386 | 3.8 |
 | [aes_ige](example/aes_ige/README.md) | [rocq/](example/aes_ige/rocq/) | 3690 | [aes_ige.cj](example/aes_ige/extracted/aes_ige.cj) | 3394 | 1.1 |
-| **Total** | | **15973** | | **4892** | **3.3** |
+| [generics](example/generics/README.md) | [rocq/](example/generics/rocq/) | 295 | [generics.cj](example/generics/extracted/generics.cj) | 72 | 4.1 |
+| [poly_array](example/poly_array/README.md) | [rocq/](example/poly_array/rocq/) | 380 | [poly_array.cj](example/poly_array/extracted/poly_array.cj) | 32 | 11.9 |
+| **Total** | | **16648** | | **4996** | **3.3** |
 
 The shared [hm_tactics.v](example/hash_map/rocq/hm_tactics.v) evaluation-context
-automation adds 110 supporting lines outside these counts.
+automation adds 110 supporting lines outside these counts. The polymorphic
+array also uses the shared initialized-storage definitions and proofs in
+[buffer.v](theories/buffer.v) and [buffer_laws.v](theories/buffer_laws.v),
+which are outside its example-local count.
 
 ## Authenticator core
 

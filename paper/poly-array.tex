@@ -1,0 +1,267 @@
+\section{Polymorphic arrays: adapting the integer library}
+\label{sec:poly-arrays}
+
+The integer array of Section~\ref{sec:arrays} remains in place, with its
+original code, proofs, and clients. This separate example, in
+\path{example/poly_array/rocq/poly_array.v}, adapts its representation and
+proofs to arbitrary values. The interface is familiar:
+\begin{lstlisting}
+class PolyArray<T> {
+    static func make(n: Int64, seed: T): PolyArray<T>
+    func length(): Int64
+    func get(i: Int64): T
+    func set(i: Int64, x: T): Unit
+}
+\end{lstlisting}
+These are signatures; the following listing is a runnable use of the
+generated methods. The type argument belongs to the class; it is written
+on the factory owner and inferred from the receiver for instance calls.
+\begin{lstlisting}
+let flags = PolyArray<Bool>.make(3, false)
+flags.set(1, true)
+let first = flags.get(0)  // false
+let middle = flags.get(1) // true
+let count = flags.length() // 3
+\end{lstlisting}
+The initial value is explicit because an arbitrary type has no universal
+zero. For integers, a zero seed matches the old initial contents. For booleans, a seed of \texttt{false} gives three false
+entries. The verified constructor requires $n>0$, just as the old core
+allocation does, and each verified access requires $0\leq i<n$.
+The native implementation may support more inputs; those extra behaviours
+are not claims of these contracts.
+
+\subsection{The same representation, with values instead of integers}
+
+Write $\mathsf{PA}(xs,a)$ for \texttt{is\_poly\_array xs a}. Its shape is
+the old array predicate:
+\[
+\begin{aligned}
+\mathsf{cells}(b,xs) &\;=\;
+  \bigsep_{i\mapsto v\in xs} (b+i)\ptsr v,\\
+\mathsf{PA}(xs,a) &\;=\;\exists o,b.\;
+  \pure{a=\mathsf{obj}(o)}\sep
+  o[0]\ptso |xs|\sep o[1]\ptso\mathsf{ptr}(b)\\
+ &\hspace{6em}\sep b\ptsb |xs|\sep\mathsf{cells}(b,xs).
+\end{aligned}
+\]
+The mathematical list now has type \texttt{list val}; the old list had
+type \texttt{list Z}. A cell can contain an integer, a Boolean, a struct,
+an object reference, or a closed function value. The theorem
+\texttt{poly\_int\_adaptation} makes the relationship precise:
+\[
+\mathsf{PA}(\mathsf{map}\;\mathsf{LitInt}\;zs,a)
+\quad\dashv\vdash\quad \mathsf{isArray}(zs,a).
+\]
+Here $\mathsf{LitInt}$ abbreviates the embedding of an integer into a CJR
+value. The theorem is an equivalence of ownership predicates in the core
+model. It is not an assertion that the two native storage layouts coincide.
+
+The type argument $T$ is absent from this predicate. It remains in the
+generic source and in printed Cangjie, while the proof reasons uniformly
+about $xs$. For example, the proof of a load needs ownership of cell $i$;
+it need not know whether the cell contains $42$ or \texttt{true}.
+
+\subsection{Initialization and erasure}
+
+The source type \texttt{GTBuffer t} and expressions
+\texttt{GEBufferMake}, \texttt{GEBufferGet}, and \texttt{GEBufferSet}
+describe initialized indexed storage. Their type annotations undergo the
+same substitution and scope checks as other generic types. Erasure removes
+the element type. A read becomes \texttt{Load (Offset b i)}, a write
+becomes \texttt{Store (Offset b i) v}, and construction calls a closed
+helper defined in \path{theories/buffer.v} using existing core operations.
+There is no additional reduction rule or logical axiom.
+
+The helper allocates $n$ zero words, then fills every cell with the seed.
+Its recursive fill visits $n-1,n-2,\ldots,0$. To prove the successor case,
+split off the last zero cell, write the seed there, apply the induction
+hypothesis to the prefix, and combine the two pieces. Thus
+\texttt{wp\_buffer\_fill} changes
+$\mathsf{cells}(b,\mathsf{replicate}(n,0))$ into
+$\mathsf{cells}(b,\mathsf{replicate}(n,v))$.
+The constructor then installs the length and pointer in a new object,
+as the monomorphic constructor did.
+
+The seed and values supplied to \texttt{set} must be closed under
+term substitution. In Rocq this is
+\texttt{closed\_val v := forall x w, subst\_val x w v = v}.
+Literals and object references satisfy it immediately. For functions, it
+rules out an unresolved free local variable inside the stored function.
+The condition matters because the existing core substitutes through values
+while unpacking call arguments; it is unrelated to duplicating ownership.
+
+The factory is a \texttt{GStaticFunction} owned by \texttt{PolyArray},
+called with \texttt{GEStaticCall}. It has no receiver. The three instance
+methods use \texttt{GEMethod}; their explicit first source parameter is
+printed as \texttt{this}. Class parameters are in scope in all four bodies.
+Erasure resolves qualified names such as \texttt{PolyArray.make} and
+\texttt{PolyArray.get}, keeping the same argument order and runtime bodies.
+
+Both the type-instantiation erasure theorem and the term-substitution
+erasure theorem cover the new storage forms. Consequently
+$\GWpre(e,\Phi)$ still means $\Wpre(\mathsf{erase}(e),\Phi)$,
+and the existing adequacy theorem still supplies safety. The concrete
+Boolean-array constructor is covered by \texttt{poly\_main\_adequate}.
+
+\subsection{The four contracts and their proofs}
+
+Suppressing the class type argument, writing an instance receiver as the
+first argument, and writing $xs[i\leftarrow x]$
+for list update, the structural contracts are:
+\[
+\begin{aligned}
+\mathsf{emp} &\vdash \GWpre(\mathsf{make}(n,v),
+  \lambda a.\mathsf{PA}(\mathsf{replicate}(n,v),a)),\\
+\mathsf{PA}(xs,a) &\vdash \GWpre(\mathsf{length}(a),
+  \lambda r.\pure{r=|xs|}\sep\mathsf{PA}(xs,a)),\\
+\mathsf{PA}(xs,a) &\vdash \GWpre(\mathsf{get}(a,i),
+  \lambda r.\pure{r=xs_i}\sep\mathsf{PA}(xs,a)),\\
+\mathsf{PA}(xs,a) &\vdash \GWpre(\mathsf{set}(a,i,x),
+  \lambda r.\pure{r=()}\sep\mathsf{PA}(xs[i\leftarrow x],a)).
+\end{aligned}
+\]
+The first line assumes $n>0$ and a closed seed; the final two assume
+$xs!!i=\mathsf{Some}(xs_i)$; the last also assumes a closed new value.
+The statements appear as \texttt{poly\_make\_spec},
+\texttt{poly\_length\_spec}, \texttt{poly\_get\_spec}, and
+\texttt{poly\_set\_spec}.
+
+The get and set proofs closely follow the integer proofs. Unpack the
+arguments, read the data field, calculate the offset, and use the list
+lookup to obtain exactly one points-to assertion. A load returns that
+assertion unchanged; a store returns it with the new value. The closing
+continuation supplied by the big-separating-conjunction lemma rebuilds
+the array. Since list update preserves length, the length field and block
+metadata remain valid.
+
+The derived results recover the usual array equations:
+\texttt{poly\_set\_get\_same} reads back the new value;
+\texttt{poly\_set\_get\_other} preserves a different index;
+\texttt{poly\_set\_length} preserves length; and
+\texttt{poly\_fresh\_get} supplies the seed at every valid fresh index.
+For the Boolean listing above, the list changes from
+$[\False,\False,\False]$ to $[\False,\True,\False]$.
+No integer-specific arithmetic on the elements enters these proofs.
+
+\subsection{When elements themselves own resources}
+
+Owning an array cell containing an object reference does not by itself
+own the referenced object's fields. To express such ownership, choose an
+element representation $R:\mathsf{val}\to\mathsf{iProp}$ and define
+\[
+  \mathsf{PA}_R(xs,a)
+  =\mathsf{PA}(xs,a)\sep\bigsep_{v\in xs} R(v).
+\]
+This is \texttt{poly\_array\_rep}. For booleans, $R$ might be a pure fact
+that the value is a Boolean. For an array of boxes, $R(v)$ might own the
+box field. For an array of arrays, it can be another array predicate.
+
+The ownership-aware get contract returns the selected resource together
+with a continuation that restores the whole array:
+\[
+ \mathsf{PA}_R(xs,a)\vdash
+ \GWpre(\mathsf{get}(a,i),
+ \lambda v.\pure{v=xs_i}\sep R(v)\sep
+       (R(v)\wand\mathsf{PA}_R(xs,a))).
+\]
+Think of opening an envelope: the selected resource is available, but the
+envelope cannot be closed until that resource is returned. There is no
+second copy of $R(v)$ left inside a complete $\mathsf{PA}_R$.
+This is \texttt{poly\_get\_owned\_spec}.
+
+An ownership-aware update consumes the new element resource and returns
+the old one. With $xs_i=y$ and closed $x$,
+\[
+\begin{aligned}
+ \mathsf{PA}_R(xs,a)\sep R(x)\vdash
+ \GWpre(\mathsf{set}(a,i,x),\lambda r.\;&\pure{r=()}\sep
+ \mathsf{PA}_R(xs[i\leftarrow x],a)\sep R(y)).
+\end{aligned}
+\]
+The returned $R(y)$ is a logical resource, not an extra runtime return
+value. The caller already knows $y$ from the precondition and can retain,
+reuse, or dispose of its resource according to its own specification.
+
+Construction requires special care. Repeating a seed $v$ creates $n$
+copies of its value, so \texttt{poly\_make\_owned\_spec} requires
+$\bigsep_{k<n} R(v)$. A single $R(v)$ suffices only when it is persistent;
+\texttt{poly\_make\_persistent\_spec} states that case explicitly.
+For an exclusively owned box, two copies of its field ownership are
+unavailable. The program can still construct an array of two aliases,
+but its appropriate contract keeps the box ownership once outside the
+array's structural predicate.
+
+\begin{lstlisting}
+let inner = PolyArray<Bool>.make(2, false)
+let outer = PolyArray<PolyArray<Bool>>.make(2, inner)
+outer.get(0).set(1, true)
+// Both entries contain the same inner reference:
+let seen = outer.get(1).get(1)
+// seen == true
+\end{lstlisting}
+The outer cells are distinct; the referenced inner array is shared.
+For a singleton outer array, \texttt{poly\_nested\_singleton\_spec}
+instead transfers the one inner-array resource into
+$\mathsf{PA}_{\mathsf{PA}(xs,-)}([a],b)$ without any duplication.
+
+\subsection{Native storage and validation}
+
+The printer emits \texttt{GTBuffer T} as \texttt{CjrBuffer<T>}, an alias
+for \texttt{std.core.Array<T>}. This supports Boolean, struct, function,
+and reference elements without inventing a native byte width for $T$.
+Cangjie 1.0.5 rejects an unconstrained \texttt{CPointer<T>}: its element
+must satisfy the native \texttt{CType} requirement. The new example uses
+managed storage; the old integer example retains its raw storage.
+
+The core's one word per value is an abstract model of indexed storage,
+not a proof of the native array implementation. The correspondence between
+the derived allocation-and-fill helper and the managed constructor remains
+part of the printer and native-runtime trust boundary. Verified lengths
+must fit native \texttt{Int64}, indexes must satisfy the contracts, and
+allocation failure and garbage collection are not modeled. The native
+array's bounds checks remain enabled.
+
+Buffer receiver annotations are checked by typed helper calls. A store
+evaluates its buffer, index, and value as three arguments before performing
+the assignment, retaining the core's evaluation order. An executable
+side-effect trace checks all seven operands across construction, write,
+and read, and obtains \texttt{1234567}. Tests cover wrong
+element annotations and incompatible stores as well as successful
+instantiations. Eight native cases exercise seeded construction, length,
+writes at both ends, independent arrays, Boolean and integer contents,
+nested arrays and aliasing, generic structs, functions, and unit values.
+Rocq regressions check nested substitution, scope and arity rejection,
+erasure laws, integer and Boolean round trips, and nested ownership.
+
+\subsection{Comparison with the monomorphic array}
+\label{sec:poly-array-benchmark}
+
+The paired benchmark instantiates the new array at \texttt{Int64} and
+compiles it with the unchanged generated integer array. It removes only
+their demonstration entry points to link the two libraries in one test
+executable. Source hashes include both complete generated files and that
+small build transformation.
+
+The workloads and sizes match the existing array benchmark: permuted
+indexed reads and permuted writes followed by sequential reads, at
+$n=256,4096,65536$. Setup populates both arrays before timing. Each process
+warms both implementations and calibrates batches towards 20 milliseconds;
+seven samples alternate their execution order. Three independent processes
+give 21 samples per implementation at each workload and size, or 252
+measurements. Every measured batch checks its checksum. Compilation,
+allocation, initialization, and raw-block cleanup are outside the timer.
+The timer is \texttt{std.time.MonoTime}; there is no core pinning or forced
+garbage collection. Medians and interquartile ranges pool the 21 samples
+for each configuration. In the write/read workload, one operation means
+one write or one read, so a complete pass counts as $2n$ operations.
+
+\input{paper/poly-array-results.tex}
+
+These timings compare two complete implementations. Managed storage,
+bounds checks, wrapper code, and compiler optimization can all affect the
+result. They do not isolate the cost of a type parameter, measure allocation
+cost, or predict performance for other element types. They are a new paired
+run, separate from the historical standard-library comparison in
+Section~\ref{sec:benchmarks}. The raw samples, summaries, compiler version,
+machine details, source hashes, and plots are saved under
+\path{example/poly_array/benchmark/results/}.

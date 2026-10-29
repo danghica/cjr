@@ -303,6 +303,7 @@ Definition p_most_frequent :=
         (App (Rec None (Some "input") most_frequent.mf_body) (Var "input")))).
 
 From cjr.aes_ige Require Import extract.
+From cjr.examples Require Import generic_print generic_examples poly_array.
 
 (** * The files, in [_CoqProject] order *)
 
@@ -327,4 +328,6 @@ Definition cj_files : list (string * prog) :=
 
 (** Every file, each preceded by a line [@@FILE NAME]. *)
 Definition cj_bundle : string :=
-  cat_all (map (fun '(n, p) => "@@FILE " ++ n ++ nl ++ print_prog p) cj_files).
+  cat_all (map (fun '(n, p) => "@@FILE " ++ n ++ nl ++ print_prog p) cj_files) ++
+  "@@FILE generics" ++ nl ++ generic_source generic_program ++
+  "@@FILE poly_array" ++ nl ++ generic_source poly_program.

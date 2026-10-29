@@ -13,7 +13,7 @@ $(VOFILES): _CoqProject
 $(foreach config,$(wildcard example/*/_CoqProject),$(eval $(filter $(dir $(config))%,$(VOFILES)): $(config)))
 
 # Optional documentation tooling; proof verification does not depend on it.
-.PHONY: readable readable-test project-tools-test
+.PHONY: readable readable-test project-tools-test generic-extraction-test
 # The assumption audit contains only Print commands, not declarations to render.
 readable:
 	$(PYTHON) -m tools.rocq_readable build --sources $(filter-out theories/verify_assumptions.v,$(wildcard theories/*.v)) tools/extraction/rocq --output generated/spec-html --explanations $(EXPLANATIONS)
@@ -25,8 +25,11 @@ readable-test:
 project-tools-test:
 	$(PYTHON) -m unittest discover -s tests -p 'test_project_tools.py' -v
 
+generic-extraction-test: example/generics/rocq/generic_tests.vo example/poly_array/rocq/poly_array_tests.vo
+	$(PYTHON) -m unittest discover -s tests -p 'test_generic_extraction.py' -v
+
 VERIFY_LOG ?= build/verify.log
-VERIFY_THEOREMS := 936
+VERIFY_THEOREMS := 999
 
 .PHONY: verify verify-checks check-proofs check-axioms check-no-cheats
 # A recursive make keeps all build/check output inside the log and preserves
@@ -74,7 +77,7 @@ extract: tools/extraction/rocq/emit_cj.vo example/authenticator/core/rocq/extrac
 cj: extract
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper paper/cjr-tutorial.tex
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=paper paper/cjr-tutorial.tex
-test: extract
+test: extract generic-extraction-test
 	$(PYTHON) -m tools.project_tools.examples test
 	$(PYTHON) example/authenticator/core/scripts/check.py --test-only
 
