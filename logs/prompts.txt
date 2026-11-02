@@ -993,3 +993,15 @@ add a prominent note to the README of the old cjr repo saying that new developme
 [2026-10-29T14:48:20+00:00]
 validate all the proofs and push the proof record and update the readmes 
 
+[2026-11-02T14:01:05+00:00]
+we are going to improve the output of rock-readable. 
+
+[2026-11-02T14:03:39+00:00]
+re-validate the proofs and re-run rocq-readable. make sure that the ai generated explanations are correct.
+
+[2026-11-02T14:47:21+00:00]
+how can i remote-control this chatgpt client? 
+
+[2026-11-02T17:51:00+00:00]
+Commit and push everything 
+

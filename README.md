@@ -27,7 +27,7 @@ The parent keeps prompt logging instructions, scripts/log_prompt.py, logs/prompt
 
 ## Latest proof validation
 
-**All maintained proof modules passed validation on 2026-10-29** with Coq 8.20.1: 147 modules compiled and kernel-checked; 999/999 entries in the primary assumption audits closed under the global context. No admissions or declared axioms were used. The initial migration did not run these checks; this subsequent validation supersedes that status for the recorded sources.
+**All maintained proof modules passed validation on 2026-11-02** with Coq 8.20.1: 147 modules compiled and kernel-checked; 999/999 entries in the primary assumption audits closed under the global context. No admissions or declared axioms were used. The initial migration did not run these checks; this subsequent validation supersedes that status for the recorded sources.
 
 See the [aggregate verification log](build/verify.log), [machine-readable aggregate record](build/proof-verification.json), and the individual records:
 
@@ -35,4 +35,4 @@ See the [aggregate verification log](build/verify.log), [machine-readable aggreg
 - [Collections proof record](https://github.com/danghica/cjr-collections/blob/main/build/proof-verification.json)
 - [Crypto proof record](https://github.com/danghica/cjr-crypto/blob/main/build/proof-verification.json)
 
-The separate quadtree and authenticator audits also check their local theorem inventories. Historical readable-specification pages and benchmarks retain their original provenance. Extraction, native compilers, platform adapters, and machine arithmetic retain the documented trust boundaries.
+The separate quadtree and authenticator audits also check their local theorem inventories. Readable-specification pages were regenerated after this validation; benchmarks retain their original provenance. Extraction, native compilers, platform adapters, and machine arithmetic retain the documented trust boundaries.

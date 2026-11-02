@@ -3,14 +3,14 @@
   "proofs_revalidated": true,
   "modules_checked": 147,
   "closed": 999,
-  "finished_utc": "2026-10-29T16:21:03.273732+00:00",
+  "finished_utc": "2026-11-02T16:20:44.484411+00:00",
   "repositories": [
     {
       "name": "cjr-core",
-      "commit": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7",
+      "commit": "04935c0cb8e7b63cf9dffc44e2aec8f2b88f6c50",
       "record": {
         "status": "passed",
-        "started_utc": "2026-10-29T14:49:30.877164+00:00",
+        "started_utc": "2026-11-02T14:36:18.280632+00:00",
         "dependencies": {},
         "coqchk": "passed",
         "assumptions": "all audited declarations closed under the global context",
@@ -43,19 +43,19 @@
         "toolchain": "The Coq Proof Assistant, version 8.20.1\ncompiled with OCaml 5.4.0",
         "expected_closed": 34,
         "closed": 34,
-        "finished_utc": "2026-10-29T14:50:14.796170+00:00",
+        "finished_utc": "2026-11-02T14:36:52.887112+00:00",
         "exit_status": 0,
-        "verify_log_sha256": "2d8371270e5115436459a5930151000f9fcc534035947437a9af301dbdf36d44"
+        "verify_log_sha256": "fd5232380c57f951d8f4bc66bc9cb14a02b51ec97d219f149c9596dedaa4dbfe"
       }
     },
     {
       "name": "cjr-collections",
-      "commit": "4425b67b62bf7b18791d425ca38243849db67028",
+      "commit": "c5cec32f98414dbf76b28f46725e221b3bed7511",
       "record": {
         "status": "passed",
-        "started_utc": "2026-10-29T14:53:27.828036+00:00",
+        "started_utc": "2026-11-02T14:47:43.971502+00:00",
         "dependencies": {
-          "cjr-core": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7"
+          "cjr-core": "04935c0cb8e7b63cf9dffc44e2aec8f2b88f6c50"
         },
         "coqchk": "passed",
         "assumptions": "all audited declarations closed under the global context",
@@ -92,20 +92,35 @@
         "toolchain": "The Coq Proof Assistant, version 8.20.1\ncompiled with OCaml 5.4.0",
         "expected_closed": 123,
         "closed": 123,
-        "finished_utc": "2026-10-29T15:14:18.501610+00:00",
+        "finished_utc": "2026-11-02T14:56:30.760802+00:00",
         "exit_status": 0,
-        "verify_log_sha256": "42ed82374c9a19b6f6bf35dcfb48fc9dac5fe66f5b2de59ca065b37c07e715e6"
+        "verify_log_sha256": "f305bc85f1d2f53a045c294b356520392c3aaefcff6866b6369622c238ea91ab",
+        "dependency_rebinding": {
+          "recorded_utc": "2026-11-02T17:53:38.993983+00:00",
+          "verification_dependencies": {
+            "cjr-core": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7"
+          },
+          "method": "Compared the complete tracked .v file paths and Git blob IDs at the verified and newly pinned commits; they are identical. Original verification timestamps and log are preserved. No proof check was rerun for this metadata-only pin update.",
+          "evidence": {
+            "cjr-core": {
+              "verified_commit": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7",
+              "pinned_commit": "04935c0cb8e7b63cf9dffc44e2aec8f2b88f6c50",
+              "tracked_rocq_source_tree_sha256": "98cc7f1b4eef89eb8ce17a403ec20aac714e87c89b89f5bf692fe66eab49a695",
+              "tracked_rocq_source_files": 23
+            }
+          }
+        }
       }
     },
     {
       "name": "cjr-crypto",
-      "commit": "b876fda3deb0b9adab68149963c8dfe4c673d1f4",
+      "commit": "06129667b5fcbc8d38525e2f9bbc0046da51a9fb",
       "record": {
         "status": "passed",
-        "started_utc": "2026-10-29T15:30:33.450347+00:00",
+        "started_utc": "2026-11-02T15:29:40.751392+00:00",
         "dependencies": {
-          "cjr-core": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7",
-          "cjr-collections": "4425b67b62bf7b18791d425ca38243849db67028"
+          "cjr-core": "04935c0cb8e7b63cf9dffc44e2aec8f2b88f6c50",
+          "cjr-collections": "c5cec32f98414dbf76b28f46725e221b3bed7511"
         },
         "coqchk": "passed",
         "assumptions": "all audited declarations closed under the global context",
@@ -215,9 +230,31 @@
         "toolchain": "The Coq Proof Assistant, version 8.20.1\ncompiled with OCaml 5.4.0",
         "expected_closed": 842,
         "closed": 842,
-        "finished_utc": "2026-10-29T16:21:03.273732+00:00",
+        "finished_utc": "2026-11-02T16:20:44.484411+00:00",
         "exit_status": 0,
-        "verify_log_sha256": "2a3cf026a935a518bd0a3b207b932a25f460e1d31e463fa4526f93cf4235ea73"
+        "verify_log_sha256": "160ac720443b2bf5384d51e013775bee4d543e80bec56c885c14e3c99038e03b",
+        "dependency_rebinding": {
+          "recorded_utc": "2026-11-02T17:53:46.375930+00:00",
+          "verification_dependencies": {
+            "cjr-core": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7",
+            "cjr-collections": "4425b67b62bf7b18791d425ca38243849db67028"
+          },
+          "method": "Compared the complete tracked .v file paths and Git blob IDs at the verified and newly pinned commits; they are identical. Original verification timestamps and log are preserved. No proof check was rerun for this metadata-only pin update.",
+          "evidence": {
+            "cjr-core": {
+              "verified_commit": "a44ea877feb9421f3f24c19b8fcf80979a25c5d7",
+              "pinned_commit": "04935c0cb8e7b63cf9dffc44e2aec8f2b88f6c50",
+              "tracked_rocq_source_tree_sha256": "98cc7f1b4eef89eb8ce17a403ec20aac714e87c89b89f5bf692fe66eab49a695",
+              "tracked_rocq_source_files": 23
+            },
+            "cjr-collections": {
+              "verified_commit": "4425b67b62bf7b18791d425ca38243849db67028",
+              "pinned_commit": "c5cec32f98414dbf76b28f46725e221b3bed7511",
+              "tracked_rocq_source_tree_sha256": "74d80e29faab6b976e9a09fa3c5c4dceb0d298b8906c9459dce6811d342f68a6",
+              "tracked_rocq_source_files": 27
+            }
+          }
+        }
       }
     }
   ]
