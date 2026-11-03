@@ -1137,3 +1137,12 @@ show me the code that finds main correctness contracts
 [2026-11-03T16:07:12+00:00]
 push everything to github. do not rerun proof validations. 
 
+[2026-11-03T16:22:17+00:00]
+without wiping out the AI explanation run the improved rocq_readable on all the docs in all the repos
+
+[2026-11-03T16:57:45+00:00]
+authenticator/docs/rocq/index.html has no main correctness contracts? 
+
+[2026-11-03T17:03:38+00:00]
+don't re-run proof validation, push everything to the repo
+
