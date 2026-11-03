@@ -1008,3 +1008,132 @@ Commit and push everything
 [2026-11-03T09:47:35+00:00]
 Keep the parent push to GitHub only
 
+[2026-11-03T10:45:33+00:00]
+# AGENTS.md instructions for /Users/danghica/cjr
+
+<INSTRUCTIONS>
+# Prompt logging
+
+For every new human user prompt in this repository, append its exact text to
+`logs/prompts.txt` before starting work. Use `python3 scripts/log_prompt.py`
+with the prompt supplied on standard input; it adds the UTC recording time.
+Use literal input (for example a quoted heredoc), so shell syntax in a prompt
+is never evaluated. Log follow-up prompts too, but do not duplicate prompts
+already recorded in the current session, or log tool output and system messages.
+Do not invent timestamps or reconstruct historical prompts with current dates.
+
+Keep the prompt log and `build/verify.log` with the changes when the user asks
+to commit or push. `make verify` refreshes the verification log and preserves
+the check's exit status. Commit and push through the normal Git workflow.
+
+</INSTRUCTIONS>
+
+[2026-11-03T10:45:33+00:00]
+this display of dependency as a graph is done with what software library? 
+
+[2026-11-03T10:59:24+00:00]
+I want us to improve the layout as follows: 
+1. each node will have an assigned importance calculated by a page-rank-like algorithm. 
+2. each level of zoom will only display the nodes above an importance threashold. 
+3. the layout will not change as the zoom level changes. 
+4. the layout will be calculated first for the most important nodes. fix them in place. then the other nodes, going down iteratively to the lowest nodes. 
+
+[2026-11-03T10:59:24+00:00]
+
+# Selected text:
+
+## Selection 1: /Users/danghica/.codex/plans/01a1a103-4bea-7223-9664-41e106af632a/01a1a106-9e7c-7b50-9fed-43f0c01d12f8/PLAN.md (line 14)
+- Draw an arrow only when both endpoints are visible. Report visible and total node/link counts.
+
+
+## My request:
+use dual line-graph pagerank to assing ranks to both edges and nodes
+
+[2026-11-03T11:00:37+00:00]
+
+# Selected text:
+
+## Selection 1: /Users/danghica/.codex/plans/01a1a103-4bea-7223-9664-41e106af632a/01a1a106-9e7c-7b50-9fed-43f0c01d12f8/PLAN.md (line 14)
+- Draw an arrow only when both endpoints are visible. Report visible and total node/link counts.
+
+
+## My request:
+also draw when one endpoint is visible and the rank of the edge is high enough. 
+
+[2026-11-03T11:01:11+00:00]
+show the plan
+
+[2026-11-03T11:01:46+00:00]
+implement it
+
+[2026-11-03T11:20:11+00:00]
+how do i zoom in/out ? 
+
+[2026-11-03T11:20:50+00:00]
+nothing happens other than the entire graph gets bigger or smaller. 
+
+[2026-11-03T11:24:22+00:00]
+the nodes should be displayed as circles and the labels should be outside the circle so that the font can stay proportional to the rank no matter what the zoom scale
+
+[2026-11-03T11:40:53+00:00]
+the size of the node should be zoom invariant , proportional to the rank. the thinkness of the edges should be proportional tot he score, zoom invariant
+
+[2026-11-03T11:50:57+00:00]
+i don't like the fact that the labels move around and i don't like the edge between the text label and the node. i understand that sometimes labels overlap: in this case the smaller rank text label should be hidden (but not the node). If the mouse hover over the node the hidden text label should be displayed temporarily, inside a solid color box. 
+
+[2026-11-03T12:40:11+00:00]
+is the event of the mouse hovering over an edge handled? 
+
+[2026-11-03T12:41:20+00:00]
+add a 'full screen' button to the graph window
+
+[2026-11-03T13:06:08+00:00]
+new feature: on hover on a node also print the AI-generated explanation. 
+
+[2026-11-03T13:19:18+00:00]
+the ai generated explanations for quad tree are missing
+
+[2026-11-03T13:21:40+00:00]
+ok. regenerate. 
+
+[2026-11-03T14:15:19+00:00]
+new feature: if a definition contains CJR the web page should render it as Cangjie using the gallina printer. 
+
+[2026-11-03T15:25:05+00:00]
+when the hover text appears it sometimes obstruct the node so it cannot be clicked. what do you recommend: either display the text box without obscuring the node OR clicking the text box is same as clicking the node? 
+
+[2026-11-03T15:25:28+00:00]
+do it
+
+[2026-11-03T15:34:14+00:00]
+the low rank edges are too thin. make the lowest rank edges thinker but keep the thickness of the top rank. adjust the intermediate ranks proportionally
+
+[2026-11-03T15:36:09+00:00]
+
+# Selected text:
+
+## Selection 1: /Users/danghica/.codex/plans/01a1a204-6922-7a20-a349-86950675f358/01a1a205-e951-7b21-a068-96e2632987ef/PLAN.md (line 17)
+## Migration and caching
+
+
+## My request:
+make sure you don't erase the AI explanations
+
+[2026-11-03T15:36:32+00:00]
+implement the plan
+
+[2026-11-03T15:38:43+00:00]
+how can we figure out what the main correctness theorems are, relating cjr and spec? 
+
+[2026-11-03T15:44:25+00:00]
+do that. 'Main correctness contracts' should have a different colour scheme and receive top rank by default. 
+
+[2026-11-03T15:53:27+00:00]
+make every prompt separately collapsible
+
+[2026-11-03T16:04:26+00:00]
+show me the code that finds main correctness contracts
+
+[2026-11-03T16:07:12+00:00]
+push everything to github. do not rerun proof validations. 
+
