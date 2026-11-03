@@ -1005,3 +1005,6 @@ how can i remote-control this chatgpt client?
 [2026-11-02T17:51:00+00:00]
 Commit and push everything 
 
+[2026-11-03T09:47:35+00:00]
+Keep the parent push to GitHub only
+
